@@ -6,8 +6,13 @@
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KV978ZL"
                   height="0" width="0" title="Google Tag Manager" class="gtm-noscript"></iframe></noscript>
 <!-- End Google Tag Manager (noscript) -->
-<body th:classappend="${flags.auditMode} ? 'audit-mode'">
+<body th:classappend="${flags.taxpert} ? 'taxpert-mode'">
 <a class="usa-skipnav" href="#main-content" th:text="#{layout.skip-to-main}"></a>
+
+<!-- Taxpert topbar — rendered only in Taxpert mode (--taxpert flag) -->
+<th:block th:if="${flags.taxpert}">
+  <div th:replace="fragments/taxpert-chrome :: topbar"></div>
+</th:block>
 
 <div class="app-container">
     <header>
@@ -38,16 +43,8 @@
     </header>
 
 
-    <main id="main-content">
+    <main id="main-content" th:classappend="${flags.taxpert} ? 'taxpert-viewport'">
         <h1 th:text="#{layout.title}"></h1>
-
-        <button class="hidden" id="show-audit-panel" type="button" aria-label="Open audit panel">
-          <span class="usa-tooltip" data-position="left" title="Open audit panel">
-          <svg class="usa-icon" aria-hidden="true" focusable="false" role="img">
-            <use href="/app/eitc/resources/vendor/uswds-3.13.0/img/sprite.svg#settings"></use>
-          </svg>
-          </span>
-        </button>
 
         <div th:replace="fragments/usa-step-indicator"></div>
 
@@ -136,11 +133,18 @@
     <div th:replace="~{errors}"></div>
 </div>
 
+<!-- Taxpert rail + mode pill — rendered only in Taxpert mode -->
+<th:block th:if="${flags.taxpert}">
+  <div th:replace="fragments/taxpert-chrome :: rail"></div>
+  <div th:replace="fragments/taxpert-chrome :: mode-pill"></div>
+</th:block>
+
+<!-- Inspector content — distributed into rail tabs by taxpert-inspector.js on enable -->
 <div th:replace="fragments/audit-panel"></div>
-<script type="module" th:if="${flags.auditMode}">
-    // If configured, automatically enable Audit Mode on startup
-    import { enable } from '/app/eitc/resources/js/audit-panel.js'
-    enable()
+
+<script type="module" th:if="${flags.taxpert}">
+    import { enableTaxpert } from '/app/eitc/resources/js/taxpert.js'
+    enableTaxpert()
 </script>
 
 </body>

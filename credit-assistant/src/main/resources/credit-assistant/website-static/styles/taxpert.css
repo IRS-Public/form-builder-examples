@@ -1,0 +1,467 @@
+/*
+ * taxpert.css — Taxpert shell layout
+ *
+ * All rules are scoped under body.taxpert-mode so they never affect
+ * the normal questionnaire. Loaded via <link id="taxpert-styles" disabled>
+ * and enabled by taxpert.js at runtime (--taxpert flag only).
+ *
+ * Design tokens: see variables.css --taxpert-* entries.
+ * Reuses: --units-*, --font-*, --base-* from variables.css.
+ * Does NOT override any USWDS or questionnaire component styles.
+ */
+
+/* ─── App Grid ────────────────────────────────────────────
+   body.taxpert-mode becomes a 2-col × 2-row grid:
+
+     col 1 (1fr)               col 2 (--taxpert-rail-width)
+   ┌──────────────────────────────────────────────────────┐ row 1 (topbar height)
+   │ .taxpert-topbar  (spans both columns)                │
+   ├───────────────────────────────────┬──────────────────┤ row 2 (1fr)
+   │ .app-container (viewport)         │ .taxpert-rail    │
+   └───────────────────────────────────┴──────────────────┘
+   ─────────────────────────────────────────────────────── */
+
+body.taxpert-mode {
+  display: grid;
+  grid-template-columns: 1fr var(--taxpert-rail-width);
+  grid-template-rows: var(--taxpert-topbar-height) 1fr;
+  height: 100vh;
+  overflow: hidden;
+  margin: 0;
+}
+
+/* Skip-nav sits in the topbar row but is visually hidden until focused */
+body.taxpert-mode > .usa-skipnav {
+  grid-column: 1 / -1;
+  grid-row: 1;
+  height: 0;
+  z-index: 500;
+}
+
+/* ─── Topbar ──────────────────────────────────────────── */
+
+body.taxpert-mode > .taxpert-topbar {
+  grid-column: 1 / -1;
+  grid-row: 1;
+}
+
+.taxpert-topbar {
+  background-color: var(--taxpert-pink);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 var(--units-2);
+  height: var(--taxpert-topbar-height);
+  z-index: 100;
+  gap: var(--units-2);
+}
+
+.taxpert-topbar-left,
+.taxpert-topbar-right {
+  display: flex;
+  align-items: center;
+  gap: var(--units-1);
+  flex-shrink: 0;
+}
+
+.taxpert-topbar-center {
+  display: flex;
+  align-items: center;
+  gap: var(--units-1);
+  flex: 1;
+  justify-content: center;
+}
+
+.taxpert-brand {
+  background: none;
+  border: none;
+  color: white;
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  font-family: var(--font-sans);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: var(--units-05);
+  padding: var(--units-05) var(--units-1);
+  border-radius: 4px;
+  line-height: 1;
+  transition: background-color 0.15s;
+}
+
+.taxpert-brand:hover {
+  background-color: rgba(255, 255, 255, 0.15);
+}
+
+.taxpert-brand svg {
+  width: 14px;
+  height: 14px;
+}
+
+.taxpert-nav-arrows {
+  display: flex;
+  align-items: center;
+  gap: var(--units-05);
+}
+
+/* Icon buttons in the topbar */
+body.taxpert-mode .taxpert-topbar .btn-icon {
+  background: none;
+  border: 1px solid rgba(255, 255, 255, 0.0);
+  color: white;
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  cursor: pointer;
+  padding: 0;
+  transition: background-color 0.15s, border-color 0.15s;
+  flex-shrink: 0;
+}
+
+body.taxpert-mode .taxpert-topbar .btn-icon:hover {
+  background-color: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+body.taxpert-mode .taxpert-topbar .btn-icon svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* Section selector custom element */
+taxpert-section-selector {
+  display: flex;
+  align-items: center;
+  gap: var(--units-1);
+}
+
+taxpert-section-selector .taxpert-section-label {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: var(--font-size-3xs);
+  white-space: nowrap;
+}
+
+taxpert-section-selector select {
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 4px;
+  color: white;
+  padding: var(--units-05) var(--units-3) var(--units-05) var(--units-1);
+  font-size: var(--font-size-3xs);
+  font-family: var(--font-sans);
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2.5'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right var(--units-1) center;
+  max-width: 180px;
+}
+
+taxpert-section-selector select:focus {
+  outline: 2px solid white;
+  outline-offset: 2px;
+}
+
+taxpert-section-selector select option {
+  background-color: var(--taxpert-gray);
+  color: white;
+}
+
+/* ─── Viewport (questionnaire container) ─────────────── */
+
+body.taxpert-mode > .app-container {
+  grid-column: 1;
+  grid-row: 2;
+  overflow-y: auto;
+  height: 100%;
+  container-type: inline-size;
+  container-name: app;
+  background-color: #fafafa;
+  /* Extra bottom padding so fixed mode pill doesn't obscure content */
+  padding-bottom: calc(var(--units-7) + var(--units-3));
+}
+
+/* Hide IRS-specific chrome — Taxpert topbar takes that role */
+body.taxpert-mode .logo-banner,
+body.taxpert-mode .usa-banner,
+body.taxpert-mode footer.footer {
+  display: none;
+}
+
+/* ─── Right Rail ──────────────────────────────────────── */
+
+body.taxpert-mode > .taxpert-rail {
+  grid-column: 2;
+  grid-row: 2;
+}
+
+.taxpert-rail {
+  display: grid;
+  grid-template-columns: var(--taxpert-tab-strip-width) 1fr;
+  grid-template-rows: 1fr;
+  background-color: var(--taxpert-pink-light);
+  border-left: 1px solid #ddd;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Rail collapse toggle (sits over tab strip) */
+.taxpert-rail-collapse {
+  position: absolute;
+  top: var(--units-1);
+  left: calc((var(--taxpert-tab-strip-width) - 1.5rem) / 2);
+  z-index: 10;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 4px;
+  color: white;
+  width: 1.5rem;
+  height: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+  transition: background-color 0.15s;
+}
+
+.taxpert-rail-collapse:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.taxpert-rail-collapse svg {
+  width: 14px;
+  height: 14px;
+  transition: transform 0.2s;
+}
+
+/* Collapsed state: panel disappears, tab strip stays */
+body.taxpert-rail-collapsed > .taxpert-rail {
+  grid-template-columns: var(--taxpert-tab-strip-width) 0;
+}
+
+body.taxpert-rail-collapsed .taxpert-panel {
+  display: none;
+}
+
+body.taxpert-rail-collapsed .taxpert-rail-collapse svg {
+  transform: rotate(180deg);
+}
+
+/* ─── Tab Strip ───────────────────────────────────────── */
+
+.taxpert-tabs {
+  background-color: var(--taxpert-pink);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: calc(var(--units-1) + 1.5rem + var(--units-1)); /* clear the collapse button */
+  gap: var(--units-05);
+}
+
+.taxpert-tab {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  transform: rotate(180deg);
+  color: rgba(255, 255, 255, 0.65);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: var(--units-2) var(--units-1);
+  font-size: var(--font-size-3xs);
+  font-family: var(--font-sans);
+  line-height: 1;
+  white-space: nowrap;
+  border-radius: 4px 0 0 4px;
+  transition: color 0.15s, background-color 0.15s;
+  width: 100%;
+}
+
+.taxpert-tab:hover {
+  color: white;
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.taxpert-tab.active {
+  color: white;
+  font-weight: 600;
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+/* ─── Panel ───────────────────────────────────────────── */
+
+.taxpert-panel {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background-color: white;
+  height: 100%;
+}
+
+.taxpert-panel-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--units-2);
+  min-height: 0; /* prevents flex overflow */
+}
+
+.taxpert-panel-content.hidden {
+  display: none;
+}
+
+.taxpert-panel-title {
+  font-size: var(--font-size-3xs);
+  font-weight: 600;
+  color: var(--taxpert-gray);
+  padding: var(--units-1) var(--units-2);
+  border-bottom: 1px solid #ddd;
+  background-color: #fafafa;
+  flex-shrink: 0;
+}
+
+/* ─── Info Rows (key/value pairs in Inspection tab) ─── */
+
+.taxpert-info-row {
+  display: flex;
+  align-items: baseline;
+  gap: var(--units-1);
+  padding: var(--units-05) 0;
+  font-size: var(--font-size-3xs);
+  border-bottom: 1px solid var(--base-lighter);
+}
+
+.taxpert-k {
+  color: var(--base);
+  flex-shrink: 0;
+  min-width: 5rem;
+}
+
+.taxpert-v {
+  color: var(--base-darker);
+  font-weight: 500;
+  word-break: break-all;
+}
+
+/* ─── Chat Widget ─────────────────────────────────────── */
+
+.taxpert-chat {
+  border-top: 1px solid #ddd;
+  padding: var(--units-1) var(--units-2) var(--units-2);
+  background-color: white;
+  flex-shrink: 0;
+}
+
+.taxpert-chat-input {
+  width: 100%;
+  border: 1px solid #ccc;
+  border-radius: 9999px;
+  padding: var(--units-1) var(--units-2);
+  font-size: var(--font-size-3xs);
+  font-family: var(--font-sans);
+  color: var(--taxpert-gray);
+  background: white;
+  margin-bottom: var(--units-1);
+  box-sizing: border-box;
+  line-height: 1.4;
+}
+
+.taxpert-chat-input:focus {
+  outline: 2px solid var(--taxpert-pink);
+  outline-offset: 2px;
+  border-color: var(--taxpert-pink);
+}
+
+.taxpert-chat-input::placeholder {
+  color: #aaa;
+}
+
+.taxpert-chat-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--units-05);
+}
+
+.taxpert-chat-chip {
+  background-color: var(--taxpert-pink);
+  color: white;
+  border: none;
+  border-radius: 9999px;
+  padding: var(--units-05) var(--units-1);
+  font-size: 0.6875rem; /* 11px — deliberately compact */
+  font-family: var(--font-sans);
+  cursor: pointer;
+  transition: opacity 0.15s;
+  white-space: nowrap;
+  line-height: 1.4;
+}
+
+.taxpert-chat-chip:hover {
+  opacity: 0.82;
+}
+
+.taxpert-chat-chip:focus-visible {
+  outline: 2px solid white;
+  outline-offset: 2px;
+}
+
+/* ─── Mode Pill ───────────────────────────────────────── */
+
+.taxpert-mode-pill-container {
+  position: fixed;
+  bottom: var(--units-3);
+  left: calc(50% - (var(--taxpert-rail-width) / 2));
+  transform: translateX(-50%);
+  z-index: 200;
+}
+
+taxpert-mode-pill {
+  display: inline-flex;
+  align-items: center;
+  background-color: var(--taxpert-pink);
+  border-radius: 9999px;
+  padding: var(--units-05);
+  gap: var(--units-05);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+}
+
+taxpert-mode-pill [data-segment] {
+  border-radius: 9999px;
+  padding: var(--units-05) var(--units-2);
+  font-size: var(--font-size-3xs);
+  font-family: var(--font-sans);
+  color: white;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.15s;
+  white-space: nowrap;
+  line-height: 1.4;
+}
+
+taxpert-mode-pill [data-segment].active {
+  background-color: rgba(255, 255, 255, 0.25);
+}
+
+taxpert-mode-pill [data-segment]:hover:not(.active) {
+  background-color: rgba(255, 255, 255, 0.12);
+}
+
+taxpert-mode-pill [data-segment]:focus-visible {
+  outline: 2px solid white;
+  outline-offset: 2px;
+}
+
+/* ─── Placeholder content ─────────────────────────────── */
+
+.taxpert-placeholder {
+  color: var(--base);
+  font-size: var(--font-size-3xs);
+  font-style: italic;
+  padding: var(--units-2);
+  text-align: center;
+}

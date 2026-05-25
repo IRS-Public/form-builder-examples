@@ -149,4 +149,12 @@
   --flow-spacing: var(--units-3);
   --flow-spacing--sm: var(--units-1);
   --flow-spacing--offset: calc(var(--flow-spacing) + var(--flow-spacing--sm));
+
+  /* Taxpert Shell Tokens */
+  --taxpert-pink: #FF00FF;
+  --taxpert-pink-light: #FFF0FF;
+  --taxpert-gray: #4a4a4a;
+  --taxpert-rail-width: 360px;
+  --taxpert-tab-strip-width: 80px;
+  --taxpert-topbar-height: 56px;
 }

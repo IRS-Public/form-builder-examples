@@ -1,0 +1,217 @@
+<!--
+  taxpert-chrome.html — Taxpert shell chrome fragments
+  Included conditionally in page.html when flags.taxpert is active.
+
+  Three named fragments:
+    topbar    — full-width header bar (grid row 1, spans both columns)
+    rail      — right-side tab strip + panel area (grid row 2, column 2)
+    mode-pill — floating segmented control (fixed bottom-center)
+
+  Phase 2: HTML structure only. Tabs and interactions wired in Phase 3 (taxpert.js).
+-->
+
+<!-- ─── Topbar ─────────────────────────────────────────────── -->
+
+<div th:fragment="topbar" class="taxpert-topbar">
+
+  <!-- Left: brand button + page-navigation arrows -->
+  <div class="taxpert-topbar-left">
+
+    <button type="button" class="taxpert-brand" id="taxpert-brand-btn"
+            aria-haspopup="true" aria-expanded="false">
+      <!-- 4-square grid icon -->
+      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
+           fill="currentColor" aria-hidden="true" focusable="false">
+        <rect x="2"  y="2"  width="9" height="9" rx="1"/>
+        <rect x="13" y="2"  width="9" height="9" rx="1"/>
+        <rect x="13" y="13" width="9" height="9" rx="1"/>
+        <rect x="2"  y="13" width="9" height="9" rx="1"/>
+      </svg>
+      Taxpert
+      <!-- down chevron -->
+      <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24"
+           fill="none" stroke="currentColor" stroke-width="2.5"
+           aria-hidden="true" focusable="false">
+        <polyline points="6 9 12 15 18 9"/>
+      </svg>
+    </button>
+
+    <!-- Prev / Next page navigation -->
+    <div class="taxpert-nav-arrows" role="group" aria-label="Page navigation">
+      <button type="button" class="btn-icon" id="taxpert-prev-btn" aria-label="Previous page">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+             fill="none" stroke="currentColor" stroke-width="2.5"
+             aria-hidden="true" focusable="false">
+          <polyline points="18 15 12 9 6 15"/>
+        </svg>
+      </button>
+      <button type="button" class="btn-icon" id="taxpert-next-btn" aria-label="Next page">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+             fill="none" stroke="currentColor" stroke-width="2.5"
+             aria-hidden="true" focusable="false">
+          <polyline points="6 9 12 15 18 9"/>
+        </svg>
+      </button>
+    </div>
+
+  </div><!-- /taxpert-topbar-left -->
+
+  <!-- Center: section selector (custom element; wired in Phase 3) -->
+  <div class="taxpert-topbar-center">
+    <taxpert-section-selector>
+      <span class="taxpert-section-label">Section</span>
+      <select id="taxpert-section-select" aria-label="Jump to section">
+        <option value="">—</option>
+      </select>
+    </taxpert-section-selector>
+  </div><!-- /taxpert-topbar-center -->
+
+  <!-- Right: utility icon buttons -->
+  <div class="taxpert-topbar-right">
+
+    <!-- Layers -->
+    <button type="button" class="btn-icon" id="taxpert-layers-btn" aria-label="Layers">
+      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+           fill="none" stroke="currentColor" stroke-width="2"
+           aria-hidden="true" focusable="false">
+        <polygon points="12 2 2 7 12 12 22 7 12 2"/>
+        <polyline points="2 17 12 22 22 17"/>
+        <polyline points="2 12 12 17 22 12"/>
+      </svg>
+    </button>
+
+    <!-- Filter -->
+    <button type="button" class="btn-icon" id="taxpert-filter-btn" aria-label="Filter">
+      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+           fill="none" stroke="currentColor" stroke-width="2"
+           aria-hidden="true" focusable="false">
+        <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/>
+      </svg>
+    </button>
+
+    <!-- Overflow (⋯) -->
+    <button type="button" class="btn-icon" id="taxpert-overflow-btn" aria-label="More options"
+            aria-haspopup="true" aria-expanded="false">
+      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+           fill="currentColor" aria-hidden="true" focusable="false">
+        <circle cx="12" cy="5"  r="1.5"/>
+        <circle cx="12" cy="12" r="1.5"/>
+        <circle cx="12" cy="19" r="1.5"/>
+      </svg>
+    </button>
+
+  </div><!-- /taxpert-topbar-right -->
+
+</div><!-- /taxpert-topbar -->
+
+
+<!-- ─── Right Rail ─────────────────────────────────────────── -->
+
+<div th:fragment="rail" class="taxpert-rail" aria-label="Taxpert tool panels">
+
+  <!-- Collapse toggle (absolute-positioned over tab strip) -->
+  <button type="button" class="taxpert-rail-collapse" id="taxpert-rail-collapse"
+          aria-label="Collapse panel" aria-expanded="true" aria-controls="taxpert-panel">
+    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
+         fill="none" stroke="currentColor" stroke-width="2.5"
+         aria-hidden="true" focusable="false">
+      <polyline points="15 18 9 12 15 6"/>
+    </svg>
+  </button>
+
+  <!-- Tab strip (left column — magenta) -->
+  <div class="taxpert-tabs" role="tablist" aria-label="Tool panels">
+
+    <button type="button" role="tab" class="taxpert-tab active"
+            data-tab="inspection"
+            id="taxpert-tab-inspection"
+            aria-selected="true"
+            aria-controls="taxpert-panel-inspection">Inspection</button>
+
+    <button type="button" role="tab" class="taxpert-tab"
+            data-tab="factgraph"
+            id="taxpert-tab-factgraph"
+            aria-selected="false"
+            aria-controls="taxpert-panel-factgraph">FG copy, paste, choose</button>
+
+    <button type="button" role="tab" class="taxpert-tab"
+            data-tab="dashboards"
+            id="taxpert-tab-dashboards"
+            aria-selected="false"
+            aria-controls="taxpert-panel-dashboards">Dashboards</button>
+
+    <button type="button" role="tab" class="taxpert-tab"
+            data-tab="authoring"
+            id="taxpert-tab-authoring"
+            aria-selected="false"
+            aria-controls="taxpert-panel-authoring">Authoring</button>
+
+  </div><!-- /taxpert-tabs -->
+
+  <!-- Panel area (right column) -->
+  <div class="taxpert-panel" id="taxpert-panel">
+
+    <!-- Panel title bar (updated by JS in Phase 3) -->
+    <div class="taxpert-panel-title" id="taxpert-panel-label" aria-live="polite">Inspection</div>
+
+    <!-- Inspection panel (default active) -->
+    <div class="taxpert-panel-content"
+         id="taxpert-panel-inspection"
+         role="tabpanel"
+         aria-labelledby="taxpert-tab-inspection">
+      <p class="taxpert-placeholder">Fact graph inspector will mount here.</p>
+    </div>
+
+    <!-- FG copy / paste / choose panel -->
+    <div class="taxpert-panel-content hidden"
+         id="taxpert-panel-factgraph"
+         role="tabpanel"
+         aria-labelledby="taxpert-tab-factgraph"
+         hidden>
+      <p class="taxpert-placeholder">Fact graph import and export tools will mount here.</p>
+    </div>
+
+    <!-- Dashboards panel -->
+    <div class="taxpert-panel-content hidden"
+         id="taxpert-panel-dashboards"
+         role="tabpanel"
+         aria-labelledby="taxpert-tab-dashboards"
+         hidden>
+      <p class="taxpert-placeholder">Disqualification and filing status dashboards will mount here.</p>
+    </div>
+
+    <!-- Authoring panel -->
+    <div class="taxpert-panel-content hidden"
+         id="taxpert-panel-authoring"
+         role="tabpanel"
+         aria-labelledby="taxpert-tab-authoring"
+         hidden>
+      <p class="taxpert-placeholder">Authoring tools will mount here.</p>
+    </div>
+
+    <!-- Chat widget (persistent at panel bottom) -->
+    <div class="taxpert-chat">
+      <input type="text" class="taxpert-chat-input"
+             id="taxpert-chat-input"
+             placeholder="Ask me about the EITC Assistant…"
+             aria-label="Ask Taxpert assistant" />
+      <div class="taxpert-chat-actions" role="group" aria-label="Quick actions">
+        <button type="button" class="taxpert-chat-chip" data-action="load-scenario">load a scenario</button>
+        <button type="button" class="taxpert-chat-chip" data-action="find-something">find something</button>
+        <button type="button" class="taxpert-chat-chip" data-action="look-for-efficiencies">look for efficiencies</button>
+      </div>
+    </div><!-- /taxpert-chat -->
+
+  </div><!-- /taxpert-panel -->
+
+</div><!-- /taxpert-rail -->
+
+
+<!-- ─── Floating Mode Pill ─────────────────────────────────── -->
+
+<div th:fragment="mode-pill" class="taxpert-mode-pill-container">
+  <taxpert-mode-pill aria-label="Interaction mode">
+    <button type="button" data-segment="item-select" class="active" aria-pressed="true">Item-select</button>
+    <button type="button" data-segment="assistant" aria-pressed="false">Assistant</button>
+  </taxpert-mode-pill>
+</div><!-- /taxpert-mode-pill-container -->

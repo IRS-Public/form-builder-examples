@@ -1,0 +1,231 @@
+/*
+ * taxpert-inspector.css — Taxpert Inspector component styles
+ *
+ * Contains styles for inspector components rendered inside the Taxpert rail tabs:
+ *   - audited-fact custom element
+ *   - fact-link custom element
+ *   - condition-detail custom element (popover)
+ *   - Disqualification & Filing Status dashboards
+ *   - Import/Export and section utility styles
+ *
+ * Layout rules from the old audit-panel.css (the <aside> drawer, .audit-panel-open flex
+ * body layout, and the resizer) have been removed — layout is now handled by taxpert.css.
+ */
+
+/* ── Section cards ────────────────────────────────────────────────────────── */
+
+.audit-panel__section {
+    border: 1px solid var(--base-lighter);
+    margin: 1rem 0;
+    padding: .5rem 2rem;
+    border-radius: 4px;
+}
+
+/* ── Copy-to-clipboard feedback ───────────────────────────────────────────── */
+
+#copy-fg-status {
+  opacity: 0;
+  visibility: hidden;
+  padding-left: 1rem;
+}
+
+.animate-success {
+  animation: fadeInOut 2s ease-in-out;
+}
+
+@keyframes fadeInOut {
+  0%   { opacity: 0;  visibility: visible; }
+  20%  { opacity: 1; }
+  80%  { opacity: 1; }
+  100% { opacity: 0;  visibility: hidden; }
+}
+
+/* ── fg-show highlight (applied to whole page, not just rail) ─────────────── */
+
+fg-show {
+  background-color: lightyellow;
+}
+
+/* ── fact-link ────────────────────────────────────────────────────────────── */
+
+/* usa-prose included here to out-specify USWDS */
+.usa-prose fact-link a, fact-link a {
+  color: inherit;
+}
+
+/* ── audited-fact custom element ──────────────────────────────────────────── */
+
+audited-fact {
+  background-color: var(--base-lightest);
+  border: 1px solid var(--base-lighter);
+  border-radius: 4px;
+  display: block;
+  margin: var(--units-2) 0;
+  padding: var(--units-2);
+}
+
+audited-fact::part(fact-data) {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--units-1);
+  margin: 0;
+}
+
+audited-fact::part(fact-term) {
+  font-weight: bold;
+}
+
+audited-fact::part(fact-definition) {
+  margin-left: 0;
+}
+
+audited-fact::part(heading) {
+  margin-top: 0;
+}
+
+audited-fact::part(heading),
+audited-fact::part(code-block) {
+  white-space: pre-wrap;
+  word-break: break-word;
+  width: 100%;
+}
+
+audited-fact::part(code-block) {
+  border-top: 1px solid var(--base-lighter);
+  padding-top: var(--units-2);
+}
+
+audited-fact::part(remove-button) {
+  appearance: none;
+  background: white;
+  border: 2px solid var(--primary);
+  border-radius: 4px;
+  font-weight: bold;
+  padding: var(--units-05) var(--units-1);
+  color: var(--primary);
+  cursor: pointer;
+}
+
+audited-fact::part(remove-button):focus {
+  outline: .25rem solid #2491ff;
+  outline-offset: .25rem;
+}
+
+/* ── Disqualification Dashboard ───────────────────────────────────────────── */
+
+.ap-dq-list {
+  list-style: none;
+  padding: 0;
+  margin: 0.5rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.ap-dq-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.2rem 0.5rem;
+  border-radius: 3px;
+  font-size: 0.8rem;
+}
+
+.ap-dq-rollup {
+  border-top: 2px solid var(--base-lighter);
+  margin-top: 0.25rem;
+  padding-top: 0.375rem;
+  font-weight: 600;
+}
+
+.ap-dq-section-heading {
+  font-weight: 700;
+  font-size: 0.85rem;
+  color: var(--base-dark);
+  margin-top: 0.75rem;
+  margin-bottom: 0.25rem;
+  padding: 0.5rem 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.ap-dq-label {
+  font-family: monospace;
+  word-break: break-all;
+  flex: 1;
+}
+
+.ap-dq-badge {
+  flex-shrink: 0;
+  padding: 0.1rem 0.4rem;
+  border-radius: 3px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.ap-dq-ok          { background: #f0fdf4; }
+.ap-dq-disqualified { background: #fef2f2; }
+.ap-dq-incomplete   { background: #f9fafb; color: #9ca3af; }
+
+.ap-dq-badge--passed       { background: #d1fae5; color: #065f46; }
+.ap-dq-badge--disqualified { background: #fee2e2; color: #991b1b; }
+.ap-dq-badge--failed       { background: #fee2e2; color: #991b1b; }
+.ap-dq-badge--incomplete   { background: #e5e7eb; color: #6b7280; }
+
+/* ── Filing Status Dashboard ──────────────────────────────────────────────── */
+
+.ap-dq-badge--resolved { background: #dbeafe; color: #1e40af; }
+
+/* ── Inline swatches used in dashboard hint text ──────────────────────────── */
+
+.dq-ok-swatch, .dq-dq-swatch, .dq-inc-swatch {
+  display: inline-block;
+  width: 0.75rem; height: 0.75rem;
+  border-radius: 2px;
+  vertical-align: middle;
+}
+.dq-ok-swatch  { background: #d1fae5; }
+.dq-dq-swatch  { background: #fee2e2; }
+.dq-inc-swatch { background: #e5e7eb; }
+
+/* ── Shared <details> helpers ─────────────────────────────────────────────── */
+
+.ap-details > summary {
+  cursor: pointer;
+  list-style: none;
+}
+
+.ap-details > summary h2 {
+  display: inline;
+}
+
+.ap-details > summary::marker,
+.ap-details > summary::-webkit-details-marker {
+  display: none;
+}
+
+.ap-details > summary::before {
+  content: '▶ ';
+  font-size: 0.75rem;
+  color: var(--base-dark);
+  margin-right: 0.25ch;
+}
+
+.ap-details[open] > summary::before {
+  content: '▼ ';
+}
+
+.ap-hint {
+  font-size: 0.8125rem;
+  color: var(--base-dark);
+  margin: 0.25rem 0 0.5rem;
+}
+
+.ap-btn-sm {
+  font-size: 0.75rem;
+  padding: 0.2rem 0.6rem;
+  margin: 0.25rem 0 0.5rem;
+}
