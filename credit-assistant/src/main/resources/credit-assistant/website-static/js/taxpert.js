@@ -35,12 +35,12 @@ function writeStorage (patch) {
 
 // ── Tab switching ──────────────────────────────────────────────────────────
 
-const PANEL_TITLES = {
-  inspection: 'Inspection',
-  factgraph: 'FG — copy, paste, choose',
-  dashboards: 'Dashboards',
-  authoring: 'Authoring',
-}
+const PANEL_TITLES = new Map([
+  ['inspection', 'Inspection'],
+  ['factgraph', 'FG — copy, paste, choose'],
+  ['dashboards', 'Dashboards'],
+  ['authoring', 'Authoring']
+])
 
 function switchTab (tabId) {
   document.querySelectorAll('.taxpert-tab').forEach(btn => {
@@ -60,7 +60,9 @@ function switchTab (tabId) {
   })
 
   const titleEl = document.getElementById('taxpert-panel-label')
-  if (titleEl) titleEl.textContent = PANEL_TITLES.get(tabId) ?? tabId
+  if (titleEl) {
+    titleEl.textContent = PANEL_TITLES.has(tabId) ? PANEL_TITLES.get(tabId) : tabId
+  }
 
   writeStorage({ activeTab: tabId })
 }
