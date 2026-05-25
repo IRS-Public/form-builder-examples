@@ -1,0 +1,904 @@
+<?xml version="1.0"?>
+<?xml-model href="./FactDictionaryModule.rng"?>
+<FactDictionaryModule>
+  <Facts>
+    <Fact path="/eitcQualifyingChildren">
+      <Derived>
+        <Switch>
+          <Case>
+            <When>
+              <All>
+                <IsComplete>
+                  <Dependency path="/primaryFilerIsClaimingQualifyingChildren"/>
+                </IsComplete>
+                <Not>
+                  <Dependency path="/primaryFilerIsClaimingQualifyingChildren"/>
+                </Not>
+              </All>
+            </When>
+            <Then>
+              <Int>0</Int>
+            </Then>
+          </Case>
+          <Case>
+            <When>
+              <True/>
+            </When>
+            <Then>
+              <LesserOf>
+                <Dependency path="/countEitcQualifyingChildren"/>
+                <Dependency path="/maxNumberOfEitcQcs"/>
+              </LesserOf>
+            </Then>
+          </Case>
+        </Switch>
+      </Derived>
+    </Fact>
+    <Fact path="/eitcRoundedAGI">
+      <Name>Rounded AGI for EITC</Name>
+      <Description>In order to match the EITC table from Publication 596, we must round the income
+        to match the rows,
+        which use increments of $50, calculating the amount of the credit for the midpoint of row
+        (i.e. $25, $75, $125,
+        etc.).</Description>
+      <Derived>
+        <Add>
+          <StepwiseMultiply>
+            <Multiplicand>
+              <Dependency path="/agi"/>
+            </Multiplicand>
+            <Rate>
+              <Rational>50/50</Rational>
+              <!-- $50 for every whole $50 of income -->
+            </Rate>
+          </StepwiseMultiply>
+          <Dollar>25</Dollar>
+          <!-- Add $25 to find the midpoint of the row -->
+        </Add>
+      </Derived>
+    </Fact>
+    <Fact path="/hasEarnedIncome">
+      <Name>Has Earned Income</Name>
+      <Description>Whether the TP had earned income</Description>
+      <Derived>
+        <GreaterThan>
+          <Left>
+            <Dependency path="/earnedIncomeTotal"/>
+          </Left>
+          <Right>
+            <Dollar>0</Dollar>
+          </Right>
+        </GreaterThan>
+      </Derived>
+    </Fact>
+    <Fact path="/flowShouldShowNonPositiveEarnedIncomeKnockout">
+      <Name>Show non-positive earned income EITC knockout (Income flow)</Name>
+      <Description>
+        When to show the Income page knockout for EITC requiring earned income. True when all
+        inputs that feed /earnedIncomeTotal (income module) are still blank, or when at least one
+        of those inputs is present and /earnedIncomeTotal is still not positive.
+      </Description>
+      <Derived>
+        <Any>
+          <All>
+            <Not>
+              <IsComplete>
+                <Dependency path="/jobsIncomeTotal"/>
+              </IsComplete>
+            </Not>
+            <Not>
+              <IsComplete>
+                <Dependency path="/disabilityRetirementBenefits"/>
+              </IsComplete>
+            </Not>
+            <Not>
+              <IsComplete>
+                <Dependency path="/non2555ForeignIncome"/>
+              </IsComplete>
+            </Not>
+            <Not>
+              <IsComplete>
+                <Dependency path="/selfEmploymentGrossIncome"/>
+              </IsComplete>
+            </Not>
+            <Not>
+              <IsComplete>
+                <Dependency path="/selfEmploymentGrossIncomeWorkRelatedExpenses"/>
+              </IsComplete>
+            </Not>
+          </All>
+          <All>
+            <Any>
+              <IsComplete>
+                <Dependency path="/jobsIncomeTotal"/>
+              </IsComplete>
+              <IsComplete>
+                <Dependency path="/disabilityRetirementBenefits"/>
+              </IsComplete>
+              <IsComplete>
+                <Dependency path="/non2555ForeignIncome"/>
+              </IsComplete>
+              <IsComplete>
+                <Dependency path="/selfEmploymentGrossIncome"/>
+              </IsComplete>
+              <IsComplete>
+                <Dependency path="/selfEmploymentGrossIncomeWorkRelatedExpenses"/>
+              </IsComplete>
+            </Any>
+            <Not>
+              <Dependency path="/hasEarnedIncome"/>
+            </Not>
+          </All>
+        </Any>
+      </Derived>
+    </Fact>
+    <Fact path="/flowClickedNextOnIncomePageForNonPositiveEarnedIncomeKnockout">
+      <Name>User clicked Next on Income for non-positive earned-income knockout</Name>
+      <Description>
+        Set in the browser when the taxpayer clicks Continue from Income while
+        /flowShouldShowNonPositiveEarnedIncomeKnockout is true, so the knockout does not appear before
+        that interaction.
+      </Description>
+      <Writable>
+        <Boolean/>
+      </Writable>
+    </Fact>
+    <Fact path="/flowShouldShowNonPositiveEarnedIncomeKnockoutAfterContinue">
+      <Name>Show non-positive earned income knockout after Continue on Income</Name>
+      <Description>
+        Wraps /flowShouldShowNonPositiveEarnedIncomeKnockout so the knockout appears only after
+        the user has clicked Continue once on Income.
+      </Description>
+      <Derived>
+        <All>
+          <Dependency path="/flowShouldShowNonPositiveEarnedIncomeKnockout"/>
+          <Dependency path="/flowClickedNextOnIncomePageForNonPositiveEarnedIncomeKnockout"/>
+        </All>
+      </Derived>
+    </Fact>
+    <Fact path="/eitcMaxCredit">
+      <Name>EITC maximum credit amount</Name>
+      <Description>The maximum amount of EITC a taxpayer can receive, depending on the number of
+        qualifying children.</Description>
+      <Derived>
+        <Switch>
+          <Case>
+            <When>
+              <Equal>
+                <Left>
+                  <Dependency path="/eitcQualifyingChildren"/>
+                </Left>
+                <Right>
+                  <Int>0</Int>
+                </Right>
+              </Equal>
+            </When>
+            <Then>
+              <Dependency path="/maxEitcWith0QualifyingChildren"/>
+            </Then>
+          </Case>
+          <Case>
+            <When>
+              <Equal>
+                <Left>
+                  <Dependency path="/eitcQualifyingChildren"/>
+                </Left>
+                <Right>
+                  <Int>1</Int>
+                </Right>
+              </Equal>
+            </When>
+            <Then>
+              <Dependency path="/maxEitcWith1QualifyingChild"/>
+            </Then>
+          </Case>
+          <Case>
+            <When>
+              <Equal>
+                <Left>
+                  <Dependency path="/eitcQualifyingChildren"/>
+                </Left>
+                <Right>
+                  <Int>2</Int>
+                </Right>
+              </Equal>
+            </When>
+            <Then>
+              <Dependency path="/maxEitcWith2QualifyingChildren"/>
+            </Then>
+          </Case>
+          <Case>
+            <When>
+              <GreaterThanOrEqual>
+                <Left>
+                  <Dependency path="/eitcQualifyingChildren"/>
+                </Left>
+                <Right>
+                  <Int>3</Int>
+                </Right>
+              </GreaterThanOrEqual>
+            </When>
+            <Then>
+              <Dependency path="/maxEitcWith3OrMoreQualifyingChildren"/>
+            </Then>
+          </Case>
+        </Switch>
+      </Derived>
+    </Fact>
+    <Fact path="/maxEitcWith0QualifyingChildren">
+      <Name>Maximum EITC amount with 0 children</Name>
+      <Description>The maximum earned income tax credit with 0 qualifying children</Description>
+      <Derived>
+        <Round>
+          <Multiply>
+            <Dependency path="/phaseInRatesFor0Qc"/>
+            <Dependency path="/phaseInEndsFor0QualifyingChildren"/>
+          </Multiply>
+        </Round>
+      </Derived>
+    </Fact>
+    <Fact path="/maxEitcWith1QualifyingChild">
+      <Name>Maximum EITC amount with 1 child</Name>
+      <Description>The maximum earned income tax credit with 1 qualifying child</Description>
+      <Derived>
+        <Round>
+          <Multiply>
+            <Dependency path="/phaseInRatesFor1Qc"/>
+            <Dependency path="/phaseInEndsFor1QualifyingChild"/>
+          </Multiply>
+        </Round>
+      </Derived>
+    </Fact>
+    <Fact path="/maxEitcWith2QualifyingChildren">
+      <Name>Maximum EITC amount with 2 children</Name>
+      <Description>The maximum earned income tax credit with 2 qualifying children</Description>
+      <Derived>
+        <Round>
+          <Multiply>
+            <Dependency path="/phaseInRatesFor2Qc"/>
+            <Dependency path="/phaseInEndsFor2OrMoreQualifyingChildren"/>
+          </Multiply>
+        </Round>
+      </Derived>
+    </Fact>
+    <Fact path="/maxEitcWith3OrMoreQualifyingChildren">
+      <Name>Maximum EITC amount with 3 or more children</Name>
+      <Description>The maximum earned income tax credit with 3 or more qualifying children</Description>
+      <Derived>
+        <Round>
+          <Multiply>
+            <Dependency path="/phaseInRatesFor3OrMoreQc"/>
+            <Dependency path="/phaseInEndsFor2OrMoreQualifyingChildren"/>
+          </Multiply>
+        </Round>
+      </Derived>
+    </Fact>
+    <Fact path="/roundedMaxEitcWith0QualifyingChildren">
+      <Name>Rounded maximum EITC amount with 0 children</Name>
+      <Description>The rounded version of maxEitcWith0QualifyingChildren</Description>
+      <Derived>
+        <Round>
+          <Dependency path="/maxEitcWith0QualifyingChildren"/>
+        </Round>
+      </Derived>
+    </Fact>
+    <Fact path="/roundedMaxEitcWith1QualifyingChild">
+      <Name>Rounded maximum EITC amount with 1 child</Name>
+      <Description>The rounded version of maxEitcWith1QualifyingChild</Description>
+      <Derived>
+        <Round>
+          <Dependency path="/maxEitcWith1QualifyingChild"/>
+        </Round>
+      </Derived>
+    </Fact>
+    <Fact path="/roundedMaxEitcWith2QualifyingChildren">
+      <Name>Rounded maximum EITC amount with 2 children</Name>
+      <Description>The rounded version of maxEitcWith2QualifyingChildren</Description>
+      <Derived>
+        <Round>
+          <Dependency path="/maxEitcWith2QualifyingChildren"/>
+        </Round>
+      </Derived>
+    </Fact>
+    <Fact path="/roundedMaxEitcWith3OrMoreQualifyingChildren">
+      <Name>Rounded maximum EITC amount with 3 ore more children</Name>
+      <Description>The rounded version of maxEitcWith3OrMoreQualifyingChildren</Description>
+      <Derived>
+        <Round>
+          <Dependency path="/maxEitcWith3OrMoreQualifyingChildren"/>
+        </Round>
+      </Derived>
+    </Fact>
+    <Fact path="/eitcPhaseInRate">
+      <Name>EITC phase in rate</Name>
+      <Description>The rate at which EITC phases in with income.</Description>
+      <Derived>
+        <Switch>
+          <Case>
+            <When>
+              <Equal>
+                <Left>
+                  <Dependency path="/eitcQualifyingChildren"/>
+                </Left>
+                <Right>
+                  <Int>0</Int>
+                </Right>
+              </Equal>
+            </When>
+            <Then>
+              <Dependency path="/phaseInRatesFor0Qc"/>
+            </Then>
+          </Case>
+          <Case>
+            <When>
+              <Equal>
+                <Left>
+                  <Dependency path="/eitcQualifyingChildren"/>
+                </Left>
+                <Right>
+                  <Int>1</Int>
+                </Right>
+              </Equal>
+            </When>
+            <Then>
+              <Dependency path="/phaseInRatesFor1Qc"/>
+            </Then>
+          </Case>
+          <Case>
+            <When>
+              <Equal>
+                <Left>
+                  <Dependency path="/eitcQualifyingChildren"/>
+                </Left>
+                <Right>
+                  <Int>2</Int>
+                </Right>
+              </Equal>
+            </When>
+            <Then>
+              <Dependency path="/phaseInRatesFor2Qc"/>
+            </Then>
+          </Case>
+          <Case>
+            <When>
+              <GreaterThanOrEqual>
+                <Left>
+                  <Dependency path="/eitcQualifyingChildren"/>
+                </Left>
+                <Right>
+                  <Int>3</Int>
+                </Right>
+              </GreaterThanOrEqual>
+            </When>
+            <Then>
+              <Dependency path="/phaseInRatesFor3OrMoreQc"/>
+            </Then>
+          </Case>
+        </Switch>
+      </Derived>
+    </Fact>
+    <Fact path="/eitcPhaseOutRate">
+      <Name>EITC phase out rate</Name>
+      <Description>The rate at which EITC phases out as income exceeds the threshold amount.</Description>
+      <Derived>
+        <Switch>
+          <Case>
+            <When>
+              <Equal>
+                <Left>
+                  <Dependency path="/eitcQualifyingChildren"/>
+                </Left>
+                <Right>
+                  <Int>0</Int>
+                </Right>
+              </Equal>
+            </When>
+            <Then>
+              <Rational>765/10000</Rational>
+            </Then>
+          </Case>
+          <Case>
+            <When>
+              <Equal>
+                <Left>
+                  <Dependency path="/eitcQualifyingChildren"/>
+                </Left>
+                <Right>
+                  <Int>1</Int>
+                </Right>
+              </Equal>
+            </When>
+            <Then>
+              <Rational>1598/10000</Rational>
+            </Then>
+          </Case>
+          <Case>
+            <When>
+              <GreaterThanOrEqual>
+                <Left>
+                  <Dependency path="/eitcQualifyingChildren"/>
+                </Left>
+                <Right>
+                  <Int>2</Int>
+                </Right>
+              </GreaterThanOrEqual>
+            </When>
+            <Then>
+              <Rational>2106/10000</Rational>
+            </Then>
+          </Case>
+        </Switch>
+      </Derived>
+    </Fact>
+    <Fact path="/eitcCompletedPhaseoutAmount">
+      <Name>EITC Completed Phaseout Amount</Name>
+      <Description>The amount of income at which EITC is completely phased out.</Description>
+      <Derived>
+        <Switch>
+          <!-- MFJ Limits -->
+          <Case>
+            <When>
+              <Dependency path="/isFilingStatusMFJ"/>
+            </When>
+            <Then>
+              <Switch>
+                <Case>
+                  <When>
+                    <GreaterThanOrEqual>
+                      <Left>
+                        <Dependency path="/eitcQualifyingChildren"/>
+                      </Left>
+                      <Right>
+                        <Int>3</Int>
+                      </Right>
+                    </GreaterThanOrEqual>
+                  </When>
+                  <Then>
+                    <Dependency path="/eitcMfjLimitWithThreeOrMoreChildren"/>
+                  </Then>
+                </Case>
+                <Case>
+                  <When>
+                    <Equal>
+                      <Left>
+                        <Dependency path="/eitcQualifyingChildren"/>
+                      </Left>
+                      <Right>
+                        <Int>2</Int>
+                      </Right>
+                    </Equal>
+                  </When>
+                  <Then>
+                    <Dependency path="/eitcMfjLimitWithTwoChildren"/>
+                  </Then>
+                </Case>
+                <Case>
+                  <When>
+                    <Equal>
+                      <Left>
+                        <Dependency path="/eitcQualifyingChildren"/>
+                      </Left>
+                      <Right>
+                        <Int>1</Int>
+                      </Right>
+                    </Equal>
+                  </When>
+                  <Then>
+                    <Dependency path="/eitcMfjLimitWithOneChild"/>
+                  </Then>
+                </Case>
+                <Case>
+                  <When>
+                    <Equal>
+                      <Left>
+                        <Dependency path="/eitcQualifyingChildren"/>
+                      </Left>
+                      <Right>
+                        <Int>0</Int>
+                      </Right>
+                    </Equal>
+                  </When>
+                  <Then>
+                    <Dependency path="/eitcMfjLimitWithZeroChildren"/>
+                  </Then>
+                </Case>
+              </Switch>
+            </Then>
+          </Case>
+          <!-- Not MFJ Limits -->
+          <Case>
+            <When>
+              <True/>
+            </When>
+            <Then>
+              <Switch>
+                <Case>
+                  <When>
+                    <GreaterThanOrEqual>
+                      <Left>
+                        <Dependency path="/eitcQualifyingChildren"/>
+                      </Left>
+                      <Right>
+                        <Int>3</Int>
+                      </Right>
+                    </GreaterThanOrEqual>
+                  </When>
+                  <Then>
+                    <Dependency path="/eitcSelfLimitWithThreeOrMoreChildren"/>
+                  </Then>
+                </Case>
+                <Case>
+                  <When>
+                    <Equal>
+                      <Left>
+                        <Dependency path="/eitcQualifyingChildren"/>
+                      </Left>
+                      <Right>
+                        <Int>2</Int>
+                      </Right>
+                    </Equal>
+                  </When>
+                  <Then>
+                    <Dependency path="/eitcSelfLimitWithTwoChildren"/>
+                  </Then>
+                </Case>
+                <Case>
+                  <When>
+                    <Equal>
+                      <Left>
+                        <Dependency path="/eitcQualifyingChildren"/>
+                      </Left>
+                      <Right>
+                        <Int>1</Int>
+                      </Right>
+                    </Equal>
+                  </When>
+                  <Then>
+                    <Dependency path="/eitcSelfLimitWithOneChild"/>
+                  </Then>
+                </Case>
+                <Case>
+                  <When>
+                    <Equal>
+                      <Left>
+                        <Dependency path="/eitcQualifyingChildren"/>
+                      </Left>
+                      <Right>
+                        <Int>0</Int>
+                      </Right>
+                    </Equal>
+                  </When>
+                  <Then>
+                    <Dependency path="/eitcSelfLimitWithZeroChildren"/>
+                  </Then>
+                </Case>
+              </Switch>
+            </Then>
+          </Case>
+        </Switch>
+      </Derived>
+    </Fact>
+    <Fact path="/eitcPhaseoutAmountLowerBound">
+      <Name>Lower bound phase-out amount</Name>
+      <Description>The lower bound of the midpoint range that is associated with the complete
+        phase-out amount</Description>
+      <Derived>
+        <StepwiseMultiply>
+          <Multiplicand>
+            <Dependency path="/eitcCompletedPhaseoutAmount"/>
+          </Multiplicand>
+          <Rate>
+            <Rational>50/50</Rational>
+            <!-- rounds down to the nearest $50 -->
+          </Rate>
+        </StepwiseMultiply>
+      </Derived>
+    </Fact>
+    <Fact path="/belowEitcEarnedIncomeLimit">
+      <Name>Below EITC Earned Income Limit</Name>
+      <Description>Whether the TP's Earned Income is low enough for the EITC. We always test this
+        without combat pay,
+        since it will be the lesser of the two amounts. Later, we have to calculate if combat pay is
+        more or less
+        advantageous.</Description>
+      <Derived>
+        <LessThan>
+          <Left>
+            <Dependency path="/earnedIncomeTotal"/>
+          </Left>
+          <Right>
+            <Dependency path="/eitcCompletedPhaseoutAmount"/>
+          </Right>
+        </LessThan>
+      </Derived>
+    </Fact>
+    <Fact path="/belowEitcAgiLimit">
+      <Name>Below EITC AGI Limit</Name>
+      <Description>Whether the TP's AGI is low enough for the EITC</Description>
+      <Derived>
+        <LessThan>
+          <Left>
+            <Dependency path="/agi"/>
+          </Left>
+          <Right>
+            <Dependency path="/eitcCompletedPhaseoutAmount"/>
+          </Right>
+        </LessThan>
+      </Derived>
+    </Fact>
+    <Fact path="/maxEitcFromAGI">
+      <Description>
+        The maximum amount of EITC that can be received based on the taxpayer's AGI.
+      </Description>
+      <Derived>
+        <Subtract>
+          <Minuend>
+            <Dependency path="/eitcMaxCredit"/>
+          </Minuend>
+          <Subtrahends>
+            <Switch>
+              <Case>
+                <!-- If the threshold is greater than the lower bound of the row, we don't apply any
+                phaseout -->
+                <When>
+                  <GreaterThan>
+                    <Left>
+                      <Add>
+                        <Dependency path="/eitcPhaseOutThreshold"/>
+                        <Dollar>25</Dollar>
+                      </Add>
+                    </Left>
+                    <Right>
+                      <Dependency path="/eitcRoundedAGI"/>
+                    </Right>
+                  </GreaterThan>
+                </When>
+                <Then>
+                  <Dollar>0</Dollar>
+                </Then>
+              </Case>
+              <Case>
+                <When>
+                  <True/>
+                </When>
+                <Then>
+                  <Multiply>
+                    <!-- Phaseout for income over the threshold -->
+                    <Dependency path="/eitcPhaseOutRate"/>
+                    <Subtract>
+                      <Minuend>
+                        <LesserOf>
+                          <!-- The midpoint of the row -->
+                          <Dependency path="/eitcRoundedAGI"/>
+                          <!-- The midpoint of the lower bound of the row and the completed phaseout
+                          amount-->
+                          <Divide>
+                            <Dividend>
+                              <Add>
+                                <Dependency path="/eitcPhaseoutAmountLowerBound"/>
+                                <Dependency path="/eitcCompletedPhaseoutAmount"/>
+                              </Add>
+                            </Dividend>
+                            <Divisors>
+                              <Int>2</Int>
+                            </Divisors>
+                          </Divide>
+                        </LesserOf>
+                      </Minuend>
+                      <Subtrahends>
+                        <Dependency path="/eitcPhaseOutThreshold"/>
+                      </Subtrahends>
+                    </Subtract>
+                  </Multiply>
+                </Then>
+              </Case>
+            </Switch>
+          </Subtrahends>
+        </Subtract>
+      </Derived>
+    </Fact>
+    <Fact path="/eitcRoundedEarnedIncome">
+      <Name>Rounded earned income for EITC without combat pay</Name>
+      <Description>In order to match the EITC table from Publication 596, we must round the income
+        to match the rows,
+        which use increments of $50, calculating the amount of the credit for the midpoint of row
+        (i.e. $25, $75, $125,
+        etc.).</Description>
+      <Derived>
+        <Add>
+          <StepwiseMultiply>
+            <Multiplicand>
+              <Dependency path="/earnedIncomeTotal"/>
+            </Multiplicand>
+            <Rate>
+              <Rational>50/50</Rational>
+              <!-- $50 for every whole $50 of income -->
+            </Rate>
+          </StepwiseMultiply>
+          <Dollar>25</Dollar>
+          <!-- Add $25 to find the midpoint of the row -->
+        </Add>
+      </Derived>
+    </Fact>
+    <Fact path="/eitcStandardPhaseInAmount">
+      <Name>Standard EITC Phase-In Amount</Name>
+      <Description>The un-capped credit amount based strictly on rounded earned income and the phase-in rate.</Description>
+      <Derived>
+        <Multiply>
+          <Dependency path="/eitcPhaseInRate"/>
+          <Dependency path="/eitcRoundedEarnedIncome"/>
+        </Multiply>
+      </Derived>
+    </Fact>
+    <Fact path="/eitcUpperBandPhaseInProjection">
+      <Name>EITC Upper Band Phase-In Projection</Name>
+      <Description>Projects the phase-in amount for the upper edge of the $50 income bracket (midpoint + $24) to see if it triggers the max credit limit.</Description>
+      <Derived>
+        <Multiply>
+          <Dependency path="/eitcPhaseInRate"/>
+          <Add>
+            <Dependency path="/eitcRoundedEarnedIncome"/>
+            <Dollar>24</Dollar>
+          </Add>
+        </Multiply>
+      </Derived>
+    </Fact>
+    <Fact path="/eitcPreliminaryCredit">
+      <Name>Preliminary EITC from Earned Income</Name>
+      <Description>Calculates the initial phase-in amount of the credit, capped at the maximum credit.</Description>
+      <Derived>
+        <Switch>
+          <Case>
+            <When>
+              <GreaterThanOrEqual>
+                <Left>
+                  <Dependency path="/eitcUpperBandPhaseInProjection"/>
+                </Left>
+                <Right>
+                  <Dependency path="/eitcMaxCredit"/>
+                </Right>
+              </GreaterThanOrEqual>
+            </When>
+            <Then>
+              <Dependency path="/eitcMaxCredit"/>
+            </Then>
+          </Case>
+          <Case>
+            <When>
+              <True/>
+            </When>
+            <Then>
+              <LesserOf>
+                <Dependency path="/eitcMaxCredit"/>
+                <Dependency path="/eitcStandardPhaseInAmount"/>
+              </LesserOf>
+            </Then>
+          </Case>
+        </Switch>
+      </Derived>
+    </Fact>
+    <Fact path="/eitcPhaseOutThresholdUpperBound">
+      <Name>EITC Phase-Out Threshold Upper Bound</Name>
+      <Description>The threshold plus $25 to represent the upper bound of the phase-out trigger bracket.</Description>
+      <Derived>
+        <Add>
+          <Dependency path="/eitcPhaseOutThreshold"/>
+          <Dollar>25</Dollar>
+        </Add>
+      </Derived>
+    </Fact>
+    <Fact path="/eitcCompletedPhaseoutMidpoint">
+      <Name>EITC Completed Phase-Out Midpoint</Name>
+      <Description>The midpoint between the lower bound of the row and the absolute completed phase-out amount.</Description>
+      <Derived>
+        <Divide>
+          <Dividend>
+            <Add>
+              <Dependency path="/eitcPhaseoutAmountLowerBound"/>
+              <Dependency path="/eitcCompletedPhaseoutAmount"/>
+            </Add>
+          </Dividend>
+          <Divisors>
+            <Int>2</Int>
+          </Divisors>
+        </Divide>
+      </Derived>
+    </Fact>
+    <Fact path="/eitcPhaseOutApplicableIncome">
+      <Name>EITC Applicable Income for Phase-Out</Name>
+      <Description>Determines the income figure used to calculate the phase-out, capping it at the final phase-out midpoint so it doesn't drop the credit below $0.</Description>
+      <Derived>
+        <LesserOf>
+          <Dependency path="/eitcRoundedEarnedIncome"/>
+          <Dependency path="/eitcCompletedPhaseoutMidpoint"/>
+        </LesserOf>
+      </Derived>
+    </Fact>
+    <Fact path="/eitcIncomeSubjectToPhaseOut">
+      <Name>Income Subject to EITC Phase-Out</Name>
+      <Description>The exact dollar amount of income that exceeds the threshold and is subject to the phase-out rate.</Description>
+      <Derived>
+        <Subtract>
+          <Minuend>
+            <Dependency path="/eitcPhaseOutApplicableIncome"/>
+          </Minuend>
+          <Subtrahends>
+            <Dependency path="/eitcPhaseOutThreshold"/>
+          </Subtrahends>
+        </Subtract>
+      </Derived>
+    </Fact>
+    <Fact path="/eitcPhaseOutAmount">
+      <Name>EITC Phase-Out Amount</Name>
+      <Description>The final dollar amount the EITC is reduced based on earned income exceeding the phase-out threshold.</Description>
+      <Derived>
+        <Switch>
+          <Case>
+            <When>
+              <GreaterThan>
+                <Left>
+                  <Dependency path="/eitcPhaseOutThresholdUpperBound"/>
+                </Left>
+                <Right>
+                  <Dependency path="/eitcRoundedEarnedIncome"/>
+                </Right>
+              </GreaterThan>
+            </When>
+            <Then>
+              <Dollar>0</Dollar>
+            </Then>
+          </Case>
+          <Case>
+            <When>
+              <True/>
+            </When>
+            <Then>
+              <Multiply>
+                <Dependency path="/eitcPhaseOutRate"/>
+                <Dependency path="/eitcIncomeSubjectToPhaseOut"/>
+              </Multiply>
+            </Then>
+          </Case>
+        </Switch>
+      </Derived>
+    </Fact>
+    <Fact path="/earnedIncomeCredit">
+      <Name>The amount of the Earned Income Tax Credit</Name>
+      <Description>The amount of EITC, if the taxpayer is eligible. Excludes specific combat pay recommendation logic.</Description>
+      <Derived>
+        <GreaterOf>
+          <Dollar>0</Dollar>
+          <Round>
+            <LesserOf>
+              <Dependency path="/maxEitcFromAGI"/>
+              <Subtract>
+                <Minuend>
+                  <Dependency path="/eitcPreliminaryCredit"/>
+                </Minuend>
+                <Subtrahends>
+                  <Dependency path="/eitcPhaseOutAmount"/>
+                </Subtrahends>
+              </Subtract>
+            </LesserOf>
+          </Round>
+        </GreaterOf>
+      </Derived>
+    </Fact>
+    <Fact path="/belowEitcInvestmentIncomeLimit">
+      <Name>Below EITC Investment Income Limit</Name>
+      <Description>Whether the TP's Investment Income is low enough for the EITC
+              Rev Proc .06 Earned Income Credit &#xA7;32(i)
+          </Description>
+      <Derived>
+        <LessThanOrEqual>
+          <Left>
+            <Dependency path="/investmentIncomeTotal"/>
+          </Left>
+          <Right>
+            <Dependency path="/eitcInvestmentIncomeLimit"/>
+          </Right>
+        </LessThanOrEqual>
+      </Derived>
+    </Fact>
+  </Facts>
+</FactDictionaryModule>

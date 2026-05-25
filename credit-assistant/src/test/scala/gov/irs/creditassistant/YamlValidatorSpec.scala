@@ -1,0 +1,119 @@
+package gov.irs.creditassistant
+
+import gov.irs.creditassistant.generatedFlowContentPath
+import io.circe.yaml.parser
+import io.circe.Json
+import io.circe.ParsingFailure
+import org.scalatest.funspec.AnyFunSpec
+import scala.collection.immutable.ListMap
+import scala.io.Source
+
+class YamlValidatorSpec extends AnyFunSpec {
+  val SUPPORTED_LOCALES: Seq[String] = List("es", "ht", "ko", "ru", "vi", "zh-hans", "zh-hant")
+  def getAllKeys(json: Json, prefix: String = ""): Set[String] = {
+    json.fold(
+      jsonNull = Set.empty,
+      jsonBoolean = _ => Set.empty,
+      jsonNumber = _ => Set.empty,
+      jsonString = _ => Set.empty,
+      // We don't have arrays so we can ignore this
+      jsonArray = arr => Set.empty,
+      jsonObject = obj =>
+        obj.toList.flatMap { case (k, v) =>
+          val path = if (prefix.isEmpty) k else s"$prefix.$k"
+          Set(path) ++ getAllKeys(v, path)
+        }.toSet,
+    )
+  }
+
+  def findKeyDifferences(
+      sourceKeys: Either[ParsingFailure, Set[String]],
+      secondaryKeys: Either[ParsingFailure, Set[String]],
+      localeString: String,
+  ): Unit = {
+    (sourceKeys, secondaryKeys) match {
+      case (Right(k1), Right(k2)) =>
+        var clue: List[String] = List.empty
+        val missingInK2 = k1 -- k2
+        if (missingInK2.nonEmpty) clue = clue :+ s"Missing in ${localeString} file: ${missingInK2.mkString(", ")}"
+        val missingInK1 = k2 -- k1
+        if (missingInK1.nonEmpty)
+          clue = clue :+ s"Additional key(s) found in ${localeString} File: ${missingInK1.mkString(", ")}"
+        if (missingInK1.nonEmpty || missingInK2.nonEmpty) {
+          fail(s"Yaml Mismatch! ${clue.mkString(" ")}")
+        }
+
+      case (Left(e), _) => fail(s"Failed to parse File 1: ${e.getMessage}")
+      case (_, Left(e)) => fail(s"Failed to parse File 2: ${e.getMessage}")
+    }
+  }
+
+  def getEmptyLeafNodes(json: Json, prefix: String = ""): Set[String] = {
+    json.fold(
+      jsonNull = Set(if (prefix.isEmpty) "root" else prefix),
+      jsonBoolean = _ => Set.empty,
+      jsonNumber = _ => Set.empty,
+      jsonString = str => if (str.trim.isEmpty) Set(if (prefix.isEmpty) "root" else prefix) else Set.empty,
+      jsonArray = arr => Set.empty,
+      jsonObject = obj =>
+        obj.toList.flatMap { case (k, v) =>
+          val path = if (prefix.isEmpty) k else s"$prefix.$k"
+          getEmptyLeafNodes(v, path)
+        }.toSet,
+    )
+  }
+
+  def assertNoEmptyLeaves(jsonEither: Either[ParsingFailure, Json], fileDesc: String): Unit = {
+    jsonEither match {
+      case Right(json) =>
+        val emptyNodes = getEmptyLeafNodes(json)
+        if (emptyNodes.nonEmpty) {
+          fail(s"Found empty or null leaf nodes in $fileDesc at paths:\n  - ${emptyNodes.mkString("\n  - ")}")
+        }
+      case Left(e) => fail(s"Failed to parse $fileDesc: ${e.getMessage}")
+    }
+  }
+
+  describe("main yaml") {
+    it("should have the same keys in en and sp") {
+      val enFile = Source.fromResource("credit-assistant/locales/en.yaml").mkString
+      val esFile = Source.fromResource("credit-assistant/locales/es.yaml").mkString
+
+      val enKeys = parser.parse(enFile).map(getAllKeys(_))
+      val esKeys = parser.parse(esFile).map(getAllKeys(_))
+      findKeyDifferences(enKeys, esKeys, "es")
+    }
+
+    it("should not contain empty or null values in en and es files") {
+      val enFile = Source.fromResource("credit-assistant/locales/en.yaml").mkString
+      val esFile = Source.fromResource("credit-assistant/locales/es.yaml").mkString
+
+      assertNoEmptyLeaves(parser.parse(enFile), "en.yaml")
+      assertNoEmptyLeaves(parser.parse(esFile), "es.yaml")
+    }
+  }
+  describe("flow yaml") {
+    it("should have the same keys in all locales") {
+
+      val enFile = os.read(generatedFlowContentPath)
+      val enKeys = parser.parse(enFile).map(getAllKeys(_))
+
+      SUPPORTED_LOCALES.foreach { locale =>
+        val localeFile = Source.fromResource(s"credit-assistant/locales/flow_$locale.yaml").mkString
+        val localeKeys = parser.parse(localeFile).map(getAllKeys(_))
+        findKeyDifferences(enKeys, localeKeys, locale)
+      }
+    }
+
+    it("should not contain empty or null values in any flow locale") {
+      val enFile = os.read(generatedFlowContentPath)
+      assertNoEmptyLeaves(parser.parse(enFile), "flow_en.yaml")
+
+      SUPPORTED_LOCALES.foreach { locale =>
+        val localeFile = Source.fromResource(s"credit-assistant/locales/flow_$locale.yaml").mkString
+        assertNoEmptyLeaves(parser.parse(localeFile), s"flow_$locale.yaml")
+      }
+    }
+
+  }
+}

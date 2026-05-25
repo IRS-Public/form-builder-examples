@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<?xml-model href="./FlowConfig.rng"?>
+<FlowConfig>
+  <module src="./about-you.xml"/>
+  <module src="./filing-status.xml"/>
+  <module src="./agi.xml"/>
+  <module src="./qualifying-children.xml"/>
+  <module src="./results.xml"/>
+</FlowConfig>

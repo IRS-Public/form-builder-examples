@@ -1,0 +1,183 @@
+<?xml version="1.0"?>
+<?xml-model href="./FactDictionaryModule.rng"?>
+<FactDictionaryModule>
+  <Facts>
+    <Fact path="/isUSCitizenOrResidentAlien">
+      <Name>U.S. Citizen or Resident Alien</Name>
+      <Description>Whether the taxpayer was a U.S. citizen or resident alien for the entire tax year. </Description>
+      <Writable>
+        <Boolean/>
+      </Writable>
+    </Fact>
+    <Fact path="/hasValidSSN">
+      <Name>Valid SSN</Name>
+      <Description>Whether the taxpayer has a valid SSN issued on or before the due date of the return.</Description>
+      <Writable>
+        <Boolean/>
+      </Writable>
+    </Fact>
+    <Fact path="/secondaryFilerHasValidSSN">
+      <Description>Whether the spouse has a valid SSN issued on or before the due date of the return.</Description>
+      <Writable>
+        <Boolean/>
+      </Writable>
+    </Fact>
+    <Fact path="/hasForeignEarnedIncome">
+      <Name>Foreign Earned Income</Name>
+      <Description>Whether the taxpayer is filing Form 2555 to exclude foreign earned income.</Description>
+      <Writable>
+        <Boolean/>
+      </Writable>
+    </Fact>
+    <Fact path="/isClaimedAsDependent">
+      <Name>Claimed as Dependent</Name>
+      <Description>Whether someone else will claim the taxpayer as a dependent or qualifying child.</Description>
+      <Writable>
+        <Boolean/>
+      </Writable>
+    </Fact>
+    <Fact path="/ageRangeOptions">
+      <Name>Age Range Options</Name>
+      <Description>Options for the taxpayer's age range at the end of the tax year.</Description>
+      <Derived>
+        <EnumOptions>
+          <String>under24</String>
+          <String>age25to64</String>
+          <String>65andOlder</String>
+        </EnumOptions>
+      </Derived>
+    </Fact>
+    <Fact path="/ageRange">
+      <Name>Age Range</Name>
+      <Description>The selected age range of the taxpayer at the end of the tax year.</Description>
+      <Writable>
+        <Enum optionsPath="/ageRangeOptions"/>
+      </Writable>
+    </Fact>
+    <Fact path="/ageRangeSecondary">
+      <Name>Age Range</Name>
+      <Description>The selected age range of the secondary taxpayer at the end of the tax year.</Description>
+      <Writable>
+        <Enum optionsPath="/ageRangeOptions"/>
+      </Writable>
+    </Fact>
+    <Fact path="/hasLivedInUSMore6Months">
+      <Name>Main home in the U.S.</Name>
+      <Description>Whether the taxpayer's main home was in the United States for more than half of the tax year, including military personnel stationed abroad.</Description>
+      <Writable>
+        <Boolean/>
+      </Writable>
+      <Placeholder>
+        <True/>
+      </Placeholder>
+    </Fact>
+    <Fact path="/spouseLivedWithTaxpayerLastSixMonths">
+      <Name>Spouse lived in home last 6 months</Name>
+      <Description>Whether the spouse lived in the taxpayer's home at any time during the last six months of the tax year, including temporary absences.</Description>
+      <Writable>
+        <Boolean/>
+      </Writable>
+    </Fact>
+    <Fact path="/flowShouldSeeResidencyKnockOut">
+      <Description>Whether the taxpayer should be asked if their main home was in the US for more than 6 months, based on if they are claiming QCs and if Filing status is determined</Description>
+      <Derived>
+        <All>
+          <Not>
+            <Dependency path="/primaryFilerIsClaimingQualifyingChildren"/>
+          </Not>
+          <Dependency path="/isFilingStatusComplete"/>
+        </All>
+      </Derived>
+    </Fact>
+    <Fact path="/isMFSLivedTogether">
+      <Description>If TP has MFS filing status and lived with their spouse for the entirety of the TY</Description>
+      <Writable>
+        <Boolean/>
+      </Writable>
+      <Placeholder>
+        <False/>
+      </Placeholder>
+    </Fact>
+    <Fact path="/writableLivedApartLastSixMonths">
+      <Description>Whether the taxpayer lived apart from their spouse for the last six months of the
+                year.</Description>
+      <Writable>
+        <Boolean/>
+      </Writable>
+    </Fact>
+    <Fact path="/maritalStatusOptions">
+      <Name>Marital Status Options</Name>
+      <Description>Options for a marital status</Description>
+      <Derived>
+        <EnumOptions>
+          <String>single</String>
+          <String>married</String>
+          <String>divorced</String>
+          <String>widowed</String>
+        </EnumOptions>
+      </Derived>
+    </Fact>
+    <Fact path="/maritalStatus">
+      <Name>Marital status</Name>
+      <Description>The marital status the primary filer tells us.</Description>
+      <Writable>
+        <Enum optionsPath="/maritalStatusOptions"/>
+      </Writable>
+    </Fact>
+    <Fact path="/writableSeparationAgreement">
+      <Name>Spouse separation agreement last day</Name>
+      <Description>Whether the taxpayer was living apart from their spouse and had a separation
+                agreement on the last
+                day
+                of the year.</Description>
+      <Writable>
+        <Boolean/>
+      </Writable>
+    </Fact>
+    <Fact path="/primaryFilerIsClaimingQualifyingChildren">
+      <Writable>
+        <Boolean/>
+      </Writable>
+    </Fact>
+    <Fact path="/treatFilersAsDependents">
+      <Derived>
+        <Dependency path="/isClaimedAsDependent"/>
+      </Derived>
+    </Fact>
+    <Fact path="/homeUpkeepScenarioOptions">
+      <Name>Home Upkeep Scenario</Name>
+      <Description>Identifies the taxpayer's living/financial situation regarding home maintenance costs.</Description>
+      <Derived>
+        <EnumOptions>
+          <String>livedWithDependent</String>
+          <String>custodialParentNonDependent</String>
+          <String>dependentParentElsewhere</String>
+          <String>none</String>
+        </EnumOptions>
+      </Derived>
+    </Fact>
+    <Fact path="/homeUpkeepScenario">
+      <Name>Filing status</Name>
+      <Description>The filing status selected by the taxpayer.</Description>
+      <Writable>
+        <Enum optionsPath="/homeUpkeepScenarioOptions"/>
+      </Writable>
+    </Fact>
+    <Fact path="/tentativelyHOHFromHomeUpkeep">
+      <Name>Paid more than half home costs without</Name>
+      <Description>Derived boolean based on whether the user selected a qualifying scenario.</Description>
+      <Derived>
+        <Not>
+          <Equal>
+            <Left>
+              <Dependency path="/homeUpkeepScenario"/>
+            </Left>
+            <Right>
+              <Enum optionsPath="/homeUpkeepScenarioOptions">none</Enum>
+            </Right>
+          </Equal>
+        </Not>
+      </Derived>
+    </Fact>
+  </Facts>
+</FactDictionaryModule>

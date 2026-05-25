@@ -1,0 +1,1066 @@
+<?xml version="1.0"?>
+<?xml-model href="./FactDictionaryModule.rng"?>
+<FactDictionaryModule>
+  <Facts>
+    <Fact path="/filingStatusOptions">
+      <Name>Filing Status Options</Name>
+      <Description>Options for filing status</Description>
+      <Derived>
+        <EnumOptions>
+          <String>marriedFilingJointly</String>
+          <String>marriedFilingSeparately</String>
+          <String>single</String>
+          <String>headOfHousehold</String>
+          <String>qualifiedSurvivingSpouse</String>
+        </EnumOptions>
+      </Derived>
+    </Fact>
+    <Fact path="/initialFilingStatus">
+      <Name>Filing status</Name>
+      <Description>The filing status selected by the taxpayer.</Description>
+      <Writable>
+        <Enum optionsPath="/filingStatusOptions"/>
+      </Writable>
+    </Fact>
+    <Fact path="/knowsFilingStatus">
+      <Writable>
+        <Boolean/>
+      </Writable>
+    </Fact>
+    <Fact path="/intendsToFileJointlyMFJ">
+      <Name>Intends to file joint returns as MFJ</Name>
+      <Description>Indicates if the taxpayer and spouse plan to file a joint return.</Description>
+      <Writable>
+        <Boolean/>
+      </Writable>
+    </Fact>
+    <Fact path="/intendsToFileJointlyWidow">
+      <Name>Intends to file joint returns as a widow</Name>
+      <Description>Indicates if the taxpayer will file a joint return with deceased spouse</Description>
+      <Writable>
+        <Boolean/>
+      </Writable>
+    </Fact>
+    <Fact path="/deceasedSpouseValidSSNOnDateOfDeath">
+      <Writable>
+        <Boolean/>
+      </Writable>
+    </Fact>
+    <Fact path="/spouseAliveEndOfTaxYear">
+      <Writable>
+        <Boolean/>
+      </Writable>
+    </Fact>
+    <Fact path="/intendsToFileJointly">
+      <Description>Indicates if the taxpayer and spouse plan to file a joint return.</Description>
+      <Derived>
+        <Switch>
+          <Case>
+            <When>
+              <IsComplete>
+                <Dependency path="/intendsToFileJointlyMFJ"/>
+              </IsComplete>
+            </When>
+            <Then>
+              <Dependency path="/intendsToFileJointlyMFJ"/>
+            </Then>
+          </Case>
+          <Case>
+            <When>
+              <IsComplete>
+                <Dependency path="/intendsToFileJointlyWidow"/>
+              </IsComplete>
+            </When>
+            <Then>
+              <Dependency path="/intendsToFileJointlyWidow"/>
+            </Then>
+          </Case>
+        </Switch>
+      </Derived>
+    </Fact>
+    <Fact path="/spouseLivedWithTaxpayerLastSixMonths">
+      <Name>Spouse lived with taxpayer last six months</Name>
+      <Description>Indicates if the spouse lived in the home during the last 6 months of the year.</Description>
+      <Writable>
+        <Boolean/>
+      </Writable>
+    </Fact>
+    <Fact path="/paidMoreThanHalfHomeCostsForChild">
+      <Name>Paid more than half home costs for child</Name>
+      <Description>Indicates if the taxpayer paid &gt;50% of home costs where a qualifying child lived for the full year.</Description>
+      <Writable>
+        <Boolean/>
+      </Writable>
+    </Fact>
+    <Fact path="/entitledToPreviouslyFileJointReturn">
+      <Description>Did the taxpayer file a joint return with their spouse for the year that died if it was before this taxpayer but not more than 2 years ago?</Description>
+      <Writable>
+        <Boolean/>
+      </Writable>
+    </Fact>
+    <Fact path="/canClaimChildAsDependentInCurrentTaxYear">
+      <Description>If the taxpayer is entitled to a joint return with their spouse for the year that died if it was before this taxpayer but not more than 2 years ago and they paid more than half the upkeep costs during the current tax year</Description>
+      <Writable>
+        <Boolean/>
+      </Writable>
+    </Fact>
+    <Fact path="/couldClaimChildAsDependentInCurrentTaxYearWithExceptions">
+      <Description>Can the child or step-child be claimed in the current tax year, with specific carveouts</Description>
+      <Writable>
+        <Boolean/>
+      </Writable>
+    </Fact>
+    <Fact path="/filingStatus">
+      <Name>Filing status</Name>
+      <Description>The filing status derived by EITC Assistant based on the chosen filing status and additional questions.</Description>
+      <Derived>
+        <Switch>
+          <Case>
+            <When>
+              <Dependency path="/knowsFilingStatus"/>
+            </When>
+            <Then>
+              <Dependency path="/initialFilingStatus"/>
+            </Then>
+          </Case>
+          <Case>
+            <When>
+              <True/>
+            </When>
+            <Then>
+              <Dependency path="/derivedFilingStatus"/>
+            </Then>
+          </Case>
+        </Switch>
+      </Derived>
+    </Fact>
+    <Fact path="/isFilingStatusComplete">
+      <Derived>
+        <IsComplete>
+          <Dependency path="/filingStatus"/>
+        </IsComplete>
+      </Derived>
+    </Fact>
+    <Fact path="/flowReadableFilingStatus">
+      <Name>Filing status that can be represented to the user in the flow, with correct spacing and casing</Name>
+      <Derived>
+        <Switch>
+          <Case>
+            <When>
+              <Dependency path="/isFilingStatusMFJ"/>
+            </When>
+            <Then>
+              <String>Married Filing Jointly</String>
+            </Then>
+          </Case>
+          <Case>
+            <When>
+              <Dependency path="/isFilingStatusMFS"/>
+            </When>
+            <Then>
+              <String>Married Filing Separately</String>
+            </Then>
+          </Case>
+          <Case>
+            <When>
+              <Dependency path="/isFilingStatusSingle"/>
+            </When>
+            <Then>
+              <String>Single</String>
+            </Then>
+          </Case>
+          <Case>
+            <When>
+              <Dependency path="/isFilingStatusHOH"/>
+            </When>
+            <Then>
+              <String>Head of Household</String>
+            </Then>
+          </Case>
+          <Case>
+            <When>
+              <Dependency path="/isFilingStatusQSS"/>
+            </When>
+            <Then>
+              <String>Qualifying Surviving Spouse</String>
+            </Then>
+          </Case>
+        </Switch>
+      </Derived>
+    </Fact>
+    <Fact path="/derivedFilingStatus">
+      <Derived>
+        <Switch>
+          <Case>
+            <When>
+              <All>
+                <Dependency path="/tentativelyHOHFromHomeUpkeep"/>
+                <Any>
+                  <Dependency path="/isSingle"/>
+                  <Dependency path="/isDivorcedOrLegallySeparated"/>
+                  <Dependency path="/isWidowedAtLeastTwoTaxYearsAgo"/>
+                  <All>
+                    <Dependency path="/isWidowedInPastTwoTaxYears"/>
+                    <IsComplete>
+                      <Dependency path="/couldClaimChildAsDependentInCurrentTaxYearWithExceptions"/>
+                    </IsComplete>
+                    <Not>
+                      <Dependency path="/couldClaimChildAsDependentInCurrentTaxYearWithExceptions"/>
+                    </Not>
+                  </All>
+                  <All>
+                    <Dependency path="/isWidowedInPastTwoTaxYears"/>
+                    <Not>
+                      <Dependency path="/entitledToPreviouslyFileJointReturn"/>
+                    </Not>
+                  </All>
+                  <All>
+                    <Dependency path="/isWidowedInPastTwoTaxYears"/>
+                    <Dependency path="/entitledToPreviouslyFileJointReturn"/>
+                    <Not>
+                      <Dependency path="/paidMoreThanHalfHomeCostsForChild"/>
+                    </Not>
+                  </All>
+                </Any>
+              </All>
+            </When>
+            <Then>
+              <Enum optionsPath="/filingStatusOptions">headOfHousehold</Enum>
+            </Then>
+          </Case>
+          <Case>
+            <When>
+              <All>
+                <Not>
+                  <Dependency path="/tentativelyHOHFromHomeUpkeep"/>
+                </Not>
+                <Any>
+                  <Dependency path="/isSingle"/>
+                  <Dependency path="/isDivorcedOrLegallySeparated"/>
+                  <Dependency path="/isWidowedAtLeastTwoTaxYearsAgo"/>
+                  <All>
+                    <Dependency path="/isWidowedInPastTwoTaxYears"/>
+                    <IsComplete>
+                      <Dependency path="/couldClaimChildAsDependentInCurrentTaxYearWithExceptions"/>
+                    </IsComplete>
+                    <Not>
+                      <Dependency path="/couldClaimChildAsDependentInCurrentTaxYearWithExceptions"/>
+                    </Not>
+                  </All>
+                  <All>
+                    <Dependency path="/isWidowedInPastTwoTaxYears"/>
+                    <Not>
+                      <Dependency path="/entitledToPreviouslyFileJointReturn"/>
+                    </Not>
+                  </All>
+                  <All>
+                    <Dependency path="/isWidowedInPastTwoTaxYears"/>
+                    <Dependency path="/entitledToPreviouslyFileJointReturn"/>
+                    <Not>
+                      <Dependency path="/paidMoreThanHalfHomeCostsForChild"/>
+                    </Not>
+                  </All>
+                </Any>
+              </All>
+            </When>
+            <Then>
+              <Enum optionsPath="/filingStatusOptions">single</Enum>
+            </Then>
+          </Case>
+          <Case>
+            <When>
+              <All>
+                <Dependency path="/maritalStatusAllowsFilingMarried"/>
+                <Dependency path="/intendsToFileJointly"/>
+              </All>
+            </When>
+            <Then>
+              <Enum optionsPath="/filingStatusOptions">marriedFilingJointly</Enum>
+            </Then>
+          </Case>
+          <Case>
+            <When>
+              <All>
+                <Dependency path="/maritalStatusAllowsFilingMarried"/>
+                <Not>
+                  <Dependency path="/intendsToFileJointly"/>
+                </Not>
+                <Dependency path="/spouseLivedWithTaxpayerLastSixMonths"/>
+              </All>
+            </When>
+            <Then>
+              <Enum optionsPath="/filingStatusOptions">marriedFilingSeparately</Enum>
+            </Then>
+          </Case>
+          <Case>
+            <When>
+              <All>
+                <Dependency path="/maritalStatusAllowsFilingMarried"/>
+                <Not>
+                  <All>
+                    <Dependency path="/intendsToFileJointly"/>
+                    <Dependency path="/spouseLivedWithTaxpayerLastSixMonths"/>
+                  </All>
+                </Not>
+                <Dependency path="/paidMoreThanHalfHomeCostsForChild"/>
+              </All>
+            </When>
+            <Then>
+              <Enum optionsPath="/filingStatusOptions">headOfHousehold</Enum>
+            </Then>
+          </Case>
+          <Case>
+            <When>
+              <All>
+                <Dependency path="/maritalStatusAllowsFilingMarried"/>
+                <Not>
+                  <Dependency path="/intendsToFileJointly"/>
+                </Not>
+                <Not>
+                  <Dependency path="/spouseLivedWithTaxpayerLastSixMonths"/>
+                </Not>
+                <Not>
+                  <Dependency path="/paidMoreThanHalfHomeCostsForChild"/>
+                </Not>
+              </All>
+            </When>
+            <Then>
+              <Enum optionsPath="/filingStatusOptions">marriedFilingSeparately</Enum>
+            </Then>
+          </Case>
+          <Case>
+            <When>
+              <All>
+                <Dependency path="/isWidowedInTaxYear"/>
+                <Not>
+                  <Dependency path="/intendsToFileJointly"/>
+                </Not>
+                <Dependency path="/spouseLivedWithTaxpayerLastSixMonths"/>
+              </All>
+            </When>
+            <Then>
+              <Enum optionsPath="/filingStatusOptions">marriedFilingSeparately</Enum>
+            </Then>
+          </Case>
+          <Case>
+            <When>
+              <Any>
+                <All>
+                  <Dependency path="/isWidowedInPastTwoTaxYears"/>
+                  <Dependency path="/entitledToPreviouslyFileJointReturn"/>
+                  <Dependency path="/paidMoreThanHalfHomeCostsForChild"/>
+                  <Dependency path="/canClaimChildAsDependentInCurrentTaxYear"/>
+                </All>
+                <All>
+                  <Dependency path="/isWidowedAtLeastTwoTaxYearsAgo"/>
+                  <Dependency path="/couldClaimChildAsDependentInCurrentTaxYearWithExceptions"/>
+                </All>
+              </Any>
+            </When>
+            <Then>
+              <Enum optionsPath="/filingStatusOptions">qualifiedSurvivingSpouse</Enum>
+            </Then>
+          </Case>
+          <Case>
+            <When>
+              <Any>
+                <All>
+                  <Dependency path="/isWidowedInPastTwoTaxYears"/>
+                  <Dependency path="/entitledToPreviouslyFileJointReturn"/>
+                  <Dependency path="/paidMoreThanHalfHomeCostsForChild"/>
+                  <Not>
+                    <Dependency path="/canClaimChildAsDependentInCurrentTaxYear"/>
+                  </Not>
+                  <Dependency path="/couldClaimChildAsDependentInCurrentTaxYearWithExceptions"/>
+                </All>
+              </Any>
+            </When>
+            <Then>
+              <Enum optionsPath="/filingStatusOptions">qualifiedSurvivingSpouse</Enum>
+            </Then>
+          </Case>
+          <Case>
+            <When>
+              <All>
+                <Dependency path="/isWidowedInPastTwoTaxYears"/>
+                <Not>
+                  <Dependency path="/couldClaimChildAsDependentInCurrentTaxYearWithExceptions"/>
+                </Not>
+              </All>
+            </When>
+            <Then>
+              <Enum optionsPath="/filingStatusOptions">qualifiedSurvivingSpouse</Enum>
+            </Then>
+          </Case>
+        </Switch>
+      </Derived>
+    </Fact>
+    <Fact path="/isHOHMarried">
+      <Writable>
+        <Boolean/>
+      </Writable>
+    </Fact>
+    <Fact path="/samePrincipalResidenceLast6Months">
+      <Writable>
+        <Boolean/>
+      </Writable>
+    </Fact>
+    <Fact path="/flowShouldSeeAliveSecondaryValidSSN">
+      <Derived>
+        <Any>
+          <Dependency path="/isInitialFilingStatusMFJ"/>
+          <All>
+            <Dependency path="/isFilingStatusMFJ"/>
+            <Dependency path="/intendsToFileJointlyMFJ"/>
+          </All>
+        </Any>
+      </Derived>
+    </Fact>
+    <Fact path="/flowShouldSeeMfjSpouseFollowUpForEitcAgeRules">
+      <Description>
+        Living MFJ filers whose primary age is under 25 or 65+ at end of year, after the spouse has a valid SSN,
+        need spouse-alive and spouse-age for EITC flow alignment (IRS assistant parity).
+      </Description>
+      <Derived>
+        <All>
+          <Any>
+            <Dependency path="/isInitialFilingStatusMFJ"/>
+            <All>
+              <Dependency path="/isFilingStatusMFJ"/>
+              <Dependency path="/intendsToFileJointlyMFJ"/>
+            </All>
+          </Any>
+          <IsComplete>
+            <Dependency path="/ageRange"/>
+          </IsComplete>
+          <Any>
+            <Equal>
+              <Left>
+                <Dependency path="/ageRange"/>
+              </Left>
+              <Right>
+                <Enum optionsPath="/ageRangeOptions">under24</Enum>
+              </Right>
+            </Equal>
+            <Equal>
+              <Left>
+                <Dependency path="/ageRange"/>
+              </Left>
+              <Right>
+                <Enum optionsPath="/ageRangeOptions">65andOlder</Enum>
+              </Right>
+            </Equal>
+          </Any>
+          <IsComplete>
+            <Dependency path="/secondaryFilerHasValidSSN"/>
+          </IsComplete>
+          <Dependency path="/secondaryFilerHasValidSSN"/>
+        </All>
+      </Derived>
+    </Fact>
+    <Fact path="/flowShouldSeeSpouseAliveEndOfTaxYear">
+      <Derived>
+        <Any>
+          <All>
+            <Dependency path="/isWidowedInPastTwoTaxYears"/>
+            <Not>
+              <Dependency path="/entitledToPreviouslyFileJointReturn"/>
+            </Not>
+          </All>
+          <Dependency path="/flowShouldSeeMfjSpouseFollowUpForEitcAgeRules"/>
+        </Any>
+      </Derived>
+    </Fact>
+    <Fact path="/flowShouldSeeSpouseAgeRange">
+      <Derived>
+        <Any>
+          <All>
+            <IsComplete>
+              <Dependency path="/spouseAliveEndOfTaxYear"/>
+            </IsComplete>
+            <Dependency path="/isWidowedInPastTwoTaxYears"/>
+            <Not>
+              <Dependency path="/entitledToPreviouslyFileJointReturn"/>
+            </Not>
+          </All>
+          <All>
+            <IsComplete>
+              <Dependency path="/spouseAliveEndOfTaxYear"/>
+            </IsComplete>
+            <Dependency path="/flowShouldSeeMfjSpouseFollowUpForEitcAgeRules"/>
+          </All>
+        </Any>
+      </Derived>
+    </Fact>
+    <Fact path="/flowShouldSeeHalfOfHomeCosts">
+      <Derived>
+        <Any>
+          <Dependency path="/entitledToPreviouslyFileJointReturn"/>
+          <All>
+            <Not>
+              <Dependency path="/spouseLivedWithTaxpayerLastSixMonths"/>
+            </Not>
+            <Any>
+              <All>
+                <Dependency path="/isMarried"/>
+                <Not>
+                  <Dependency path="/intendsToFileJointlyMFJ"/>
+                </Not>
+              </All>
+              <All>
+                <Dependency path="/isWidowedInTaxYear"/>
+                <Not>
+                  <Dependency path="/intendsToFileJointlyWidow"/>
+                </Not>
+              </All>
+            </Any>
+          </All>
+        </Any>
+      </Derived>
+    </Fact>
+    <Fact path="/flowQSSQCQuestionText">
+      <Derived>
+        <All>
+          <Dependency path="/isWidowedInPastTwoTaxYears"/>
+          <IsComplete>
+            <Dependency path="/isWidowedInPastTwoTaxYears"/>
+          </IsComplete>
+          <Dependency path="/entitledToPreviouslyFileJointReturn"/>
+        </All>
+      </Derived>
+    </Fact>
+    <Fact path="/flowShouldSeeHalfOfHomeCostsCanClaimChildAsDependentInCurrentTaxYear">
+      <Derived>
+        <All>
+          <Dependency path="/entitledToPreviouslyFileJointReturn"/>
+          <Dependency path="/paidMoreThanHalfHomeCostsForChild"/>
+        </All>
+      </Derived>
+    </Fact>
+    <Fact path="/flowShouldSeeMartialQuestions">
+      <Derived>
+        <Any>
+          <Dependency path="/isFilingStatusHOH"/>
+          <Dependency path="/isMarried"/>
+        </Any>
+      </Derived>
+    </Fact>
+    <Fact path="/flowShouldSeeSpouseSeparationTest">
+      <Derived>
+        <Any>
+          <Dependency path="/isInitialFilingStatusHOHAndMarried"/>
+          <Dependency path="/isInitialFilingStatusMFS"/>
+          <Dependency path="/isHOHMarried"/>
+          <All>
+            <Dependency path="/isMarried"/>
+            <Not>
+              <Dependency path="/intendsToFileJointly"/>
+            </Not>
+          </All>
+          <All>
+            <Dependency path="/isWidowedInTaxYear"/>
+            <Not>
+              <Dependency path="/intendsToFileJointlyWidow"/>
+            </Not>
+          </All>
+        </Any>
+      </Derived>
+    </Fact>
+    <Fact path="/flowShouldSeeSamePrincipalResidenceLast6Months">
+      <Derived>
+        <All>
+          <Dependency path="/isFilingStatusComplete"/>
+          <Dependency path="/isFilingStatusMFS"/>
+          <Dependency path="/spouseLivedWithTaxpayerLastSixMonths"/>
+          <Any>
+            <All>
+              <Dependency path="/isMarried"/>
+              <Not>
+                <Dependency path="/intendsToFileJointlyMFJ"/>
+              </Not>
+            </All>
+            <All>
+              <Dependency path="/isWidowedInTaxYear"/>
+              <Not>
+                <Dependency path="/intendsToFileJointlyWidow"/>
+              </Not>
+            </All>
+          </Any>
+        </All>
+      </Derived>
+    </Fact>
+    <Fact path="/flowShouldSeeWritableSeparationAgreement">
+      <Derived>
+        <Any>
+          <Dependency path="/samePrincipalResidenceLast6Months"/>
+          <All>
+            <Dependency path="/isInitialFilingStatusMFS"/>
+            <Dependency path="/spouseLivedWithTaxpayerLastSixMonths"/>
+          </All>
+          <All>
+            <Dependency path="/isHOHMarried"/>
+            <Dependency path="/spouseLivedWithTaxpayerLastSixMonths"/>
+          </All>
+          <All>
+            <Dependency path="/spouseLivedWithTaxpayerLastSixMonths"/>
+            <Not>
+              <Any>
+                <All>
+                  <Dependency path="/isMarried"/>
+                  <Not>
+                    <Dependency path="/intendsToFileJointlyMFJ"/>
+                  </Not>
+                </All>
+                <All>
+                  <Dependency path="/isWidowedInTaxYear"/>
+                  <Not>
+                    <Dependency path="/intendsToFileJointlyWidow"/>
+                  </Not>
+                </All>
+              </Any>
+            </Not>
+          </All>
+        </Any>
+      </Derived>
+    </Fact>
+    <Fact path="/flowShouldSeeMaritalStatus">
+      <Derived>
+        <Any>
+          <Dependency path="/isFilingStatusHOH"/>
+          <Not>
+            <Dependency path="/knowsFilingStatus"/>
+          </Not>
+        </Any>
+      </Derived>
+    </Fact>
+    <Fact path="/isDisqualifiedFlowSeparationTestNotMarriedLivedNotSeparated">
+      <Name>EITC disqualified: separation-test flow, not married, lived together, not separated</Name>
+      <Description>Spouse separation questions apply, filer is not treated as married, spouse lived with taxpayer, and no legal separation agreement.</Description>
+      <Derived>
+        <All>
+          <Dependency path="/flowShouldSeeSpouseSeparationTest"/>
+          <Not>
+            <Dependency path="/isMarried"/>
+          </Not>
+          <Dependency path="/spouseLivedWithTaxpayerLastSixMonths"/>
+          <Not>
+            <Dependency path="/writableSeparationAgreement"/>
+          </Not>
+        </All>
+      </Derived>
+    </Fact>
+    <Fact path="/isDisqualifiedHohMarriedLivedTogetherNotSeparatedNoQcs">
+      <Name>EITC disqualified: initial HOH and married, lived together, not separated, no QCs</Name>
+      <Description>User indicated initial head-of-household while married, spouse lived together last six months, no separation agreement, and not claiming EITC qualifying children.</Description>
+      <Derived>
+        <All>
+          <Dependency path="/isInitialFilingStatusHOHAndMarried"/>
+          <Dependency path="/spouseLivedWithTaxpayerLastSixMonths"/>
+          <Not>
+            <Dependency path="/writableSeparationAgreement"/>
+          </Not>
+          <Not>
+            <Dependency path="/primaryFilerIsClaimingQualifyingChildren"/>
+          </Not>
+        </All>
+      </Derived>
+    </Fact>
+    <Fact path="/isDisqualifiedMfsLivedNotSeparatedNoQcs">
+      <Name>EITC disqualified: MFS, lived together, not separated, no QCs</Name>
+      <Description>Derived filing status MFS, spouse lived together, no separation agreement, not claiming EITC qualifying children.</Description>
+      <Derived>
+        <All>
+          <Dependency path="/isFilingStatusMFS"/>
+          <Dependency path="/spouseLivedWithTaxpayerLastSixMonths"/>
+          <Not>
+            <Dependency path="/writableSeparationAgreement"/>
+          </Not>
+          <Not>
+            <Dependency path="/primaryFilerIsClaimingQualifyingChildren"/>
+          </Not>
+        </All>
+      </Derived>
+    </Fact>
+    <Fact path="/isDisqualifiedMfsSameResidenceNotSeparated">
+      <Name>EITC disqualified: MFS, same principal residence, lived together, not separated</Name>
+      <Description>Derived MFS with same principal residence as spouse, lived together, no legal separation agreement.</Description>
+      <Derived>
+        <All>
+          <Dependency path="/isFilingStatusMFS"/>
+          <Dependency path="/samePrincipalResidenceLast6Months"/>
+          <Dependency path="/spouseLivedWithTaxpayerLastSixMonths"/>
+          <Not>
+            <Dependency path="/writableSeparationAgreement"/>
+          </Not>
+        </All>
+      </Derived>
+    </Fact>
+    <Fact path="/isDisqualifiedInitialMfsLivedNotSeparated">
+      <Name>EITC disqualified: initial MFS, lived together, not separated</Name>
+      <Description>User selected initial married filing separately, spouse lived together, no separation agreement.</Description>
+      <Derived>
+        <All>
+          <Dependency path="/isInitialFilingStatusMFS"/>
+          <Dependency path="/spouseLivedWithTaxpayerLastSixMonths"/>
+          <Not>
+            <Dependency path="/writableSeparationAgreement"/>
+          </Not>
+        </All>
+      </Derived>
+    </Fact>
+    <Fact path="/isDisqualifiedHohMarriedLivedTogetherNotSeparated">
+      <Name>EITC disqualified: HOH married, lived together, not separated</Name>
+      <Description>Head-of-household filer is married, spouse lived together, no separation agreement.</Description>
+      <Derived>
+        <All>
+          <Dependency path="/isHOHMarried"/>
+          <Dependency path="/spouseLivedWithTaxpayerLastSixMonths"/>
+          <Not>
+            <Dependency path="/writableSeparationAgreement"/>
+          </Not>
+        </All>
+      </Derived>
+    </Fact>
+    <Fact path="/isDisqualifiedMarriedNotMfjSameResidenceSeparatedNoQcs">
+      <Name>EITC disqualified: married not MFJ, same residence, separated, no QCs</Name>
+      <Description>Married not filing jointly, same principal residence, separation agreement, not claiming EITC qualifying children.</Description>
+      <Derived>
+        <All>
+          <Dependency path="/isMarried"/>
+          <Not>
+            <Dependency path="/intendsToFileJointlyMFJ"/>
+          </Not>
+          <Dependency path="/spouseLivedWithTaxpayerLastSixMonths"/>
+          <Dependency path="/samePrincipalResidenceLast6Months"/>
+          <Dependency path="/writableSeparationAgreement"/>
+          <Not>
+            <Dependency path="/primaryFilerIsClaimingQualifyingChildren"/>
+          </Not>
+        </All>
+      </Derived>
+    </Fact>
+    <Fact path="/isDisqualifiedWidowedNotJointlySameResidenceSeparatedNoQcs">
+      <Name>EITC disqualified: widowed not filing jointly with deceased spouse, same residence, separated, no QCs</Name>
+      <Derived>
+        <All>
+          <Dependency path="/isWidowedInTaxYear"/>
+          <Not>
+            <Dependency path="/intendsToFileJointlyWidow"/>
+          </Not>
+          <Dependency path="/spouseLivedWithTaxpayerLastSixMonths"/>
+          <Dependency path="/samePrincipalResidenceLast6Months"/>
+          <Dependency path="/writableSeparationAgreement"/>
+          <Not>
+            <Dependency path="/primaryFilerIsClaimingQualifyingChildren"/>
+          </Not>
+        </All>
+      </Derived>
+    </Fact>
+    <Fact path="/isDisqualifiedWidowedNotJointlyDifferentResidenceNoQcs">
+      <Name>EITC disqualified: widowed not filing jointly, different residence, no QCs</Name>
+      <Derived>
+        <All>
+          <Dependency path="/isWidowedInTaxYear"/>
+          <Dependency path="/spouseLivedWithTaxpayerLastSixMonths"/>
+          <Not>
+            <Dependency path="/intendsToFileJointlyWidow"/>
+          </Not>
+          <Not>
+            <Dependency path="/samePrincipalResidenceLast6Months"/>
+          </Not>
+          <Not>
+            <Dependency path="/primaryFilerIsClaimingQualifyingChildren"/>
+          </Not>
+        </All>
+      </Derived>
+    </Fact>
+    <Fact path="/isDisqualifiedMfsDifferentResidenceNoQcs">
+      <Name>EITC disqualified: MFS, different principal residence, no QCs</Name>
+      <Description>MFS, spouse lived together, same-residence question complete and false, not claiming EITC qualifying children.</Description>
+      <Derived>
+        <All>
+          <Dependency path="/isFilingStatusMFS"/>
+          <Dependency path="/spouseLivedWithTaxpayerLastSixMonths"/>
+          <IsComplete>
+            <Dependency path="/samePrincipalResidenceLast6Months"/>
+          </IsComplete>
+          <Not>
+            <Dependency path="/samePrincipalResidenceLast6Months"/>
+          </Not>
+          <Not>
+            <Dependency path="/primaryFilerIsClaimingQualifyingChildren"/>
+          </Not>
+        </All>
+      </Derived>
+    </Fact>
+    <Fact path="/isDisqualifiedMfsOrHohSpouseDidNotLiveNoQcs">
+      <Name>EITC disqualified: MFS or HOH, spouse did not live with taxpayer, no QCs</Name>
+      <Description>Filing status MFS or HOH, spouse-lived question complete and false, not claiming EITC qualifying children.</Description>
+      <Derived>
+        <All>
+          <Dependency path="/isFilingStatusMFSOrHOH"/>
+          <IsComplete>
+            <Dependency path="/spouseLivedWithTaxpayerLastSixMonths"/>
+          </IsComplete>
+          <Not>
+            <Dependency path="/spouseLivedWithTaxpayerLastSixMonths"/>
+          </Not>
+          <Not>
+            <Dependency path="/primaryFilerIsClaimingQualifyingChildren"/>
+          </Not>
+        </All>
+      </Derived>
+    </Fact>
+    <Fact path="/isDisqualifiedHohMarriedSeparatedNoQcs">
+      <Name>EITC disqualified: HOH married, lived together, legally separated, no QCs</Name>
+      <Description>HOH filing status, married for HOH rules, spouse lived together, separation agreement, not claiming EITC qualifying children.</Description>
+      <Derived>
+        <All>
+          <Dependency path="/isFilingStatusHOH"/>
+          <Dependency path="/isHOHMarried"/>
+          <Dependency path="/spouseLivedWithTaxpayerLastSixMonths"/>
+          <Dependency path="/writableSeparationAgreement"/>
+          <Not>
+            <Dependency path="/primaryFilerIsClaimingQualifyingChildren"/>
+          </Not>
+        </All>
+      </Derived>
+    </Fact>
+    <Fact path="/isDisqualifiedInitialAndFilingMfsSeparatedNoQcs">
+      <Name>EITC disqualified: initial and derived MFS, lived together, separated, no QCs</Name>
+      <Description>User selected initial MFS and derived filing status is MFS, spouse lived together, separation agreement, not claiming EITC qualifying children.</Description>
+      <Derived>
+        <All>
+          <Dependency path="/isInitialFilingStatusMFS"/>
+          <Dependency path="/isFilingStatusMFS"/>
+          <Dependency path="/spouseLivedWithTaxpayerLastSixMonths"/>
+          <Dependency path="/writableSeparationAgreement"/>
+          <Not>
+            <Dependency path="/primaryFilerIsClaimingQualifyingChildren"/>
+          </Not>
+        </All>
+      </Derived>
+    </Fact>
+    <Fact path="/isDisqualifiedMarriedNotFilingJointly">
+      <Name>Disqualified for EITC as Married Not Filing Jointly</Name>
+      <Description>True if any EITC married-not-filing-jointly disqualification sub-rule applies. See composed facts /isDisqualified* under this module.</Description>
+      <Derived>
+        <Any>
+          <Dependency path="/isDisqualifiedFlowSeparationTestNotMarriedLivedNotSeparated"/>
+          <Dependency path="/isDisqualifiedHohMarriedLivedTogetherNotSeparatedNoQcs"/>
+          <Dependency path="/isDisqualifiedMfsLivedNotSeparatedNoQcs"/>
+          <Dependency path="/isDisqualifiedMfsSameResidenceNotSeparated"/>
+          <Dependency path="/isDisqualifiedInitialMfsLivedNotSeparated"/>
+          <Dependency path="/isDisqualifiedHohMarriedLivedTogetherNotSeparated"/>
+          <Dependency path="/isDisqualifiedMarriedNotMfjSameResidenceSeparatedNoQcs"/>
+          <Dependency path="/isDisqualifiedWidowedNotJointlySameResidenceSeparatedNoQcs"/>
+          <Dependency path="/isDisqualifiedWidowedNotJointlyDifferentResidenceNoQcs"/>
+          <Dependency path="/isDisqualifiedMfsDifferentResidenceNoQcs"/>
+          <Dependency path="/isDisqualifiedMfsOrHohSpouseDidNotLiveNoQcs"/>
+          <Dependency path="/isDisqualifiedHohMarriedSeparatedNoQcs"/>
+          <Dependency path="/isDisqualifiedInitialAndFilingMfsSeparatedNoQcs"/>
+        </Any>
+      </Derived>
+    </Fact>
+    <Fact path="/yearOfSpouseDeathOptions">
+      <Name>Year of Spouse Death Options</Name>
+      <Description>The year that a taxpayer's spouse died</Description>
+      <Derived>
+        <EnumOptions>
+          <String>taxYear</String>
+          <String>taxYearMinusOneOrTwo</String>
+          <String>beforeTaxYearMinusTwo</String>
+        </EnumOptions>
+      </Derived>
+    </Fact>
+    <Fact path="/yearOfSpouseDeathCurrentTaxYearIsChosen">
+      <Writable>
+        <Enum optionsPath="/yearOfSpouseDeathOptions"/>
+      </Writable>
+    </Fact>
+    <Fact path="/yearOfSpouseDeathLastTaxYearIsChosen">
+      <Writable>
+        <Enum optionsPath="/yearOfSpouseDeathOptions"/>
+      </Writable>
+    </Fact>
+    <Fact path="/yearOfSpouseDeathTwoTaxYearsAgoIsChosen">
+      <Writable>
+        <Enum optionsPath="/yearOfSpouseDeathOptions"/>
+      </Writable>
+    </Fact>
+    <Fact path="/yearOfSpouseDeath">
+      <Name>Year of spouse's death</Name>
+      <Description>The relative year a widowed filer's spouse died.</Description>
+      <Derived>
+        <Switch>
+          <Case>
+            <When>
+              <IsComplete>
+                <Dependency path="/yearOfSpouseDeathCurrentTaxYearIsChosen"/>
+              </IsComplete>
+            </When>
+            <Then>
+              <Dependency path="/yearOfSpouseDeathCurrentTaxYearIsChosen"/>
+            </Then>
+          </Case>
+          <Case>
+            <When>
+              <IsComplete>
+                <Dependency path="/yearOfSpouseDeathLastTaxYearIsChosen"/>
+              </IsComplete>
+            </When>
+            <Then>
+              <Dependency path="/yearOfSpouseDeathLastTaxYearIsChosen"/>
+            </Then>
+          </Case>
+          <Case>
+            <When>
+              <IsComplete>
+                <Dependency path="/yearOfSpouseDeathTwoTaxYearsAgoIsChosen"/>
+              </IsComplete>
+            </When>
+            <Then>
+              <Dependency path="/yearOfSpouseDeathTwoTaxYearsAgoIsChosen"/>
+            </Then>
+          </Case>
+        </Switch>
+      </Derived>
+    </Fact>
+    <Fact path="/isWidowedInTaxYear">
+      <Name>Is (really Was) Widowed in Tax Year</Name>
+      <Description>Was the filer widowed in the current tax year?</Description>
+      <Derived>
+        <All>
+          <Dependency path="/isWidowed"/>
+          <Equal>
+            <Left>
+              <Dependency path="/yearOfSpouseDeath"/>
+            </Left>
+            <Right>
+              <Enum optionsPath="/yearOfSpouseDeathOptions">taxYear</Enum>
+            </Right>
+          </Equal>
+        </All>
+      </Derived>
+    </Fact>
+    <Fact path="/isWidowedInPastTwoTaxYears">
+      <Derived>
+        <All>
+          <Dependency path="/isWidowed"/>
+          <Equal>
+            <Left>
+              <Dependency path="/yearOfSpouseDeath"/>
+            </Left>
+            <Right>
+              <Enum optionsPath="/yearOfSpouseDeathOptions">taxYearMinusOneOrTwo</Enum>
+            </Right>
+          </Equal>
+        </All>
+      </Derived>
+    </Fact>
+    <Fact path="/isWidowedAtLeastTwoTaxYearsAgo">
+      <Derived>
+        <All>
+          <Dependency path="/isWidowed"/>
+          <Equal>
+            <Left>
+              <Dependency path="/yearOfSpouseDeath"/>
+            </Left>
+            <Right>
+              <Enum optionsPath="/yearOfSpouseDeathOptions">beforeTaxYearMinusTwo</Enum>
+            </Right>
+          </Equal>
+        </All>
+      </Derived>
+    </Fact>
+    <Fact path="/maritalStatusAllowsFilingMarried">
+      <Name>Marital status allows filing married</Name>
+      <Description>The TP's declared marital status (either married or widowed in tax year) allows them to file as QSS
+        or MFJ.</Description>
+      <Derived>
+        <Any>
+          <Dependency path="/isMarried"/>
+          <Dependency path="/isWidowedInTaxYear"/>
+        </Any>
+      </Derived>
+    </Fact>
+    <Fact path="/flowShouldSeeDeceasedSpouseJointReturnIntent">
+      <Derived>
+        <All>
+          <Dependency path="/isWidowedInTaxYear"/>
+          <Not>
+            <Dependency path="/knowsFilingStatus"/>
+          </Not>
+        </All>
+      </Derived>
+    </Fact>
+    <Fact path="/flowShouldSeeMFJJointReturnIntent">
+      <Derived>
+        <All>
+          <Dependency path="/isMarried"/>
+          <Not>
+            <Dependency path="/knowsFilingStatus"/>
+          </Not>
+        </All>
+      </Derived>
+    </Fact>
+    <Fact path="/flowShouldSeeTentativeHOHHomeUpkeepScenario">
+      <Derived>
+        <All>
+          <Not>
+            <Dependency path="/knowsFilingStatus"/>
+          </Not>
+          <Any>
+            <Dependency path="/isSingle"/>
+            <Dependency path="/isDivorcedOrLegallySeparated"/>
+            <Dependency path="/isWidowedAtLeastTwoTaxYearsAgo"/>
+            <All>
+              <Dependency path="/isWidowedInPastTwoTaxYears"/>
+              <Dependency path="/entitledToPreviouslyFileJointReturn"/>
+              <Not>
+                <Dependency path="/paidMoreThanHalfHomeCostsForChild"/>
+              </Not>
+            </All>
+            <All>
+              <Dependency path="/isWidowedInPastTwoTaxYears"/>
+              <Not>
+                <Dependency path="/entitledToPreviouslyFileJointReturn"/>
+              </Not>
+            </All>
+            <All>
+              <Dependency path="/isWidowedInPastTwoTaxYears"/>
+              <Dependency path="/entitledToPreviouslyFileJointReturn"/>
+              <Not>
+                <Dependency path="/couldClaimChildAsDependentInCurrentTaxYearWithExceptions"/>
+              </Not>
+              <Not>
+                <Dependency path="/paidMoreThanHalfHomeCostsForChild"/>
+              </Not>
+            </All>
+            <All>
+              <Dependency path="/isWidowedInPastTwoTaxYears"/>
+              <Dependency path="/entitledToPreviouslyFileJointReturn"/>
+              <Dependency path="/paidMoreThanHalfHomeCostsForChild"/>
+              <Not>
+                <Dependency path="/canClaimChildAsDependentInCurrentTaxYear"/>
+              </Not>
+              <Not>
+                <Dependency path="/couldClaimChildAsDependentInCurrentTaxYearWithExceptions"/>
+              </Not>
+            </All>
+          </Any>
+        </All>
+      </Derived>
+    </Fact>
+    <Fact path="/flowShouldSeeMFSLivedTogetherFullYear">
+      <Derived>
+        <All>
+          <Dependency path="/isFilingStatusComplete"/>
+          <Dependency path="/isFilingStatusMFS"/>
+          <Dependency path="/spouseLivedWithTaxpayerLastSixMonths"/>
+          <Dependency path="/samePrincipalResidenceLast6Months"/>
+        </All>
+      </Derived>
+    </Fact>
+  </Facts>
+</FactDictionaryModule>
