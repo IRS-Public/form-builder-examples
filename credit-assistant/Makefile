@@ -1,4 +1,4 @@
-PORT ?= 3001
+PORT ?= 3003
 DEBUGGER_PORT ?= 5005
 RESOURCES_DIR := ./src/main/resources/credit-assistant
 OUTPUT_DIR := ./out
