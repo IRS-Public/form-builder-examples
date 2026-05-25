@@ -1,5 +1,5 @@
 <!--
-  taxpert-chrome.html — Taxpert shell chrome fragments
+  Taxpert shell chrome fragments
   Included conditionally in page.html when flags.taxpert is active.
 
   Three named fragments:
@@ -7,7 +7,6 @@
     rail      — right-side tab strip + panel area (grid row 2, column 2)
     mode-pill — floating segmented control (fixed bottom-center)
 
-  Phase 2: HTML structure only. Tabs and interactions wired in Phase 3 (taxpert.js).
 -->
 
 <!-- ─── Topbar ─────────────────────────────────────────────── -->
@@ -37,40 +36,22 @@
     </button>
 
     <!-- Prev / Next page navigation -->
-    <div class="taxpert-nav-arrows" role="group" aria-label="Page navigation">
-      <button type="button" class="btn-icon" id="taxpert-prev-btn" aria-label="Previous page">
-        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
-             fill="none" stroke="currentColor" stroke-width="2.5"
-             aria-hidden="true" focusable="false">
-          <polyline points="18 15 12 9 6 15"/>
-        </svg>
-      </button>
-      <button type="button" class="btn-icon" id="taxpert-next-btn" aria-label="Next page">
-        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
-             fill="none" stroke="currentColor" stroke-width="2.5"
-             aria-hidden="true" focusable="false">
-          <polyline points="6 9 12 15 18 9"/>
-        </svg>
-      </button>
-    </div>
-
-  </div><!-- /taxpert-topbar-left -->
-
-  <!-- Center: section selector (custom element; wired in Phase 3) -->
-  <div class="taxpert-topbar-center">
-    <taxpert-section-selector>
-      <span class="taxpert-section-label">Section</span>
-      <select id="taxpert-section-select" aria-label="Jump to section">
-        <option value="">—</option>
-      </select>
-    </taxpert-section-selector>
-  </div><!-- /taxpert-topbar-center -->
-
-  <!-- Right: utility icon buttons -->
-  <div class="taxpert-topbar-right">
-
-    <!-- Layers -->
-    <button type="button" class="btn-icon" id="taxpert-layers-btn" aria-label="Layers">
+<!--    <div class="taxpert-nav-arrows" role="group" aria-label="Page navigation">-->
+<!--      <button type="button" class="btn-icon" id="taxpert-prev-btn" aria-label="Previous page">-->
+<!--        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"-->
+<!--             fill="none" stroke="currentColor" stroke-width="2.5"-->
+<!--             aria-hidden="true" focusable="false">-->
+<!--          <polyline points="18 15 12 9 6 15"/>-->
+<!--        </svg>-->
+<!--      </button>-->
+<!--      <button type="button" class="btn-icon" id="taxpert-next-btn" aria-label="Next page">-->
+<!--        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"-->
+<!--             fill="none" stroke="currentColor" stroke-width="2.5"-->
+<!--             aria-hidden="true" focusable="false">-->
+<!--          <polyline points="6 9 12 15 18 9"/>-->
+<!--        </svg>-->
+<!--      </button>-->
+      <button type="button" class="btn-icon" id="taxpert-layers-btn" aria-label="Layers">
       <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
            fill="none" stroke="currentColor" stroke-width="2"
            aria-hidden="true" focusable="false">
@@ -99,25 +80,72 @@
         <circle cx="12" cy="19" r="1.5"/>
       </svg>
     </button>
+    </div>
 
-  </div><!-- /taxpert-topbar-right -->
+  </div><!-- /taxpert-topbar-left -->
 
-</div><!-- /taxpert-topbar -->
+<!--  &lt;!&ndash; Right: utility icon buttons &ndash;&gt;-->
+<!--  <div class="taxpert-topbar-right">-->
+
+<!--    &lt;!&ndash; Layers &ndash;&gt;-->
+<!--    <button type="button" class="btn-icon" id="taxpert-layers-btn" aria-label="Layers">-->
+<!--      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"-->
+<!--           fill="none" stroke="currentColor" stroke-width="2"-->
+<!--           aria-hidden="true" focusable="false">-->
+<!--        <polygon points="12 2 2 7 12 12 22 7 12 2"/>-->
+<!--        <polyline points="2 17 12 22 22 17"/>-->
+<!--        <polyline points="2 12 12 17 22 12"/>-->
+<!--      </svg>-->
+<!--    </button>-->
+
+<!--    &lt;!&ndash; Filter &ndash;&gt;-->
+<!--    <button type="button" class="btn-icon" id="taxpert-filter-btn" aria-label="Filter">-->
+<!--      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"-->
+<!--           fill="none" stroke="currentColor" stroke-width="2"-->
+<!--           aria-hidden="true" focusable="false">-->
+<!--        <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/>-->
+<!--      </svg>-->
+<!--    </button>-->
+
+<!--    &lt;!&ndash; Overflow (⋯) &ndash;&gt;-->
+<!--    <button type="button" class="btn-icon" id="taxpert-overflow-btn" aria-label="More options"-->
+<!--            aria-haspopup="true" aria-expanded="false">-->
+<!--      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"-->
+<!--           fill="currentColor" aria-hidden="true" focusable="false">-->
+<!--        <circle cx="12" cy="5"  r="1.5"/>-->
+<!--        <circle cx="12" cy="12" r="1.5"/>-->
+<!--        <circle cx="12" cy="19" r="1.5"/>-->
+<!--      </svg>-->
+<!--    </button>-->
+
+<!--  </div>&lt;!&ndash; /taxpert-topbar-right &ndash;&gt;-->
+
+<!--</div>&lt;!&ndash; /taxpert-topbar &ndash;&gt;-->
+
+
+<!-- ─── Rail Collapse Button ────────────────────────────────── -->
+<!-- Separate fragment so it renders at body level, outside the rail.
+     position:fixed only works relative to the viewport when the element
+     is NOT inside a stacking-context parent (like position:relative). -->
+
+<button th:fragment="collapse-btn"
+        type="button" class="taxpert-rail-collapse" id="taxpert-rail-collapse"
+        aria-label="Collapse panel" aria-expanded="true" aria-controls="taxpert-panel">
+  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
+       fill="none" stroke="currentColor" stroke-width="2.5"
+       aria-hidden="true" focusable="false">
+    <polyline points="15 18 9 12 15 6"/>
+  </svg>
+</button>
 
 
 <!-- ─── Right Rail ─────────────────────────────────────────── -->
 
 <div th:fragment="rail" class="taxpert-rail" aria-label="Taxpert tool panels">
 
-  <!-- Collapse toggle (absolute-positioned over tab strip) -->
-  <button type="button" class="taxpert-rail-collapse" id="taxpert-rail-collapse"
-          aria-label="Collapse panel" aria-expanded="true" aria-controls="taxpert-panel">
-    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
-         fill="none" stroke="currentColor" stroke-width="2.5"
-         aria-hidden="true" focusable="false">
-      <polyline points="15 18 9 12 15 6"/>
-    </svg>
-  </button>
+  <!-- Resize handle (visible only when expanded) -->
+  <div class="taxpert-rail-resize-handle" id="taxpert-rail-resize-handle"
+       aria-label="Resize rail panel" role="separator"></div>
 
   <!-- Tab strip (left column — magenta) -->
   <div class="taxpert-tabs" role="tablist" aria-label="Tool panels">
@@ -151,7 +179,6 @@
   <!-- Panel area (right column) -->
   <div class="taxpert-panel" id="taxpert-panel">
 
-    <!-- Panel title bar (updated by JS in Phase 3) -->
     <div class="taxpert-panel-title" id="taxpert-panel-label" aria-live="polite">Inspection</div>
 
     <!-- Inspection panel (default active) -->
@@ -206,12 +233,3 @@
 
 </div><!-- /taxpert-rail -->
 
-
-<!-- ─── Floating Mode Pill ─────────────────────────────────── -->
-
-<div th:fragment="mode-pill" class="taxpert-mode-pill-container">
-  <taxpert-mode-pill aria-label="Interaction mode">
-    <button type="button" data-segment="item-select" class="active" aria-pressed="true">Item-select</button>
-    <button type="button" data-segment="assistant" aria-pressed="false">Assistant</button>
-  </taxpert-mode-pill>
-</div><!-- /taxpert-mode-pill-container -->

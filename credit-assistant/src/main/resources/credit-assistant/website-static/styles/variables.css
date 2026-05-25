@@ -151,7 +151,7 @@
   --flow-spacing--offset: calc(var(--flow-spacing) + var(--flow-spacing--sm));
 
   /* Taxpert Shell Tokens */
-  --taxpert-pink: #FF00FF;
+  --taxpert-pink: #800080;
   --taxpert-pink-light: #FFF0FF;
   --taxpert-gray: #4a4a4a;
   --taxpert-rail-width: 360px;

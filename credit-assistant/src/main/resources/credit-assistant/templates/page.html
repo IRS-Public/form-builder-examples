@@ -11,7 +11,7 @@
 
 <!-- Taxpert topbar — rendered only in Taxpert mode (--taxpert flag) -->
 <th:block th:if="${flags.taxpert}">
-  <div th:replace="fragments/taxpert-chrome :: topbar"></div>
+  <div th:replace="fragments/taxpert :: topbar"></div>
 </th:block>
 
 <div class="app-container">
@@ -135,12 +135,11 @@
 
 <!-- Taxpert rail + mode pill — rendered only in Taxpert mode -->
 <th:block th:if="${flags.taxpert}">
-  <div th:replace="fragments/taxpert-chrome :: rail"></div>
-  <div th:replace="fragments/taxpert-chrome :: mode-pill"></div>
+  <th:block th:replace="fragments/taxpert :: collapse-btn"></th:block>
+  <div th:replace="fragments/taxpert :: rail"></div>
 </th:block>
 
-<!-- Inspector content — distributed into rail tabs by taxpert-inspector.js on enable -->
-<div th:replace="fragments/audit-panel"></div>
+
 
 <script type="module" th:if="${flags.taxpert}">
     import { enableTaxpert } from '/app/eitc/resources/js/taxpert.js'

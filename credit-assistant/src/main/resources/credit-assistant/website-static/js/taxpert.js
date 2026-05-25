@@ -74,6 +74,43 @@ function setRailCollapsed (collapsed) {
   writeStorage({ railCollapsed: collapsed })
 }
 
+// ── Rail resize ─────────────────────────────────────────────────────────
+
+function initializeRailResize () {
+  const rail = document.querySelector('.taxpert-rail')
+  const handle = document.getElementById('taxpert-rail-resize-handle')
+  if (!rail || !handle) return
+
+  let isResizing = false
+  let startX = 0
+  let startWidth = 0
+
+  handle.addEventListener('mousedown', (e) => {
+    isResizing = true
+    startX = e.clientX
+    startWidth = rail.getBoundingClientRect().width
+    document.body.style.userSelect = 'none'
+    document.body.style.cursor = 'col-resize'
+  })
+
+  document.addEventListener('mousemove', (e) => {
+    if (!isResizing) return
+    const delta = e.clientX - startX
+    const newWidth = Math.max(280, Math.min(window.innerWidth * 0.6, startWidth - delta))
+    // The grid reacts to --taxpert-rail-width; no need to set rail.style.width
+    document.documentElement.style.setProperty('--taxpert-rail-width', newWidth + 'px')
+  })
+
+  document.addEventListener('mouseup', () => {
+    if (!isResizing) return
+    isResizing = false
+    document.body.style.userSelect = ''
+    document.body.style.cursor = ''
+    const newWidth = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--taxpert-rail-width'))
+    writeStorage({ railWidth: newWidth })
+  })
+}
+
 // ── Page navigation ────────────────────────────────────────────────────────
 
 function navigatePrev () {
@@ -106,9 +143,9 @@ class TaxpertModePill extends HTMLElement {
   }
 }
 
-if (!customElements.get('taxpert-mode-pill')) {
-  customElements.define('taxpert-mode-pill', TaxpertModePill)
-}
+// if (!customElements.get('taxpert-mode-pill')) {
+//   customElements.define('taxpert-mode-pill', TaxpertModePill)
+// }
 
 // ── Custom element: taxpert-section-selector ──────────────────────────────
 
@@ -222,6 +259,13 @@ export function enableTaxpert () {
     setRailCollapsed(willCollapse)
   })
   setRailCollapsed(stored.railCollapsed ?? false)
+
+  // ── Rail resize ─────────────────────────────────────────
+  initializeRailResize()
+  // Restore saved rail width — update the CSS variable; the grid reacts automatically
+  if (stored.railWidth) {
+    document.documentElement.style.setProperty('--taxpert-rail-width', stored.railWidth + 'px')
+  }
 
   // ── Page navigation ────────────────────────────────────
   document.getElementById('taxpert-prev-btn')?.addEventListener('click', navigatePrev)
