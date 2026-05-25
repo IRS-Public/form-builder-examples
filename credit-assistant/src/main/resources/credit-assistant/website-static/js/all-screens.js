@@ -2,7 +2,7 @@
 // The audit panel is NOT shown on this page — the toolbar's "Show conditions" toggle drives
 // `displayConditions()` / `hideConditions()` directly. State is persisted under 'allScreens'.
 
-import { displayConditions, hideConditions } from './taxpert-inspector.js'
+import { displayConditions, hideConditions } from './audit-panel.js'
 
 const STORAGE_KEY = 'allScreens'
 

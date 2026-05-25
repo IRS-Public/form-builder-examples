@@ -149,7 +149,7 @@ object Website {
 
     if (flags.contains(Flags.allScreens)) {
       val allScreensPages = locales.map { languageCode =>
-        AllScreens.generate(flow, languageCode, supportedLocales, flags)
+        AllScreens.generate(flow, languageCode, supportedLocales)
       }
       pages = pages ++ allScreensPages
     }
