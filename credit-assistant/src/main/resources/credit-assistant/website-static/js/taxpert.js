@@ -13,7 +13,7 @@
  * SessionStorage key: 'taxpert' → { activeTab, railCollapsed }
  */
 
-import { enableTaxpertInspector, displayConditions, hideConditions } from './taxpert-inspector.js'
+import { enableTaxpertInspector } from './taxpert-inspector.js'
 
 // ── Storage ────────────────────────────────────────────────────────────────
 
@@ -60,7 +60,7 @@ function switchTab (tabId) {
   })
 
   const titleEl = document.getElementById('taxpert-panel-label')
-  if (titleEl) titleEl.textContent = PANEL_TITLES[tabId] ?? tabId
+  if (titleEl) titleEl.textContent = PANEL_TITLES.get(tabId) ?? tabId
 
   writeStorage({ activeTab: tabId })
 }
@@ -126,26 +126,6 @@ function navigateNext () {
   const nextBtn = document.querySelector('.form-actions a.usa-button:not(.usa-button--outline)')
   if (nextBtn) nextBtn.click()
 }
-
-// ── Custom element: taxpert-mode-pill ─────────────────────────────────────
-
-class TaxpertModePill extends HTMLElement {
-  connectedCallback () {
-    this.addEventListener('click', (e) => {
-      const segment = e.target.closest('[data-segment]')
-      if (!segment) return
-      this.querySelectorAll('[data-segment]').forEach(btn => {
-        const active = btn === segment
-        btn.classList.toggle('active', active)
-        btn.setAttribute('aria-pressed', active ? 'true' : 'false')
-      })
-    })
-  }
-}
-
-// if (!customElements.get('taxpert-mode-pill')) {
-//   customElements.define('taxpert-mode-pill', TaxpertModePill)
-// }
 
 // ── Custom element: taxpert-section-selector ──────────────────────────────
 
