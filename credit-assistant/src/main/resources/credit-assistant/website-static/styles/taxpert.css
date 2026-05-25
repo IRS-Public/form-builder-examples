@@ -447,3 +447,8 @@ body.taxpert-rail-collapsed .taxpert-rail-collapse svg {
   padding: var(--units-2);
   text-align: center;
 }
+
+.condition-detail-popover {
+  position: absolute; /* or position: fixed; */
+  z-index: 9999;
+}

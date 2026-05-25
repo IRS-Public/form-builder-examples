@@ -347,7 +347,7 @@ class ConditionDetail extends HTMLElement {
 
     this._popover = document.createElement('div')
     this._popover.className = 'condition-detail-popover'
-    document.body.appendChild(this._popover)
+    document.querySelector('.app-container').appendChild(this._popover)
     this._popover.addEventListener('mouseenter', () => clearTimeout(this._hideTimeout))
     this._popover.addEventListener('mouseleave', () => this._startHide())
 
