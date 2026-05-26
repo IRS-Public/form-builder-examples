@@ -841,6 +841,7 @@ export function enable () {
   // Set up the audit to display on the page (shows the thin tab rail)
   document.querySelector('#audit-panel-styles').disabled = false
   document.querySelector('#audit-panel').classList.remove('hidden')
+  document.querySelector('#audit-mode-ribbon')?.classList.remove('hidden')
 
   // Set up adjustable width controls for the audit panel
   function initializeAdjustableWidth () {
@@ -1137,7 +1138,7 @@ export function enable () {
 export function disable () {
   document.querySelector('#audit-panel-styles').disabled = true
   document.querySelector('#audit-panel').classList.add('hidden')
-  openAuditPanelButton.classList.add('hidden')
+  document.querySelector('#audit-mode-ribbon')?.classList.add('hidden')
   document.body.classList.remove('audit-panel-open')
   document.body.removeAttribute('style')
   delete auditPanel.dataset.activeTab
