@@ -5,7 +5,6 @@ const res = await fetch('/app/eitc/resources/fact-dictionary.xml')
 const text = await res.text()
 const factDictionaryXml = parser.parseFromString(text, 'application/xml')
 const factSelect = document.querySelector('#fact-select')
-const openAuditPanelButton = document.querySelector('#toggle-audit-panel')
 const auditPanel = document.querySelector('#audit-panel')
 const auditPanelResizer = document.querySelector('#audit-panel-resizer')
 const AUDIT_PANEL_STORAGE_KEY = 'auditPanel'
@@ -985,6 +984,16 @@ export function enable () {
   const syncAuditPanelWidth = initializeAdjustableWidth()
   syncAuditPanelWidth()
 
+  // Update the toggle button icon based on whether the panel is open
+  function updateToggleButtonIcon (isOpen) {
+    const toggleBtn = document.querySelector('#toggle-audit-panel')
+    if (!toggleBtn) return
+    const img = toggleBtn.querySelector('img')
+    if (!img) return
+    const iconName = isOpen ? 'navigate_far_next.svg' : 'navigate_far_before.svg'
+    img.src = `/app/eitc/resources/vendor/uswds-3.13.0/img/usa-icons/${iconName}`
+  }
+
   // Open the audit panel to a specific tab
   function openTab (tabId) {
     auditPanel.dataset.activeTab = tabId
@@ -994,6 +1003,7 @@ export function enable () {
     })
     setAuditPanelStorage('isOpen', true)
     setAuditPanelStorage('activeTab', tabId)
+    updateToggleButtonIcon(true)
     syncAuditPanelWidth()
   }
 
@@ -1006,6 +1016,7 @@ export function enable () {
     )
     setAuditPanelStorage('isOpen', false)
     setAuditPanelStorage('activeTab', null)
+    updateToggleButtonIcon(false)
     const focusTarget = lastActiveTabButton ?? auditPanelTabButtons[0]
     focusTarget?.focus()
   }
@@ -1083,7 +1094,10 @@ export function enable () {
       openTab(savedTab)
     } else {
       document.body.classList.add('audit-panel-open')
+      updateToggleButtonIcon(true)
     }
+  } else {
+    updateToggleButtonIcon(false)
   }
 
   // If there are any facts stored in session storage, make sure to add them back
