@@ -41,14 +41,6 @@
     <main id="main-content">
         <h1 th:text="#{layout.title}"></h1>
 
-        <button class="hidden" id="show-audit-panel" type="button" aria-label="Open audit panel">
-          <span class="usa-tooltip" data-position="left" title="Open audit panel">
-          <svg class="usa-icon" aria-hidden="true" focusable="false" role="img">
-            <use href="/app/eitc/resources/vendor/uswds-3.13.0/img/sprite.svg#settings"></use>
-          </svg>
-          </span>
-        </button>
-
         <div th:replace="fragments/usa-step-indicator"></div>
 
         <div class="header-bottom-border" th:if="!${first}">

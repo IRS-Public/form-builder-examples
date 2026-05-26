@@ -10,11 +10,19 @@ const closeAuditPanelButton = document.querySelector('#close-audit-panel')
 const auditPanel = document.querySelector('#audit-panel')
 const auditPanelResizer = document.querySelector('#audit-panel-resizer')
 const AUDIT_PANEL_STORAGE_KEY = 'auditPanel'
-const AUDIT_PANEL_STORAGE_FIELDS = new Set(['isOpen', 'trackedFacts', 'showConditions', 'width'])
+const AUDIT_PANEL_STORAGE_FIELDS = new Set([
+  'isOpen',
+  'trackedFacts',
+  'showConditions',
+  'width',
+  'activeTab',
+])
 const AUDIT_PANEL_DEFAULT_WIDTH = 38
 const AUDIT_PANEL_MIN_WIDTH = 320
 const AUDIT_PANEL_MAX_WIDTH_RATIO = 0.7
 const AUDIT_PANEL_KEYBOARD_STEP = 24
+const auditPanelTabButtons = document.querySelectorAll('.audit-panel__tab')
+let lastActiveTabButton = null
 
 const DQ_MARRIED_NOT_JOINT_FACTS = [
   '/isDisqualifiedFlowSeparationTestNotMarriedLivedNotSeparated',
@@ -69,83 +77,119 @@ const FS_HOUSEHOLD_FACTS = [
 ]
 
 function renderDashboardSection (facts, rollupPath, heading, getStatus) {
-  const items = facts.map(p => {
-    let status = 'incomplete'
-    let badge = 'incomplete'
-    try {
-      const fact = window.factGraph.get(p)
-      if (fact.complete) {
-        const val = fact.get.toString()
-        if (getStatus) {
-          const result = getStatus(p, val)
-          status = result.status
-          badge = result.badge ?? result.status
-        } else {
-          status = p.startsWith('/isDisqualified')
-            ? (val === 'true' ? 'disqualified' : 'passed')
-            : (val === 'true' ? 'passed' : 'failed')
-          badge = status
+  const items = facts
+    .map((p) => {
+      let status = 'incomplete'
+      let badge = 'incomplete'
+      try {
+        const fact = window.factGraph.get(p)
+        if (fact.complete) {
+          const val = fact.get.toString()
+          if (getStatus) {
+            const result = getStatus(p, val)
+            status = result.status
+            badge = result.badge ?? result.status
+          } else {
+            status = p.startsWith('/isDisqualified')
+              ? val === 'true'
+                ? 'disqualified'
+                : 'passed'
+              : val === 'true'
+                ? 'passed'
+                : 'failed'
+            badge = status
+          }
         }
-      }
-    } catch {}
-    const isRollup = p === rollupPath
-    return `<li class="ap-dq-item ap-dq-${status}${isRollup ? ' ap-dq-rollup' : ''}" title="${p}">
+      } catch {}
+      const isRollup = p === rollupPath
+      return `<li class="ap-dq-item ap-dq-${status}${isRollup ? ' ap-dq-rollup' : ''}" title="${p}">
         <span class="ap-dq-label">${p}</span>
         <span class="ap-dq-badge ap-dq-badge--${status}">${badge}</span>
       </li>`
-  }).join('')
+    })
+    .join('')
   return `<li class="ap-dq-section-heading">${heading}</li>${items}`
 }
 
 function renderDQDashboard () {
-  const list = document.querySelector('#dq-dashboard-list')
+  const list = document.querySelector('#dq-dashboard-list-nested')
   if (!list || !window.factGraph) return
 
   list.innerHTML = [
-    renderDashboardSection(DQ_MARRIED_NOT_JOINT_FACTS, '/isDisqualifiedMarriedNotFilingJointly', 'Married Not Joint'),
-    renderDashboardSection(DQ_AGE_WITHOUT_QC_FACTS, '/isDisqualifiedForEitcAgeWithoutQualifyingChildren', 'Age (No QC)'),
-    renderDashboardSection(DQ_AGE_WITH_QC_FACTS, '/isDisqualifiedForEitcAgeWithQualifyingChildren', 'Age (With QC)'),
+    renderDashboardSection(
+      DQ_MARRIED_NOT_JOINT_FACTS,
+      '/isDisqualifiedMarriedNotFilingJointly',
+      'Married Not Joint'
+    ),
+    renderDashboardSection(
+      DQ_AGE_WITHOUT_QC_FACTS,
+      '/isDisqualifiedForEitcAgeWithoutQualifyingChildren',
+      'Age (No QC)'
+    ),
+    renderDashboardSection(
+      DQ_AGE_WITH_QC_FACTS,
+      '/isDisqualifiedForEitcAgeWithQualifyingChildren',
+      'Age (With QC)'
+    ),
   ].join('')
 }
 
 function fsFilingStatusLabel (val) {
   switch (val) {
-    case 'marriedFilingJointly': return 'MFJ'
-    case 'marriedFilingSeparately': return 'MFS'
-    case 'single': return 'Single'
-    case 'headOfHousehold': return 'HOH'
-    case 'qualifiedSurvivingSpouse': return 'QSS'
-    default: return val
+    case 'marriedFilingJointly':
+      return 'MFJ'
+    case 'marriedFilingSeparately':
+      return 'MFS'
+    case 'single':
+      return 'Single'
+    case 'headOfHousehold':
+      return 'HOH'
+    case 'qualifiedSurvivingSpouse':
+      return 'QSS'
+    default:
+      return val
   }
 }
 
 function fsDashboardStatus (path, val) {
-  if (path === '/derivedFilingStatus') return { status: 'resolved', badge: fsFilingStatusLabel(val) }
+  if (path === '/derivedFilingStatus') { return { status: 'resolved', badge: fsFilingStatusLabel(val) } }
   return { status: val === 'true' ? 'passed' : 'failed' }
 }
 
+function renderEligibilityDashboard () {
+  renderFSDashboard()
+  renderDQDashboard()
+}
 function renderFSDashboard () {
-  const list = document.querySelector('#fs-dashboard-list')
+  const list = document.querySelector('#fs-dashboard-list-nested')
   if (!list || !window.factGraph) return
 
   list.innerHTML = [
-    renderDashboardSection(FS_MARITAL_STATUS_FACTS, null, 'Marital Status', fsDashboardStatus),
-    renderDashboardSection(FS_HOUSEHOLD_FACTS, '/derivedFilingStatus', 'Household & Filing Intent', fsDashboardStatus),
+    renderDashboardSection(
+      FS_MARITAL_STATUS_FACTS,
+      null,
+      'Marital Status',
+      fsDashboardStatus
+    ),
+    renderDashboardSection(
+      FS_HOUSEHOLD_FACTS,
+      '/derivedFilingStatus',
+      'Household & Filing Intent',
+      fsDashboardStatus
+    ),
   ].join('')
 }
 
 document.addEventListener('fg-update', () => {
-  renderDQDashboard()
-  renderFSDashboard()
+  renderEligibilityDashboard()
 })
 document.addEventListener('fg-load', () => {
-  renderDQDashboard()
-  renderFSDashboard()
+  renderEligibilityDashboard()
 })
 
 export function displayConditions () {
   document.body.classList.add('display-conditions')
-  document.querySelectorAll('[condition]').forEach(el => {
+  document.querySelectorAll('[condition]').forEach((el) => {
     const operator = el.getAttribute('operator')
     const conditionPath = el.getAttribute('condition')
     if (!operator || !conditionPath) return
@@ -167,7 +211,7 @@ export function displayConditions () {
 
 export function hideConditions () {
   document.body.classList.remove('display-conditions')
-  document.querySelectorAll('condition-detail').forEach(el => el.remove())
+  document.querySelectorAll('condition-detail').forEach((el) => el.remove())
 }
 window.displayConditions = displayConditions
 window.hideConditions = hideConditions
@@ -206,6 +250,8 @@ function setAuditPanelStorage (key, value) {
     storage.showConditions = value
   } else if (key === 'width') {
     storage.width = value
+  } else if (key === 'activeTab') {
+    storage.activeTab = value
   }
   sessionStorage.setItem(AUDIT_PANEL_STORAGE_KEY, JSON.stringify(storage))
 }
@@ -224,10 +270,20 @@ class FactLink extends HTMLElement {
 
     const link = document.createElement('a')
     link.href = `#${this.path}`
-    while (this.firstChild) { link.appendChild(this.firstChild) } // Move all children to the link
+    while (this.firstChild) {
+      link.appendChild(this.firstChild)
+    } // Move all children to the link
     link.onclick = () => {
-      document.body.classList.add('audit-panel-open')
-      setAuditPanelStorage('isOpen', true)
+      const factGraphTabBtn = document.querySelector(
+        '.audit-panel__tab[data-tab="fact-graph"]'
+      )
+      if (factGraphTabBtn) {
+        lastActiveTabButton = factGraphTabBtn
+        factGraphTabBtn.click()
+      } else {
+        document.body.classList.add('audit-panel-open')
+        setAuditPanelStorage('isOpen', true)
+      }
       trackFact(this.path, this.collectionId)
       return false
     }
@@ -243,22 +299,38 @@ class AuditedFact extends HTMLElement {
     this.deleteListener = () => {
       const storage = getAuditPanelStorage()
       const trackedFacts = storage.trackedFacts || []
-      const newTrackedFacts = trackedFacts.filter((fact) => fact.path !== this.abstractPath && fact.collectionId !== this.collectionId)
+      const newTrackedFacts = trackedFacts.filter(
+        (fact) =>
+          fact.path !== this.abstractPath &&
+          fact.collectionId !== this.collectionId
+      )
       setAuditPanelStorage('trackedFacts', newTrackedFacts)
       this.remove()
     }
     this.renderListener = () => this.render()
 
-    const templateContent = document.querySelector('#audit-panel__fact').content.cloneNode(true)
+    const templateContent = document
+      .querySelector('#audit-panel__fact')
+      .content.cloneNode(true)
     this.attachShadow({ mode: 'open' })
     this.shadowRoot.append(templateContent)
 
-    this.factPathElem = this.shadowRoot.querySelector('.audit-panel__fact__path')
-    this.factTypeElem = this.shadowRoot.querySelector('.audit-panel__fact__type')
-    this.factValueElem = this.shadowRoot.querySelector('.audit-panel__fact__value')
-    this.factDefinitionElem = this.shadowRoot.querySelector('.audit-panel__fact__definition')
+    this.factPathElem = this.shadowRoot.querySelector(
+      '.audit-panel__fact__path'
+    )
+    this.factTypeElem = this.shadowRoot.querySelector(
+      '.audit-panel__fact__type'
+    )
+    this.factValueElem = this.shadowRoot.querySelector(
+      '.audit-panel__fact__value'
+    )
+    this.factDefinitionElem = this.shadowRoot.querySelector(
+      '.audit-panel__fact__definition'
+    )
 
-    this.removeButton = this.shadowRoot.querySelector('.audit-panel__fact__remove')
+    this.removeButton = this.shadowRoot.querySelector(
+      '.audit-panel__fact__remove'
+    )
   }
 
   connectedCallback () {
@@ -294,16 +366,20 @@ class AuditedFact extends HTMLElement {
     // Serialize and sanitize the fact definition for inclusion as HTML
     // Replace brackets with HTML entities to prevent the XML from being rendered, and remove leading indentation after first line for readability
     // We do this because the definition will have live <a> links in it
-    const xmlDefinition = factDictionaryXml.querySelector(`Fact[path="${this.abstractPath}"]`)
+    const xmlDefinition = factDictionaryXml.querySelector(
+      `Fact[path="${this.abstractPath}"]`
+    )
     const stringDefinition = XML_SERIALIZER.serializeToString(xmlDefinition)
       .replace(/</g, '&lt;')
       .replace(/>/g, '&gt;')
       .split('\n')
-      .map((line, index) => index === 0 ? line : line.replace(/^ {4}/, ''))
+      .map((line, index) => (index === 0 ? line : line.replace(/^ {4}/, '')))
       .join('\n')
 
     // Enhance the definition by adding links to dependencies
-    const dependencyNodes = Array.from(xmlDefinition.querySelectorAll('Dependency'))
+    const dependencyNodes = Array.from(
+      xmlDefinition.querySelectorAll('Dependency')
+    )
     const fullDefinition = dependencyNodes.reduce((result, dependencyNode) => {
       const rawPath = dependencyNode.getAttribute('path')
 
@@ -312,7 +388,10 @@ class AuditedFact extends HTMLElement {
         return result
       }
       // but we can resolve relative paths ("../income")
-      const abstractPath = rawPath.replace('..', this.abstractPath.replace(/\*\/.*/, '*'))
+      const abstractPath = rawPath.replace(
+        '..',
+        this.abstractPath.replace(/\*\/.*/, '*')
+      )
       const link = `<fact-link path="${abstractPath}" collectionId="${this.collectionId}">${rawPath}</fact-link>`
       return result.replace(`path="${rawPath}"`, `path="${link}"`)
     }, stringDefinition)
@@ -342,7 +421,9 @@ class ConditionDetail extends HTMLElement {
     this._popover = document.createElement('div')
     this._popover.className = 'condition-detail-popover'
     document.body.appendChild(this._popover)
-    this._popover.addEventListener('mouseenter', () => clearTimeout(this._hideTimeout))
+    this._popover.addEventListener('mouseenter', () =>
+      clearTimeout(this._hideTimeout)
+    )
     this._popover.addEventListener('mouseleave', () => this._startHide())
 
     document.addEventListener('fg-update', this.renderListener)
@@ -355,13 +436,18 @@ class ConditionDetail extends HTMLElement {
   }
 
   _startHide () {
-    this._hideTimeout = setTimeout(() => this._popover.classList.remove('visible'), 150)
+    this._hideTimeout = setTimeout(
+      () => this._popover.classList.remove('visible'),
+      150
+    )
   }
 
   render () {
     const isHidden = this.parentElement?.classList.contains('hidden') ?? false
     const statusText = isHidden ? 'UNSET_CONDITION' : 'SET_CONDITION'
-    const statusClass = isHidden ? 'condition-detail__status--hidden' : 'condition-detail__status--shown'
+    const statusClass = isHidden
+      ? 'condition-detail__status--hidden'
+      : 'condition-detail__status--shown'
 
     let valueText = '(unavailable)'
     let completeText = ''
@@ -388,10 +474,12 @@ class ConditionDetail extends HTMLElement {
     `
 
     this._popover.innerHTML = this._buildHumanReadable()
-    this._popover.querySelectorAll('.hr-toggle-xml').forEach(btn => {
+    this._popover.querySelectorAll('.hr-toggle-xml').forEach((btn) => {
       btn.addEventListener('click', () => {
-        this._popover.querySelector('.hr-fact').hidden = !this._popover.querySelector('.hr-fact').hidden
-        this._popover.querySelector('.hr-xml-view').hidden = !this._popover.querySelector('.hr-xml-view').hidden
+        this._popover.querySelector('.hr-fact').hidden =
+          !this._popover.querySelector('.hr-fact').hidden
+        this._popover.querySelector('.hr-xml-view').hidden =
+          !this._popover.querySelector('.hr-xml-view').hidden
       })
     })
 
@@ -407,11 +495,17 @@ class ConditionDetail extends HTMLElement {
   }
 
   _getFactLabel (rawAbstractPath) {
-    const factNode = factDictionaryXml.querySelector(`Fact[path="${rawAbstractPath}"]`)
+    const factNode = factDictionaryXml.querySelector(
+      `Fact[path="${rawAbstractPath}"]`
+    )
     const nameText = factNode?.querySelector('Name')?.textContent?.trim()
     if (nameText) return nameText
-    const segment = rawAbstractPath.split('/').filter(Boolean).pop() ?? rawAbstractPath
-    return segment.replace(/([A-Z])/g, ' $1').toLowerCase().trim()
+    const segment =
+      rawAbstractPath.split('/').filter(Boolean).pop() ?? rawAbstractPath
+    return segment
+      .replace(/([A-Z])/g, ' $1')
+      .toLowerCase()
+      .trim()
   }
 
   _resolveAbstractPath (rawPath) {
@@ -430,8 +524,12 @@ class ConditionDetail extends HTMLElement {
     if (!concretePath || concretePath.includes('*')) return null
     try {
       const fact = window.factGraph.get(concretePath)
-      return fact.hasValue ? { value: fact.get.toString(), complete: fact.complete } : null
-    } catch { return null }
+      return fact.hasValue
+        ? { value: fact.get.toString(), complete: fact.complete }
+        : null
+    } catch {
+      return null
+    }
   }
 
   _renderDep (node, collectionId, { negated = false, isComplete = false } = {}) {
@@ -446,22 +544,29 @@ class ConditionDetail extends HTMLElement {
 
     if (isComplete) {
       const answered = result !== null
-      const chip = answered ? `<span class="hr-val hr-val--answered">${result.value}</span>` : ''
+      const chip = answered
+        ? `<span class="hr-val hr-val--answered">${result.value}</span>`
+        : ''
       return `<span class="hr-dep">${pathSpan} <span class="hr-qualifier">${answered ? 'has been answered' : 'has not been answered'}</span>${chip}</span>`
     }
     if (negated) {
-      const chip = result ? `<span class="hr-val hr-val--secondary">${result.value}</span>` : ''
+      const chip = result
+        ? `<span class="hr-val hr-val--secondary">${result.value}</span>`
+        : ''
       return `<span class="hr-dep">${pathSpan} <span class="hr-qualifier">is false</span>${chip}</span>`
     }
 
     let chip = ''
     if (result) {
-      const cls = result.value === 'true'
-        ? 'hr-val--true'
-        : result.value === 'false'
-          ? 'hr-val--false'
-          : 'hr-val--other'
-      const incomplete = !result.complete ? ' <span class="hr-incomplete">(incomplete)</span>' : ''
+      const cls =
+        result.value === 'true'
+          ? 'hr-val--true'
+          : result.value === 'false'
+            ? 'hr-val--false'
+            : 'hr-val--other'
+      const incomplete = !result.complete
+        ? ' <span class="hr-incomplete">(incomplete)</span>'
+        : ''
       chip = ` <span class="hr-val ${cls}">${result.value}</span>${incomplete}`
     }
     return `<span class="hr-dep">${pathSpan}${chip}</span>`
@@ -485,16 +590,21 @@ class ConditionDetail extends HTMLElement {
       case 'All': {
         const label = tag === 'Any' ? 'ANY of:' : 'ALL of:'
         const cls = tag === 'Any' ? 'hr-any' : 'hr-all'
-        const rows = kids.map(c => `<li>${this._renderNode(c, collectionId)}</li>`).join('')
+        const rows = kids
+          .map((c) => `<li>${this._renderNode(c, collectionId)}</li>`)
+          .join('')
         return `<div class="hr-group ${cls}"><span class="hr-op">${label}</span><ul>${rows}</ul></div>`
       }
 
       case 'Not': {
         const child = kids[0]
         if (!child) return ''
-        if (child.tagName === 'Dependency') return this._renderDep(child, collectionId, { negated: true })
+        if (child.tagName === 'Dependency') { return this._renderDep(child, collectionId, { negated: true }) }
         if (child.tagName === 'IsComplete') {
-          return this._renderDep(child.children[0], collectionId, { isComplete: true, negated: true })
+          return this._renderDep(child.children[0], collectionId, {
+            isComplete: true,
+            negated: true,
+          })
         }
         return `<div class="hr-not"><span class="hr-op hr-op--not">NOT:</span> ${this._renderNode(child, collectionId)}</div>`
       }
@@ -506,7 +616,9 @@ class ConditionDetail extends HTMLElement {
         return this._renderDep(node, collectionId)
 
       case 'Switch': {
-        const rows = kids.map(c => this._renderNode(c, collectionId)).join('')
+        const rows = kids
+          .map((c) => this._renderNode(c, collectionId))
+          .join('')
         return `<div class="hr-switch">${rows}</div>`
       }
 
@@ -537,8 +649,10 @@ class ConditionDetail extends HTMLElement {
   }
 
   _buildHumanReadable () {
-    const factDef = factDictionaryXml.querySelector(`Fact[path="${this.abstractPath}"]`)
-    if (!factDef) return '<p class="hr-error">(fact not found in dictionary)</p>'
+    const factDef = factDictionaryXml.querySelector(
+      `Fact[path="${this.abstractPath}"]`
+    )
+    if (!factDef) { return '<p class="hr-error">(fact not found in dictionary)</p>' }
 
     const collectionId = this._extractCollectionId()
 
@@ -547,10 +661,17 @@ class ConditionDetail extends HTMLElement {
       const fact = window.factGraph.get(this.conditionPath)
       if (fact.hasValue) {
         const v = fact.get.toString()
-        const cls = v === 'true' ? 'hr-val--true' : v === 'false' ? 'hr-val--false' : 'hr-val--other'
+        const cls =
+          v === 'true'
+            ? 'hr-val--true'
+            : v === 'false'
+              ? 'hr-val--false'
+              : 'hr-val--other'
         headerChip = `<span class="hr-val ${cls}">${v}</span>`
       }
-    } catch { /* fact may not be accessible */ }
+    } catch {
+      /* fact may not be accessible */
+    }
 
     const body = this._renderNode(factDef.firstElementChild, collectionId)
 
@@ -569,7 +690,9 @@ class ConditionDetail extends HTMLElement {
   }
 
   _buildAnnotatedXml () {
-    const factDef = factDictionaryXml.querySelector(`Fact[path="${this.abstractPath}"]`)
+    const factDef = factDictionaryXml.querySelector(
+      `Fact[path="${this.abstractPath}"]`
+    )
     if (!factDef) return '(fact not found in dictionary)'
 
     const collectionId = this._extractCollectionId()
@@ -579,11 +702,11 @@ class ConditionDetail extends HTMLElement {
       .replace(/</g, '&lt;')
       .replace(/>/g, '&gt;')
       .split('\n')
-      .map((line, i) => i === 0 ? line : line.replace(/^ {4}/, ''))
+      .map((line, i) => (i === 0 ? line : line.replace(/^ {4}/, '')))
       .join('\n')
 
     // Annotate each <Dependency> with its current value, matching debugFact's ⮕ annotation
-    Array.from(factDef.querySelectorAll('Dependency')).forEach(dep => {
+    Array.from(factDef.querySelectorAll('Dependency')).forEach((dep) => {
       const rawPath = dep.getAttribute('path')
       if (!rawPath) return
 
@@ -602,8 +725,13 @@ class ConditionDetail extends HTMLElement {
         const annotation = fact.hasValue
           ? ` ⮕ ${fact.get} (${fact.complete ? 'complete' : 'incomplete'})`
           : ' ⮕ (no value)'
-        xmlStr = xmlStr.replace(`path="${rawPath}"`, `path="${rawPath}"${annotation}`)
-      } catch (e) { /* path may not exist yet */ }
+        xmlStr = xmlStr.replace(
+          `path="${rawPath}"`,
+          `path="${rawPath}"${annotation}`
+        )
+      } catch (e) {
+        /* path may not exist yet */
+      }
     })
 
     return xmlStr
@@ -637,7 +765,9 @@ function trackFact (path, collectionId, setFocus = true) {
   const factPath = makeCollectionIdPath(path, collectionId)
   const auditedFactsList = document.querySelector('#audit-panel__fact-list')
 
-  const existingFact = auditedFactsList.querySelector(`audited-fact[path="${factPath}"]`)
+  const existingFact = auditedFactsList.querySelector(
+    `audited-fact[path="${factPath}"]`
+  )
   if (existingFact) {
     return existingFact.scrollIntoView()
   }
@@ -661,9 +791,13 @@ function trackFact (path, collectionId, setFocus = true) {
     auditedFact.setAttribute('tabindex', '-1')
     auditedFact.focus()
 
-    auditedFact.addEventListener('focusout', () => {
-      auditedFact.removeAttribute('tabindex')
-    }, { once: true })
+    auditedFact.addEventListener(
+      'focusout',
+      () => {
+        auditedFact.removeAttribute('tabindex')
+      },
+      { once: true }
+    )
   }
 }
 
@@ -697,14 +831,17 @@ export function enable () {
   // This focus handling is a bit of a hack, but it ensures that the track facts in the audit panel are not stealing focus when navigating with the keyboard.
   document.documentElement.tabIndex = -1
   document.documentElement.focus()
-  document.documentElement.addEventListener('focusout', () => {
-    document.documentElement.removeAttribute('tabindex')
-  }, { once: true })
+  document.documentElement.addEventListener(
+    'focusout',
+    () => {
+      document.documentElement.removeAttribute('tabindex')
+    },
+    { once: true }
+  )
 
-  // Set up the audit to display on the page and display the open button
+  // Set up the audit to display on the page (shows the thin tab rail)
   document.querySelector('#audit-panel-styles').disabled = false
   document.querySelector('#audit-panel').classList.remove('hidden')
-  openAuditPanelButton.classList.remove('hidden')
 
   // Set up adjustable width controls for the audit panel
   function initializeAdjustableWidth () {
@@ -712,16 +849,25 @@ export function enable () {
       return () => {}
     }
 
-    if (auditPanel.dataset.widthControlsInitialized === 'true' && typeof auditPanel.syncAuditPanelWidth === 'function') {
+    if (
+      auditPanel.dataset.widthControlsInitialized === 'true' &&
+      typeof auditPanel.syncAuditPanelWidth === 'function'
+    ) {
       return auditPanel.syncAuditPanelWidth
     }
 
     function getAuditPanelMaxWidth () {
-      return Math.max(AUDIT_PANEL_MIN_WIDTH, Math.floor(window.innerWidth * AUDIT_PANEL_MAX_WIDTH_RATIO))
+      return Math.max(
+        AUDIT_PANEL_MIN_WIDTH,
+        Math.floor(window.innerWidth * AUDIT_PANEL_MAX_WIDTH_RATIO)
+      )
     }
 
     function clampAuditPanelWidth (width) {
-      return Math.min(Math.max(width, AUDIT_PANEL_MIN_WIDTH), getAuditPanelMaxWidth())
+      return Math.min(
+        Math.max(width, AUDIT_PANEL_MIN_WIDTH),
+        getAuditPanelMaxWidth()
+      )
     }
 
     function updateAuditPanelResizerAccessibility (width) {
@@ -730,7 +876,10 @@ export function enable () {
       }
 
       const maxWidth = getAuditPanelMaxWidth()
-      auditPanelResizer.setAttribute('aria-valuemin', String(AUDIT_PANEL_MIN_WIDTH))
+      auditPanelResizer.setAttribute(
+        'aria-valuemin',
+        String(AUDIT_PANEL_MIN_WIDTH)
+      )
       auditPanelResizer.setAttribute('aria-valuemax', String(maxWidth))
       auditPanelResizer.setAttribute('aria-valuenow', String(width))
       auditPanelResizer.setAttribute('aria-valuetext', `${width}px wide`)
@@ -738,7 +887,10 @@ export function enable () {
 
     function applyAuditPanelWidth (width, persist = true) {
       const nextWidth = clampAuditPanelWidth(width)
-      document.documentElement.style.setProperty('--audit-panel-width', `${nextWidth}px`)
+      document.documentElement.style.setProperty(
+        '--audit-panel-width',
+        `${nextWidth}px`
+      )
       updateAuditPanelResizerAccessibility(nextWidth)
 
       if (persist) {
@@ -749,9 +901,19 @@ export function enable () {
     }
 
     function applyDefaultAuditPanelWidth () {
-      document.documentElement.style.setProperty('--audit-panel-width', `${AUDIT_PANEL_DEFAULT_WIDTH}vw`)
-      const fallbackWidth = Math.round(window.innerWidth * AUDIT_PANEL_DEFAULT_WIDTH / 100)
-      const renderedWidth = Math.round(auditPanel.getBoundingClientRect().width) || fallbackWidth
+      document.documentElement.style.setProperty(
+        '--audit-panel-width',
+        `${AUDIT_PANEL_DEFAULT_WIDTH}vw`
+      )
+      const fallbackWidth = Math.round(
+        (window.innerWidth * AUDIT_PANEL_DEFAULT_WIDTH) / 100
+      )
+      // Only measure the rendered panel width when content is actually open;
+      // in rail-only mode getBoundingClientRect returns only the rail width.
+      const isOpen = document.body.classList.contains('audit-panel-open')
+      const renderedWidth = isOpen
+        ? Math.round(auditPanel.getBoundingClientRect().width) || fallbackWidth
+        : fallbackWidth
       updateAuditPanelResizerAccessibility(clampAuditPanelWidth(renderedWidth))
     }
 
@@ -803,8 +965,14 @@ export function enable () {
       }
     }
 
-    auditPanelResizer?.addEventListener('pointerdown', handleAuditPanelResizerPointerDown)
-    auditPanelResizer?.addEventListener('keydown', handleAuditPanelResizeKeydown)
+    auditPanelResizer?.addEventListener(
+      'pointerdown',
+      handleAuditPanelResizerPointerDown
+    )
+    auditPanelResizer?.addEventListener(
+      'keydown',
+      handleAuditPanelResizeKeydown
+    )
     window.addEventListener('resize', syncAuditPanelWidth)
 
     auditPanel.dataset.widthControlsInitialized = 'true'
@@ -817,39 +985,104 @@ export function enable () {
   const syncAuditPanelWidth = initializeAdjustableWidth()
   syncAuditPanelWidth()
 
-  // Set up function to open the audit panel
-  function openAuditPanel () {
+  // Open the audit panel to a specific tab
+  function openTab (tabId) {
+    auditPanel.dataset.activeTab = tabId
     document.body.classList.add('audit-panel-open')
+    auditPanelTabButtons.forEach((btn) => {
+      btn.setAttribute('aria-selected', String(btn.dataset.tab === tabId))
+    })
     setAuditPanelStorage('isOpen', true)
-    closeAuditPanelButton.focus()
+    setAuditPanelStorage('activeTab', tabId)
+    syncAuditPanelWidth()
   }
 
-  // Set up function to close the audit panel
+  // Close the audit panel content pane, returning focus to the rail
   function closeAuditPanel () {
     document.body.classList.remove('audit-panel-open')
+    delete auditPanel.dataset.activeTab
+    auditPanelTabButtons.forEach((btn) =>
+      btn.setAttribute('aria-selected', 'false')
+    )
     setAuditPanelStorage('isOpen', false)
-    openAuditPanelButton.focus()
+    setAuditPanelStorage('activeTab', null)
+    const focusTarget = lastActiveTabButton ?? auditPanelTabButtons[0]
+    focusTarget?.focus()
   }
 
-  // Set up function to close the audit panel with the escape key
+  // Keyboard handler: Escape closes the panel; arrow keys navigate the rail
   function handleAuditPanelKeydown (event) {
-    if (event.key === 'Escape' && document.body.classList.contains('audit-panel-open')) {
+    if (
+      event.key === 'Escape' &&
+      document.body.classList.contains('audit-panel-open')
+    ) {
       event.preventDefault()
       closeAuditPanel()
+      return
+    }
+
+    if (!event.target.matches('.audit-panel__tab')) return
+    const tabs = Array.from(auditPanelTabButtons)
+    const idx = tabs.indexOf(event.target)
+    if (idx === -1) return
+
+    if (event.key === 'ArrowDown' || event.key === 'ArrowRight') {
+      event.preventDefault()
+      tabs[(idx + 1) % tabs.length].focus()
+    } else if (event.key === 'ArrowUp' || event.key === 'ArrowLeft') {
+      event.preventDefault()
+      tabs[(idx - 1 + tabs.length) % tabs.length].focus()
+    } else if (event.key === 'Home') {
+      event.preventDefault()
+      tabs[0].focus()
+    } else if (event.key === 'End') {
+      event.preventDefault()
+      tabs[tabs.length - 1].focus()
     }
   }
 
-  // Add event listeners for opening and closing the audit panel, and for handling escape key presses to close the panel
+  // Wire up tab rail buttons, close button, and keyboard handler
   if (auditPanel?.dataset.visibilityControlsInitialized !== 'true') {
-    openAuditPanelButton.addEventListener('click', openAuditPanel)
+    // Close button at the top of the rail
+    const showAuditPanelBtn = document.querySelector('#show-audit-panel')
+    if (showAuditPanelBtn) {
+      showAuditPanelBtn.addEventListener('click', () => {
+        if (document.body.classList.contains('audit-panel-open')) {
+          closeAuditPanel()
+        }
+      })
+    }
+
+    auditPanelTabButtons.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const tabId = btn.dataset.tab
+        lastActiveTabButton = btn
+        const isAlreadyActive =
+          auditPanel.dataset.activeTab === tabId &&
+          document.body.classList.contains('audit-panel-open')
+        if (isAlreadyActive) {
+          closeAuditPanel()
+        } else {
+          openTab(tabId)
+          closeAuditPanelButton.focus()
+        }
+      })
+    })
+
     closeAuditPanelButton.addEventListener('click', closeAuditPanel)
     document.addEventListener('keydown', handleAuditPanelKeydown)
     auditPanel.dataset.visibilityControlsInitialized = 'true'
   }
 
-  // If the audit panel was previously open, make sure to open it again when navigating forward or backwards
-  if (getAuditPanelStorage().isOpen) {
-    document.body.classList.add('audit-panel-open')
+  // Restore previously open tab state when navigating forward or back
+  const savedStorage = getAuditPanelStorage()
+  if (savedStorage.isOpen) {
+    const savedTab = savedStorage.activeTab
+    if (savedTab) {
+      openTab(savedTab)
+    } else {
+      document.body.classList.add('audit-panel-open')
+    }
   }
 
   // If there are any facts stored in session storage, make sure to add them back
@@ -907,6 +1140,10 @@ export function disable () {
   openAuditPanelButton.classList.add('hidden')
   document.body.classList.remove('audit-panel-open')
   document.body.removeAttribute('style')
+  delete auditPanel.dataset.activeTab
+  auditPanelTabButtons.forEach((btn) =>
+    btn.setAttribute('aria-selected', 'false')
+  )
   sessionStorage.removeItem(AUDIT_PANEL_STORAGE_KEY)
   hideConditions()
 
