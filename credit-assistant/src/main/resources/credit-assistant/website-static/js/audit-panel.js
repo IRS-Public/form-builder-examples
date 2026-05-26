@@ -5,8 +5,7 @@ const res = await fetch('/app/eitc/resources/fact-dictionary.xml')
 const text = await res.text()
 const factDictionaryXml = parser.parseFromString(text, 'application/xml')
 const factSelect = document.querySelector('#fact-select')
-const openAuditPanelButton = document.querySelector('#show-audit-panel')
-const closeAuditPanelButton = document.querySelector('#close-audit-panel')
+const openAuditPanelButton = document.querySelector('#toggle-audit-panel')
 const auditPanel = document.querySelector('#audit-panel')
 const auditPanelResizer = document.querySelector('#audit-panel-resizer')
 const AUDIT_PANEL_STORAGE_KEY = 'auditPanel'
@@ -21,7 +20,7 @@ const AUDIT_PANEL_DEFAULT_WIDTH = 38
 const AUDIT_PANEL_MIN_WIDTH = 320
 const AUDIT_PANEL_MAX_WIDTH_RATIO = 0.7
 const AUDIT_PANEL_KEYBOARD_STEP = 24
-const auditPanelTabButtons = document.querySelectorAll('.audit-panel__tab')
+const auditPanelTabButtons = document.querySelectorAll('.audit-panel__tab[role="tab"]')
 let lastActiveTabButton = null
 
 const DQ_MARRIED_NOT_JOINT_FACTS = [
@@ -1044,11 +1043,14 @@ export function enable () {
   // Wire up tab rail buttons, close button, and keyboard handler
   if (auditPanel?.dataset.visibilityControlsInitialized !== 'true') {
     // Close button at the top of the rail
-    const showAuditPanelBtn = document.querySelector('#show-audit-panel')
+    const showAuditPanelBtn = document.querySelector('#toggle-audit-panel')
     if (showAuditPanelBtn) {
       showAuditPanelBtn.addEventListener('click', () => {
         if (document.body.classList.contains('audit-panel-open')) {
           closeAuditPanel()
+        } else {
+          const tabId = lastActiveTabButton?.dataset.tab ?? auditPanelTabButtons[0]?.dataset.tab
+          if (tabId) openTab(tabId)
         }
       })
     }
@@ -1064,12 +1066,10 @@ export function enable () {
           closeAuditPanel()
         } else {
           openTab(tabId)
-          closeAuditPanelButton.focus()
         }
       })
     })
 
-    closeAuditPanelButton.addEventListener('click', closeAuditPanel)
     document.addEventListener('keydown', handleAuditPanelKeydown)
     auditPanel.dataset.visibilityControlsInitialized = 'true'
   }

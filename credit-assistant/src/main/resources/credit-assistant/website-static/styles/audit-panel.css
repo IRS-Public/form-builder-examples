@@ -238,12 +238,12 @@
 
 /* ── Close button in tab rail ──────────────────────────────────────────── */
 
-#show-audit-panel {
+#toggle-audit-panel {
   border-bottom: 1px solid var(--base-lighter);
   margin-bottom: 0.25rem;
 }
 
-#show-audit-panel:hover {
+#toggle-audit-panel:hover {
   background: #fee2e2;
   color: #991b1b;
 }
