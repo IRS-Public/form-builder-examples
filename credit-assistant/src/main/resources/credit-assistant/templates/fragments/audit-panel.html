@@ -70,12 +70,17 @@
       </div>
       <div class="audit-panel__section audit-panel__section--chat" id="audit-panel-explain-section" data-tab="chat-explain">
          <h2>Explain & Analyze</h2>
-         <textarea
-            class="chat-container__textarea"
-            placeholder="Ask me about The EITC Assistant..."
-            aria-label="Ask the EITC Assistant"
-            ></textarea>
-         <button id="chat-submit-btn" class="chat-container__submit-btn" type="button" aria-label="Submit question to EITC Assistant">Send</button>
+         <div id="chat-status" class="chat-status"></div>
+         <div id="chat-messages" class="chat-messages" aria-live="polite" aria-label="Chat conversation"></div>
+         <div class="chat-input-row">
+            <textarea
+               class="chat-container__textarea"
+               placeholder="Ask me about The EITC Assistant... (Ctrl+Enter to send)"
+               aria-label="Ask the EITC Assistant"
+               rows="3"
+               ></textarea>
+            <button id="chat-submit-btn" class="chat-container__submit-btn" type="button" aria-label="Submit question to EITC Assistant">Send</button>
+         </div>
       </div>
       <div class="audit-panel__section" id="audit-panel-fact-graph-section" data-tab="fact-graph">
          <h2>Fact Inspector</h2>

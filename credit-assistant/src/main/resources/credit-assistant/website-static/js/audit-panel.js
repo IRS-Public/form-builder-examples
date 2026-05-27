@@ -1228,22 +1228,298 @@ function loadScenarioFromAuditPanel () {
 }
 window.loadScenarioFromAuditPanel = loadScenarioFromAuditPanel
 
-function initializeChatSubmitButton () {
-  const submitBtn = document.querySelector('#chat-submit-btn')
-  const chatTextarea = document.querySelector('.chat-container__textarea')
-  if (!submitBtn || !chatTextarea) return
+// ── Chat WebSocket ────────────────────────────────────────────────────────────
 
-  submitBtn.addEventListener('click', () => {
-    const currentValue = chatTextarea.value
-    const userInput = prompt('Ask me about The EITC Assistant...', currentValue)
-    if (userInput !== null) {
-      chatTextarea.value = userInput
-    }
-  })
+const CHAT_WS_URL = 'ws://localhost:8000/ws/chat'
+let _chatWs = null
+let _chatPendingResolvers = {} // request_id → resolve fn for debug roundtrips
+let _chatConnectAttempts = 0
+
+function _getTrackedFacts () {
+  // Return array of fact paths currently visible in the audit panel fact list
+  const items = document.querySelectorAll('#audit-panel__fact-list [data-path]')
+  return Array.from(items).map(el => el.dataset.path).filter(Boolean)
 }
 
-function prompt (promptText) {
-  console.log('Prompt:' + promptText + '\n\n Fact graph:' + window.factGraph.toJson())
+function _escapeHtml (text) {
+  return text
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+}
+
+function _renderMarkdown (text) {
+  const lines = text.split('\n')
+  const output = []
+  let i = 0
+
+  while (i < lines.length) {
+    const line = lines[i]
+
+    // Fenced code block (```)
+    if (line.trimStart().startsWith('```')) {
+      const fenceLines = []
+      i++
+      while (i < lines.length && !lines[i].trimStart().startsWith('```')) {
+        fenceLines.push(_escapeHtml(lines[i]))
+        i++
+      }
+      output.push('<pre><code>' + fenceLines.join('\n') + '</code></pre>')
+      i++ // skip closing fence
+      continue
+    }
+
+    // ATX heading ## or ###
+    const h3Match = line.match(/^##\s+(.+)$/)
+    const h4Match = line.match(/^###\s+(.+)$/)
+    if (h4Match) {
+      output.push('<h4>' + _renderInline(h4Match[1]) + '</h4>')
+      i++
+      continue
+    }
+    if (h3Match) {
+      output.push('<h3>' + _renderInline(h3Match[1]) + '</h3>')
+      i++
+      continue
+    }
+
+    // Unordered list block
+    if (/^[-*]\s/.test(line)) {
+      const items = []
+      while (i < lines.length && /^[-*]\s/.test(lines[i])) {
+        items.push('<li>' + _renderInline(lines[i].replace(/^[-*]\s+/, '')) + '</li>')
+        i++
+      }
+      output.push('<ul>' + items.join('') + '</ul>')
+      continue
+    }
+
+    // Ordered list block
+    if (/^\d+\.\s/.test(line)) {
+      const items = []
+      while (i < lines.length && /^\d+\.\s/.test(lines[i])) {
+        items.push('<li>' + _renderInline(lines[i].replace(/^\d+\.\s+/, '')) + '</li>')
+        i++
+      }
+      output.push('<ol>' + items.join('') + '</ol>')
+      continue
+    }
+
+    // Blank line → paragraph break
+    if (line.trim() === '') {
+      output.push('<br>')
+      i++
+      continue
+    }
+
+    // Normal paragraph line
+    output.push(_renderInline(line) + '<br>')
+    i++
+  }
+
+  // Trim trailing <br> tags
+  let result = output.join('')
+  result = result.replace(/(<br>)+$/, '')
+  return result
+}
+
+function _renderInline (text) {
+  // Escape HTML first, then apply inline markdown
+  return _escapeHtml(text)
+    .replace(/`([^`]+)`/g, '<code>$1</code>')
+    .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+}
+
+function _appendChatMessage (role, content) {
+  const container = document.getElementById('chat-messages')
+  if (!container) return
+  const msg = document.createElement('div')
+  msg.className = `chat-message chat-message--${role}`
+  msg.innerHTML = _renderMarkdown(content)
+  container.appendChild(msg)
+  container.scrollTop = container.scrollHeight
+  // Persist to sessionStorage
+  try {
+    const history = JSON.parse(sessionStorage.getItem('auditPanelChat') || '[]')
+    history.push({ role, content })
+    sessionStorage.setItem('auditPanelChat', JSON.stringify(history))
+  } catch (_) { /* storage full or unavailable */ }
+}
+
+function _setChatStatus (text) {
+  const el = document.getElementById('chat-status')
+  if (el) el.textContent = text
+}
+
+function debugFactToStructured (path) {
+  // Reimplement the traversal from ConditionDetail._buildAnnotatedXml()
+  // but returns structured JSON instead of annotated XML string.
+  const factDef = factDictionaryXml.querySelector(`Fact[path="${path}"]`)
+  if (!factDef) return { path, value: null, complete: false, type: null, xml: null, dependencies: [] }
+
+  let value = null
+  let complete = false
+  let type = factDef.getAttribute('type') || null
+
+  try {
+    const fact = window.factGraph.get(path)
+    complete = !!fact.complete
+    value = fact.hasValue ? String(fact.get) : null
+  } catch (_) { /* fact not yet evaluated */ }
+
+  // Collect collection IDs for resolving wildcard paths
+  let collectionId = null
+  const segs = path.split('/')
+  for (const seg of segs) {
+    if (seg.startsWith('#')) { collectionId = seg.slice(1); break }
+  }
+
+  const dependencies = []
+  Array.from(factDef.querySelectorAll('Dependency')).forEach(dep => {
+    const rawPath = dep.getAttribute('path')
+    if (!rawPath) return
+
+    // Resolve relative paths (..) and collection wildcards (*)
+    const resolvedAbstract = rawPath.startsWith('..')
+      ? rawPath.replace('..', path.replace(/\*\/.*/, '*'))
+      : rawPath
+
+    const concreteDep = (collectionId && resolvedAbstract.includes('*'))
+      ? resolvedAbstract.replace('*', `#${collectionId}`)
+      : resolvedAbstract
+
+    let depValue = null
+    let depComplete = false
+    try {
+      const depFact = window.factGraph.get(concreteDep)
+      depComplete = !!depFact.complete
+      depValue = depFact.hasValue ? String(depFact.get) : null
+    } catch (_) { /* not yet set */ }
+
+    dependencies.push({ path: concreteDep, value: depValue, complete: depComplete })
+  })
+
+  return {
+    path,
+    value,
+    complete,
+    type,
+    xml: XML_SERIALIZER.serializeToString(factDef),
+    dependencies,
+  }
+}
+
+function _openChatWs () {
+  if (_chatWs && (_chatWs.readyState === WebSocket.OPEN || _chatWs.readyState === WebSocket.CONNECTING)) return
+  _chatConnectAttempts++
+  _setChatStatus('Connecting…')
+  _chatWs = new WebSocket(CHAT_WS_URL)
+
+  _chatWs.onopen = () => {
+    _chatConnectAttempts = 0
+    _setChatStatus('')
+  }
+
+  _chatWs.onclose = () => {
+    _setChatStatus('Disconnected — reconnecting…')
+    setTimeout(_openChatWs, 2000)
+  }
+
+  _chatWs.onerror = () => {
+    if (_chatConnectAttempts <= 1) {
+      _setChatStatus('Backend not reachable — is chat-backend running? (make dev)')
+    } else {
+      _setChatStatus('Reconnecting…')
+    }
+  }
+
+  _chatWs.onmessage = (event) => {
+    let msg
+    try { msg = JSON.parse(event.data) } catch (_) { return }
+
+    if (msg.type === 'debug_request') {
+      // Browser-side fact lookup — resolve and send back
+      const result = debugFactToStructured(msg.path)
+      _chatWs.send(JSON.stringify({ type: 'debug_response', request_id: msg.request_id, result }))
+
+    } else if (msg.type === 'stream') {
+      // Append streamed token to the in-progress assistant message
+      let inProgress = document.querySelector('.chat-message--assistant.in-progress')
+      if (!inProgress) {
+        inProgress = document.createElement('div')
+        inProgress.className = 'chat-message chat-message--assistant in-progress'
+        document.getElementById('chat-messages')?.appendChild(inProgress)
+      }
+      inProgress.textContent = (inProgress.textContent || '') + msg.content
+      const container = document.getElementById('chat-messages')
+      if (container) container.scrollTop = container.scrollHeight
+
+    } else if (msg.type === 'complete') {
+      // Finalise the assistant message
+      const inProgress = document.querySelector('.chat-message--assistant.in-progress')
+      if (inProgress) inProgress.classList.remove('in-progress')
+      _setChatStatus('')
+      document.querySelector('.chat-container__submit-btn')?.removeAttribute('disabled')
+
+    } else if (msg.type === 'error') {
+      _setChatStatus(`Error: ${msg.message}`)
+      document.querySelector('.chat-container__submit-btn')?.removeAttribute('disabled')
+    }
+  }
+}
+
+function _sendChatMessage () {
+  const textarea = document.querySelector('.chat-container__textarea')
+  const prompt = textarea?.value.trim()
+  if (!prompt) return
+  if (!_chatWs || _chatWs.readyState !== WebSocket.OPEN) {
+    _setChatStatus('Not connected — please wait…')
+    return
+  }
+
+  // Cancel any in-flight response
+  const inProgress = document.querySelector('.chat-message--assistant.in-progress')
+  if (inProgress) {
+    inProgress.classList.remove('in-progress')
+    inProgress.textContent += ' [cancelled]'
+    document.querySelector('.chat-container__submit-btn')?.removeAttribute('disabled')
+  }
+
+  _appendChatMessage('user', prompt)
+  textarea.value = ''
+  document.querySelector('.chat-container__submit-btn')?.setAttribute('disabled', 'true')
+  _setChatStatus('Thinking…')
+
+  _chatWs.send(JSON.stringify({
+    type: 'chat',
+    prompt,
+    tracked_facts: _getTrackedFacts(),
+  }))
+}
+
+function initializeChatSubmitButton () {
+  const submitBtn = document.querySelector('#chat-submit-btn')
+  const textarea = document.querySelector('.chat-container__textarea')
+  if (!submitBtn || !textarea) return
+
+  submitBtn.addEventListener('click', _sendChatMessage)
+  textarea.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && e.ctrlKey) {
+      e.preventDefault()
+      _sendChatMessage()
+    }
+  })
+
+  // Restore chat history from sessionStorage
+  const saved = sessionStorage.getItem('auditPanelChat')
+  if (saved) {
+    try {
+      JSON.parse(saved).forEach(({ role, content }) => _appendChatMessage(role, content))
+    } catch (_) { /* ignore corrupt storage */ }
+  }
+
+  _openChatWs()
 }
 
 document.addEventListener('DOMContentLoaded', initializeChatSubmitButton)
