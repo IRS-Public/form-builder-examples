@@ -1209,3 +1209,23 @@ function loadFactGraphFromAuditPanel () {
   }
 }
 window.loadFactGraphFromAuditPanel = loadFactGraphFromAuditPanel
+
+function initializeChatSubmitButton () {
+  const submitBtn = document.querySelector('#chat-submit-btn')
+  const chatTextarea = document.querySelector('.chat-container__textarea')
+  if (!submitBtn || !chatTextarea) return
+
+  submitBtn.addEventListener('click', () => {
+    const currentValue = chatTextarea.value
+    const userInput = prompt('Ask me about The EITC Assistant...', currentValue)
+    if (userInput !== null) {
+      chatTextarea.value = userInput
+    }
+  })
+}
+
+function prompt (promptText) {
+  console.log('Prompt:' + promptText + '\n\n Fact graph:' + window.factGraph.toJson())
+}
+
+document.addEventListener('DOMContentLoaded', initializeChatSubmitButton)
