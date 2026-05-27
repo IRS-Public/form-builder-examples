@@ -178,7 +178,8 @@
 #audit-panel[data-active-tab="fact-graph"] [data-tab="fact-graph"],
 #audit-panel[data-active-tab="import-export"] [data-tab="import-export"],
 #audit-panel[data-active-tab="reset"] [data-tab="reset"],
-#audit-panel[data-active-tab="chat-explain"] [data-tab="chat-explain"] {
+#audit-panel[data-active-tab="chat-explain"] [data-tab="chat-explain"],
+#audit-panel[data-active-tab="scenarios"] [data-tab="scenarios"] {
   display: block;
 }
 

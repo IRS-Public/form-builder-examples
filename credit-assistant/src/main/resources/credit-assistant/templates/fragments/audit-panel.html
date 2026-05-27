@@ -112,6 +112,21 @@
          Add fact
          </button>
       </div>
+      <div class="audit-panel__section" id="audit-panel-scenarios-section"
+           data-tab="scenarios"
+           th:if="${flags.scenarioMode and scenarios != null and !scenarios.isEmpty()}">
+         <h2>Scenarios</h2>
+         <div class="usa-form-group">
+            <label class="usa-label" for="scenario-select">Select a scenario</label>
+            <select class="usa-select" id="scenario-select">
+               <option value="" disabled="disabled" selected="selected">-- Choose a scenario --</option>
+               <option th:each="scenario : ${scenarios}"
+                       th:value="${scenario.filename}"
+                       th:text="${scenario.label}"></option>
+            </select>
+         </div>
+         <button class="usa-button" type="button" id="load-scenario-btn">Load Scenario</button>
+      </div>
       <div class="audit-panel__section" id="audit-panel-reset-section" data-tab="reset">
          <h2>Fact Graph Inspector</h2>
          <div class="audit-panel__section">
@@ -237,6 +252,14 @@
                title="Explain">
             <span class="audit-panel__tab-label" aria-hidden="true">Explain</span>
             <span class="usa-sr-only">Explain</span>
+            </button>
+         </li>
+         <li role="presentation" th:if="${scenarios != null and !scenarios.isEmpty()}">
+            <button class="audit-panel__tab" role="tab" data-tab="scenarios"
+                    aria-controls="audit-panel-scenarios-section" aria-selected="false"
+                    type="button" title="Scenarios">
+               <span class="audit-panel__tab-label" aria-hidden="true">Scenarios</span>
+               <span class="usa-sr-only">Scenarios</span>
             </button>
          </li>
       </ul>

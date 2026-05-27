@@ -1146,6 +1146,11 @@ export function enable () {
       })
     })
   }
+
+  const loadScenarioBtn = document.querySelector('#load-scenario-btn')
+  if (loadScenarioBtn) {
+    loadScenarioBtn.addEventListener('click', loadScenarioFromAuditPanel)
+  }
 }
 
 // Disable audit mode and clear all tracked facts and stored state
@@ -1209,6 +1214,19 @@ function loadFactGraphFromAuditPanel () {
   }
 }
 window.loadFactGraphFromAuditPanel = loadFactGraphFromAuditPanel
+
+function loadScenarioFromAuditPanel () {
+  const select = document.querySelector('#scenario-select')
+  if (!select || !select.value) return
+  fetch(`/app/eitc/resources/scenarios/${select.value}`)
+    .then(res => {
+      if (!res.ok) throw new Error(res.statusText)
+      return res.text()
+    })
+    .then(json => window.loadFactGraph(json))
+    .catch(err => console.error('Failed to load scenario:', err))
+}
+window.loadScenarioFromAuditPanel = loadScenarioFromAuditPanel
 
 function initializeChatSubmitButton () {
   const submitBtn = document.querySelector('#chat-submit-btn')

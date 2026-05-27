@@ -41,6 +41,7 @@ object AllScreens {
       languageCode: String,
       supportedLocales: Map[String, String],
       flags: Map[String, Boolean] = Map.empty,
+      scenarios: java.util.List[java.util.Map[String, String]] = java.util.Collections.emptyList(),
   ): WebsitePage = {
     val templateEngine = new CreditAssistantTemplateEngine(languageCode)
     val context = new Context()
@@ -50,6 +51,7 @@ object AllScreens {
     context.setVariable("supportedLocales", supportedLocales.asJava)
     context.setVariable("currentPageRoute", "/all-screens")
     context.setVariable("flags", flags.asJava)
+    context.setVariable("scenarios", scenarios)
 
     // Pre-render every page once, alongside its module slug and condition count.
     case class RenderedPage(page: Page, content: String, conditionCount: Int)

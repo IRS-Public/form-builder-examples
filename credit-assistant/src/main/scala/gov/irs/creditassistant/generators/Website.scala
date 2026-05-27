@@ -53,6 +53,7 @@ case class Website(
     pages: List[WebsitePage],
     factDictionary: xml.Elem,
     flowManifestJson: Option[String] = None,
+    scenariosSourceDir: Option[os.Path] = None,
 ) {
   def save(directoryPath: Path): Unit = {
     os.remove.all(directoryPath)
@@ -71,6 +72,12 @@ case class Website(
     os.write(resourcesTarget / "fact-dictionary.xml", dictionaryString, null)
 
     flowManifestJson.foreach(json => os.write(resourcesTarget / "flow-manifest.json", json, null))
+
+    scenariosSourceDir.foreach { srcDir =>
+      if (os.exists(srcDir)) {
+        os.copy(srcDir, resourcesTarget / "scenarios")
+      }
+    }
   }
 }
 
@@ -91,6 +98,34 @@ object Website {
       "zh-hant" -> "繁體中文",
     )
     val locales = supportedLocales.keys.toList
+
+    val scenariosDir = os.pwd / "src" / "main" / "resources" / "credit-assistant" / "scenarios"
+    val scenarioList: java.util.List[java.util.Map[String, String]] =
+      if (flags.contains(Flags.scenarioMode) && os.exists(scenariosDir)) {
+        os.list(scenariosDir)
+          .filter(_.ext == "json")
+          .map(_.last)
+          .sorted
+          .map { filename =>
+            val label = filename
+              .stripSuffix(".json")
+              .split("_")
+              .map { word =>
+                word.toLowerCase match {
+                  case "ko" | "dq" => word.toUpperCase
+                  case _           => word.capitalize
+                }
+              }
+              .mkString(" ")
+            Map("filename" -> filename, "label" -> label).asJava
+          }
+          .toList
+          .asJava
+      } else java.util.Collections.emptyList()
+
+    val scenariosSource =
+      if (flags.contains(Flags.scenarioMode) && os.exists(scenariosDir)) Some(scenariosDir) else None
+
     var pages = locales.flatMap { languageCode =>
       val templateEngine = new CreditAssistantTemplateEngine(languageCode)
       val navPages = flow.pages.filter(p => !p.exclude)
@@ -141,6 +176,7 @@ object Website {
         val pageHtml = page.html(templateEngine)
 
         context.setVariable("pageHtml", pageHtml)
+        context.setVariable("scenarios", scenarioList)
 
         val content = templateEngine.process("page", context)
         WebsitePage(page.route, content, languageCode)
@@ -149,7 +185,7 @@ object Website {
 
     if (flags.contains(Flags.allScreens)) {
       val allScreensPages = locales.map { languageCode =>
-        AllScreens.generate(flow, languageCode, supportedLocales, flags)
+        AllScreens.generate(flow, languageCode, supportedLocales, flags, scenarioList)
       }
       pages = pages ++ allScreensPages
     }
@@ -162,6 +198,6 @@ object Website {
       Printer.spaces2.print(FlowManifest.buildJson(flow, "en"))
     }
 
-    Website(pages, dictionaryXml, manifestJson)
+    Website(pages, dictionaryXml, manifestJson, scenariosSource)
   }
 }
