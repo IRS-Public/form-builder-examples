@@ -1231,6 +1231,7 @@ window.loadScenarioFromAuditPanel = loadScenarioFromAuditPanel
 // ── Chat HTTP ─────────────────────────────────────────────────────────────────
 
 const CHAT_API_URL = 'http://localhost:8000/chat'
+const CHAT_TIMEOUT_MS = 90_000
 
 function _getTrackedFacts () {
   const items = document.querySelectorAll('#audit-panel__fact-list [data-path]')
@@ -1348,6 +1349,18 @@ function _setChatStatus (text) {
   if (el) el.textContent = text
 }
 
+function _startThinkingAnimation () {
+  const dots = ['', '.', '..', '...']
+  let dotIdx = 0
+  let elapsed = 0
+  const id = setInterval(() => {
+    elapsed++
+    dotIdx = (dotIdx + 1) % dots.length
+    _setChatStatus(`Thinking${dots[dotIdx]} (${elapsed}s)`)
+  }, 1000)
+  return () => clearInterval(id)
+}
+
 async function _sendChatMessage () {
   const textarea = document.querySelector('.chat-container__textarea')
   const prompt = textarea?.value.trim()
@@ -1358,11 +1371,16 @@ async function _sendChatMessage () {
   document.querySelector('.chat-container__submit-btn')?.setAttribute('disabled', 'true')
   _setChatStatus('Thinking…')
 
+  const controller = new AbortController()
+  const timeoutId = setTimeout(() => controller.abort(), CHAT_TIMEOUT_MS)
+  const stopAnimation = _startThinkingAnimation()
+
   try {
     const res = await fetch(CHAT_API_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ prompt, tracked_facts: _getTrackedFacts() }),
+      signal: controller.signal,
     })
 
     if (!res.ok) {
@@ -1375,8 +1393,14 @@ async function _sendChatMessage () {
     _appendChatMessage('assistant', data.content)
     _setChatStatus('')
   } catch (err) {
-    _setChatStatus(`Error: ${err.message ?? 'Request failed'}`)
+    if (err.name === 'AbortError') {
+      _setChatStatus('Request timed out — the backend took too long to respond.')
+    } else {
+      _setChatStatus(`Error: ${err.message ?? 'Request failed'}`)
+    }
   } finally {
+    clearTimeout(timeoutId)
+    stopAnimation()
     document.querySelector('.chat-container__submit-btn')?.removeAttribute('disabled')
   }
 }
