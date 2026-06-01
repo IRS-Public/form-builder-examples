@@ -1228,15 +1228,11 @@ function loadScenarioFromAuditPanel () {
 }
 window.loadScenarioFromAuditPanel = loadScenarioFromAuditPanel
 
-// ── Chat WebSocket ────────────────────────────────────────────────────────────
+// ── Chat HTTP ─────────────────────────────────────────────────────────────────
 
-const CHAT_WS_URL = 'ws://localhost:8000/ws/chat'
-let _chatWs = null
-let _chatPendingResolvers = {} // request_id → resolve fn for debug roundtrips
-let _chatConnectAttempts = 0
+const CHAT_API_URL = 'http://localhost:8000/chat'
 
 function _getTrackedFacts () {
-  // Return array of fact paths currently visible in the audit panel fact list
   const items = document.querySelectorAll('#audit-panel__fact-list [data-path]')
   return Array.from(items).map(el => el.dataset.path).filter(Boolean)
 }
@@ -1352,150 +1348,37 @@ function _setChatStatus (text) {
   if (el) el.textContent = text
 }
 
-function debugFactToStructured (path) {
-  // Reimplement the traversal from ConditionDetail._buildAnnotatedXml()
-  // but returns structured JSON instead of annotated XML string.
-  const factDef = factDictionaryXml.querySelector(`Fact[path="${path}"]`)
-  if (!factDef) return { path, value: null, complete: false, type: null, xml: null, dependencies: [] }
-
-  let value = null
-  let complete = false
-  let type = factDef.getAttribute('type') || null
-
-  try {
-    const fact = window.factGraph.get(path)
-    complete = !!fact.complete
-    value = fact.hasValue ? String(fact.get) : null
-  } catch (_) { /* fact not yet evaluated */ }
-
-  // Collect collection IDs for resolving wildcard paths
-  let collectionId = null
-  const segs = path.split('/')
-  for (const seg of segs) {
-    if (seg.startsWith('#')) { collectionId = seg.slice(1); break }
-  }
-
-  const dependencies = []
-  Array.from(factDef.querySelectorAll('Dependency')).forEach(dep => {
-    const rawPath = dep.getAttribute('path')
-    if (!rawPath) return
-
-    // Resolve relative paths (..) and collection wildcards (*)
-    const resolvedAbstract = rawPath.startsWith('..')
-      ? rawPath.replace('..', path.replace(/\*\/.*/, '*'))
-      : rawPath
-
-    const concreteDep = (collectionId && resolvedAbstract.includes('*'))
-      ? resolvedAbstract.replace('*', `#${collectionId}`)
-      : resolvedAbstract
-
-    let depValue = null
-    let depComplete = false
-    try {
-      const depFact = window.factGraph.get(concreteDep)
-      depComplete = !!depFact.complete
-      depValue = depFact.hasValue ? String(depFact.get) : null
-    } catch (_) { /* not yet set */ }
-
-    dependencies.push({ path: concreteDep, value: depValue, complete: depComplete })
-  })
-
-  return {
-    path,
-    value,
-    complete,
-    type,
-    xml: XML_SERIALIZER.serializeToString(factDef),
-    dependencies,
-  }
-}
-
-function _openChatWs () {
-  if (_chatWs && (_chatWs.readyState === WebSocket.OPEN || _chatWs.readyState === WebSocket.CONNECTING)) return
-  _chatConnectAttempts++
-  _setChatStatus('Connecting…')
-  _chatWs = new WebSocket(CHAT_WS_URL)
-
-  _chatWs.onopen = () => {
-    _chatConnectAttempts = 0
-    _setChatStatus('')
-  }
-
-  _chatWs.onclose = () => {
-    _setChatStatus('Disconnected — reconnecting…')
-    setTimeout(_openChatWs, 2000)
-  }
-
-  _chatWs.onerror = () => {
-    if (_chatConnectAttempts <= 1) {
-      _setChatStatus('Backend not reachable — is chat-backend running? (make dev)')
-    } else {
-      _setChatStatus('Reconnecting…')
-    }
-  }
-
-  _chatWs.onmessage = (event) => {
-    let msg
-    try { msg = JSON.parse(event.data) } catch (_) { return }
-
-    if (msg.type === 'debug_request') {
-      // Browser-side fact lookup — resolve and send back
-      const result = debugFactToStructured(msg.path)
-      _chatWs.send(JSON.stringify({ type: 'debug_response', request_id: msg.request_id, result }))
-
-    } else if (msg.type === 'stream') {
-      // Append streamed token to the in-progress assistant message
-      let inProgress = document.querySelector('.chat-message--assistant.in-progress')
-      if (!inProgress) {
-        inProgress = document.createElement('div')
-        inProgress.className = 'chat-message chat-message--assistant in-progress'
-        document.getElementById('chat-messages')?.appendChild(inProgress)
-      }
-      inProgress.textContent = (inProgress.textContent || '') + msg.content
-      const container = document.getElementById('chat-messages')
-      if (container) container.scrollTop = container.scrollHeight
-
-    } else if (msg.type === 'complete') {
-      // Finalise the assistant message
-      const inProgress = document.querySelector('.chat-message--assistant.in-progress')
-      if (inProgress) inProgress.classList.remove('in-progress')
-      _setChatStatus('')
-      document.querySelector('.chat-container__submit-btn')?.removeAttribute('disabled')
-
-    } else if (msg.type === 'error') {
-      _setChatStatus(`Error: ${msg.message}`)
-      document.querySelector('.chat-container__submit-btn')?.removeAttribute('disabled')
-    }
-  }
-}
-
-function _sendChatMessage () {
+async function _sendChatMessage () {
   const textarea = document.querySelector('.chat-container__textarea')
   const prompt = textarea?.value.trim()
   if (!prompt) return
-  if (!_chatWs || _chatWs.readyState !== WebSocket.OPEN) {
-    _setChatStatus('Not connected — please wait…')
-    return
-  }
-
-  // Cancel any in-flight response
-  const inProgress = document.querySelector('.chat-message--assistant.in-progress')
-  if (inProgress) {
-    inProgress.classList.remove('in-progress')
-    inProgress.textContent += ' [cancelled]'
-    document.querySelector('.chat-container__submit-btn')?.removeAttribute('disabled')
-  }
 
   _appendChatMessage('user', prompt)
   textarea.value = ''
   document.querySelector('.chat-container__submit-btn')?.setAttribute('disabled', 'true')
   _setChatStatus('Thinking…')
 
-  _chatWs.send(JSON.stringify({
-    type: 'chat',
-    prompt,
-    tracked_facts: _getTrackedFacts(),
-  }))
+  try {
+    const res = await fetch(CHAT_API_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ prompt, tracked_facts: _getTrackedFacts() }),
+    })
+
+    if (!res.ok) {
+      const data = await res.json().catch(() => ({}))
+      _setChatStatus(`Error: ${data.detail ?? res.statusText}`)
+      return
+    }
+
+    const data = await res.json()
+    _appendChatMessage('assistant', data.content)
+    _setChatStatus('')
+  } catch (err) {
+    _setChatStatus(`Error: ${err.message ?? 'Request failed'}`)
+  } finally {
+    document.querySelector('.chat-container__submit-btn')?.removeAttribute('disabled')
+  }
 }
 
 function initializeChatSubmitButton () {
@@ -1518,8 +1401,6 @@ function initializeChatSubmitButton () {
       JSON.parse(saved).forEach(({ role, content }) => _appendChatMessage(role, content))
     } catch (_) { /* ignore corrupt storage */ }
   }
-
-  _openChatWs()
 }
 
 document.addEventListener('DOMContentLoaded', initializeChatSubmitButton)
