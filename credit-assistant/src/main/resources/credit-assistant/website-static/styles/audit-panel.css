@@ -17,6 +17,13 @@
     margin: 1rem 0;
   }
 
+  /* Inline fact-select rows reset the block-button override */
+  .ap-fact-row button {
+    display: inline-flex;
+    margin: 0;
+    flex-shrink: 0;
+  }
+
   h1,
   h2 {
     font-weight: 600;
@@ -124,8 +131,8 @@
 }
 
 .audit-panel__content #audit-panel-explain-section {
-  margin: calc(-1 * var(--units-4));
-  height: calc(100% + 2 * var(--units-4));
+  position: absolute;
+  inset: 0;
 }
 
 .audit-panel-open .audit-panel__content {
@@ -524,6 +531,12 @@ audited-fact::part(remove-button):focus {
   margin: 0.25rem 0 0.5rem;
 }
 
+.ap-fact-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
 .ap-btn-sm {
   font-size: 0.75rem;
   padding: 0.2rem 0.6rem;
@@ -553,7 +566,6 @@ audited-fact::part(remove-button):focus {
 #audit-panel[data-active-tab="chat-explain"] #audit-panel-explain-section {
   display: flex;
   flex-direction: column;
-  height: 100%;
   padding: 1rem;
 }
 

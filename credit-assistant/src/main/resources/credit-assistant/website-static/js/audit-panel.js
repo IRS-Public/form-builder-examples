@@ -799,6 +799,11 @@ function trackFact (path, collectionId, setFocus = true) {
   }
 }
 
+function clearTrackedFacts () {
+  setAuditPanelStorage('trackedFacts', [])
+  document.querySelector('#audit-panel__fact-list').replaceChildren()
+}
+
 function setFactOptions () {
   const paths = window.factGraph.paths().sort()
   const options = paths.map((path) => `<option path=${path}>${path}</option>`)

@@ -73,12 +73,32 @@
          <div id="chat-status" class="chat-status"></div>
          <div id="chat-messages" class="chat-messages" aria-live="polite" aria-label="Chat conversation"></div>
          <div class="chat-input-row">
-            <textarea
-               class="chat-container__textarea"
-               placeholder="Ask me about The EITC Assistant..."
-               aria-label="Ask the EITC Assistant"
-               rows="3"
-               ></textarea>
+            <div class="usa-form-group">
+            <label
+               class="usa-label twe-question"
+               th:for="fact-select"
+               th:text="#{audit.fact-select.question}"></label>
+            <div class="ap-fact-row">
+               <input
+                  list="fact-options"
+                  class="usa-input"
+                  onkeydown="pathSelectListener(event)"
+                  id="fact-select">
+               <button
+                  class="usa-button usa-button--unstyled"
+                  type="button"
+                  title="Clear all tracked facts"
+                  aria-label="Clear all tracked facts"
+                  onclick="clearTrackedFacts()">Clear facts</button>
+            </div>
+            <datalist id="fact-options" aria-invalid="false"></datalist>
+         </div>
+         <textarea
+            class="chat-container__textarea"
+            placeholder="Ask me about The EITC Assistant..."
+            aria-label="Ask the EITC Assistant"
+            rows="3"
+            ></textarea>
             <button id="chat-submit-btn" class="chat-container__submit-btn" type="button" aria-label="Submit question to EITC Assistant">Send</button>
          </div>
       </div>
