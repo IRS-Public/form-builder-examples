@@ -1233,20 +1233,90 @@ window.loadScenarioFromAuditPanel = loadScenarioFromAuditPanel
 const CHAT_API_URL = 'http://localhost:8000/chat'
 const CHAT_TIMEOUT_MS = 90_000
 
+// Bounds for the dependency-value tree we attach to each tracked fact. This mirrors
+// Graph.debugFactRecurse() (resolve every dependency's current value) but stays
+// bounded so we don't blow up the chat prompt for deeply-nested facts.
+const FACT_TREE_MAX_DEPTH = 4
+const FACT_TREE_MAX_NODES = 50
+
+// Read the current value/completeness of a concrete fact path from the live graph.
+function _factValue (concretePath) {
+  try {
+    const fact = window.factGraph?.get(concretePath)
+    if (fact?.hasValue) {
+      return { value: fact.get.toString(), complete: fact.complete }
+    }
+  } catch {}
+  return { value: null, complete: false }
+}
+
+// The raw <Dependency> paths declared in a fact's dictionary definition.
+function _factDependencyPaths (abstractPath) {
+  const factDef = factDictionaryXml.querySelector(`Fact[path="${abstractPath}"]`)
+  if (!factDef) return []
+  return Array.from(factDef.querySelectorAll('Dependency'))
+    .map((dep) => dep.getAttribute('path'))
+    .filter(Boolean)
+}
+
+function _abstractOf (concretePath) {
+  return concretePath.replace(/#[^/]+/g, '*')
+}
+
+function _collectionIdOf (concretePath) {
+  const match = concretePath.match(/#([^/]+)/)
+  return match ? match[1] : null
+}
+
+// Resolve a raw dependency path (which may be relative "../x" or contain a "*"
+// collection wildcard) to a concrete path, mirroring ConditionDetail's resolution.
+// Returns null when it can't be resolved to a concrete path (unresolved wildcard).
+function _resolveDependencyConcrete (rawPath, parentAbstract, collectionId) {
+  let abstractPath = rawPath.startsWith('..')
+    ? rawPath.replace('..', parentAbstract.replace(/\*\/.*/, '*'))
+    : rawPath
+  if (abstractPath.includes('*')) {
+    if (!collectionId) return null
+    abstractPath = abstractPath.replace('*', `#${collectionId}`)
+    if (abstractPath.includes('*')) return null
+  }
+  return abstractPath
+}
+
+// Recursively resolve a fact and its dependencies to current values, bounded by
+// FACT_TREE_MAX_DEPTH/FACT_TREE_MAX_NODES. ``seen`` guards against cycles/repeats.
+function _buildFactTree (concretePath, depth, counter, seen) {
+  if (depth > FACT_TREE_MAX_DEPTH || counter.n >= FACT_TREE_MAX_NODES) return null
+  if (seen.has(concretePath)) return { path: concretePath, repeated: true }
+  seen.add(concretePath)
+  counter.n++
+
+  const { value, complete } = _factValue(concretePath)
+  const node = { path: concretePath, value, complete }
+
+  const abstractPath = _abstractOf(concretePath)
+  const collectionId = _collectionIdOf(concretePath)
+  const children = []
+  for (const rawPath of _factDependencyPaths(abstractPath)) {
+    if (counter.n >= FACT_TREE_MAX_NODES) break
+    const depConcrete = _resolveDependencyConcrete(rawPath, abstractPath, collectionId)
+    if (!depConcrete) continue
+    const child = _buildFactTree(depConcrete, depth + 1, counter, seen)
+    if (child) children.push(child)
+  }
+  if (children.length) node.dependencies = children
+  return node
+}
+
 function _getTrackedFacts () {
   const trackedFacts = getAuditPanelStorage().trackedFacts || []
   return trackedFacts.map(({ path, collectionId }) => {
     const factPath = makeCollectionIdPath(path, collectionId)
-    let value = null
-    let complete = false
-    try {
-      const fact = window.factGraph?.get(factPath)
-      if (fact?.hasValue) {
-        value = fact.get.toString()
-        complete = fact.complete
-      }
-    } catch {}
-    return { path: factPath, value, complete }
+    const { value, complete } = _factValue(factPath)
+    // Attach the resolved dependency tree so the agent reasons over live values
+    // instead of inventing them from static fact-dictionary structure.
+    const tree = _buildFactTree(factPath, 0, { n: 0 }, new Set())
+    return { path: factPath, value, complete, dependencies: tree?.dependencies ?? [] }
   })
 }
 
