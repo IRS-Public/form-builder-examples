@@ -17,6 +17,13 @@
     margin: 1rem 0;
   }
 
+  /* Inline fact-select rows reset the block-button override */
+  .ap-fact-row button {
+    display: inline-flex;
+    margin: 0;
+    flex-shrink: 0;
+  }
+
   h1,
   h2 {
     font-weight: 600;
@@ -124,8 +131,8 @@
 }
 
 .audit-panel__content #audit-panel-explain-section {
-  margin: calc(-1 * var(--units-4));
-  height: calc(100% + 2 * var(--units-4));
+  position: absolute;
+  inset: 0;
 }
 
 .audit-panel-open .audit-panel__content {
@@ -524,6 +531,12 @@ audited-fact::part(remove-button):focus {
   margin: 0.25rem 0 0.5rem;
 }
 
+.ap-fact-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
 .ap-btn-sm {
   font-size: 0.75rem;
   padding: 0.2rem 0.6rem;
@@ -553,7 +566,6 @@ audited-fact::part(remove-button):focus {
 #audit-panel[data-active-tab="chat-explain"] #audit-panel-explain-section {
   display: flex;
   flex-direction: column;
-  height: 100%;
   padding: 1rem;
 }
 
@@ -607,4 +619,72 @@ audited-fact::part(remove-button):focus {
 .chat-container__submit-btn:focus {
   outline: 0.25rem solid var(--blue-40v);
   outline-offset: 0.25rem;
+}
+
+/* ── Chat messages ──────────────────────────────────────────────────────────── */
+
+.chat-status {
+  font-size: 0.75rem;
+  color: var(--base-light, #71767a);
+  min-height: 1.25rem;
+  flex-shrink: 0;
+  padding: 0 0 0.25rem 0;
+}
+
+#chat-messages {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 0.5rem 0;
+  min-height: 0;
+}
+
+.chat-message {
+  max-width: 90%;
+  padding: 0.625rem 0.875rem;
+  border-radius: 0.75rem;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  word-break: break-word;
+}
+
+.chat-message--user {
+  align-self: flex-end;
+  background: var(--primary, #005fcc);
+  color: white;
+  border-bottom-right-radius: 0.25rem;
+}
+
+.chat-message--assistant {
+  align-self: flex-start;
+  background: var(--base-lightest, #f0f0f0);
+  color: var(--base-darkest, #1b1b1b);
+  border-bottom-left-radius: 0.25rem;
+}
+
+.chat-message--assistant.in-progress::after {
+  content: '▌';
+  display: inline-block;
+  animation: blink 1s step-start infinite;
+}
+
+@keyframes blink {
+  50% { opacity: 0; }
+}
+
+.chat-message code {
+  background: rgba(0, 0, 0, 0.08);
+  padding: 0.1em 0.3em;
+  border-radius: 0.2em;
+  font-family: monospace;
+  font-size: 0.85em;
+}
+
+.chat-input-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  flex-shrink: 0;
 }
