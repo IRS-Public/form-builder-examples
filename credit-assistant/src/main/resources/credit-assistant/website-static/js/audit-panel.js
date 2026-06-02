@@ -1234,8 +1234,20 @@ const CHAT_API_URL = 'http://localhost:8000/chat'
 const CHAT_TIMEOUT_MS = 90_000
 
 function _getTrackedFacts () {
-  const items = document.querySelectorAll('#audit-panel__fact-list [data-path]')
-  return Array.from(items).map(el => el.dataset.path).filter(Boolean)
+  const trackedFacts = getAuditPanelStorage().trackedFacts || []
+  return trackedFacts.map(({ path, collectionId }) => {
+    const factPath = makeCollectionIdPath(path, collectionId)
+    let value = null
+    let complete = false
+    try {
+      const fact = window.factGraph?.get(factPath)
+      if (fact?.hasValue) {
+        value = fact.get.toString()
+        complete = fact.complete
+      }
+    } catch {}
+    return { path: factPath, value, complete }
+  })
 }
 
 function _escapeHtml (text) {
@@ -1427,4 +1439,6 @@ function initializeChatSubmitButton () {
   }
 }
 
-document.addEventListener('DOMContentLoaded', initializeChatSubmitButton)
+// The top-level await above means DOMContentLoaded has already fired by the time this line
+// runs, so call directly — the DOM is guaranteed ready at this point.
+initializeChatSubmitButton()
