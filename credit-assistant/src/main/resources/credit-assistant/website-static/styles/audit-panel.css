@@ -543,23 +543,6 @@ audited-fact::part(remove-button):focus {
   margin: 0.25rem 0 0.5rem;
 }
 
-/* ── Audit mode ribbon ─────────────────────────────────────────────────────── */
-
-.audit-mode-ribbon {
-  background: #e6e6fa;
-  border-bottom: 2px solid #c7c7e0;
-  padding: 0.25rem 0.75rem;
-  display: flex;
-  align-items: center;
-  gap: 0.625rem;
-  font-weight: 600;
-  color: #3d3d8f;
-}
-
-.audit-mode-ribbon.hidden {
-  display: none;
-}
-
 /* ── Chat Container (pill-shaped, docked bottom right) ────────────────────── */
 
 /* Show explain section only when chat-explain tab is active */

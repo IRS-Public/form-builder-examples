@@ -142,7 +142,8 @@ object Website {
         val titlePrefix = templateEngine.messageResolver.resolveMessage("title.prefix")
         val titleSuffix = templateEngine.messageResolver.resolveMessage("title.suffix")
 
-        val title = s"$titlePrefix - $titleValue | $titleSuffix"
+//        val title = s"$titlePrefix - $titleValue | $titleSuffix"
+        val title = titlePrefix
 
         val stepIndex = topicIndex.getOrElse(page.stepperRoute, 0)
         val stepTotal = topicReps.size

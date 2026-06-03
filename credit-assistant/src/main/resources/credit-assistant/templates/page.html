@@ -37,9 +37,7 @@
             </div>
     </header>
 
-    <div id="audit-mode-ribbon" class="audit-mode-ribbon hidden" role="status" aria-label="Audit mode enabled">
-        <span class="audit-mode-ribbon__content">Audit mode enabled</span>
-    </div>
+    <div th:replace="fragments/taxpert-banner"></div>
 
     <main id="main-content">
         <h1 th:text="#{layout.title}"></h1>

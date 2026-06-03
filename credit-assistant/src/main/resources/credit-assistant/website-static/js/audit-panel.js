@@ -799,11 +799,6 @@ function trackFact (path, collectionId, setFocus = true) {
   }
 }
 
-function clearTrackedFacts () {
-  setAuditPanelStorage('trackedFacts', [])
-  document.querySelector('#audit-panel__fact-list').replaceChildren()
-}
-
 function setFactOptions () {
   const paths = window.factGraph.paths().sort()
   const options = paths.map((path) => `<option path=${path}>${path}</option>`)
@@ -845,7 +840,7 @@ export function enable () {
   // Set up the audit to display on the page (shows the thin tab rail)
   document.querySelector('#audit-panel-styles').disabled = false
   document.querySelector('#audit-panel').classList.remove('hidden')
-  document.querySelector('#audit-mode-ribbon')?.classList.remove('hidden')
+  document.querySelector('#taxpert-banner')?.classList.remove('hidden')
 
   // Set up adjustable width controls for the audit panel
   function initializeAdjustableWidth () {
@@ -1162,7 +1157,7 @@ export function enable () {
 export function disable () {
   document.querySelector('#audit-panel-styles').disabled = true
   document.querySelector('#audit-panel').classList.add('hidden')
-  document.querySelector('#audit-mode-ribbon')?.classList.add('hidden')
+  document.querySelector('#taxpert-banner')?.classList.add('hidden')
   document.body.classList.remove('audit-panel-open')
   document.body.removeAttribute('style')
   delete auditPanel.dataset.activeTab
@@ -1339,13 +1334,16 @@ function _renderMarkdown (text) {
   let i = 0
 
   while (i < lines.length) {
+    // eslint-disable-next-line security/detect-object-injection
     const line = lines[i]
 
     // Fenced code block (```)
     if (line.trimStart().startsWith('```')) {
       const fenceLines = []
       i++
+      // eslint-disable-next-line security/detect-object-injection
       while (i < lines.length && !lines[i].trimStart().startsWith('```')) {
+        // eslint-disable-next-line security/detect-object-injection
         fenceLines.push(_escapeHtml(lines[i]))
         i++
       }
@@ -1371,7 +1369,9 @@ function _renderMarkdown (text) {
     // Unordered list block
     if (/^[-*]\s/.test(line)) {
       const items = []
+      // eslint-disable-next-line security/detect-object-injection
       while (i < lines.length && /^[-*]\s/.test(lines[i])) {
+        // eslint-disable-next-line security/detect-object-injection
         items.push('<li>' + _renderInline(lines[i].replace(/^[-*]\s+/, '')) + '</li>')
         i++
       }
@@ -1382,7 +1382,9 @@ function _renderMarkdown (text) {
     // Ordered list block
     if (/^\d+\.\s/.test(line)) {
       const items = []
+      // eslint-disable-next-line security/detect-object-injection
       while (i < lines.length && /^\d+\.\s/.test(lines[i])) {
+        // eslint-disable-next-line security/detect-object-injection
         items.push('<li>' + _renderInline(lines[i].replace(/^\d+\.\s+/, '')) + '</li>')
         i++
       }
@@ -1443,6 +1445,7 @@ function _startThinkingAnimation () {
   const id = setInterval(() => {
     elapsed++
     dotIdx = (dotIdx + 1) % dots.length
+    // eslint-disable-next-line security/detect-object-injection
     _setChatStatus(`Thinking${dots[dotIdx]} (${elapsed}s)`)
   }, 1000)
   return () => clearInterval(id)
