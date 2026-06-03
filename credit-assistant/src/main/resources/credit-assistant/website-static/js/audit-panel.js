@@ -1151,6 +1151,15 @@ export function enable () {
   if (loadScenarioBtn) {
     loadScenarioBtn.addEventListener('click', loadScenarioFromAuditPanel)
   }
+
+  for (const selector of [
+    '#scenario-filter-dq',
+    '#scenario-filter-fs',
+    '#scenario-filter-marital',
+    '#scenario-filter-income',
+  ]) {
+    document.querySelector(selector)?.addEventListener('change', filterScenarios)
+  }
 }
 
 // Disable audit mode and clear all tracked facts and stored state
@@ -1227,6 +1236,69 @@ function loadScenarioFromAuditPanel () {
     .catch(err => console.error('Failed to load scenario:', err))
 }
 window.loadScenarioFromAuditPanel = loadScenarioFromAuditPanel
+
+// Scenario filenames encode four dimensions, e.g. `dq_hoh_unmarried_2024_1tp_3qcs_59899.json`:
+// an optional `dq`/`ko` eligibility prefix, the filing status, an optional married/unmarried
+// marital qualifier (HOH only), and a trailing income amount.
+function parseScenarioFilename (filename) {
+  // Consume tokens with shift()/parts[0] (a literal index) instead of a variable
+  // index parts[i], which trips security/detect-object-injection.
+  const parts = filename.replace(/\.json$/, '').split('_')
+
+  let eligibility = 'qualifying'
+  if (parts[0] === 'dq') {
+    eligibility = 'disqualifying'
+    parts.shift()
+  }
+
+  const filingStatus = parts.shift()
+
+  let marital = null
+  if (filingStatus === 'hoh' && (parts[0] === 'married' || parts[0] === 'unmarried')) {
+    marital = parts.shift()
+  }
+
+  const income = parseInt(parts[parts.length - 1], 10)
+  let incomeBand = 'none'
+  if (!Number.isNaN(income)) {
+    if (income < 20000) incomeBand = 'low'
+    else if (income < 52000) incomeBand = 'mid-low'
+    else if (income < 59000) incomeBand = 'mid-high'
+    else incomeBand = 'high'
+  }
+
+  return { eligibility, filingStatus, marital, incomeBand }
+}
+
+// Hide scenario <option>s that don't match the four filter dropdowns, clearing the
+// selection if the chosen scenario falls outside the active filters.
+function filterScenarios () {
+  const eligibility = document.querySelector('#scenario-filter-dq').value
+  const filingStatus = document.querySelector('#scenario-filter-fs').value
+  const marital = document.querySelector('#scenario-filter-marital').value
+  const incomeBand = document.querySelector('#scenario-filter-income').value
+
+  // Marital status only applies to HOH, so hide that dropdown for the other statuses.
+  const maritalGroup = document.querySelector('#scenario-filter-marital-group')
+  if (maritalGroup) {
+    maritalGroup.hidden = filingStatus !== '' && filingStatus !== 'hoh'
+  }
+
+  const select = document.querySelector('#scenario-select')
+  for (const option of select.options) {
+    if (!option.value) continue
+    const scenario = parseScenarioFilename(option.value)
+    option.hidden = Boolean(
+      (eligibility && scenario.eligibility !== eligibility) ||
+      (filingStatus && scenario.filingStatus !== filingStatus) ||
+      (marital && scenario.marital !== marital) ||
+      (incomeBand && scenario.incomeBand !== incomeBand)
+    )
+  }
+
+  const selectedOption = select.options[select.selectedIndex]
+  if (selectedOption && selectedOption.hidden) select.value = ''
+}
 
 // ── Chat HTTP ─────────────────────────────────────────────────────────────────
 
