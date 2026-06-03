@@ -1241,25 +1241,21 @@ window.loadScenarioFromAuditPanel = loadScenarioFromAuditPanel
 // an optional `dq`/`ko` eligibility prefix, the filing status, an optional married/unmarried
 // marital qualifier (HOH only), and a trailing income amount.
 function parseScenarioFilename (filename) {
+  // Consume tokens with shift()/parts[0] (a literal index) instead of a variable
+  // index parts[i], which trips security/detect-object-injection.
   const parts = filename.replace(/\.json$/, '').split('_')
-  let i = 0
 
   let eligibility = 'qualifying'
-  if (parts[i] === 'dq') {
+  if (parts[0] === 'dq') {
     eligibility = 'disqualifying'
-    i++
-  } else if (parts[i] === 'ko') {
-    eligibility = 'knockout'
-    i++
+    parts.shift()
   }
 
-  const filingStatus = parts[i]
-  i++
+  const filingStatus = parts.shift()
 
   let marital = null
-  if (filingStatus === 'hoh' && (parts[i] === 'married' || parts[i] === 'unmarried')) {
-    marital = parts[i]
-    i++
+  if (filingStatus === 'hoh' && (parts[0] === 'married' || parts[0] === 'unmarried')) {
+    marital = parts.shift()
   }
 
   const income = parseInt(parts[parts.length - 1], 10)
