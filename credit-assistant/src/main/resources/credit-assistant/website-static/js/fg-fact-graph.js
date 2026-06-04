@@ -53,7 +53,12 @@ export function saveFactGraph () {
 export function loadFactGraph (factGraphAsString) {
   factGraph = fg.GraphFactory.fromJSON(factDictionary, factGraphAsString)
   saveFactGraph()
-  window.location.reload()
+  // Defer the reload one task so the BroadcastChannel publish in saveFactGraph()
+  // is flushed to other same-origin surfaces (e.g. Formative Studio's overlay)
+  // before this frame begins unloading. An immediate reload races the in-flight
+  // message and drops it — which is why answering a question syncs but loading a
+  // scenario did not.
+  setTimeout(() => window.location.reload(), 0)
 }
 window.loadFactGraph = loadFactGraph
 
