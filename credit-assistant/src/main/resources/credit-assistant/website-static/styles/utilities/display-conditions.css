@@ -65,6 +65,30 @@
     padding: var(--units-05) var(--units-1);
   }
 
+  /* The <fg-set> box lays the Writable chip and its show-condition out inline on
+     a single row; the nested condition-details shed their standalone block chrome. */
+  .condition-detail-box {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    column-gap: var(--units-2);
+    row-gap: var(--units-05);
+    background-color: var(--accent-cool-lighter);
+    color: var(--base-darkest);
+    font-size: 0.875rem;
+    margin: 0 -1rem var(--units-1);
+    padding: var(--units-05) var(--units-1);
+  }
+
+  .condition-detail-box condition-detail {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.25ch;
+    background-color: transparent;
+    margin: 0;
+    padding: 0;
+  }
+
   condition-detail .condition-detail__status {
     font-weight: bold;
     margin-right: 0.25ch;
@@ -78,6 +102,10 @@
     color: var(--error-dark);
   }
 
+  condition-detail .condition-detail__status--writable {
+    color: var(--accent-cool-darkest);
+  }
+
   condition-detail .condition-detail__operator {
     font-style: italic;
     margin-right: 0.25ch;
@@ -86,11 +114,6 @@
   condition-detail .condition-detail__path {
     font-family: monospace;
     word-break: break-all;
-  }
-
-  condition-detail .condition-detail__value {
-    margin-left: 0.5ch;
-    font-weight: bold;
   }
 
   condition-detail .condition-detail__complete {
