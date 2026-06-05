@@ -187,7 +187,13 @@ document.addEventListener('fg-load', () => {
 
 export function displayConditions () {
   document.body.classList.add('display-conditions')
+
+  // Conditions on alerts (and any other [condition] element). <fg-set>s are
+  // handled below so their gate condition shares one inline box with the
+  // <Writable> fact the question binds to.
   document.querySelectorAll('[condition]').forEach((el) => {
+    if (el.tagName.toLowerCase() === 'fg-set') return
+
     const operator = el.getAttribute('operator')
     const conditionPath = el.getAttribute('condition')
     if (!operator || !conditionPath) return
@@ -205,11 +211,41 @@ export function displayConditions () {
       el.prepend(detail)
     }
   })
+
+  // Each <fg-set> gets a single inline box that names the <Writable> fact the
+  // question binds to/sets, followed (when the question is gated by if-true /
+  // if-false) by its show-condition with completeness + a "show definition" link.
+  document.querySelectorAll('fg-set').forEach((fgSet) => {
+    const writablePath = fgSet.path ?? fgSet.getAttribute('path')
+    if (!writablePath) return
+
+    const box = document.createElement('div')
+    box.className = 'condition-detail-box'
+
+    const writable = document.createElement('condition-detail')
+    writable.setAttribute('kind', 'writable')
+    writable.setAttribute('writable-path', writablePath)
+    writable.setAttribute('abstract-path', writablePath.replace(/#[^/]+/, '*'))
+    box.appendChild(writable)
+
+    const operator = fgSet.getAttribute('operator')
+    const conditionPath = fgSet.getAttribute('condition')
+    if (operator && conditionPath) {
+      const condition = document.createElement('condition-detail')
+      condition.setAttribute('condition-path', conditionPath)
+      condition.setAttribute('condition-operator', operator)
+      condition.setAttribute('abstract-path', conditionPath.replace(/#[^/]+/, '*'))
+      box.appendChild(condition)
+    }
+
+    fgSet.prepend(box)
+  })
 }
 
 export function hideConditions () {
   document.body.classList.remove('display-conditions')
   document.querySelectorAll('condition-detail').forEach((el) => el.remove())
+  document.querySelectorAll('.condition-detail-box').forEach((el) => el.remove())
 }
 window.displayConditions = displayConditions
 window.hideConditions = hideConditions
@@ -412,9 +448,19 @@ class ConditionDetail extends HTMLElement {
   }
 
   connectedCallback () {
+    this.kind = this.getAttribute('kind') ?? 'condition'
+    this.abstractPath = this.getAttribute('abstract-path')
+    if (this.kind === 'writable') {
+      // Writable variant: just a static chip naming the fact the question binds
+      // to/sets — no popover and no live updates needed.
+      this.writablePath = this.getAttribute('writable-path')
+      this.conditionPath = this.writablePath
+      this.render()
+      return
+    }
+
     this.conditionPath = this.getAttribute('condition-path')
     this.operator = this.getAttribute('condition-operator')
-    this.abstractPath = this.getAttribute('abstract-path')
 
     this._popover = document.createElement('div')
     this._popover.className = 'condition-detail-popover'
@@ -441,21 +487,52 @@ class ConditionDetail extends HTMLElement {
   }
 
   render () {
-    const isHidden = this.parentElement?.classList.contains('hidden') ?? false
+    if (this.kind === 'writable') {
+      this._renderWritable()
+    } else {
+      this._renderCondition()
+    }
+  }
+
+  // Static chip: just names the <Writable> fact the question binds to/sets.
+  _renderWritable () {
+    this.classList.add('condition-detail--writable')
+
+    const factDef = factDictionaryXml.querySelector(
+      `Fact[path="${this.abstractPath}"]`
+    )
+    const isWritableFact = !!factDef?.querySelector('Writable')
+    const statusText = isWritableFact ? 'WRITABLE' : 'NOT_WRITABLE'
+    const statusClass = isWritableFact
+      ? 'condition-detail__status--writable'
+      : 'condition-detail__status--hidden'
+
+    const pathHtml = this.abstractPath.includes('*')
+      ? `<span class="condition-detail__path">${this.conditionPath}</span>`
+      : `<fact-link path="${this.conditionPath}"><span class="condition-detail__path">${this.conditionPath}</span></fact-link>`
+
+    this.innerHTML = `
+      <span class="condition-detail__status ${statusClass}">${statusText}</span>
+      ${pathHtml}
+    `
+  }
+
+  _renderCondition () {
+    // The conditioned host (fg-alert, or the fg-set when its gate lives in our
+    // shared box) carries the runtime `hidden` class, so resolve it via closest.
+    const isHidden = this.closest('[condition]')?.classList.contains('hidden') ?? false
     const statusText = isHidden ? 'UNSET_CONDITION' : 'SET_CONDITION'
     const statusClass = isHidden
       ? 'condition-detail__status--hidden'
       : 'condition-detail__status--shown'
 
-    let valueText = '(unavailable)'
     let completeText = ''
     if (window.factGraph) {
       try {
         const fact = window.factGraph.get(this.conditionPath)
-        valueText = fact.hasValue ? fact.get.toString() : '(no value)'
         completeText = fact.complete ? 'complete' : 'incomplete'
       } catch (e) {
-        valueText = '(error)'
+        completeText = '(error)'
       }
     }
 
@@ -466,7 +543,6 @@ class ConditionDetail extends HTMLElement {
     this.innerHTML = `
       <span class="condition-detail__status ${statusClass}">${statusText}</span>
       ${pathHtml}
-      <span class="condition-detail__value">${valueText}</span>
       <span class="condition-detail__complete">${completeText}</span>
       <button class="condition-detail__debug-btn" type="button">show definition</button>
     `
@@ -1157,6 +1233,7 @@ export function enable () {
     '#scenario-filter-fs',
     '#scenario-filter-marital',
     '#scenario-filter-income',
+    '#scenario-filter-qc',
   ]) {
     document.querySelector(selector)?.addEventListener('change', filterScenarios)
   }
@@ -1237,9 +1314,9 @@ function loadScenarioFromAuditPanel () {
 }
 window.loadScenarioFromAuditPanel = loadScenarioFromAuditPanel
 
-// Scenario filenames encode four dimensions, e.g. `dq_hoh_unmarried_2024_1tp_3qcs_59899.json`:
+// Scenario filenames encode several dimensions, e.g. `dq_hoh_unmarried_2024_1tp_3qcs_59899.json`:
 // an optional `dq`/`ko` eligibility prefix, the filing status, an optional married/unmarried
-// marital qualifier (HOH only), and a trailing income amount.
+// marital qualifier (HOH only), a `Nqc`/`Nqcs` qualifying-children token, and a trailing income amount.
 function parseScenarioFilename (filename) {
   // Consume tokens with shift()/parts[0] (a literal index) instead of a variable
   // index parts[i], which trips security/detect-object-injection.
@@ -1258,6 +1335,17 @@ function parseScenarioFilename (filename) {
     marital = parts.shift()
   }
 
+  // Number of qualifying children, encoded as a `Nqc`/`Nqcs` token (e.g. `3qcs`).
+  // Iterate (no variable-indexed access) to keep security/detect-object-injection happy.
+  let qcCount = ''
+  for (const part of parts) {
+    const match = /^(\d+)qcs?$/i.exec(part)
+    if (match) {
+      qcCount = match[1]
+      break
+    }
+  }
+
   const income = parseInt(parts[parts.length - 1], 10)
   let incomeBand = 'none'
   if (!Number.isNaN(income)) {
@@ -1267,16 +1355,17 @@ function parseScenarioFilename (filename) {
     else incomeBand = 'high'
   }
 
-  return { eligibility, filingStatus, marital, incomeBand }
+  return { eligibility, filingStatus, marital, incomeBand, qcCount }
 }
 
-// Hide scenario <option>s that don't match the four filter dropdowns, clearing the
+// Hide scenario <option>s that don't match the filter dropdowns, clearing the
 // selection if the chosen scenario falls outside the active filters.
 function filterScenarios () {
   const eligibility = document.querySelector('#scenario-filter-dq').value
   const filingStatus = document.querySelector('#scenario-filter-fs').value
   const marital = document.querySelector('#scenario-filter-marital').value
   const incomeBand = document.querySelector('#scenario-filter-income').value
+  const qcCount = document.querySelector('#scenario-filter-qc').value
 
   // Marital status only applies to HOH, so hide that dropdown for the other statuses.
   const maritalGroup = document.querySelector('#scenario-filter-marital-group')
@@ -1292,7 +1381,8 @@ function filterScenarios () {
       (eligibility && scenario.eligibility !== eligibility) ||
       (filingStatus && scenario.filingStatus !== filingStatus) ||
       (marital && scenario.marital !== marital) ||
-      (incomeBand && scenario.incomeBand !== incomeBand)
+      (incomeBand && scenario.incomeBand !== incomeBand) ||
+      (qcCount && scenario.qcCount !== qcCount)
     )
   }
 
