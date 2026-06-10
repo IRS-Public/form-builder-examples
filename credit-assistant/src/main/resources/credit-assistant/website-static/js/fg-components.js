@@ -10,8 +10,11 @@ import { initSingleQuestionNav } from './fg-navigator.js'
 // Add show/hide functionality to all elements
 document.addEventListener('fg-update', showOrHideAllElements)
 showOrHideAllElements()
-document.querySelector('#page-content-wrapper').classList.remove('hidden')
-document.querySelector('#loading-spinner').classList.add('hidden')
+
+// #page-content-wrapper / #loading-spinner exist on the flow page template (page.html) but not
+// on the /all-screens audit view, which renders all pages directly without a loading spinner.
+document.querySelector('#page-content-wrapper')?.classList.remove('hidden')
+document.querySelector('#loading-spinner')?.classList.add('hidden')
 
 initSingleQuestionNav()
 

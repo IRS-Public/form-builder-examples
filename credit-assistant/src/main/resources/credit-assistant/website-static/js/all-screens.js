@@ -2,7 +2,7 @@
 // The audit panel is NOT shown on this page — the toolbar's "Show conditions" toggle drives
 // `displayConditions()` / `hideConditions()` directly. State is persisted under 'allScreens'.
 
-import { displayConditions, hideConditions } from './audit-panel.js'
+import { displayConditions, hideConditions } from './audit-panel/condition-detail.js'
 
 const STORAGE_KEY = 'allScreens'
 

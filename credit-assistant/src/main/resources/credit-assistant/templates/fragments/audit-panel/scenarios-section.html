@@ -1,0 +1,64 @@
+<div class="audit-panel__section" id="audit-panel-scenarios-section"
+     data-tab="scenarios"
+     th:if="${flags.scenarioMode and scenarios != null and !scenarios.isEmpty()}">
+   <h2>Scenarios</h2>
+   <div class="scenario-filters">
+      <div class="usa-form-group">
+         <label class="usa-label" for="scenario-filter-dq">Eligibility</label>
+         <select class="usa-select" id="scenario-filter-dq">
+            <option value="">All</option>
+            <option value="qualifying">Qualifying</option>
+            <option value="disqualifying">Disqualifying (DQ)</option>
+         </select>
+      </div>
+      <div class="usa-form-group">
+         <label class="usa-label" for="scenario-filter-fs">Filing Status</label>
+         <select class="usa-select" id="scenario-filter-fs">
+            <option value="">All</option>
+            <option value="single">Single</option>
+            <option value="hoh">Head of Household</option>
+            <option value="qss">Qualifying Surviving Spouse</option>
+            <option value="mfs">Married Filing Separately</option>
+         </select>
+      </div>
+      <div class="usa-form-group" id="scenario-filter-marital-group">
+         <label class="usa-label" for="scenario-filter-marital">Marital Status (HOH)</label>
+         <select class="usa-select" id="scenario-filter-marital">
+            <option value="">All</option>
+            <option value="married">Married</option>
+            <option value="unmarried">Unmarried</option>
+         </select>
+      </div>
+      <div class="usa-form-group">
+         <label class="usa-label" for="scenario-filter-income">Income Band</label>
+         <select class="usa-select" id="scenario-filter-income">
+            <option value="">All</option>
+            <option value="low">Low (~$17K–$19K)</option>
+            <option value="mid-low">Mid-Low (~$46K–$51K)</option>
+            <option value="mid-high">Mid-High (~$52K–$58K)</option>
+            <option value="high">High (~$59K–$62K)</option>
+            <option value="none">No income in filename</option>
+         </select>
+      </div>
+      <div class="usa-form-group">
+         <label class="usa-label" for="scenario-filter-qc">Qualifying Children</label>
+         <select class="usa-select" id="scenario-filter-qc">
+            <option value="">All</option>
+            <option value="0">0</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+         </select>
+      </div>
+   </div>
+   <div class="usa-form-group">
+      <label class="usa-label" for="scenario-select">Select a scenario</label>
+      <select class="usa-select" id="scenario-select">
+         <option value="" disabled="disabled" selected="selected">-- Choose a scenario --</option>
+         <option th:each="scenario : ${scenarios}"
+                 th:value="${scenario.filename}"
+                 th:text="${scenario.label}"></option>
+      </select>
+   </div>
+   <button class="usa-button" type="button" id="load-scenario-btn">Load Scenario</button>
+</div>

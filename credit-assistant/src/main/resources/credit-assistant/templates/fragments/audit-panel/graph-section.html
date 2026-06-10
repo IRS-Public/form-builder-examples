@@ -1,0 +1,29 @@
+<div class="audit-panel__section" id="audit-panel-reset-section" data-tab="reset">
+   <h2>Fact Graph Inspector</h2>
+   <div class="audit-panel__section">
+      <h3>Copy Fact Graph</h3>
+      <div>
+         <button class="usa-button inline" type="button" onclick="copyFactGraphToClipboard()">
+            <svg aria-hidden="true" role="img" focusable="false" class="usa-icon usa-icon--size-3 margin-left-neg-1 margin-y-neg-05">
+               <use href="/app/eitc/resources/vendor/uswds-3.13.0/img/sprite.svg#content_copy"/>
+            </svg>
+            Copy Fact Graph
+         </button>
+         <span id="copy-fg-status">Copied to clipboard!</span>
+      </div>
+   </div>
+   <div class="audit-panel__section">
+      <h3>Load Fact Graph</h3>
+      <div class="usa-form-group">
+         <label class="usa-label" for="load-fact-graph">Paste Fact Graph</label>
+         <textarea id="load-fact-graph" class="usa-textarea" onchange="this.setCustomValidity('')"></textarea>
+      </div>
+      <button class="usa-button" type="button" onclick="loadFactGraphFromAuditPanel()">Set Fact Graph</button>
+   </div>
+   <div class="audit-panel__section">
+      <h3>Reset Fact Graph</h3>
+      <fg-reset>
+         <button class="usa-button usa-button--outline" type="reset">Start over</button>
+      </fg-reset>
+   </div>
+</div>
