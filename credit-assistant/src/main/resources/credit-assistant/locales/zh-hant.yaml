@@ -147,6 +147,10 @@ all-screens:
     section-label: "部分"
     section-all: "所有部分"
     horizontal-layout: "橫向版面"
+    scenario-view: "情境檢視"
+    scenario-label: "情境"
+    scenario-placeholder: "載入情境…"
+    scenario-clear: "清除情境"
   section:
     about-you: "關於您"
     filing-status: "申報狀態"

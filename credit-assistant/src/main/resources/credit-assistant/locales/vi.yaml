@@ -147,6 +147,10 @@ all-screens:
     section-label: "Phần"
     section-all: "Tất cả các phần"
     horizontal-layout: "Bố cục ngang"
+    scenario-view: "Xem kịch bản"
+    scenario-label: "Kịch bản"
+    scenario-placeholder: "Tải kịch bản…"
+    scenario-clear: "Xóa kịch bản"
   section:
     about-you: "Về bạn"
     filing-status: "Tình trạng khai thuế"

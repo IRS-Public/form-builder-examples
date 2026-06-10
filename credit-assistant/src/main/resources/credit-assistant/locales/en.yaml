@@ -147,6 +147,10 @@ all-screens:
     section-label: "Section"
     section-all: "All sections"
     horizontal-layout: "Horizontal layout"
+    scenario-view: "Scenario view"
+    scenario-label: "Scenario"
+    scenario-placeholder: "Load a scenario…"
+    scenario-clear: "Clear scenario"
   section:
     about-you: "About you"
     filing-status: "Filing status"

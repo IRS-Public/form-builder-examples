@@ -11,6 +11,15 @@ span.hidden{
   display: inline;
 }
 
+/* Scenario view restores the normal flow's hide/show behavior: elements that fg-components.js's
+   showOrHideAllElements() marks `.hidden` against the loaded Fact Graph are actually hidden,
+   instead of forced visible by the rules above. */
+body.scenario-view .hidden,
+body.scenario-view span.hidden,
+body.scenario-view .fg-show.hidden {
+  display: none;
+}
+
 @media screen {
 
   .view--column {
@@ -139,6 +148,24 @@ span.hidden{
 }
 .all-screens__toolbar .usa-checkbox__input + .usa-checkbox__label::before {
   display: none;
+}
+
+/* ── Scenario controls ────────────────────────────────────────────────── */
+
+.all-screens__toolbar-group--scenario {
+  margin-left: auto;
+}
+.all-screens__toolbar .usa-form-group {
+  margin: 0;
+}
+.all-screens__toolbar .usa-select {
+  margin: 0;
+  height: 2rem;
+  min-width: 12rem;
+  max-width: none;
+}
+.all-screens__toolbar .usa-button--unstyled {
+  white-space: nowrap;
 }
 
 /* ── Section tabs ─────────────────────────────────────────────────────── */

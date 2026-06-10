@@ -70,11 +70,14 @@ object AllScreens {
 
     val sections = grouped.toList.map { case (slug, rps) =>
       val pages = rps.map { rp =>
+        val gate = rp.page.gatingCondition
         Map(
           "route" -> rp.page.route,
           "title" -> templateEngine.messageResolver.resolveMessage(rp.page.titleKey),
           "content" -> rp.content,
           "conditionCount" -> Integer.valueOf(rp.conditionCount),
+          "gateConditionPath" -> gate.map(_.path).orNull,
+          "gateConditionOperator" -> gate.map(_.operator.toString).orNull,
         ).asJava
       }
       val sectionTitle = templateEngine.messageResolver.resolveMessage(s"all-screens.section.$slug")

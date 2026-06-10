@@ -147,6 +147,10 @@ all-screens:
     section-label: "部分"
     section-all: "所有部分"
     horizontal-layout: "横向布局"
+    scenario-view: "情景视图"
+    scenario-label: "情景"
+    scenario-placeholder: "加载情景…"
+    scenario-clear: "清除情景"
   section:
     about-you: "关于您"
     filing-status: "申报状态"

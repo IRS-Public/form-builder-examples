@@ -42,17 +42,16 @@
 
             <div class="all-screens__toolbar-group">
                 <div class="usa-checkbox">
-                    <input class="usa-checkbox__input" id="all-screens-toggle-conditions" type="checkbox" checked />
-                    <label class="usa-checkbox__label" for="all-screens-toggle-conditions"
-                           th:text="#{all-screens.toolbar.show-conditions}">Show conditions</label>
-                </div>
-                <div class="usa-checkbox">
-                    <input class="usa-checkbox__input" id="all-screens-toggle-layout" type="checkbox" />
+                    <input class="usa-checkbox__input" id="all-screens-toggle-layout" type="checkbox" checked />
                     <label class="usa-checkbox__label" for="all-screens-toggle-layout"
                            th:text="#{all-screens.toolbar.horizontal-layout}">Horizontal layout</label>
                 </div>
+                <div class="usa-checkbox">
+                    <input class="usa-checkbox__input" id="all-screens-toggle-scenario-view" type="checkbox" checked />
+                    <label class="usa-checkbox__label" for="all-screens-toggle-scenario-view"
+                           th:text="#{all-screens.toolbar.scenario-view}">Scenario view</label>
+                </div>
             </div>
-
         </div>
         <nav class="all-screens__section-tabs" th:aria-label="#{all-screens.toolbar.section-label}">
             <button type="button" class="all-screens__section-tab all-screens__section-tab--active"
@@ -83,7 +82,8 @@
                 <article th:each="page : ${section.pages}"
                          class="screen"
                          th:data-route="${page.route}"
-                         th:data-condition-count="${page.conditionCount}">
+                         th:data-condition-count="${page.conditionCount}"
+                         th:attr="data-gate-condition=${page.gateConditionPath}, data-gate-operator=${page.gateConditionOperator}">
                     <header class="screen__header">
                         <h3 class="screen__title" th:text="${page.title}">Page Title</h3>
                         <span class="screen__meta">

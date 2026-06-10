@@ -1,15 +1,15 @@
 // Toolbar state for the /all-screens audit view.
-// The audit panel is NOT shown on this page — the toolbar's "Show conditions" toggle drives
-// `displayConditions()` / `hideConditions()` directly. State is persisted under 'allScreens'.
+// State is persisted in sessionStorage under 'allScreens'.
 
-import { displayConditions, hideConditions } from './audit-panel/condition-detail.js'
+import { checkCondition } from './fg-conditions.js'
 
 const STORAGE_KEY = 'allScreens'
 
 const defaults = {
   section: '',
-  showConditions: true,
-  horizontalLayout: false,
+  horizontalLayout: true,
+  scenarioView: true,
+  scenarioFilename: '',
 }
 
 function readStorage () {
@@ -36,19 +36,28 @@ function showSection (slug) {
   })
 }
 
-function applyShowConditions (show) {
-  document.body.classList.toggle('display-conditions', show)
-  if (show) displayConditions()
-  else hideConditions()
-}
-
 function applyLayout (horizontal) {
   document.body.classList.toggle('layout--horizontal', horizontal)
 }
 
+// Scenario View: re-evaluate each single-question screen's gating condition (the same condition
+// that drives page-skipping in single-question-per-screen mode) against the loaded Fact Graph,
+// hiding screens the user wouldn't reach. Multi-question screens have no gating condition and are
+// always shown; the [condition]/[operator] elements within them are hidden via the `.hidden`
+// class that fg-components.js's showOrHideAllElements() already applies — toggling
+// `scenario-view` on <body> is what makes that class actually hide content on this page.
+function applyScenarioView (enabled) {
+  document.body.classList.toggle('scenario-view', enabled)
+  document.querySelectorAll('.screen[data-gate-condition]').forEach(screen => {
+    const condition = screen.dataset.gateCondition
+    const operator = screen.dataset.gateOperator
+    screen.hidden = enabled && !checkCondition(condition, operator)
+  })
+}
+
 export function initAllScreens () {
-  const conditionsToggle = document.querySelector('#all-screens-toggle-conditions')
   const layoutToggle = document.querySelector('#all-screens-toggle-layout')
+  const scenarioViewToggle = document.querySelector('#all-screens-toggle-scenario-view')
   const sectionTabs = document.querySelectorAll('.all-screens__section-tab')
 
   // Force every collection to render its first child instance, even with an empty fact graph.
@@ -59,10 +68,10 @@ export function initAllScreens () {
   setTimeout(() => {
     expandAllDetails()
     const stored = readStorage()
-    if (conditionsToggle) conditionsToggle.checked = stored.showConditions
-    applyShowConditions(stored.showConditions)
     if (layoutToggle) layoutToggle.checked = stored.horizontalLayout
     applyLayout(stored.horizontalLayout)
+    if (scenarioViewToggle) scenarioViewToggle.checked = stored.scenarioView
+    applyScenarioView(stored.scenarioView)
   }, 100)
 
   const stored = readStorage()
@@ -71,15 +80,18 @@ export function initAllScreens () {
   })
   showSection(stored.section)
 
-  conditionsToggle?.addEventListener('change', () => {
-    writeStorage({ showConditions: conditionsToggle.checked })
-    applyShowConditions(conditionsToggle.checked)
-  })
-
   layoutToggle?.addEventListener('change', () => {
     writeStorage({ horizontalLayout: layoutToggle.checked })
     applyLayout(layoutToggle.checked)
   })
+
+  scenarioViewToggle?.addEventListener('change', () => {
+    writeStorage({ scenarioView: scenarioViewToggle.checked })
+    applyScenarioView(scenarioViewToggle.checked)
+  })
+
+  // Re-evaluate gated screens as the user edits answers directly on this page.
+  document.addEventListener('fg-update', () => applyScenarioView(scenarioViewToggle?.checked ?? false))
 
   sectionTabs.forEach(tab => {
     tab.addEventListener('click', () => {

@@ -147,6 +147,10 @@ all-screens:
     section-label: "Sección"
     section-all: "Todas las secciones"
     horizontal-layout: "Diseño horizontal"
+    scenario-view: "Vista de escenario"
+    scenario-label: "Escenario"
+    scenario-placeholder: "Cargar un escenario…"
+    scenario-clear: "Borrar escenario"
   section:
     about-you: "Sobre usted"
     filing-status: "Estado civil"
