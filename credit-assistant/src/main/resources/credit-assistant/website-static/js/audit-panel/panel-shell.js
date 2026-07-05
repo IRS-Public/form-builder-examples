@@ -6,7 +6,13 @@ import {
 import { displayConditions, hideConditions } from './condition-detail.js'
 import { loadFactDictionaryXml } from './fact-dictionary.js'
 import { trackFact, setFactOptions } from './audited-fact.js'
-import { loadScenarioFromAuditPanel, filterScenarios } from './fact-graph-io.js'
+import {
+  loadScenarioFromAuditPanel,
+  filterScenarios,
+  generateScenarioFromPrompt,
+  renderGeneratedScenarioResult,
+  clearGeneratedScenario,
+} from './fact-graph-io.js'
 import { getLastActiveTabButton, setLastActiveTabButton } from './tab-state.js'
 
 const auditPanel = document.querySelector('#audit-panel')
@@ -358,6 +364,18 @@ export async function enable () {
   if (loadScenarioBtn) {
     loadScenarioBtn.addEventListener('click', loadScenarioFromAuditPanel)
   }
+
+  const generateScenarioBtn = document.querySelector('#generate-scenario-btn')
+  if (generateScenarioBtn) {
+    generateScenarioBtn.addEventListener('click', generateScenarioFromPrompt)
+  }
+
+  document
+    .querySelector('#all-screens-clear-scenario')
+    ?.addEventListener('click', clearGeneratedScenario)
+
+  // Re-surface the description + Download button after loadFactGraph()'s page reload.
+  renderGeneratedScenarioResult()
 
   for (const selector of [
     '#scenario-filter-dq',

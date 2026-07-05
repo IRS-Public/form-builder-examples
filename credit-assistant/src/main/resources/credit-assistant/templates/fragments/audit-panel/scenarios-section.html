@@ -63,4 +63,19 @@
    <button class="usa-button" type="button" id="load-scenario-btn">Load Scenario</button>
    <button type="button" id="all-screens-clear-scenario" class="usa-button usa-button--unstyled"
                         th:text="#{all-screens.toolbar.scenario-clear}">Clear scenario</button>
+
+   <hr class="scenario-gen__divider">
+   <h3>Generate a scenario with AI</h3>
+   <div class="usa-form-group">
+      <label class="usa-label" for="scenario-gen-prompt">Describe the scenario you want</label>
+      <textarea class="usa-textarea" id="scenario-gen-prompt" rows="3"
+                placeholder="e.g. single filer, 2 qualifying children, 2024, ~$55k wages, disqualified"></textarea>
+   </div>
+   <button class="usa-button" type="button" id="generate-scenario-btn">Generate scenario</button>
+   <!-- role="status" is an aria-live region; status/errors are announced as they change. -->
+   <div id="scenario-gen-status" class="scenario-gen__status" role="status" aria-live="polite"></div>
+   <div id="scenario-gen-result" class="scenario-gen__result" hidden="hidden">
+      <p id="scenario-gen-description" class="scenario-gen__description"></p>
+      <button class="usa-button usa-button--outline" type="button" id="download-scenario-btn">Download .json</button>
+   </div>
 </div>

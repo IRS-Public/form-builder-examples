@@ -301,6 +301,34 @@
   }
 }
 
+/* ── AI scenario generation ─────────────────────────────────────────────── */
+
+.scenario-gen__divider {
+  margin: 1rem 0;
+  border: 0;
+  border-top: 1px solid var(--base-lighter);
+}
+
+.scenario-gen__status {
+  font-size: 0.75rem;
+  color: var(--base-light, #71767a);
+  min-height: 1.25rem;
+  padding: 0.25rem 0;
+}
+
+.scenario-gen__result {
+  margin-top: 0.75rem;
+  padding: 0.75rem;
+  border: 1px solid var(--base-lighter);
+  border-radius: 0.25rem;
+}
+
+.scenario-gen__description {
+  margin: 0 0 0.75rem 0;
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
 @keyframes fadeInOut {
   0% {
     opacity: 0;
