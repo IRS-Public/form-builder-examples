@@ -14,6 +14,7 @@ import {
   clearGeneratedScenario,
 } from './fact-graph-io.js'
 import { getLastActiveTabButton, setLastActiveTabButton } from './tab-state.js'
+import { applyFlags, initFeatureFlagsSection } from './feature-flags.js'
 
 const auditPanel = document.querySelector('#audit-panel')
 const auditPanelResizer = document.querySelector('#audit-panel-resizer')
@@ -298,6 +299,13 @@ export async function enable () {
     document.addEventListener('keydown', handleAuditPanelKeydown)
     auditPanel.dataset.visibilityControlsInitialized = 'true'
   }
+
+  // Apply feature-flag runtime state (show/hide Explain tab etc.) and wire up the
+  // Feature Flags section checkboxes. Must run after visibility controls are initialized
+  // (openTab/closeAuditPanel are available) and before restoring the active tab (so a
+  // now-disabled tab isn't restored from session storage).
+  applyFlags()
+  initFeatureFlagsSection()
 
   // Restore previously open tab state when navigating forward or back
   const savedStorage = getAuditPanelStorage()

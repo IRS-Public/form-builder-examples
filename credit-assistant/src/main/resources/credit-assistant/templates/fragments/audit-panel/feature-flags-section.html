@@ -1,0 +1,20 @@
+<div class="audit-panel__section" id="audit-panel-flags-section" data-tab="feature-flags">
+   <h2>Feature Flags</h2>
+   <p class="usa-hint">Runtime overrides (stored in browser localStorage) take precedence over the build-time default. Changes apply immediately without a page reload.</p>
+   <fieldset class="usa-fieldset">
+      <legend class="usa-legend">AI Features</legend>
+      <div class="usa-checkbox">
+         <input
+            class="usa-checkbox__input"
+            id="ff-ai-mode"
+            type="checkbox"
+            name="feature-flags"
+            value="ai-mode" />
+         <label class="usa-checkbox__label" for="ff-ai-mode">
+            AI Mode
+         </label>
+      </div>
+      <p class="ff-hint usa-hint" id="ff-ai-mode-hint"></p>
+      <p class="usa-hint ff-flag-desc">Enables the Explain &amp; Analyze chat tab and all ✨ Explain buttons. Off by default until the backend prompt engineering is robust.</p>
+   </fieldset>
+</div>

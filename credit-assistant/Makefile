@@ -17,6 +17,10 @@ FG_TARGET_DIR := ./src/main/resources/credit-assistant/website-static/vendor/fac
 dev: ## Build and run development server, watching for changes (Default)
 	sbt -Dsmol.port=$(PORT) '~run --serve --auditMode --allScreens --scenarioMode'
 
+.PHONY: dev-ai
+dev-ai: ## Same as `dev`, but also reveals the AI/prompt features (Explain & Analyze chat)
+	sbt -Dsmol.port=$(PORT) '~run --serve --auditMode --allScreens --scenarioMode --aiMode'
+
 .PHONY: dev-one-question
 dev-one-question: # Run in one question: one screen mode
 	sbt -Dsmol.port=$(PORT) '~run --serve --auditMode --allScreens --singleQuestionPerScreen --scenarioMode'

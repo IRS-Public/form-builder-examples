@@ -13,6 +13,7 @@ import './audit-panel/condition-detail.js'
 import './audit-panel/audited-fact.js'
 import './audit-panel/fact-graph-io.js'
 import './audit-panel/chat.js'
+import './audit-panel/feature-flags.js'
 import { enable, disable } from './audit-panel/panel-shell.js'
 
 export { enable, disable }
