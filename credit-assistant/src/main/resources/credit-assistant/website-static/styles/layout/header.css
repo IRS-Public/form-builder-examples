@@ -35,39 +35,3 @@
   height: 0;
   width: 0;
 }
-
-
-.taxpert-banner {
-  background: #e6e6fa;
-  border-bottom: 2px solid #c7c7e0;
-  padding: 0.25rem 0.75rem;
-  display: flex;
-  align-items: center;
-  font-weight: 600;
-  color: #3d3d8f;
-  /* Adjust this gap variable or use a fixed rem value to add space between buttons */
-  gap: var(--units-2, 1rem);
-}
-
-.taxpert-banner.hidden {
-  display: none;
-}
-
-
-.taxpert-banner__tab-label {
-  /* Shrinks the font size */
-  font-size: 0.875rem;
-
-  /* Reset default link styling since we switched to <a> tags */
-  text-decoration: none;
-  display: inline-block;
-
-  /* Optional: If you want them to look like the old buttons,
-     you can retain padding/backgrounds here */
-}
-
-/* Optional: style the text label specifically if needed */
-.taxpert-banner__content {
-  font-size: 0.875rem;
-  font-weight: bold;
-}

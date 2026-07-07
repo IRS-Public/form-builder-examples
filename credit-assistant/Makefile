@@ -13,27 +13,30 @@ FACTS_CONFIG := $(FACTS_DIR)/FactDictionaryModule.rng
 FG_SOURCE_DIR := ../fact-graph/js/target/scala-3.3.6/factgraph-fastopt
 FG_TARGET_DIR := ./src/main/resources/credit-assistant/website-static/vendor/fact-graph
 
+SHARED_UI_SRC := node_modules/@taxpert/ui/src
+SHARED_UI_TARGET := $(RESOURCES_DIR)/website-static/vendor/taxpert-ui
+
 .PHONY: dev
-dev: ## Build and run development server, watching for changes (Default)
+dev: copy-shared-ui ## Build and run development server, watching for changes (Default)
 	sbt -Dsmol.port=$(PORT) '~run --serve --auditMode --allScreens --scenarioMode'
 
 .PHONY: dev-ai
-dev-ai: ## Same as `dev`, but also reveals the AI/prompt features (Explain & Analyze chat)
+dev-ai: copy-shared-ui ## Same as `dev`, but also reveals the AI/prompt features (Explain & Analyze chat)
 	sbt -Dsmol.port=$(PORT) '~run --serve --auditMode --allScreens --scenarioMode --aiMode'
 
 .PHONY: dev-one-question
-dev-one-question: # Run in one question: one screen mode
+dev-one-question: copy-shared-ui # Run in one question: one screen mode
 	sbt -Dsmol.port=$(PORT) '~run --serve --auditMode --allScreens --singleQuestionPerScreen --scenarioMode'
 
 .PHONY: debug
-debug: ## Same as `dev`, but also opens a port to attach a debugger (like your IDE)
+debug: copy-shared-ui ## Same as `dev`, but also opens a port to attach a debugger (like your IDE)
 	sbt -Dsmol.port=$(PORT) -jvm-debug $(DEBUGGER_PORT) '~run --serve --auditMode --allScreens --scenarioMode'
 
 help: ## Print the help documentation
 	@grep -E '^[/a-zA-Z0-9_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
 .PHONY: credit-assistant
-credit-assistant: ## Build site for production
+credit-assistant: copy-shared-ui ## Build site for production
 	sbt run
 
 
@@ -41,6 +44,11 @@ credit-assistant: ## Build site for production
 copy-fg: ## Copy compiled Fact Graph from sibling repository
 	cp $(FG_SOURCE_DIR)/main.mjs $(FG_TARGET_DIR)/factgraph-3.1.0.js
 	cp $(FG_SOURCE_DIR)/main.mjs.map $(FG_TARGET_DIR)
+
+.PHONY: copy-shared-ui
+copy-shared-ui: ## Copy shared UI components (@taxpert/ui) from node_modules
+	mkdir -p $(SHARED_UI_TARGET)
+	cp $(SHARED_UI_SRC)/taxpert-global-nav.js $(SHARED_UI_SRC)/nav-menu-data.js $(SHARED_UI_SRC)/global-nav.css $(SHARED_UI_TARGET)/
 
 .PHONY: test
 test: ## Run test suite

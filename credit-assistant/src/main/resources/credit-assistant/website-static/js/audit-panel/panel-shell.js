@@ -49,7 +49,6 @@ export async function enable () {
   // Set up the audit to display on the page (shows the thin tab rail)
   document.querySelector('#audit-panel-styles').disabled = false
   document.querySelector('#audit-panel').classList.remove('hidden')
-  document.querySelector('#taxpert-banner')?.classList.remove('hidden')
 
   // ADR-004: fetch the fact-dictionary only once audit mode is enabled (memoized).
   // A single await here covers every synchronous factDictionaryXml consumer reached during
@@ -405,7 +404,6 @@ export async function enable () {
 export function disable () {
   document.querySelector('#audit-panel-styles').disabled = true
   document.querySelector('#audit-panel').classList.add('hidden')
-  document.querySelector('#taxpert-banner')?.classList.add('hidden')
   document.body.classList.remove('audit-panel-open')
   document.body.removeAttribute('style')
   delete auditPanel.dataset.activeTab

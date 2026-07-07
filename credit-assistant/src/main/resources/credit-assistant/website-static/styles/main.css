@@ -4,6 +4,9 @@
 /* Variables */
 @import "variables.css";
 
+/* Shared UI components (vendored from @taxpert/ui) */
+@import "../vendor/taxpert-ui/global-nav.css";
+
 /* Layout */
 @import "layout/header.css";
 @import "layout/main-content.css";

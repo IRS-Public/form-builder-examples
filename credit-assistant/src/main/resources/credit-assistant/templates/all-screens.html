@@ -9,6 +9,7 @@
 <a class="usa-skipnav" href="#main-content">Skip to main content</a>
 <div class="app-container">
     <header>
+        <div th:replace="fragments/taxpert-global-nav"></div>
         <div th:replace="fragments/usa-banner"></div>
         <div class="logo-banner">
             <div class="grid-container">
@@ -36,7 +37,6 @@
             </div>
         </div>
     </header>
-    <div th:replace="fragments/taxpert-banner"></div>
     <div class="all-screens__toolbar" role="toolbar" th:aria-label="#{all-screens.toolbar.label}">
         <div class="all-screens__toolbar-inner">
 

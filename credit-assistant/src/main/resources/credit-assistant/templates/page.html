@@ -8,9 +8,9 @@
 <!-- End Google Tag Manager (noscript) -->
 <body th:classappend="${flags.auditMode} ? 'audit-mode'">
 <a class="usa-skipnav" href="#main-content" th:text="#{layout.skip-to-main}"></a>
-
 <div class="app-container">
     <header>
+        <div th:replace="fragments/taxpert-global-nav"></div>
         <div th:replace="fragments/usa-banner"></div>
         <div class="logo-banner">
             <div class="grid-container">
@@ -36,8 +36,6 @@
                 </div>
             </div>
     </header>
-
-    <div th:replace="fragments/taxpert-banner"></div>
 
     <main id="main-content">
         <h1 th:text="#{layout.title}"></h1>

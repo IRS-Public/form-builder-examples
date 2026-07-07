@@ -52,6 +52,9 @@ object AllScreens {
     context.setVariable("currentPageRoute", "/all-screens")
     context.setVariable("flags", flags.asJava)
     context.setVariable("scenarios", scenarios)
+    // Active item in the shared global nav (see @taxpert/ui). The all-screens view
+    // is "Browse all" under Experience Explorer.
+    context.setVariable("navActive", "browse-all")
 
     // Pre-render every page once, alongside its module slug and condition count.
     case class RenderedPage(page: Page, content: String, conditionCount: Int)

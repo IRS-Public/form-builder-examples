@@ -164,6 +164,9 @@ object Website {
         context.setVariable("flags", flags.asJava)
         context.setVariable("languageCode", languageCode)
         context.setVariable("supportedLocales", supportedLocales.asJava)
+        // Active item in the shared global nav (see @taxpert/ui). The user-facing
+        // questionnaire is the "Product Experience" under Experience Explorer.
+        context.setVariable("navActive", "product-experience")
 
         // Add a link for the next page if it's not the last one
         if (index < flow.pages.size - 1) {
