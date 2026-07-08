@@ -17,15 +17,15 @@
 //
 // See nav-menu-data.js for the taxonomy and helpers.
 
-import { DEFAULT_MENU, breadcrumbFor, contextLabel } from './nav-menu-data.js'
+import { DEFAULT_MENU, contextLabel } from './nav-menu-data.js'
 
-function el(tag, className) {
+function el (tag, className) {
   const node = document.createElement(tag)
   if (className) node.className = className
   return node
 }
 
-function waffleIcon() {
+function waffleIcon () {
   const grid = el('span', 'tgn-waffle__grid')
   grid.setAttribute('aria-hidden', 'true')
   for (let i = 0; i < 9; i++) grid.appendChild(el('span', 'tgn-waffle__dot'))
@@ -33,11 +33,11 @@ function waffleIcon() {
 }
 
 class TaxpertGlobalNav extends HTMLElement {
-  static get observedAttributes() {
+  static get observedAttributes () {
     return ['active', 'workspace-on', 'workspace-label', 'app', 'menu-json']
   }
 
-  constructor() {
+  constructor () {
     super()
     this._open = false
     this._menu = null // property override
@@ -53,24 +53,24 @@ class TaxpertGlobalNav extends HTMLElement {
     }
   }
 
-  connectedCallback() {
+  connectedCallback () {
     document.addEventListener('click', this._onDocClick)
     document.addEventListener('keydown', this._onKeydown)
     this.render()
   }
 
-  disconnectedCallback() {
+  disconnectedCallback () {
     document.removeEventListener('click', this._onDocClick)
     document.removeEventListener('keydown', this._onKeydown)
   }
 
-  attributeChangedCallback() {
+  attributeChangedCallback () {
     if (this.isConnected) this.render()
   }
 
   // --- public property API ---
 
-  get menu() {
+  get menu () {
     if (this._menu) return this._menu
     const json = this.getAttribute('menu-json')
     if (json) {
@@ -83,39 +83,39 @@ class TaxpertGlobalNav extends HTMLElement {
     return DEFAULT_MENU
   }
 
-  set menu(value) {
+  set menu (value) {
     this._menu = value
     if (this.isConnected) this.render()
   }
 
-  get workspaceOn() {
+  get workspaceOn () {
     return this.getAttribute('workspace-on') === 'true'
   }
 
   // --- interaction ---
 
-  _toggle() {
+  _toggle () {
     this._open ? this._close() : this._openMenu()
   }
 
-  _openMenu() {
+  _openMenu () {
     this._open = true
     this.render()
   }
 
-  _close() {
+  _close () {
     if (!this._open) return
     this._open = false
     this.render()
   }
 
-  _toggleGroup(groupId) {
+  _toggleGroup (groupId) {
     if (this._collapsed.has(groupId)) this._collapsed.delete(groupId)
     else this._collapsed.add(groupId)
     this.render()
   }
 
-  _toggleWorkspace() {
+  _toggleWorkspace () {
     const next = !this.workspaceOn
     // Self-set so the visual state persists across re-renders; hosts sync via the event.
     this.setAttribute('workspace-on', String(next))
@@ -124,11 +124,11 @@ class TaxpertGlobalNav extends HTMLElement {
         bubbles: true,
         composed: true,
         detail: { on: next },
-      }),
+      })
     )
   }
 
-  _onItemClick(event, item) {
+  _onItemClick (event, item) {
     if (item.disabled) {
       event.preventDefault()
       return
@@ -147,7 +147,7 @@ class TaxpertGlobalNav extends HTMLElement {
 
   // --- rendering ---
 
-  render() {
+  render () {
     const menu = this.menu
     const active = this.getAttribute('active')
 
@@ -178,13 +178,15 @@ class TaxpertGlobalNav extends HTMLElement {
     this.appendChild(bar)
   }
 
-  _renderBreadcrumb(active, menu) {
+  _renderBreadcrumb (active, menu) {
     const crumb = el('span', 'tgn-breadcrumb')
     const root = el('span', 'tgn-breadcrumb__root')
     root.textContent = 'Taxpert'
     crumb.appendChild(root)
 
-    const ctx = contextLabel(active, menu)
+    // The workspace context (mode) only exists while the workspace is on; with it
+    // off the nav reverts to its starting state — just the "Taxpert" root.
+    const ctx = this.workspaceOn ? contextLabel(active, menu) : null
     if (ctx) {
       const sep = el('span', 'tgn-breadcrumb__sep')
       sep.textContent = '|'
@@ -194,11 +196,11 @@ class TaxpertGlobalNav extends HTMLElement {
       crumb.append(sep, label)
     }
     // Expose the full string for assistive tech / tests.
-    crumb.setAttribute('aria-label', breadcrumbFor(active, menu))
+    crumb.setAttribute('aria-label', ctx ? `Taxpert | ${ctx}` : 'Taxpert')
     return crumb
   }
 
-  _renderDropdown(menu, active) {
+  _renderDropdown (menu, active) {
     const panel = el('div', 'tgn-menu')
     panel.setAttribute('role', 'menu')
     // Clicks inside the menu shouldn't bubble to the document close handler.
@@ -206,14 +208,18 @@ class TaxpertGlobalNav extends HTMLElement {
 
     panel.appendChild(this._renderWorkspaceRow())
 
-    for (const item of menu) {
-      if (item.children?.length) panel.appendChild(this._renderGroup(item, active))
-      else panel.appendChild(this._renderLeaf(item, active, false))
+    // The mode/nav taxonomy is a workspace feature; hide it when the workspace is
+    // off so the menu reverts to just the toggle (its starting state).
+    if (this.workspaceOn) {
+      for (const item of menu) {
+        if (item.children?.length) panel.appendChild(this._renderGroup(item, active))
+        else panel.appendChild(this._renderLeaf(item, active, false))
+      }
     }
     return panel
   }
 
-  _renderWorkspaceRow() {
+  _renderWorkspaceRow () {
     const label = this.getAttribute('workspace-label') || 'TAXPERT WORKSPACE'
     const row = el('div', 'tgn-workspace')
 
@@ -237,7 +243,7 @@ class TaxpertGlobalNav extends HTMLElement {
     return row
   }
 
-  _renderGroup(group, active) {
+  _renderGroup (group, active) {
     const wrap = el('div', 'tgn-group')
     const collapsed = this._collapsed.has(group.id)
 
@@ -259,7 +265,7 @@ class TaxpertGlobalNav extends HTMLElement {
     return wrap
   }
 
-  _renderLeaf(item, active, isSub) {
+  _renderLeaf (item, active, isSub) {
     const isActive = item.id === active
     const link = el('a', 'tgn-item')
     if (isSub) link.classList.add('tgn-item--sub')
