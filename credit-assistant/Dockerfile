@@ -49,11 +49,11 @@ COPY --from=factgraph \
      ./src/main/resources/credit-assistant/website-static/vendor/fact-graph/main.mjs.map
 # Equivalent of `make copy-shared-ui`: vendor the shared UI components from the
 # sibling ../taxpert-ui repo (see docker-compose.yml — same reason this build's
-# context is the repo root, not just credit-assistant/).
-COPY taxpert-ui/src/taxpert-global-nav.js \
-     taxpert-ui/src/nav-menu-data.js \
-     taxpert-ui/src/global-nav.css \
-     ./src/main/resources/credit-assistant/website-static/vendor/taxpert-ui/
+# context is the repo root, not just credit-assistant/). Mirrors the bundle-dir
+# layout (global-nav/, audit-panel/, shared/, each with js/styles/images/fonts/).
+COPY taxpert-ui/src/global-nav ./src/main/resources/credit-assistant/website-static/vendor/taxpert-ui/global-nav
+COPY taxpert-ui/src/audit-panel ./src/main/resources/credit-assistant/website-static/vendor/taxpert-ui/audit-panel
+COPY taxpert-ui/src/shared ./src/main/resources/credit-assistant/website-static/vendor/taxpert-ui/shared
 # Generate out/app/eitc/** with the audit UI baked in (no --serve -> exits after writing).
 RUN --mount=type=cache,target=/root/.cache/coursier \
     --mount=type=cache,target=/root/.sbt \
