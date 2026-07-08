@@ -3,6 +3,7 @@
 <head>
     <meta th:replace="fragments/head">
     <link rel="stylesheet" href="/app/eitc/resources/styles/all-screens.css">
+    <link rel="stylesheet" href="/app/eitc/resources/vendor/taxpert-ui/audit-panel/styles/all-screens-toolbar.css">
 </head>
 
 <body class="view--column all-screens" th:classappend="${flags.auditMode} ? 'audit-mode'">
@@ -37,33 +38,7 @@
             </div>
         </div>
     </header>
-    <div class="all-screens__toolbar" role="toolbar" th:aria-label="#{all-screens.toolbar.label}">
-        <div class="all-screens__toolbar-inner">
-
-            <div class="all-screens__toolbar-group">
-                <div class="usa-checkbox">
-                    <input class="usa-checkbox__input" id="all-screens-toggle-layout" type="checkbox" checked />
-                    <label class="usa-checkbox__label" for="all-screens-toggle-layout"
-                           th:text="#{all-screens.toolbar.horizontal-layout}">Horizontal layout</label>
-                </div>
-                <div class="usa-checkbox">
-                    <input class="usa-checkbox__input" id="all-screens-toggle-scenario-view" type="checkbox" checked />
-                    <label class="usa-checkbox__label" for="all-screens-toggle-scenario-view"
-                           th:text="#{all-screens.toolbar.scenario-view}">Scenario view</label>
-                </div>
-            </div>
-        </div>
-        <nav class="all-screens__section-tabs" th:aria-label="#{all-screens.toolbar.section-label}">
-            <button type="button" class="all-screens__section-tab all-screens__section-tab--active"
-                    data-section=""
-                    th:text="#{all-screens.toolbar.section-all}">All sections</button>
-            <button th:each="section : ${sections}"
-                    type="button"
-                    class="all-screens__section-tab"
-                    th:data-section="${section.slug}"
-                    th:text="${section.title}">Section</button>
-        </nav>
-    </div>
+    <taxpert-screens-toolbar id="screens-toolbar"></taxpert-screens-toolbar>
 
     <div class="usa-in-page-nav-container">
         <main id="main-content" class="main-content usa-prose">
@@ -105,12 +80,10 @@
 <div th:replace="fragments/audit-panel"></div>
 <script type="module" th:if="${flags.auditMode}">
     // If configured, automatically enable Audit Mode on startup
-    import { enable } from '/app/eitc/resources/js/audit-panel.js'
+    import { enable } from '/app/eitc/resources/vendor/taxpert-ui/audit-panel/js/taxpert-audit-panel.js'
     enable()
 </script>
-<script type="module">
-    import { initAllScreens } from '/app/eitc/resources/js/all-screens.js'
-    initAllScreens()
-</script>
+<script type="module" src="/app/eitc/resources/vendor/taxpert-ui/audit-panel/js/all-screens-toolbar.js"></script>
+<script type="module" src="/app/eitc/resources/js/all-screens-bootstrap.js"></script>
 </body>
 </html>

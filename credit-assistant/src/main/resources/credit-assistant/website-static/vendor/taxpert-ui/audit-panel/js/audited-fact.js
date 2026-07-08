@@ -1,3 +1,9 @@
+// Fact Inspector: the <fact-link> (wraps <fg-show>s and dependency links in the host flow) and
+// <audited-fact> (a tracked fact card) custom elements, plus trackFact/setFactOptions. Ported
+// from credit-assistant. The panel renders DOM with the same ids/classes as before, so the
+// document-scoped queries here keep resolving the single panel's controls; the only structural
+// change is that the <audited-fact> shadow template is built in JS (English-only labels) instead
+// of cloning a server-rendered <template id="audit-panel__fact">.
 import {
   factDictionaryXml,
   XML_SERIALIZER,
@@ -6,7 +12,39 @@ import {
 import { getAuditPanelStorage, setAuditPanelStorage } from './storage.js'
 import { setLastActiveTabButton } from './tab-state.js'
 
-const factSelect = document.querySelector('#fact-select')
+// The Fact Inspector's fact-path input; resolved lazily because the panel builds its DOM
+// after this module evaluates.
+const getFactSelect = () => document.querySelector('#fact-select')
+
+// Shadow-DOM template for <audited-fact>, formerly fragments/audit-panel/fact-template.html.
+// The three Thymeleaf-translated labels become English-only literals (this is a dev-only tool
+// and taxpert-ui has no i18n system): audit.fact.type → "Fact Type:", audit.fact.value →
+// "Value:", audit.fact.remove → "Remove fact".
+const FACT_TEMPLATE_HTML = `
+   <h3 part="heading" class="audit-panel__fact__path">REPLACE_ME_WITH_FACT_PATH</h3>
+   <dl part="fact-data">
+      <dt part="fact-term">Fact Type:</dt>
+      <dd part="fact-definition" class="audit-panel__fact__type"></dd>
+   </dl>
+   <dl part="fact-data">
+      <dt part="fact-term">Value:</dt>
+      <dd part="fact-definition" class="audit-panel__fact__value"></dd>
+   </dl>
+   <div class="audit-panel__fact__definition">
+      <pre part="code-block"><code><slot name="definition"></slot></code></pre>
+   </div>
+   <div class="audit-panel__fact__controls">
+      <button part="remove-button" class="usa-button audit-panel__fact__remove" type="button">Remove fact</button>
+   </div>
+`
+let _factTemplate = null
+function factTemplateContent () {
+  if (!_factTemplate) {
+    _factTemplate = document.createElement('template')
+    _factTemplate.innerHTML = FACT_TEMPLATE_HTML
+  }
+  return _factTemplate.content.cloneNode(true)
+}
 
 class FactLink extends HTMLElement {
   connectedCallback () {
@@ -54,9 +92,7 @@ class AuditedFact extends HTMLElement {
     }
     this.renderListener = () => this.render()
 
-    const templateContent = document
-      .querySelector('#audit-panel__fact')
-      .content.cloneNode(true)
+    const templateContent = factTemplateContent()
     this.attachShadow({ mode: 'open' })
     this.shadowRoot.append(templateContent)
 
@@ -94,7 +130,7 @@ class AuditedFact extends HTMLElement {
     this.removeButton.removeEventListener('click', this.deleteListener)
     this.removeEventListener('click', this.handleLinksListener)
     document.removeEventListener('fg-update', this.renderListener)
-    factSelect.focus()
+    getFactSelect()?.focus()
   }
 
   render () {
@@ -154,6 +190,7 @@ customElements.define('audited-fact', AuditedFact)
 // Fact-inspector "Add fact" button handler: tracks the fact named in the inspector input
 // (`#fact-select`) under the collection id in `#fact-collection-id`, then clears the input.
 function trackSelectedFact () {
+  const factSelect = getFactSelect()
   const factPath = factSelect.value
   const collectionId = document.querySelector('#fact-collection-id').value
   if (factPath) {

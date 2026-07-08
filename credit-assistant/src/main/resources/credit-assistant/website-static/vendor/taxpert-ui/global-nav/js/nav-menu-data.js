@@ -17,7 +17,7 @@ export const DEFAULT_MENU = [
     label: 'Experience Explorer',
     children: [
       { id: 'product-experience', label: 'Product Experience', href: '/app/eitc/' },
-      { id: 'browse-all', label: 'Browse all', href: '/app/eitc/all-screens/' },
+      { id: 'browse-all', label: 'Browse All', href: '/app/eitc/all-screens/' },
       // Interim scenario surface; refine once the scenario route is finalized.
       { id: 'scenario', label: 'Scenario', href: '/app/eitc/all-screens/?scenario=1' },
     ],

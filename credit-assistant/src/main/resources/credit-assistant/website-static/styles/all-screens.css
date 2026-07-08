@@ -100,117 +100,9 @@ body.scenario-view .fg-show.hidden {
   }
 }
 
-/* ── Toolbar ──────────────────────────────────────────────────────────── */
-
-.all-screens__toolbar {
-  position: sticky;
-  top: 0;
-  z-index: 50;
-  width: 100%;
-  background-color: var(--base-lightest, #f0f0f0);
-  border-bottom: 2px solid var(--accent-warm);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
-}
-
-.all-screens__toolbar-inner {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: var(--units-2) var(--units-3);
-  padding: var(--units-1) var(--units-3);
-  max-width: 100%;
-}
-
-.all-screens__toolbar-group {
-  display: flex;
-  align-items: center;
-  gap: var(--units-1);
-  flex-wrap: nowrap;
-}
-
-.all-screens__toolbar .usa-checkbox {
-  background: transparent;
-  display: flex;
-  align-items: center;
-  margin: 0;
-}
-.all-screens__toolbar .usa-checkbox__label {
-  margin: 0 0 0 var(--units-1);
-  padding-left: 0;
-  cursor: pointer;
-}
-.all-screens__toolbar .usa-checkbox__input {
-  position: static;
-  opacity: 1;
-  height: 1rem;
-  width: 1rem;
-  margin: 0;
-}
-.all-screens__toolbar .usa-checkbox__input + .usa-checkbox__label::before {
-  display: none;
-}
-
-/* ── Scenario controls ────────────────────────────────────────────────── */
-
-.all-screens__toolbar-group--scenario {
-  margin-left: auto;
-}
-.all-screens__toolbar .usa-form-group {
-  margin: 0;
-}
-.all-screens__toolbar .usa-select {
-  margin: 0;
-  height: 2rem;
-  min-width: 12rem;
-  max-width: none;
-}
-.all-screens__toolbar .usa-button--unstyled {
-  white-space: nowrap;
-}
-
-/* ── Section tabs ─────────────────────────────────────────────────────── */
-
-.all-screens__section-tabs {
-  display: flex;
-  flex-wrap: nowrap;
-  overflow-x: auto;
-  border-top: 1px solid var(--base-lighter);
-  padding: 0 var(--units-3);
-  gap: 0;
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: none;
-}
-.all-screens__section-tabs::-webkit-scrollbar {
-  display: none;
-}
-
-.all-screens__section-tab {
-  background: none;
-  border: none;
-  border-bottom: 3px solid transparent;
-  cursor: pointer;
-  font-size: 0.875rem;
-  padding: var(--units-1) var(--units-2);
-  color: var(--base-dark);
-  white-space: nowrap;
-  flex-shrink: 0;
-  transition: color 0.1s, border-color 0.1s;
-}
-.all-screens__section-tab:hover {
-  color: var(--base-darkest);
-  border-bottom-color: var(--base-light);
-}
-.all-screens__section-tab--active {
-  color: var(--primary);
-  border-bottom-color: var(--primary);
-  font-weight: 600;
-}
-
-@media not screen {
-  .all-screens__section-tabs {
-    display: none;
-  }
-}
+/* The /all-screens toolbar chrome (.all-screens__toolbar / .all-screens__section-tab* rules)
+   moved to <taxpert-screens-toolbar> in @taxpert/ui — see vendor/taxpert-ui/audit-panel/styles/
+   all-screens-toolbar.css. Only the flow-content layout rules stay here. */
 
 /* ── Horizontal layout mode ───────────────────────────────────────────── */
 /* The page template wraps a screen's flow nodes in <section class="flow"> —
@@ -321,9 +213,6 @@ article.screen[hidden] {
 /* ── Print sheet ──────────────────────────────────────────────────────── */
 
 @media not screen {
-  .all-screens__toolbar {
-    display: none !important;
-  }
   .all-screens__section {
     page-break-before: always;
   }

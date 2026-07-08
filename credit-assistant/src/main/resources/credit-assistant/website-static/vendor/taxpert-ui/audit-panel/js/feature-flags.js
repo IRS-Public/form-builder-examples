@@ -1,11 +1,11 @@
-// Runtime feature-flag management for the audit panel.
+// Runtime feature-flag management for the audit panel. Ported from credit-assistant.
 //
-// Build-time flags (--aiMode etc.) set the initial default, baked into the HTML
-// via data-ff-<flag>-default attributes on #audit-panel. Runtime overrides are
-// stored in localStorage under FEATURE_FLAGS_KEY so they persist across page
-// loads without a rebuild.
+// Build-time flags (--aiMode etc.) set the initial default, now carried by the panel's
+// `ai-mode-default` attribute (formerly a data-ff-<flag>-default attribute on #audit-panel).
+// Runtime overrides are stored in localStorage under FEATURE_FLAGS_KEY so they persist across
+// page loads without a rebuild.
 //
-// Effective value: localStorage override → build-time HTML default.
+// Effective value: localStorage override → build-time attribute default.
 //
 // DOM convention:
 //   • Rail tab <li> elements carry data-ff="ai-mode" (kebab of the flag name).
@@ -28,12 +28,11 @@ function _writeOverrides (overrides) {
   } catch { /* storage unavailable */ }
 }
 
-// Build-time defaults: read once from the #audit-panel data attributes when
-// this module is first imported (after the panel is in the DOM).
+// Build-time defaults: read from the panel element's attributes.
 function _buildDefaults () {
-  const panel = document.querySelector('#audit-panel')
+  const panel = document.querySelector('taxpert-audit-panel')
   return {
-    aiMode: panel?.dataset.ffAiModeDefault === 'true',
+    aiMode: panel?.getAttribute('ai-mode-default') === 'true',
   }
 }
 
@@ -50,7 +49,7 @@ export function setFlag (name, value) {
 }
 
 // Apply the current flag state to the DOM: shows/hides the Explain rail tab
-// and the chat section, keeps panel-shell.js from restoring a now-hidden tab.
+// and the chat section, keeps the panel from restoring a now-hidden tab.
 export function applyFlags () {
   const aiMode = getFlag('aiMode')
 
@@ -61,7 +60,7 @@ export function applyFlags () {
   // If the panel is currently open on the Explain tab but AI mode was just
   // disabled, close the panel so the user isn't stuck on an invisible section.
   if (!aiMode) {
-    const panel = document.querySelector('#audit-panel')
+    const panel = document.querySelector('taxpert-audit-panel')
     if (panel?.dataset.activeTab === 'chat-explain') {
       document.body.classList.remove('audit-panel-open')
       delete panel.dataset.activeTab
@@ -73,7 +72,7 @@ export function applyFlags () {
 }
 
 // Wire up the feature-flags section checkboxes and sync their initial state.
-// Call once from panel-shell.js enable() after the DOM is ready.
+// Call once from the panel's enable() after the DOM is ready.
 export function initFeatureFlagsSection () {
   const aiCheckbox = document.querySelector('#ff-ai-mode')
   if (!aiCheckbox) return

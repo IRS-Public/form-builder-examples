@@ -1,3 +1,8 @@
+// Condition-tracing overlay + <condition-detail> element. Ported verbatim from
+// credit-assistant. These operate on the HOST's flow DOM (every page-wide `[condition]`
+// element and `<fg-set>`), not the panel's own subtree, so the queries stay document-scoped
+// by design. The injected <fact-link> chips locate the panel via document.querySelector in
+// audited-fact.js.
 import { factDictionaryXml, XML_SERIALIZER } from './fact-dictionary.js'
 
 /**

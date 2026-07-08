@@ -164,3 +164,7 @@ document.addEventListener('fg-update', () => {
 document.addEventListener('fg-load', () => {
   renderEligibilityDashboard()
 })
+
+// Exported so eligibility-dashboard-plugin.js can render once after building the section
+// markup (the DQ/FS fact-path lists and rendering logic above are otherwise unchanged).
+export { renderEligibilityDashboard }

@@ -1,127 +1,24 @@
-<aside id="audit-panel" aria-label="Audit Panel" class="audit-panel hidden"
-   th:attr="data-ff-ai-mode-default=${flags.aiMode != null and flags.aiMode ? 'true' : 'false'}">
-   <div
-      id="audit-panel-resizer"
-      class="audit-panel__resizer"
-      role="separator"
-      aria-controls="audit-panel"
-      aria-label="Resize audit panel"
-      aria-orientation="vertical"
-      aria-valuemin="320"
-      aria-valuemax="960"
-      tabindex="0"></div>
-   <div class="audit-panel__content">
-      <div th:replace="fragments/audit-panel/eligibility-section"></div>
-      <div th:replace="fragments/audit-panel/flow-inspector-section"></div>
-      <!-- Explain & Analyze (AI/prompt feature). Always rendered so the feature-flags
-           JS can toggle it at runtime via the Feature Flags tab. Initial visibility is
-           set by the build default via data-ff-ai-mode-default; JS applies overrides. -->
-      <div th:replace="fragments/audit-panel/chat-section"></div>
-      <div th:replace="fragments/audit-panel/fact-inspector-section"></div>
-      <div th:replace="fragments/audit-panel/scenarios-section"></div>
-      <div th:replace="fragments/audit-panel/graph-section"></div>
-      <div th:replace="fragments/audit-panel/feature-flags-section"></div>
-   </div>
-   <nav class="audit-panel__rail" aria-label="Audit panel sections">
-      <ul role="tablist" aria-orientation="vertical">
-         <li role="presentation">
-            <button
-               class="audit-panel__tab audit-panel__tab--toggle"
-               id="toggle-audit-panel"
-               type="button"
-               aria-label="Toggle audit panel"
-               title="Toggle audit panel">
-            <img src="/app/eitc/resources/vendor/uswds-3.13.0/img/usa-icons/navigate_far_before.svg" alt="Toggle audit panel" class="usa-icon" />
-            </button>
-         </li>
-         <li role="presentation">
-            <button
-               class="audit-panel__tab"
-               role="tab"
-               data-tab="view-options"
-               aria-controls="audit-panel-view-options-section"
-               aria-selected="false"
-               type="button"
-               title="Flow Inspector">
-            <span class="audit-panel__tab-label" aria-hidden="true">Flow</span>
-            <span class="usa-sr-only">Flow Inspector</span>
-            </button>
-         </li>
-         <li role="presentation">
-            <button
-               class="audit-panel__tab"
-               role="tab"
-               data-tab="fact-graph"
-               aria-controls="audit-panel-fact-graph-section"
-               aria-selected="false"
-               type="button"
-               title="Fact Inspector">
-            <span class="audit-panel__tab-label" aria-hidden="true">Fact</span>
-            <span class="usa-sr-only">Fact Inspector</span>
-            </button>
-         </li>
-         <li role="presentation">
-            <button
-               class="audit-panel__tab"
-               role="tab"
-               data-tab="reset"
-               aria-controls="audit-panel-reset-section"
-               aria-selected="false"
-               type="button"
-               title="Graph Inspector">
-            <span class="audit-panel__tab-label" aria-hidden="true">Graph</span>
-            <span class="usa-sr-only">Graph Inspector</span>
-            </button>
-         </li>
-         <li role="presentation">
-            <button
-               class="audit-panel__tab"
-               role="tab"
-               data-tab="eligibility-dashboard"
-               aria-controls="eligibility-dashboard"
-               aria-selected="false"
-               type="button"
-               title="Eligibility Dashboard">
-            <span class="audit-panel__tab-label" aria-hidden="true">Eligibility</span>
-            <span class="usa-sr-only">Eligibility Dashboard</span>
-            </button>
-         </li>
-         <!-- Explain tab: always rendered; feature-flags.js sets hidden based on runtime aiMode flag. -->
-         <li role="presentation">
-            <button
-               class="audit-panel__tab"
-               role="tab"
-               data-tab="chat-explain"
-               aria-controls="audit-panel-explain-section"
-               aria-selected="false"
-               type="button"
-               title="Explain">
-            <span class="audit-panel__tab-label" aria-hidden="true">Explain</span>
-            <span class="usa-sr-only">Explain</span>
-            </button>
-         </li>
-         <li role="presentation" th:if="${scenarios != null and !scenarios.isEmpty()}">
-            <button class="audit-panel__tab" role="tab" data-tab="scenarios"
-                    aria-controls="audit-panel-scenarios-section" aria-selected="false"
-                    type="button" title="Scenarios">
-               <span class="audit-panel__tab-label" aria-hidden="true">Scenarios</span>
-               <span class="usa-sr-only">Scenarios</span>
-            </button>
-         </li>
-         <li role="presentation">
-            <button
-               class="audit-panel__tab"
-               role="tab"
-               data-tab="feature-flags"
-               aria-controls="audit-panel-flags-section"
-               aria-selected="false"
-               type="button"
-               title="Feature Flags">
-            <span class="audit-panel__tab-label" aria-hidden="true">Flags</span>
-            <span class="usa-sr-only">Feature Flags</span>
-            </button>
-         </li>
-      </ul>
-   </nav>
-</aside>
-<div th:replace="fragments/audit-panel/fact-template"></div>
+<taxpert-audit-panel id="audit-panel"
+   aria-label="Audit Panel"
+   api-base="http://localhost:8000"
+   scenarios-base="/app/eitc/resources/scenarios"
+   fact-dictionary-url="/app/eitc/resources/fact-dictionary.xml"
+   th:attr="ai-mode-default=${flags.aiMode != null and flags.aiMode ? 'true' : 'false'}">
+   <!-- Host-supplied scenario options (light-DOM children, read on connect). Wrapped in a
+        <template> so the page HTML stays valid; only emitted in scenario mode. -->
+   <template th:if="${flags.scenarioMode and scenarios != null and !scenarios.isEmpty()}">
+      <option th:each="scenario : ${scenarios}"
+              th:value="${scenario.filename}"
+              th:text="${scenario.label}"></option>
+   </template>
+</taxpert-audit-panel>
+<script type="module">
+   // Register credit-assistant's EITC-specific panel extensions (kept in CA, not taxpert-ui):
+   // the Eligibility dashboard and the scenario-filter vocabulary.
+   import '/app/eitc/resources/vendor/taxpert-ui/audit-panel/js/taxpert-audit-panel.js'
+   import { registerEligibilityDashboard } from '/app/eitc/resources/js/eligibility-dashboard-plugin.js'
+   import { registerScenarioFilters } from '/app/eitc/resources/js/scenario-filters.js'
+   const panel = document.querySelector('#audit-panel')
+   registerEligibilityDashboard(panel)
+   registerScenarioFilters(panel)
+</script>

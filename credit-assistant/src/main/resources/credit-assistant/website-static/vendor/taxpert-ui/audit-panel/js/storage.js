@@ -1,3 +1,6 @@
+// sessionStorage-backed persistence for the audit panel's open/closed state, tracked
+// facts, width, active tab, and show-conditions toggle. Ported verbatim from
+// credit-assistant (no DOM access — host-agnostic as-is).
 export const AUDIT_PANEL_STORAGE_KEY = 'auditPanel'
 const AUDIT_PANEL_STORAGE_FIELDS = new Set([
   'isOpen',

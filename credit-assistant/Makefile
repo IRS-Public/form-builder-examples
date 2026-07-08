@@ -47,8 +47,12 @@ copy-fg: ## Copy compiled Fact Graph from sibling repository
 
 .PHONY: copy-shared-ui
 copy-shared-ui: ## Copy shared UI components (@taxpert/ui) from node_modules
+	# The vendored copy is a generated mirror of @taxpert/ui's src/ bundle dirs,
+	# each one broken down into js/styles/images/fonts (same shape as vendor/uswds-3.13.0).
+	# Wipe first so renamed/removed source files never linger as stale vendored copies.
+	rm -rf $(SHARED_UI_TARGET)
 	mkdir -p $(SHARED_UI_TARGET)
-	cp $(SHARED_UI_SRC)/taxpert-global-nav.js $(SHARED_UI_SRC)/nav-menu-data.js $(SHARED_UI_SRC)/global-nav.css $(SHARED_UI_TARGET)/
+	cp -R $(SHARED_UI_SRC)/global-nav $(SHARED_UI_SRC)/shared $(SHARED_UI_SRC)/audit-panel $(SHARED_UI_TARGET)/
 
 .PHONY: test
 test: ## Run test suite

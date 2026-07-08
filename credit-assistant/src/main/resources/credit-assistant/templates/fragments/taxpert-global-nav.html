@@ -6,7 +6,7 @@
         th:attrappend="workspace-on=${flags.auditMode} ? 'true' : 'false'"></taxpert-global-nav>
 
     <script type="module">
-        import { enable, disable } from '/app/eitc/resources/js/audit-panel.js'
+        import { enable, disable } from '/app/eitc/resources/vendor/taxpert-ui/audit-panel/js/taxpert-audit-panel.js'
         document.querySelector('taxpert-global-nav')?.addEventListener('workspace-toggle', (event) => {
             if (event.detail.on) enable()
             else disable()

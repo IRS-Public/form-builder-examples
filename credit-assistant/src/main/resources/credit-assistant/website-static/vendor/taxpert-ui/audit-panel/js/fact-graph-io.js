@@ -1,3 +1,24 @@
+// Graph Inspector + Scenarios I/O: copy/load/reset the fact graph, load a scenario JSON, and
+// AI scenario generation. Ported from credit-assistant. The EITC-specific scenario-filename
+// parsing (parseScenarioFilename) and filterScenarios stay in credit-assistant and are injected
+// via the panel's registerScenarioFilters(). Fetch bases are derived from the panel's
+// `scenarios-base` and `api-base` attributes instead of hard-coded paths.
+
+const DEFAULT_API_BASE = 'http://localhost:8000'
+
+function _panel () {
+  return document.querySelector('taxpert-audit-panel')
+}
+
+function _apiBase () {
+  return _panel()?.getAttribute('api-base') || DEFAULT_API_BASE
+}
+
+function _scenariosBase () {
+  // e.g. /app/eitc/resources/scenarios — the directory scenario JSONs are served from.
+  return _panel()?.getAttribute('scenarios-base') || ''
+}
+
 /**
  * Copy the serialized fact graph JSON to the clipboard and flash the `#copy-fg-status` element's
  * success animation. Logs to console.error on clipboard failure.
@@ -61,7 +82,7 @@ window.loadFactGraphFromAuditPanel = loadFactGraphFromAuditPanel
 function loadScenarioFromAuditPanel () {
   const select = document.querySelector('#scenario-select')
   if (!select || !select.value) return
-  fetch(`/app/eitc/resources/scenarios/${select.value}`)
+  fetch(`${_scenariosBase()}/${select.value}`)
     .then(res => {
       if (!res.ok) throw new Error(res.statusText)
       return res.text()
@@ -71,88 +92,8 @@ function loadScenarioFromAuditPanel () {
 }
 window.loadScenarioFromAuditPanel = loadScenarioFromAuditPanel
 
-// Scenario filenames encode several dimensions, e.g. `dq_hoh_unmarried_2024_1tp_3qcs_59899.json`:
-// an optional `dq`/`ko` eligibility prefix, the filing status, an optional married/unmarried
-// marital qualifier (HOH only), a `Nqc`/`Nqcs` qualifying-children token, and a trailing income amount.
-function parseScenarioFilename (filename) {
-  // Consume tokens with shift()/parts[0] (a literal index) instead of a variable
-  // index parts[i], which trips security/detect-object-injection.
-  const parts = filename.replace(/\.json$/, '').split('_')
-
-  let eligibility = 'qualifying'
-  if (parts[0] === 'dq') {
-    eligibility = 'disqualifying'
-    parts.shift()
-  }
-
-  const filingStatus = parts.shift()
-
-  let marital = null
-  if (filingStatus === 'hoh' && (parts[0] === 'married' || parts[0] === 'unmarried')) {
-    marital = parts.shift()
-  }
-
-  // Number of qualifying children, encoded as a `Nqc`/`Nqcs` token (e.g. `3qcs`).
-  // Iterate (no variable-indexed access) to keep security/detect-object-injection happy.
-  let qcCount = ''
-  for (const part of parts) {
-    const match = /^(\d+)qcs?$/i.exec(part)
-    if (match) {
-      qcCount = match[1]
-      break
-    }
-  }
-
-  const income = parseInt(parts[parts.length - 1], 10)
-  let incomeBand = 'none'
-  if (!Number.isNaN(income)) {
-    if (income < 20000) incomeBand = 'low'
-    else if (income < 52000) incomeBand = 'mid-low'
-    else if (income < 59000) incomeBand = 'mid-high'
-    else incomeBand = 'high'
-  }
-
-  return { eligibility, filingStatus, marital, incomeBand, qcCount }
-}
-
-/**
- * Hide scenario `<option>`s that don't match the filter dropdowns (eligibility, filing status,
- * marital, income band, qc count), toggling the marital dropdown's visibility (HOH-only) and
- * clearing the selection if the chosen scenario falls outside the active filters.
- */
-function filterScenarios () {
-  const eligibility = document.querySelector('#scenario-filter-dq').value
-  const filingStatus = document.querySelector('#scenario-filter-fs').value
-  const marital = document.querySelector('#scenario-filter-marital').value
-  const incomeBand = document.querySelector('#scenario-filter-income').value
-  const qcCount = document.querySelector('#scenario-filter-qc').value
-
-  // Marital status only applies to HOH, so hide that dropdown for the other statuses.
-  const maritalGroup = document.querySelector('#scenario-filter-marital-group')
-  if (maritalGroup) {
-    maritalGroup.hidden = filingStatus !== '' && filingStatus !== 'hoh'
-  }
-
-  const select = document.querySelector('#scenario-select')
-  for (const option of select.options) {
-    if (!option.value) continue
-    const scenario = parseScenarioFilename(option.value)
-    option.hidden = Boolean(
-      (eligibility && scenario.eligibility !== eligibility) ||
-      (filingStatus && scenario.filingStatus !== filingStatus) ||
-      (marital && scenario.marital !== marital) ||
-      (incomeBand && scenario.incomeBand !== incomeBand) ||
-      (qcCount && scenario.qcCount !== qcCount)
-    )
-  }
-
-  const selectedOption = select.options[select.selectedIndex]
-  if (selectedOption && selectedOption.hidden) select.value = ''
-}
-
 // ── AI scenario generation ─────────────────────────────────────────────────────
 
-const SCENARIO_API_URL = 'http://localhost:8000/scenario/generate'
 const SCENARIO_TIMEOUT_MS = 90_000
 // sessionStorage key carrying the just-generated scenario across the loadFactGraph()
 // page reload, so the description + Download button can render once the graph is live.
@@ -201,7 +142,7 @@ async function generateScenarioFromPrompt () {
   const stopAnimation = _startGeneratingAnimation()
 
   try {
-    const res = await fetch(SCENARIO_API_URL, {
+    const res = await fetch(`${_apiBase()}/scenario/generate`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ prompt }),
@@ -292,7 +233,6 @@ function clearGeneratedScenario () {
 
 export {
   loadScenarioFromAuditPanel,
-  filterScenarios,
   generateScenarioFromPrompt,
   renderGeneratedScenarioResult,
   clearGeneratedScenario,

@@ -1,10 +1,21 @@
+// Explain & Analyze chat. Ported from credit-assistant. The backend base URL is derived from
+// the panel's `api-base` attribute (default http://localhost:8000) instead of a hard-coded
+// constant, and initialization is exported (initChat) so the panel can call it once its DOM is
+// built rather than running at module-eval time.
 import { factDictionaryXml, makeCollectionIdPath } from './fact-dictionary.js'
 import { getAuditPanelStorage } from './storage.js'
 
 // ── Chat HTTP ─────────────────────────────────────────────────────────────────
 
-const CHAT_API_URL = 'http://localhost:8000/chat'
+const DEFAULT_API_BASE = 'http://localhost:8000'
 const CHAT_TIMEOUT_MS = 90_000
+
+// Read the panel's api-base attribute at call time (the panel is in the DOM by then).
+function _chatApiUrl () {
+  const panel = document.querySelector('taxpert-audit-panel')
+  const base = panel?.getAttribute('api-base') || DEFAULT_API_BASE
+  return `${base}/chat`
+}
 
 // Bounds for the dependency-value tree we attach to each tracked fact. This mirrors
 // Graph.debugFactRecurse() (resolve every dependency's current value) but stays
@@ -239,7 +250,7 @@ async function _sendChatMessage () {
   const stopAnimation = _startThinkingAnimation()
 
   try {
-    const res = await fetch(CHAT_API_URL, {
+    const res = await fetch(_chatApiUrl(), {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ prompt, tracked_facts: _getTrackedFacts() }),
@@ -268,10 +279,16 @@ async function _sendChatMessage () {
   }
 }
 
-function initializeChatSubmitButton () {
+/**
+ * Wire the chat submit button + textarea and restore history from sessionStorage. Called from
+ * the panel's enable() once the panel DOM exists (idempotent guard via a dataset flag).
+ */
+export function initChat () {
   const submitBtn = document.querySelector('#chat-submit-btn')
   const textarea = document.querySelector('.chat-container__textarea')
   if (!submitBtn || !textarea) return
+  if (submitBtn.dataset.chatInitialized === 'true') return
+  submitBtn.dataset.chatInitialized = 'true'
 
   submitBtn.addEventListener('click', _sendChatMessage)
   textarea.addEventListener('keydown', (e) => {
@@ -289,7 +306,3 @@ function initializeChatSubmitButton () {
     } catch (_) { /* ignore corrupt storage */ }
   }
 }
-
-// audit-panel.js is loaded as an ES module (and imports this module), and module scripts are
-// deferred, so the DOM is fully parsed before this module evaluates — safe to call directly.
-initializeChatSubmitButton()

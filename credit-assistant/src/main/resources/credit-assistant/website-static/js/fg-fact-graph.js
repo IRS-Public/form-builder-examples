@@ -1,4 +1,5 @@
 import * as fg from '../vendor/fact-graph/factgraph-3.1.0.js'
+import { createFactGraphBridge } from '../vendor/taxpert-ui/audit-panel/js/fg-graph-bridge.js'
 
 const res = await fetch('/app/eitc/resources/fact-dictionary.xml')
 const text = await res.text()
@@ -16,38 +17,24 @@ document.dispatchEvent(new CustomEvent('fg-load'))
 window.addEventListener('unload', () => {})
 
 // ── Formative Studio live-sync bridge (additive, feature-detected) ─────────────
-// When this page is embedded same-origin in Formative Studio (via its Vite
-// proxy), Studio and the questionnaire share the serialized fact graph over a
-// BroadcastChannel. Publishing here lets Studio's scenario overlay update live as
-// the user answers questions; subscribing lets a scenario loaded in Studio
-// rehydrate this page. No-ops everywhere BroadcastChannel is unavailable.
-const FG_CHANNEL = 'taxpert:factGraph'
-let fgBridge = null
-let fgLastSynced = null
-try {
-  if (typeof BroadcastChannel !== 'undefined') {
-    fgBridge = new BroadcastChannel(FG_CHANNEL)
-    fgBridge.addEventListener('message', (ev) => {
-      const data = ev?.data
-      if (!data || data.type !== 'factGraph' || typeof data.graph !== 'string') return
-      // Ignore the echo of a graph we just published, and no-op if unchanged.
-      if (data.graph === fgLastSynced || data.graph === sessionStorage.getItem('factGraph')) return
-      fgLastSynced = data.graph
-      sessionStorage.setItem('factGraph', data.graph)
-      window.location.reload()
-    })
-  }
-} catch (e) {
-  console.warn('factGraph bridge unavailable:', e)
-}
+// When this page is embedded same-origin in Formative Studio (via its Vite proxy), Studio and the
+// questionnaire share the serialized fact graph over a BroadcastChannel. Publishing lets Studio's
+// scenario overlay update live as the user answers questions; the onRemoteGraph callback lets a
+// scenario loaded in Studio rehydrate this page. The bridge (channel name + message shape) lives in
+// @taxpert/ui; it feature-detects BroadcastChannel and suppresses the echo of graphs we publish.
+const fgBridge = createFactGraphBridge({
+  onRemoteGraph: (graph) => {
+    // No-op if this graph is already the active one; otherwise adopt it and reload.
+    if (graph === sessionStorage.getItem('factGraph')) return
+    sessionStorage.setItem('factGraph', graph)
+    window.location.reload()
+  },
+})
 
 export function saveFactGraph () {
   const serialized = factGraph.toJSON()
   sessionStorage.setItem('factGraph', serialized)
-  if (fgBridge && serialized !== fgLastSynced) {
-    fgLastSynced = serialized
-    fgBridge.postMessage({ type: 'factGraph', graph: serialized })
-  }
+  fgBridge.publish(serialized)
 }
 
 export function loadFactGraph (factGraphAsString) {

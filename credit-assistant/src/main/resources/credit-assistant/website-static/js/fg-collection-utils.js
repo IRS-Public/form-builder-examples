@@ -1,8 +1,12 @@
-export const COLLECTION_ID_PLACEHOLDER = '{{COLLECTION_ID}}'
+// Canonical makeCollectionIdPath now lives in the shared @taxpert/ui package
+// (vendored to website-static/vendor/taxpert-ui/ by `make copy-shared-ui`); import it
+// (so configureCollectionIds below can use it) and re-export so existing
+// `import { makeCollectionIdPath } from './fg-collection-utils.js'` call sites keep
+// working while the audit panel imports the same single source.
+import { makeCollectionIdPath } from '../vendor/taxpert-ui/shared/js/collection-utils.js'
+export { makeCollectionIdPath }
 
-export function makeCollectionIdPath (abstractPath, id) {
-  return abstractPath.replace('*', `#${id}`)
-}
+export const COLLECTION_ID_PLACEHOLDER = '{{COLLECTION_ID}}'
 
 export function configureCollectionIds (template, collectionId) {
   const attributes = ['path', 'condition', 'id', 'for', 'name', 'aria-describedby']
