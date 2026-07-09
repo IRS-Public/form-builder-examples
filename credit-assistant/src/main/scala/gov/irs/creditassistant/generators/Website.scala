@@ -199,6 +199,13 @@ object Website {
       pages = pages ++ allScreensPages
     }
 
+    if (flags.contains(Flags.authorMode)) {
+      val authorPages = locales.map { languageCode =>
+        AuthorMode.generate(flow, languageCode, supportedLocales, flags)
+      }
+      pages = pages ++ authorPages
+    }
+
     // In single-question-per-screen mode, emit a manifest that the navigation JS uses to skip
     // pages whose gating condition is false against the live Fact Graph. The manifest is built
     // for "en" only because routes are identical across locales (only the href prefix differs);

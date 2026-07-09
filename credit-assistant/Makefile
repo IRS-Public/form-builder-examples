@@ -32,6 +32,10 @@ dev-one-question: copy-shared-ui # Run in one question: one screen mode
 debug: copy-shared-ui ## Same as `dev`, but also opens a port to attach a debugger (like your IDE)
 	sbt -Dsmol.port=$(PORT) -jvm-debug $(DEBUGGER_PORT) '~run --serve --auditMode --allScreens --scenarioMode'
 
+.PHONY: dev-author
+dev-author: copy-shared-ui ## Build + dev server with Author Mode editing enabled
+	sbt -Dsmol.port=3003 -Dsmol.author.port=3004 '~run --serve --auditMode --allScreens --scenarioMode --authorMode'
+
 help: ## Print the help documentation
 	@grep -E '^[/a-zA-Z0-9_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 

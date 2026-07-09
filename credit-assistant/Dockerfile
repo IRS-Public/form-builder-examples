@@ -18,7 +18,7 @@
 FROM eclipse-temurin:21-jdk-jammy AS sbt-base
 ARG SBT_VERSION=1.11.4
 RUN apt-get update \
- && apt-get install -y --no-install-recommends curl ca-certificates \
+ && apt-get install -y --no-install-recommends curl ca-certificates libxml2-utils \
  && rm -rf /var/lib/apt/lists/* \
  && curl -fsSL "https://github.com/sbt/sbt/releases/download/v${SBT_VERSION}/sbt-${SBT_VERSION}.tgz" \
       | tar -xz -C /opt

@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html th:lang="${languageCode}">
+<head>
+    <meta th:replace="fragments/head">
+    <link rel="stylesheet" href="/app/eitc/resources/styles/components/author-mode.css">
+</head>
+
+<body class="author">
+<a class="usa-skipnav" href="#main-content">Skip to main content</a>
+<!-- Author Mode is a chrome-free editing shell: only the shared global nav wraps
+     the editor. No government banner, IRS logo, product-experience page layout, or
+     audit panel — this view is deliberately agnostic to how the flow itself is laid out.
+     The nav is rendered inline (not via fragments/taxpert-global-nav, which wires the
+     audit panel) with workspace-locked: Author Mode *is* a Taxpert Workspace
+     destination, so the workspace toggle stays pinned on and inert, and no audit
+     panel is ever shown. `active` (navActive="authoring-suite") marks the Authoring
+     Suite as the current destination. -->
+<div class="app-container">
+    <taxpert-global-nav
+        app="credit-assistant"
+        th:attr="active=${navActive}"
+        workspace-label="TAXPERT WORKSPACE"
+        workspace-locked="true"></taxpert-global-nav>
+
+    <main id="main-content" class="usa-prose author__main">
+        <div class="author__intro">
+            <h1>Author Mode</h1>
+            <p>
+                Edit constants, fact descriptions, and on-screen text through structured forms —
+                no XML required. Changes are validated live, saved to the source files, and can be
+                committed locally. After saving, refresh <strong>Product Experience</strong> or
+                <strong>Browse All</strong> to preview.
+            </p>
+        </div>
+
+        <!-- Live status / connection banner. Populated by author-mode.js. -->
+        <div id="author-status" class="author__status usa-alert usa-alert--info" role="status" hidden>
+            <div class="usa-alert__body">
+                <p class="usa-alert__text" id="author-status-text">Connecting to the authoring server…</p>
+            </div>
+        </div>
+
+        <!-- (1) Constant editor ─────────────────────────────────────────────── -->
+        <section class="author__section" aria-labelledby="author-constant-heading">
+            <h2 id="author-constant-heading" class="author__section-title">Edit a constant value</h2>
+            <p class="author__section-hint">
+                Update a tax-year threshold, rate, or limit. Values are validated against the
+                declared type (Dollar / Rational).
+            </p>
+            <div class="usa-form-group">
+                <label class="usa-label" for="author-constant-select">Constant</label>
+                <select class="usa-select" id="author-constant-select">
+                    <option value="" disabled selected>Select a constant…</option>
+                </select>
+            </div>
+            <div id="author-constant-fields" class="author__fields"></div>
+        </section>
+
+        <!-- (2) Fact description editor ──────────────────────────────────────── -->
+        <section class="author__section" aria-labelledby="author-description-heading">
+            <h2 id="author-description-heading" class="author__section-title">Edit a fact description</h2>
+            <p class="author__section-hint">
+                Reword the human-readable description of any fact. This does not change any
+                calculation.
+            </p>
+            <div class="usa-form-group">
+                <label class="usa-label" for="author-description-select">Fact</label>
+                <select class="usa-select" id="author-description-select">
+                    <option value="" disabled selected>Select a fact…</option>
+                </select>
+            </div>
+            <div id="author-description-fields" class="author__fields"></div>
+        </section>
+
+        <!-- (3) Fact configuration editor (Placeholder / Limit) ─────────────────── -->
+        <section class="author__section" aria-labelledby="author-factconfig-heading">
+            <h2 id="author-factconfig-heading" class="author__section-title">Edit a fact's default &amp; limits</h2>
+            <p class="author__section-hint">
+                Set a writable fact's default value (placeholder) and its minimum/maximum
+                allowed values. Only writable facts with a simple scalar type are listed.
+                Clearing a field removes it.
+            </p>
+            <div class="usa-form-group">
+                <label class="usa-label" for="author-factconfig-select">Fact</label>
+                <select class="usa-select" id="author-factconfig-select">
+                    <option value="" disabled selected>Select a writable fact…</option>
+                </select>
+            </div>
+            <div id="author-factconfig-fields" class="author__fields"></div>
+        </section>
+
+        <!-- (4) Screen-text + structure editor ───────────────────────────────── -->
+        <section class="author__section" aria-labelledby="author-screen-heading">
+            <h2 id="author-screen-heading" class="author__section-title">Edit on-screen text &amp; structure</h2>
+            <p class="author__section-hint">
+                Pick a screen, then a question or alert on it. For a question you can edit its
+                text, hint, input type, bound writable fact, and when it shows; for an alert its
+                heading, type, knockout, and condition. Each field is validated and saved
+                independently.
+            </p>
+            <div class="usa-form-group">
+                <label class="usa-label" for="author-screen-select">Screen</label>
+                <select class="usa-select" id="author-screen-select">
+                    <option value="" disabled selected>Select a screen…</option>
+                </select>
+            </div>
+            <div class="usa-form-group">
+                <label class="usa-label" for="author-block-select">Question or alert</label>
+                <select class="usa-select" id="author-block-select" disabled>
+                    <option value="" disabled selected>Select a screen first…</option>
+                </select>
+            </div>
+            <div id="author-screen-fields" class="author__fields"></div>
+        </section>
+
+        <!-- Lint panel ───────────────────────────────────────────────────────── -->
+        <section class="author__section" aria-labelledby="author-lint-heading">
+            <h2 id="author-lint-heading" class="author__section-title">Check for authoring issues</h2>
+            <p class="author__section-hint">
+                Run a soft lint over the current flow and facts — questions bound to computed
+                facts, gates or knockouts no question can ever satisfy. These are warnings, not
+                errors; they never block a save.
+            </p>
+            <button class="usa-button usa-button--outline" id="author-lint-btn" type="button">Run lint check</button>
+            <div id="author-lint-results" class="author__lint-results" role="status" aria-live="polite"></div>
+        </section>
+
+        <!-- Commit bar ───────────────────────────────────────────────────────── -->
+        <section class="author__commit" aria-labelledby="author-commit-heading">
+            <h2 id="author-commit-heading" class="author__section-title">Commit saved changes</h2>
+            <p class="author__section-hint">
+                Create a local git commit of the saved flow, fact, and locale files on the current
+                branch. Nothing is pushed.
+            </p>
+            <div class="usa-form-group">
+                <label class="usa-label" for="author-commit-summary">Commit summary</label>
+                <input class="usa-input" id="author-commit-summary" type="text"
+                       placeholder="e.g. Update 2026 EITC investment income limit" />
+            </div>
+            <button class="usa-button" id="author-commit-btn" type="button">Commit changes</button>
+            <div id="author-commit-result" class="author__commit-result" role="status" aria-live="polite"></div>
+        </section>
+    </main>
+</div>
+
+<script type="module" src="/app/eitc/resources/js/author-mode.js"></script>
+</body>
+</html>

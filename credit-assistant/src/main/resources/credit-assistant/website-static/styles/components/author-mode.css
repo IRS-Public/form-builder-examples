@@ -1,0 +1,151 @@
+/* Author Mode view styling.
+   Loaded directly by templates/author-mode.html (a dev-only view, like all-screens),
+   so it stays out of the main.css cascade — same convention as all-screens.css.
+   Reuses USWDS form classes (.usa-input/.usa-textarea/.usa-button/.usa-alert); the
+   rules below only add the layout gaps USWDS doesn't cover. */
+
+/* Blank canvas. layout/main-content.css styles every <main> as a centered white
+   "product experience" card (shadow, rounded corners, wide max-width, banner-adjacent
+   padding). Author Mode is chrome-free, so reset that here: the editor sits on the
+   plain page background under only the global nav, independent of the flow's page layout.
+   The editor reflows to its own width, not the viewport (ADR-004). */
+.author__main {
+  container-type: inline-size;
+  container-name: author;
+  max-width: 55rem;
+  margin: var(--units-4) auto var(--units-8);
+  padding: 0 var(--units-3);
+  background-color: transparent;
+  box-shadow: none;
+  border-radius: 0;
+  min-height: 0;
+}
+
+.author__intro {
+  margin-bottom: var(--units-4);
+}
+
+.author__status {
+  margin-bottom: var(--units-4);
+}
+
+/* ── Editor sections ──────────────────────────────────────────────────────── */
+
+.author__section,
+.author__commit {
+  border: 1px solid var(--base-lighter);
+  border-radius: 8px;
+  padding: var(--units-3);
+  margin-bottom: var(--units-4);
+  background-color: white;
+}
+
+.author__section-title {
+  margin-top: 0;
+  margin-bottom: var(--units-1);
+}
+
+.author__section-hint {
+  color: var(--base-dark);
+  font-size: var(--font-size-2xs);
+  margin-top: 0;
+  margin-bottom: var(--units-3);
+}
+
+/* Container that JS fills with one or more field editors. */
+.author__fields:empty {
+  display: none;
+}
+
+/* ── A single field editor (label + control + error + Save) ───────────────── */
+
+.author__field {
+  border-top: 1px solid var(--base-lighter);
+  padding-top: var(--units-3);
+  margin-top: var(--units-3);
+}
+.author__field:first-child {
+  border-top: 0;
+  padding-top: 0;
+  margin-top: 0;
+}
+
+/* Small helper text under a field label (input-type/gating/limit explanations). */
+.author__field-hint {
+  display: block;
+  margin-bottom: var(--units-1);
+}
+
+.author__field-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--units-2);
+  margin-top: var(--units-105);
+  flex-wrap: wrap;
+}
+
+.author__field-saved {
+  color: var(--success-dark);
+  font-size: var(--font-size-2xs);
+}
+
+.author__field-error[hidden] {
+  display: none;
+}
+
+/* ── Commit bar ───────────────────────────────────────────────────────────── */
+
+.author__commit-result {
+  margin-top: var(--units-2);
+  font-size: var(--font-size-2xs);
+}
+.author__commit-result--success {
+  color: var(--success-dark);
+}
+.author__commit-result--error {
+  color: var(--error-dark);
+}
+
+/* ── Lint panel ───────────────────────────────────────────────────────────── */
+
+.author__lint-results {
+  margin-top: var(--units-2);
+  font-size: var(--font-size-2xs);
+}
+.author__lint-ok {
+  color: var(--success-dark);
+  margin: 0;
+}
+.author__lint-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.author__lint-item {
+  display: flex;
+  align-items: baseline;
+  gap: var(--units-1);
+  flex-wrap: wrap;
+  border-left: 4px solid var(--warning);
+  background-color: var(--warning-lighter);
+  padding: var(--units-1) var(--units-2);
+  margin-bottom: var(--units-1);
+  border-radius: 0 4px 4px 0;
+}
+.author__lint-route {
+  color: var(--base-dark);
+}
+
+/* Roomier reading measure once the editor column is wide enough. */
+@container author (min-width: 40rem) {
+  .author__section,
+  .author__commit {
+    padding: var(--units-4);
+  }
+}
+
+/* Keyboard focus is always clearly visible (matches the app's focus token). */
+.author__main :is(input, textarea, select, button):focus-visible {
+  outline: 0.25rem solid var(--blue-40v);
+  outline-offset: 0;
+}

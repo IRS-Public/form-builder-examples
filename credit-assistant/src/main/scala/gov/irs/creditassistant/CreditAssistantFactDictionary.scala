@@ -2,7 +2,6 @@ package gov.irs.creditassistant
 
 import gov.irs.factgraph.FactDictionary
 import java.io.File
-import scala.io.Source
 import scala.xml.{ Elem, NodeBuffer }
 
 case class CreditAssistantFactDictionary(factDictionary: FactDictionary, xml: Elem)
@@ -21,7 +20,11 @@ def loadFactXml(): Elem = {
   val facts = new NodeBuffer()
   for (file <- listOfFiles) {
     val fileName = file.getName()
-    val factsFile = Source.fromResource(s"credit-assistant/facts/$fileName").getLines().mkString("\n")
+    // Read the file's content from the same on-disk directory we enumerated above (not via the
+    // classpath). This keeps fact loading consistent with Author Mode, which patches these files on
+    // disk and then calls `regenerate()` in-process: `Source.fromResource` would read the stale copy
+    // that sbt cached under target/.../classes at build time until the next resource re-copy.
+    val factsFile = os.read(factDirectoryPath / fileName)
     val factXmlNodes = xml.XML.loadString(factsFile)
     val factNodes = factXmlNodes \ "Facts" \ "_"
     facts ++= factNodes
