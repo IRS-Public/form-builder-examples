@@ -31,8 +31,7 @@
 
 /* ── Editor sections ──────────────────────────────────────────────────────── */
 
-.author__section,
-.author__commit {
+.author__section {
   border: 1px solid var(--base-lighter);
   border-radius: 8px;
   padding: var(--units-3);
@@ -93,19 +92,6 @@
   display: none;
 }
 
-/* ── Commit bar ───────────────────────────────────────────────────────────── */
-
-.author__commit-result {
-  margin-top: var(--units-2);
-  font-size: var(--font-size-2xs);
-}
-.author__commit-result--success {
-  color: var(--success-dark);
-}
-.author__commit-result--error {
-  color: var(--error-dark);
-}
-
 /* ── Lint panel ───────────────────────────────────────────────────────────── */
 
 .author__lint-results {
@@ -138,8 +124,7 @@
 
 /* Roomier reading measure once the editor column is wide enough. */
 @container author (min-width: 40rem) {
-  .author__section,
-  .author__commit {
+  .author__section {
     padding: var(--units-4);
   }
 }

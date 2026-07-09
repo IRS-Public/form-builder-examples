@@ -1,7 +1,7 @@
 package gov.irs.creditassistant.authoring
 
 import com.sun.net.httpserver.{ HttpExchange, HttpHandler, HttpServer }
-import gov.irs.creditassistant.{ regenerate, syncTranslationLocales, Log }
+import gov.irs.creditassistant.{ generatedFlowContentPath, regenerate, syncTranslationLocales, Log }
 import gov.irs.creditassistant.parser.Flow
 import gov.irs.factgraph.FactDictionary
 import io.circe.*
@@ -17,8 +17,7 @@ import scala.xml.{ Elem, NodeBuffer }
 /** Embedded HTTP backend for Author Mode It serves the structured-form editor (which is hosted by `smol` on 3003) a
   * JSON model of the current on-disk Flow/FactDictionary, validates proposed value/text edits against the exact same
   * validators the build uses, saves them with a byte-for-byte preserve-and-patch writer, regenerates the site
-  * in-process, re-stubs the non-English locales, and commits scoped to `flow/`, `facts/`, `locales/` on the current
-  * branch.
+  * in-process, and re-stubs the non-English locales. Saved changes are committed from the CLI, not through this API.
   *
   * Everything here is deliberately confined to the MVP surface: pure value/text patches (constant
   * `<Dollar>`/`<Rational>` values, a fact `<Description>`, and on-screen `<question>`/`<hint>`/`<fg-alert>` heading
@@ -56,8 +55,8 @@ object AuthoringServer {
   // ──────────────────────────────────────────────────────────────────────────────────────────
 
   /** Start the authoring server (non-blocking). `host` is normally "localhost" (loopback-only, since this API patches
-    * source XML and commits to git); the docker-compose dev overlay passes "0.0.0.0" for the containerized watcher,
-    * since a container's loopback interface isn't reachable through Docker's port-publishing NAT — see the call site in
+    * source XML on disk); the docker-compose dev overlay passes "0.0.0.0" for the containerized watcher, since a
+    * container's loopback interface isn't reachable through Docker's port-publishing NAT — see the call site in
     * `main.scala` for the full rationale.
     */
   def start(host: String, port: Int, flags: Map[String, Boolean]): HttpServer = {
@@ -74,8 +73,6 @@ object AuthoringServer {
       "/author/save",
       jsonHandler(ex => (200, handleEdit(readBody(ex), save = true, flags).noSpaces)),
     )
-    server.createContext("/author/commit", jsonHandler(ex => (200, handleCommit(readBody(ex)).noSpaces)))
-
     server.setExecutor(null)
     server.start()
 
@@ -419,10 +416,17 @@ object AuthoringServer {
         if (errors.nonEmpty) errorsJson(errors)
         else if (!save) errorsJson(Nil)
         else {
-          // Persist the patched XML, then re-run the exact build pipeline + locale re-stub.
+          // Persist the patched XML, then re-run the exact build pipeline. The translationMap
+          // driving flow_en.yaml is built purely from flow XML, so most edit kinds (constant,
+          // factDescription, factConfig) can never change it, and structural flow edits
+          // (screenAttr, alertAttr) change attributes, not translatable text. Only re-sync the
+          // 7 translated flow_{lang}.yaml files when this save actually changed flow_en.yaml's
+          // content, instead of rewriting every locale on every save regardless of relevance.
+          val previousFlowEn =
+            if (os.exists(generatedFlowContentPath)) Some(os.read(generatedFlowContentPath)) else None
           os.write.over(candidate.file, candidate.content)
           regenerate(flags)
-          syncTranslationLocales()
+          if (!previousFlowEn.contains(os.read(generatedFlowContentPath))) syncTranslationLocales()
           Log.info(s"Author Mode saved ${target.kind} edit to ${candidate.sourceName}")
           errorsJson(Nil)
         }
@@ -1027,59 +1031,6 @@ object AuthoringServer {
 
   /** Collapse a run of blank lines left by removing an element (cosmetic; xmllint --format re-tidies afterward). */
   private def stripBlank(s: String): String = s.replaceAll("(?m)^[ \\t]*\\r?\\n", "")
-
-  // ──────────────────────────────────────────────────────────────────────────────────────────
-  //  POST /author/commit
-  // ──────────────────────────────────────────────────────────────────────────────────────────
-
-  private def handleCommit(body: String): Json = {
-    val summary = io.circe.parser
-      .parse(body)
-      .toOption
-      .flatMap(_.hcursor.get[String]("summary").toOption)
-      .getOrElse("")
-      .trim
-
-    if (summary.isEmpty)
-      return commitJson(ok = false, sha = "", stderr = "A commit summary is required.")
-
-    // Guard: re-run the schema validation over every on-disk file before committing anything.
-    val guard = validateAllOnDisk()
-    if (guard.nonEmpty)
-      return commitJson(ok = false, sha = "", stderr = s"Refusing to commit invalid XML: ${guard.mkString("; ")}")
-
-    val repoRoot = os.pwd / os.up
-    val rel = "credit-assistant/src/main/resources/credit-assistant"
-
-    val add = os.proc("git", "add", s"$rel/flow", s"$rel/facts", s"$rel/locales").call(cwd = repoRoot, check = false)
-    if (add.exitCode != 0)
-      return commitJson(ok = false, sha = "", stderr = add.err.text().trim)
-
-    val commit = os.proc("git", "commit", "-m", s"Author: $summary").call(cwd = repoRoot, check = false)
-    if (commit.exitCode != 0) {
-      val msg = (commit.err.text() + "\n" + commit.out.text()).trim
-      return commitJson(ok = false, sha = "", stderr = if (msg.isEmpty) "git commit failed" else msg)
-    }
-
-    val sha = os.proc("git", "rev-parse", "HEAD").call(cwd = repoRoot, check = false).out.text().trim
-    commitJson(ok = true, sha = sha, stderr = "")
-  }
-
-  private def commitJson(ok: Boolean, sha: String, stderr: String): Json =
-    Json.obj("ok" -> Json.fromBoolean(ok), "sha" -> sha.asJson, "stderr" -> stderr.asJson)
-
-  /** Build-equivalent pre-commit guard over the current disk state. Facts are RNG-validated exactly as
-    * `make validate-xml` does; flow is NOT RNG-checked (its modules are fragments that don't independently satisfy
-    * FlowConfig.rng, and the build doesn't validate them either) — instead we resolve + parse the whole flow, the real
-    * build-time gate, which rejects any structural breakage an edit could introduce.
-    */
-  private def validateAllOnDisk(): List[String] = {
-    val factErrs = sortedFactFiles().flatMap(f => xmllintRelaxng(os.read(f), factsRng).map(m => s"${f.last}: $m"))
-    val flowErr = Try {
-      Flow.fromXmlConfig(buildResolvedFlowConfig(Map.empty), buildFactDictionary(Map.empty))
-    }.failed.toOption.map(e => s"flow: ${rootMsg(e)}").toList
-    factErrs.toList ++ flowErr
-  }
 
   // ──────────────────────────────────────────────────────────────────────────────────────────
   //  Candidate builders (rebuild the FactDictionary / resolved Flow with one file overridden)

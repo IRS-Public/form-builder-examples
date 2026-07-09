@@ -1,5 +1,6 @@
 // Author Mode client — renders the structured-form editor from the embedded
-// authoring server's model, and drives live validate / save / commit.
+// authoring server's model, and drives live validate / save. Commits happen
+// from the CLI, not this UI.
 //
 // ─── API CONTRACT (must stay in sync with authoring/AuthoringServer.scala) ────
 //
@@ -28,7 +29,6 @@
 //
 //   POST /author/validate  body { target, edit } → { ok, errors: [ { field, message } ] }
 //   POST /author/save      body { target, edit } → { ok, errors: [ { field, message } ] }
-//   POST /author/commit    body { summary }      → { ok, sha, stderr }
 //
 // The edit-payload shape sent to /author/validate and /author/save:
 //
@@ -112,21 +112,26 @@ function apiUrl (path) {
   return `${AUTHOR_API_BASE}${path}`
 }
 
-/** POST JSON and parse the JSON response. Throws on network / non-OK responses. */
+// Every /author/* endpoint responds with a JSON envelope even on failure (ok:false
+// plus errors/stderr) — see AuthoringServer's jsonHandler, which turns even an
+// uncaught server exception into a 500 with a JSON body. So postJson/getJson only
+// throw when the request never reached a server at all (fetch's own TypeError) or
+// the body genuinely isn't JSON; an HTTP error status alone is not grounds to throw,
+// since callers need the envelope's own error detail, not a generic "unreachable".
+
+/** POST JSON and parse the JSON response, regardless of HTTP status. */
 async function postJson (path, body) {
   const response = await fetch(apiUrl(path), {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(body)
   })
-  if (!response.ok) throw new Error(`${path} responded ${response.status}`)
   return response.json()
 }
 
-/** GET a JSON resource from the authoring server. Throws on network / non-OK responses. */
+/** GET a JSON resource from the authoring server, regardless of HTTP status. */
 async function getJson (path) {
   const response = await fetch(apiUrl(path))
-  if (!response.ok) throw new Error(`${path} responded ${response.status}`)
   return response.json()
 }
 
@@ -754,41 +759,6 @@ function wireLintPanel () {
   })
 }
 
-function wireCommit () {
-  const summary = document.getElementById('author-commit-summary')
-  const button = document.getElementById('author-commit-btn')
-  const result = document.getElementById('author-commit-result')
-  if (!summary || !button || !result) return
-
-  button.addEventListener('click', async () => {
-    if (!summary.value.trim()) {
-      result.textContent = 'Enter a commit summary first.'
-      result.className = 'author__commit-result author__commit-result--error'
-      return
-    }
-    button.disabled = true
-    result.textContent = 'Committing…'
-    result.className = 'author__commit-result'
-    try {
-      const response = await postJson('/author/commit', { summary: summary.value.trim() })
-      if (response.ok) {
-        result.textContent = `Committed ${response.sha || ''}`.trim()
-        result.className = 'author__commit-result author__commit-result--success'
-        summary.value = ''
-      } else {
-        result.textContent = response.stderr || 'Commit failed.'
-        result.className = 'author__commit-result author__commit-result--error'
-      }
-    } catch (err) {
-      console.error('commit failed', err)
-      result.textContent = 'Could not reach the authoring server to commit. Is `make dev-author` running?'
-      result.className = 'author__commit-result author__commit-result--error'
-    } finally {
-      button.disabled = false
-    }
-  })
-}
-
 /** Fetch the model and render all editors. Exposed for tests / manual re-init. */
 export async function init () {
   setStatus('Connecting to the authoring server…', 'info')
@@ -799,7 +769,6 @@ export async function init () {
     renderFactConfigEditor(model)
     renderScreenEditor(model)
     wireLintPanel()
-    wireCommit()
     document.getElementById('author-status').hidden = true
   } catch (err) {
     console.error('Author Mode could not load the model', err)

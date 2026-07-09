@@ -55,8 +55,13 @@ implicit val anyEncoder: Encoder[Any] = Encoder.instance {
 def generateFlowLocaleFile(translationMap: mutable.LinkedHashMap[String, Any]): Unit = {
   val json = translationMap.asJson
   val yamlString = Printer(dropNullKeys = true, preserveOrder = true).pretty(json)
-  os.write.over(generatedFlowContentPath, s"# DO NOT EDIT, THIS IS A GENERATED FILE\n$yamlString")
-  Log.info(s"Generated flow content at ${generatedFlowContentPath}")
+  val content = s"# DO NOT EDIT, THIS IS A GENERATED FILE\n$yamlString"
+  // Skip the write when content is unchanged so an edit that can't affect flow text (e.g. a
+  // constant or fact-description save) doesn't touch this file's mtime/git status.
+  if (!os.exists(generatedFlowContentPath) || os.read(generatedFlowContentPath) != content) {
+    os.write.over(generatedFlowContentPath, content)
+    Log.info(s"Generated flow content at ${generatedFlowContentPath}")
+  }
 }
 
 /** The 7 non-English flow locales, human-translated against `flow_en.yaml`'s key set. */
@@ -120,8 +125,13 @@ private def syncTranslationLocale(locale: String, englishContent: Json): Unit = 
 
   val header = s"# Auto-synced from flow_en.yaml — do not add/remove keys here.\n" +
     s"# Human translations are preserved; entries marked \"$TodoTranslateComment\" still need translation.\n"
-  os.write.over(localePath, s"$header$withTodoComments\n")
-  Log.info(s"Synced flow locale $locale at ${localePath}")
+  val content = s"$header$withTodoComments\n"
+  // Skip the write when content is unchanged so locales unaffected by the edit that triggered
+  // this sync aren't rewritten (and don't show up as touched in git).
+  if (!os.exists(localePath) || os.read(localePath) != content) {
+    os.write.over(localePath, content)
+    Log.info(s"Synced flow locale $locale at ${localePath}")
+  }
 }
 
 /** Build a locale tree shaped exactly like `english` (the source of truth for keys/order):

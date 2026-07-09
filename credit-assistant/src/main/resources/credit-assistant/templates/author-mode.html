@@ -27,9 +27,9 @@
             <h1>Author Mode</h1>
             <p>
                 Edit constants, fact descriptions, and on-screen text through structured forms —
-                no XML required. Changes are validated live, saved to the source files, and can be
-                committed locally. After saving, refresh <strong>Product Experience</strong> or
-                <strong>Browse All</strong> to preview.
+                no XML required. Changes are validated live and saved to the source files; commit
+                them from the command line. After saving, refresh <strong>Product Experience</strong>
+                or <strong>Browse All</strong> to preview.
             </p>
         </div>
 
@@ -123,22 +123,6 @@
             </p>
             <button class="usa-button usa-button--outline" id="author-lint-btn" type="button">Run lint check</button>
             <div id="author-lint-results" class="author__lint-results" role="status" aria-live="polite"></div>
-        </section>
-
-        <!-- Commit bar ───────────────────────────────────────────────────────── -->
-        <section class="author__commit" aria-labelledby="author-commit-heading">
-            <h2 id="author-commit-heading" class="author__section-title">Commit saved changes</h2>
-            <p class="author__section-hint">
-                Create a local git commit of the saved flow, fact, and locale files on the current
-                branch. Nothing is pushed.
-            </p>
-            <div class="usa-form-group">
-                <label class="usa-label" for="author-commit-summary">Commit summary</label>
-                <input class="usa-input" id="author-commit-summary" type="text"
-                       placeholder="e.g. Update 2026 EITC investment income limit" />
-            </div>
-            <button class="usa-button" id="author-commit-btn" type="button">Commit changes</button>
-            <div id="author-commit-result" class="author__commit-result" role="status" aria-live="polite"></div>
         </section>
     </main>
 </div>
