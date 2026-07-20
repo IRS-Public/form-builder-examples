@@ -11,12 +11,12 @@ span.hidden{
   display: inline;
 }
 
-/* Scenario view restores the normal flow's hide/show behavior: elements that fg-components.js's
+/* Path Mode restores the normal flow's hide/show behavior: elements that fg-components.js's
    showOrHideAllElements() marks `.hidden` against the loaded Fact Graph are actually hidden,
    instead of forced visible by the rules above. */
-body.scenario-view .hidden,
-body.scenario-view span.hidden,
-body.scenario-view .fg-show.hidden {
+body.path-mode .hidden,
+body.path-mode span.hidden,
+body.path-mode .fg-show.hidden {
   display: none;
 }
 

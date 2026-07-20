@@ -57,7 +57,11 @@ class FgReset extends HTMLElement {
 
   handleEvent () {
     sessionStorage.removeItem('factGraph')
-    window.location = '/app/eitc/'
+    // Reloading in place keeps the current mode context (Browse All, Scenario, Authoring),
+    // including its query string. Only the linear flow needs to restart at the first page.
+    const path = window.location.pathname
+    if (path.includes('/all-screens/') || path.includes('/author/')) window.location.reload()
+    else window.location = '/app/eitc/'
   }
 }
 customElements.define('fg-reset', FgReset)

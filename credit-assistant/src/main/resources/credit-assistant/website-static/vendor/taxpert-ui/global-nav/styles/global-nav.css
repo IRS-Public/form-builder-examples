@@ -1,0 +1,223 @@
+/* Shared styles for <taxpert-global-nav>.
+ *
+ * All classes are prefixed .tgn-* and all tokens --tgn-* so the one stylesheet
+ * renders identically in either app. Tokens resolve against each app's own
+ * design tokens with a hard-coded fallback, so neither app is a hard dependency:
+ *   credit-assistant uses --primary / --units-*, Formative Studio uses
+ *   --color-* / --space-*.
+ *
+ * :where() keeps the token rule at zero specificity so apps can override. */
+
+:where(taxpert-global-nav) {
+  --tgn-accent: var(--color-accent, var(--primary, #5b3fb5));
+  --tgn-surface: var(--color-surface, #ffffff);
+  --tgn-banner: var(--color-banner, #f4f2fb);
+  --tgn-text: var(--color-text, #1b1f23);
+  --tgn-muted: var(--color-text-muted, #6b7785);
+  --tgn-border: var(--color-border, #e2e2ec);
+  --tgn-hover: var(--color-surface-alt, #f3f2f9);
+  --tgn-on: var(--color-primary, #2b6cb0);
+  --tgn-gap: var(--space-1, var(--units-1, 8px));
+  --tgn-radius: 8px;
+  --tgn-z: 1000; /* below CA modals (1050), above Studio overlays (--z-chat: 7) */
+}
+
+taxpert-global-nav {
+  display: block;
+  font-family: var(--font-ui, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif);
+  color: var(--tgn-text);
+}
+
+.tgn-bar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 16px;
+  background: var(--tgn-surface);
+  border-bottom: 1px solid var(--tgn-border);
+}
+
+/* Waffle button */
+.tgn-waffle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 0;
+  border-radius: 6px;
+  background: var(--tgn-hover);
+  color: var(--tgn-accent);
+  cursor: pointer;
+}
+
+.tgn-waffle:hover {
+  background: color-mix(in srgb, var(--tgn-accent) 12%, transparent);
+}
+
+.tgn-waffle--active {
+  background: var(--tgn-accent);
+  color: #ffffff;
+}
+
+.tgn-waffle__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 4px);
+  grid-template-rows: repeat(3, 4px);
+  gap: 3px;
+}
+
+.tgn-waffle__dot {
+  width: 4px;
+  height: 4px;
+  border-radius: 1px;
+  background: currentColor;
+}
+
+/* Breadcrumb */
+.tgn-breadcrumb {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+}
+
+.tgn-breadcrumb__root {
+  font-weight: 700;
+}
+
+.tgn-breadcrumb__sep {
+  color: var(--tgn-border);
+}
+
+.tgn-breadcrumb__ctx {
+  color: var(--tgn-muted);
+}
+
+/* Dropdown */
+.tgn-menu {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 12px;
+  z-index: var(--tgn-z);
+  min-width: 240px;
+  padding: 0;
+  background: var(--tgn-surface);
+  border: 1px solid var(--tgn-border);
+  border-radius: var(--tgn-radius);
+  box-shadow: var(--shadow-panel, 0 6px 24px rgba(0, 0, 0, 0.14));
+  overflow: hidden;
+}
+
+/* Workspace row */
+.tgn-workspace {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 16px;
+  background: var(--tgn-banner);
+  border-bottom: 1px solid var(--tgn-border);
+}
+
+.tgn-workspace__label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--tgn-text);
+}
+
+/* Toggle switch */
+.tgn-toggle {
+  position: relative;
+  flex: 0 0 auto;
+  width: 34px;
+  height: 18px;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: var(--tgn-muted);
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.tgn-toggle--on {
+  background: var(--tgn-on);
+}
+
+.tgn-toggle:disabled {
+  cursor: default;
+  opacity: 0.7;
+}
+
+.tgn-toggle__knob {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #ffffff;
+  transition: transform 0.15s ease;
+}
+
+.tgn-toggle--on .tgn-toggle__knob {
+  transform: translateX(16px);
+}
+
+/* Groups */
+.tgn-group__header {
+  display: block;
+  width: 100%;
+  padding: 10px 16px 4px;
+  border: 0;
+  background: transparent;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--tgn-text);
+  text-align: left;
+  cursor: pointer;
+}
+
+.tgn-group__items {
+  padding-bottom: 4px;
+}
+
+/* Items (leaves) */
+.tgn-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 16px;
+  font-size: 13px;
+  color: var(--tgn-text);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.tgn-item:hover {
+  background: var(--tgn-hover);
+}
+
+.tgn-item--sub {
+  padding-left: 28px;
+}
+
+.tgn-item--active {
+  font-weight: 600;
+}
+
+.tgn-item--disabled {
+  color: var(--tgn-muted);
+  cursor: default;
+  pointer-events: none;
+}
+
+.tgn-item__check {
+  color: var(--tgn-on);
+  font-size: 13px;
+}

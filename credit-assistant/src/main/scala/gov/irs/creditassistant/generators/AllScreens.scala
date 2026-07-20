@@ -52,8 +52,10 @@ object AllScreens {
     context.setVariable("currentPageRoute", "/all-screens")
     context.setVariable("flags", flags.asJava)
     context.setVariable("scenarios", scenarios)
-    // Active item in the shared global nav (see @taxpert/ui). The all-screens view
-    // is "Browse all" under Experience Explorer.
+    // Active item in the shared global nav (see @taxpert/ui). This one generated page backs both
+    // "Browse All" and "Path Mode" under Experience Explorer, told apart by `?mode=path` — which
+    // the server can't see, so all-screens-bootstrap.js re-points this at Path Mode when the URL
+    // asks for it.
     context.setVariable("navActive", "browse-all")
 
     // Pre-render every page once, alongside its module slug and condition count.

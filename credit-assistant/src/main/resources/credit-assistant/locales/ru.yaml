@@ -147,7 +147,6 @@ all-screens:
     section-label: "Раздел"
     section-all: "Все разделы"
     horizontal-layout: "Горизонтальный вид"
-    scenario-view: "Просмотр сценария"
     scenario-label: "Сценарий"
     scenario-placeholder: "Загрузить сценарий…"
     scenario-clear: "Очистить сценарий"

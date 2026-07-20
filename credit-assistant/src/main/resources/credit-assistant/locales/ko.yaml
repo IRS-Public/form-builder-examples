@@ -147,7 +147,6 @@ all-screens:
     section-label: "섹션"
     section-all: "모든 섹션"
     horizontal-layout: "수평 레이아웃"
-    scenario-view: "시나리오 보기"
     scenario-label: "시나리오"
     scenario-placeholder: "시나리오 불러오기…"
     scenario-clear: "시나리오 지우기"

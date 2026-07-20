@@ -147,7 +147,6 @@ all-screens:
     section-label: "Seksyon"
     section-all: "Tout seksyon yo"
     horizontal-layout: "Horizontal layout"
-    scenario-view: "Vizyon senaryo"
     scenario-label: "Senaryo"
     scenario-placeholder: "Chaje yon senaryo…"
     scenario-clear: "Efase senaryo"
