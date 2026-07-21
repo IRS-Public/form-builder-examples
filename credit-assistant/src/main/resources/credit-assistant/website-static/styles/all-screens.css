@@ -20,6 +20,13 @@ body.path-mode .fg-show.hidden {
   display: none;
 }
 
+/* Everything past the point of progress: the questions and content a user on this path hasn't
+   reached yet. Marked by path-cursor.js, which deliberately uses its own class rather than
+   `.hidden` — that one makes showOrHideAllElements() delete the facts behind it. */
+body.path-mode .off-path {
+  display: none;
+}
+
 @media screen {
 
   .view--column {

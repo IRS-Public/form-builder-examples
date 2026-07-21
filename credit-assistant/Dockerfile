@@ -52,6 +52,12 @@ COPY --from=factgraph \
 # sibling ../taxpert-ui repo (see docker-compose.yml — same reason this build's
 # context is the repo root, not just credit-assistant/). Mirrors the bundle-dir
 # layout (global-nav/, audit-panel/, shared/, each with js/styles/images/fonts/).
+#
+# Wipe first, exactly as the Makefile recipe does: COPY merges into the destination
+# rather than replacing it, so without this a file deleted or renamed in taxpert-ui/src
+# could survive in the image as a stale vendored copy. (The mirror is untracked and
+# .dockerignore'd, so this only bites when a developer's working tree carries one.)
+RUN rm -rf ./src/main/resources/credit-assistant/website-static/vendor/taxpert-ui
 COPY taxpert-ui/src/global-nav ./src/main/resources/credit-assistant/website-static/vendor/taxpert-ui/global-nav
 COPY taxpert-ui/src/audit-panel ./src/main/resources/credit-assistant/website-static/vendor/taxpert-ui/audit-panel
 COPY taxpert-ui/src/shared ./src/main/resources/credit-assistant/website-static/vendor/taxpert-ui/shared

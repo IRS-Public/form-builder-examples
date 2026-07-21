@@ -58,6 +58,17 @@ copy-shared-ui: ## Copy shared UI components (@taxpert/ui) from node_modules
 	mkdir -p $(SHARED_UI_TARGET)
 	cp -R $(SHARED_UI_SRC)/global-nav $(SHARED_UI_SRC)/shared $(SHARED_UI_SRC)/audit-panel $(SHARED_UI_TARGET)/
 
+.PHONY: check-shared-ui
+check-shared-ui: ## Verify the vendored shared UI matches @taxpert/ui's source
+	@# The mirror is generated and gitignored, so a build that skipped copy-shared-ui —
+	@# or a hand-edit of the mirror, which the next build silently overwrites — shows up
+	@# here as a diff rather than as stale UI in the browser.
+	@for bundle in global-nav shared audit-panel; do \
+		diff -r -x .DS_Store $(SHARED_UI_SRC)/$$bundle $(SHARED_UI_TARGET)/$$bundle \
+			|| { echo "==> vendored shared UI is out of date — run 'make copy-shared-ui'"; exit 1; }; \
+	done
+	@echo "==> vendored shared UI matches @taxpert/ui"
+
 .PHONY: test
 test: ## Run test suite
 	@# This only prints the tests that fail
@@ -88,6 +99,7 @@ ci-setup: ## Install validation and linting tools
 .PHONY: ci
 ci: ## Run most of the CI checks locally
 	make credit-assistant
+	make check-shared-ui
 	make validate-xml
 	make validate-html
 	make validate-js
