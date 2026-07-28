@@ -20,6 +20,11 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <link rel="apple-touch-icon-precomposed" sizes="72x72" href="/app/eitc/resources/img/apple-icon-72x72.png" />
 <link rel="stylesheet" href="/app/eitc/resources/styles/main.css" />
 <link rel="stylesheet" href="/app/eitc/resources/vendor/taxpert-ui/audit-panel/styles/audit-panel.css" id="audit-panel-styles" disabled />
+<!-- The global nav clones its markup from this file, and it is the first thing on every page, so
+     start the fetch alongside the module rather than after it parses. (The audit panel's templates
+     need no preload: it is invisible until enableAuditMode(), by which time they have landed.) -->
+<link rel="preload" as="fetch" crossorigin
+      href="/app/eitc/resources/vendor/taxpert-ui/global-nav/templates/global-nav.html" />
 
 <script type="module" src="/app/eitc/resources/js/fg-components.js"></script>
 <script type="module" src="/app/eitc/resources/js/modals.js"></script>

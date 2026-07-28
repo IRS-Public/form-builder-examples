@@ -3,7 +3,8 @@
    api-base="http://localhost:8000"
    scenarios-base="/app/eitc/resources/scenarios"
    fact-dictionary-url="/app/eitc/resources/fact-dictionary.xml"
-   th:attr="ai-mode-default=${flags.aiMode != null and flags.aiMode ? 'true' : 'false'}">
+   th:attr="ai-scenario-generation-default=${flags.aiScenarioGeneration != null and flags.aiScenarioGeneration ? 'true' : 'false'},
+            ai-fact-explanation-default=${flags.aiFactExplanation != null and flags.aiFactExplanation ? 'true' : 'false'}">
    <!-- Host-supplied scenario options (light-DOM children, read on connect). Wrapped in a
         <template> so the page HTML stays valid; only emitted in scenario mode. -->
    <template th:if="${flags.scenarioMode and scenarios != null and !scenarios.isEmpty()}">

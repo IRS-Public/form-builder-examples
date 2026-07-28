@@ -11,7 +11,10 @@ import { currentMode } from '../../../../../../../../../../app/eitc/resources/ve
 // the right one in the tab title and point the global nav's "you are here" checkmark at it.
 const isPathMode = currentMode() === 'path'
 document.title = isPathMode ? 'Path Mode' : 'All Screens'
-document.querySelector('taxpert-global-nav')?.setAttribute('active', isPathMode ? 'path-mode' : 'browse-all')
+// Through the property, not setAttribute: the nav reads its attributes once on connect (no
+// attributeChangedCallback) and the setter is what re-points the checkmark.
+const nav = document.querySelector('taxpert-global-nav')
+if (nav) nav.active = isPathMode ? 'path-mode' : 'browse-all'
 
 // Force every collection to render its first child instance, even with an empty fact graph, so the
 // all-screens view shows collection questions. (Was the first line of the old initAllScreens.)

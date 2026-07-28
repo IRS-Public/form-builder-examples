@@ -21,8 +21,8 @@ dev: copy-shared-ui ## Build and run development server, watching for changes (D
 	sbt -Dsmol.port=$(PORT) '~run --serve --auditMode --allScreens --scenarioMode'
 
 .PHONY: dev-ai
-dev-ai: copy-shared-ui ## Same as `dev`, but also reveals the AI/prompt features (Explain & Analyze chat)
-	sbt -Dsmol.port=$(PORT) '~run --serve --auditMode --allScreens --scenarioMode --aiMode'
+dev-ai: copy-shared-ui ## Same as `dev`, but also reveals both AI/prompt features (Explain & Analyze chat, AI scenario generation)
+	sbt -Dsmol.port=$(PORT) '~run --serve --auditMode --allScreens --scenarioMode --aiScenarioGeneration --aiFactExplanation'
 
 .PHONY: dev-one-question
 dev-one-question: copy-shared-ui # Run in one question: one screen mode

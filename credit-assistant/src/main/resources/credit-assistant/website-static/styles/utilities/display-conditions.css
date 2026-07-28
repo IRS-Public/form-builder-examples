@@ -157,11 +157,17 @@
   }
 }
 
-/* Body-level popover — outside .display-conditions so it isn't clipped by any ancestor */
+/* Body-level popover — outside .display-conditions so it isn't clipped by any ancestor. It is a
+   native popover (condition-detail.js sets popover="manual"), so the top layer puts it above the
+   audit panel and the flow modals with no z-index to keep in step; the UA's default centering and
+   chrome are cleared here because the element is positioned against its trigger button. The
+   display:none / .visible pair is the fallback for an engine without the Popover API. */
 .condition-detail-popover {
   display: none;
   position: fixed;
-  z-index: 1001;
+  inset: auto;
+  margin: 0;
+  padding: 0;
   background: white;
   border: 1px solid var(--accent-cool);
   border-radius: 3px;
@@ -179,7 +185,8 @@
   }
 }
 
-.condition-detail-popover.visible {
+.condition-detail-popover.visible,
+.condition-detail-popover:popover-open {
   display: block;
 }
 
@@ -246,8 +253,10 @@
 .hr-not { display: flex; gap: 0.4ch; align-items: baseline; }
 .hr-error { color: #b91c1c; font-style: italic; padding: 0.5rem; }
 .hr-unknown { background: #fef3c7; color: #92400e; border-radius: 2px; padding: 0 0.25rem; font-size: 0.7rem; }
+/* The XML view is a <details>; its <summary> is the toggle, keeping the link-like treatment of the
+   two buttons it replaced — plus the browser's own disclosure triangle, which says "there is more
+   here" better than either button did. */
 .hr-toggle-xml {
-  display: block;
   margin: 0.5rem 0.75rem;
   font-size: 0.7rem;
   color: var(--accent-cool-darkest);
