@@ -128,6 +128,7 @@
 </div>
 
 <div th:replace="fragments/audit-panel"></div>
+<div th:replace="fragments/tool-dock"></div>
 <script type="module" th:if="${flags.auditMode}">
     // If configured, automatically enable Audit Mode on startup
     import { enable } from '/app/eitc/resources/vendor/taxpert-ui/audit-panel/js/taxpert-audit-panel.js'

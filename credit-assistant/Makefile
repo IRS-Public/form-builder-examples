@@ -56,14 +56,15 @@ copy-shared-ui: ## Copy shared UI components (@taxpert/ui) from node_modules
 	# Wipe first so renamed/removed source files never linger as stale vendored copies.
 	rm -rf $(SHARED_UI_TARGET)
 	mkdir -p $(SHARED_UI_TARGET)
-	cp -R $(SHARED_UI_SRC)/global-nav $(SHARED_UI_SRC)/shared $(SHARED_UI_SRC)/audit-panel $(SHARED_UI_TARGET)/
+	cp -R $(SHARED_UI_SRC)/global-nav $(SHARED_UI_SRC)/shared $(SHARED_UI_SRC)/audit-panel \
+		$(SHARED_UI_SRC)/tool-panels $(SHARED_UI_TARGET)/
 
 .PHONY: check-shared-ui
 check-shared-ui: ## Verify the vendored shared UI matches @taxpert/ui's source
 	@# The mirror is generated and gitignored, so a build that skipped copy-shared-ui —
 	@# or a hand-edit of the mirror, which the next build silently overwrites — shows up
 	@# here as a diff rather than as stale UI in the browser.
-	@for bundle in global-nav shared audit-panel; do \
+	@for bundle in global-nav shared audit-panel tool-panels; do \
 		diff -r -x .DS_Store $(SHARED_UI_SRC)/$$bundle $(SHARED_UI_TARGET)/$$bundle \
 			|| { echo "==> vendored shared UI is out of date — run 'make copy-shared-ui'"; exit 1; }; \
 	done

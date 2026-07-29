@@ -30,6 +30,12 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <script type="module" src="/app/eitc/resources/js/modals.js"></script>
 <script type="module" src="/app/eitc/resources/vendor/taxpert-ui/audit-panel/js/taxpert-audit-panel.js"></script>
 <script type="module" src="/app/eitc/resources/vendor/taxpert-ui/global-nav/js/taxpert-global-nav.js"></script>
+<!-- The workspace tool panels (the nav's Tools button). Unlike the audit panel's, this stylesheet is
+     not behind a toggled `disabled` link: it is scoped entirely to the bundle's own custom elements
+     and .ttd-/.ttp-/.ttm- classes, so it restructures nothing in the product page — the same reason
+     global-nav.css loads unconditionally through main.css. The dock hides itself unless a tool is
+     switched on, and fragments/tool-dock.html keeps it `hidden` while the workspace is off. -->
+<script type="module" src="/app/eitc/resources/vendor/taxpert-ui/tool-panels/js/taxpert-tool-dock.js"></script>
 
 <script src="/app/eitc/resources/vendor/uswds-3.13.0/js/uswds-init.min.js"></script>
 <script defer src="/app/eitc/resources/vendor/uswds-3.13.0/js/uswds.min.js"></script>
