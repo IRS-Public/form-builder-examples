@@ -65,7 +65,7 @@ const SCENARIO_FILTER_FIELDS = [
   {
     id: 'scenario-filter-fs',
     key: 'filingStatus',
-    label: 'Filing Status',
+    label: 'Filing status',
     options: [
       { value: '', label: 'All' },
       { value: 'single', label: 'Single' },
@@ -77,7 +77,7 @@ const SCENARIO_FILTER_FIELDS = [
   {
     id: 'scenario-filter-marital',
     key: 'marital',
-    label: 'Marital Status (HOH)',
+    label: 'Marital status (HOH)',
     groupId: 'scenario-filter-marital-group',
     showFor: { filter: 'scenario-filter-fs', values: ['', 'hoh'] },
     options: [
@@ -89,7 +89,7 @@ const SCENARIO_FILTER_FIELDS = [
   {
     id: 'scenario-filter-income',
     key: 'incomeBand',
-    label: 'Income Band',
+    label: 'Income range',
     options: [
       { value: '', label: 'All' },
       { value: 'low', label: 'Low (~$17K–$19K)' },
@@ -102,7 +102,7 @@ const SCENARIO_FILTER_FIELDS = [
   {
     id: 'scenario-filter-qc',
     key: 'qcCount',
-    label: 'Qualifying Children',
+    label: 'Qualifying children',
     options: [
       { value: '', label: 'All' },
       { value: '0', label: '0' },
