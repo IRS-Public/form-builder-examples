@@ -1,0 +1,215 @@
+components:
+  fg-set:
+    required: "(Required)"
+  fg-collection:
+    paths:
+      /jobs:
+        name: job
+        determiner: another
+      /pensions:
+        name: pension or annuity income
+        determiner: another
+      /selfEmploymentSources:
+        name: self-employment income
+        determiner: more
+      /socialSecuritySources:
+        name: Social Security income
+        determiner: more
+    buttons:
+      remove: "Remove {0}"
+      add: "Add {0}"
+      add-with-determiner: "Add {1} {0}"
+    remove-item-modal:
+      heading:
+        remove: "Are you sure you want to remove this {0}?"
+      body: "This will delete any information you’ve already entered about this {0}."
+      footer:
+        confirm: "Yes, remove this {0}"
+        cancel: "No, keep this {0}"
+  modal:
+    close: Close this window
+  boolean:
+    yes: "Yes"
+    no: "No"
+  date:
+    month: Month
+    day: Day
+    year: Year
+    select: "- Select -"
+    january: January
+    february: February
+    march: March
+    april: April
+    may: May
+    june: June
+    july: July
+    august: August
+    september: September
+    october: October
+    november: November
+    december: December
+  select:
+    select: "-- Select one --"
+
+title:
+  prefix: Tax Withholding Estimator
+  suffix: Internal Revenue Service
+
+layout:
+  title: Tax Withholding Estimator
+  skip-to-main: Skip to main content
+  identifier:
+    agency-identifier: Agency identifier
+    disclaimer: An official website of the <a class="usa-link" target="_blank" href="https://irs.gov">IRS<span class="usa-sr-only"> (opens in a new tab)</span></a>
+    about:
+      text: About
+      link: https://www.irs.gov/about-irs
+    accessibility:
+      text: Accessibility
+      link: https://www.irs.gov/accessibility
+    privacy-policy:
+      text: Privacy policy
+      link: https://www.irs.gov/privacy-disclosure/irs-privacy-policy
+    important-links: Important links
+  irs:
+    name: IRS
+    domain: IRS.gov
+
+  banner:
+    how-you-know: Here’s how you know
+    official-domain: Official websites use .gov
+    official-organization: A <strong>.gov</strong> website belongs to an official government organization in the United States.
+    secure-https: Secure .gov websites use HTTPS
+    disclaimer: An official website of the United States government
+    lock-1: "A <strong>lock</strong>"
+    lock-2: "or <strong>https://</strong> means you’ve safely connected to the .gov website. Share sensitive information only on official, secure websites."
+
+buttons:
+  next: Next
+  back: Back
+
+alerts:
+  warning:
+    heading: Warning status
+    complete-required: Please complete the required fields
+
+step-indicator:
+  completed: completed
+  not-completed: not completed
+  step: Step
+  of: of
+
+# Note that these errors use CamelCase because they come from the Fact Graph. Some of these errors
+# are user errors (i.e. they entered an amount larger than the limit) but not all of them are (i.e.
+# if the limit is misconfigured). I've tried to denote the ones that should only appear if
+# there's a bug that needs to be fixed.
+errors:
+  # Dollar errors
+  CombinedHyphensAndParentheses: Enter only numbers and a decimal.
+  # Not obvious to me why the fact graph breaks down invalid characters
+  # this way but I don't think it needs to be exposed to the user
+  InvalidCharacters: Enter only numbers and a decimal.
+  InvalidDollar: Enter only numbers and a decimal.
+  InvalidHyphens: Enter only numbers and a decimal.
+  InvalidParentheses: Enter only numbers and a decimal.
+  TooManyDecimals: Enter a number with only one decimal.
+  TooManyFractionalDigits: Enter only two digits after the decimal.
+
+  # Day errors
+  InvalidDay: Enter a valid day.
+  InvalidDayDueToLeapYear: Invalid day due to leap year.
+  InvalidMonth: Enter a valid month.
+  InvalidDate: Enter a valid date.
+  InvalidLimit: Invalid limit set. # Server error
+  IncompleteWritableDate: Enter a complete date or leave blank.
+
+
+  # Enum errors
+  BlankEnum: Value was blank. # Server error
+  InvalidEnum: Value not found. # Server error
+
+  # Generic errors
+  Required: This question is required.
+  Default: Sorry, something went wrong. # Server error
+
+  # Limit errors
+  #
+  # There are a few other limits types in the Fact Graph, but we don't use them for TWE. Strangely,
+  # Dollar et. al. have their own limit validations, like ExceedsMaxLimit. I don't know under what
+  # circumstances those would trigger; I think it's a vestige of a different way of setting limits
+  #
+  # Yes, it would be nice to do proper parameterization rather than just appending the limit value
+  # to the end of the string
+  Max: Enter an amount less than
+  Min: Enter an amount more than
+
+audit:
+  fact-select:
+    question: Fact Path
+    blank: -- Select a path --
+  collection-id-label: Collection ID
+  fact:
+    type: "Fact Type:"
+    value: "Value:"
+    remove: "Remove fact"
+    definition: "XML Definition"
+
+results:
+  fg-withholding-adjustments:
+    w-4:
+      summary: Adjust <span condition="/jobs/*/isFilerAssignmentSelf" operator="isTrue">your</span><span condition="/jobs/*/isFilerAssignmentSelf" operator="isFalse">their</span> <fg-show path="/jobs/*/grossIncome"/> W-2 job
+      download-and-submit: Download and complete Form W-4 using our recommendations below, then submit it to <span condition="/jobs/*/isFilerAssignmentSelf" operator="isTrue">your</span><span condition="/jobs/*/isFilerAssignmentSelf" operator="isFalse">their</span> employer.
+      update-employer-software: Or, use our recommendations to adjust <span condition="/jobs/*/isFilerAssignmentSelf" operator="isTrue">your</span><span condition="/jobs/*/isFilerAssignmentSelf" operator="isFalse">their</span> withholding directly in <span condition="/jobs/*/isFilerAssignmentSelf" operator="isTrue">your</span><span condition="/jobs/*/isFilerAssignmentSelf" operator="isFalse">their</span> employer’s payroll or human resource software.
+      download-pre-filled: Download pre-filled Form W-4
+      download-blank: Download blank Form W-4
+      recommendations:
+        caption: Instructions for completing Form W-4
+        field: W-4 field
+        recommendation: How to answer
+        1-a-field: 'Step 1 (a): Personal information'
+        1-a-recommendation: Enter <span condition="/jobs/*/isFilerAssignmentSelf" operator="isTrue">your</span><span condition="/jobs/*/isFilerAssignmentSelf" operator="isFalse">their</span> name and address
+        1-b-field: 'Step 1 (b): Social security number'
+        1-b-recommendation: Enter <span condition="/jobs/*/isFilerAssignmentSelf" operator="isTrue">your</span><span condition="/jobs/*/isFilerAssignmentSelf" operator="isFalse">their</span> Social Security number
+        1-c-field: 'Step 1 (c): Filing status'
+        1-c-recommendation: <p><span condition="/isFilingStatusMFJ" operator="isTrue">Married filing jointly</span><span condition="/isFilingStatusMFS" operator="isTrue">Married filing separately</span><span condition="/isFilingStatusSingle" operator="isTrue">Single</span><span condition="/isFilingStatusHOH" operator="isTrue">Head of household</span><span condition="/isFilingStatusQSS" operator="isTrue">Qualified surviving spouse</span></p><p><modal-link for="modal-why-step-1-c">Why?</modal-link></p>
+        2-c-field: 'Step 2 (c): Multiple jobs or spouse works'
+        2-c-recommendation: <p>Don’t check this box</p><p><modal-link for="modal-why-w-4-step-2-c">Why?</modal-link></p>
+        3-field: 'Step 3: Credits total'
+        3-recommendation: <p><span condition="/jobs/*/shouldLeaveW4Line3Blank" operator="isFalse"><fg-show path="/jobs/*/w4Line3WithSplitWithholdingStrategy"/></span><span condition="/jobs/*/shouldLeaveW4Line3Blank" operator="isTrue">Leave blank</span></p><p><modal-link for="modal-why-step-3">Why?</modal-link></p>
+        4-a-field: 'Step 4 (a): Other income (not from jobs)'
+        4-a-recommendation: <p><span condition="/jobs/*/shouldLeaveW4Line4aBlank" operator="isFalse"><fg-show path="/jobs/*/w4Line4aWithSplitWithholdingStrategy"/></span><span condition="/jobs/*/shouldLeaveW4Line4aBlank" operator="isTrue">Leave blank</span></p><p><modal-link for="modal-why-w-4-step-4-a">Why?</modal-link></p>
+        4-b-field: 'Step 4 (b): Deductions'
+        4-b-recommendation: <p><span condition="/jobs/*/shouldLeaveW4Line4bBlank" operator="isFalse"><fg-show path="/jobs/*/w4Line4bWithSplitWithholdingStrategy"/></span><span condition="/jobs/*/shouldLeaveW4Line4bBlank" operator="isTrue">Leave blank</span></p><p><modal-link for="modal-why-w-4-step-4-b">Why?</modal-link></p>
+        4-c-field: 'Step 4 (c): Extra withholding'
+        4-c-recommendation: <p><span condition="/jobs/*/shouldLeaveW4Line4cBlank" operator="isFalse"><fg-show path="/jobs/*/w4Line4cWithSplitWithholdingStrategy"/></span><span condition="/jobs/*/shouldLeaveW4Line4cBlank" operator="isTrue">Leave blank</span></p><p><modal-link for="modal-why-w-4-step-4-c">Why?</modal-link></p>
+        5-field: 'Step 5: Sign Here'
+        5-recommendation: Sign and enter the date
+      time-sensitivity: Withholding updates are time sensitive. Submit your completed form to <span condition="/jobs/*/isFilerAssignmentSelf" operator="isTrue">your</span><span condition="/jobs/*/isFilerAssignmentSelf" operator="isFalse">their</span> employer as soon as possible.
+    w-4p:
+      summary: Adjust <span condition="/pensions/*/isFilerAssignmentSelf" operator="isTrue">your</span><span condition="/pensions/*/isFilerAssignmentSelf" operator="isFalse">their</span> <fg-show path="/pensions/*/grossIncome"/> <span condition="/pensions/*/isInFuture" operator="isTrue">future</span> pension or annuity
+      download-and-submit: Download and complete Form W-4P using our recommendations below, then submit it to <span condition="/pensions/*/isFilerAssignmentSelf" operator="isTrue">your</span><span condition="/pensions/*/isFilerAssignmentSelf" operator="isFalse">their</span> <span condition="/pensions/*/isInFuture" operator="isTrue">new</span> pension or annuity provider.
+      download-pre-filled: Download pre-filled Form W-4P
+      download-blank: Download blank Form W-4P
+      recommendations:
+        caption: Instructions for completing Form W-4P
+        field: W-4P field
+        recommendation: How to answer
+        1-a-field: 'Step 1 (a): Personal information'
+        1-a-recommendation: Enter <span condition="/pensions/*/isFilerAssignmentSelf" operator="isTrue">your</span><span condition="/pensions/*/isFilerAssignmentSelf" operator="isFalse">their</span> name and address
+        1-b-field: 'Step 1 (b): Social security number'
+        1-b-recommendation: Enter <span condition="/pensions/*/isFilerAssignmentSelf" operator="isTrue">your</span><span condition="/pensions/*/isFilerAssignmentSelf" operator="isFalse">their</span> Social Security number
+        1-c-field: 'Step 1 (c): Filing status'
+        1-c-recommendation: <p><span condition="/isFilingStatusMFJ" operator="isTrue">Married filing jointly</span><span condition="/isFilingStatusMFS" operator="isTrue">Married filing separately</span><span condition="/isFilingStatusSingle" operator="isTrue">Single</span><span condition="/isFilingStatusHOH" operator="isTrue">Head of household</span><span condition="/isFilingStatusQSS" operator="isTrue">Qualified surviving spouse</span></p><p><modal-link for="modal-why-step-1-c">Why?</modal-link></p>
+        2-field: 'Step 2: Multiple jobs or pensions'
+        2-recommendation: <p>Leave blank</p><p><modal-link for="modal-why-w-4p-step-2">Why?</modal-link></p>
+        3-field: 'Step 3: Credits total'
+        3-recommendation: <p><span condition="/pensions/*/shouldLeaveW4pLine3Blank" operator="isFalse"><fg-show path="/pensions/*/w4pLine3WithSplitWithholdingStrategy"/></span><span condition="/pensions/*/shouldLeaveW4pLine3Blank" operator="isTrue">Leave blank</span></p><p><modal-link for="modal-why-step-3">Why?</modal-link></p>
+        4-a-field: 'Step 4 (a): Other income (not from jobs)'
+        4-a-recommendation: <p><span condition="/pensions/*/shouldLeaveW4pLine4aBlank" operator="isFalse"><fg-show path="/pensions/*/w4pLine4aWithSplitWithholdingStrategy"/></span><span condition="/pensions/*/shouldLeaveW4pLine4aBlank" operator="isTrue">Leave blank</span></p><p><modal-link for="modal-why-w-4p-step-4-a">Why?</modal-link></p>
+        4-b-field: 'Step 4 (b): Deductions'
+        4-b-recommendation: <p><span condition="/pensions/*/shouldLeaveW4pLine4bBlank" operator="isFalse"><fg-show path="/pensions/*/w4pLine4bWithSplitWithholdingStrategy"/></span><span condition="/pensions/*/shouldLeaveW4pLine4bBlank" operator="isTrue">Leave blank</span></p><p><modal-link for="modal-why-w-4p-step-4-b">Why?</modal-link></p>
+        4-c-field: 'Step 4 (c): Extra withholding'
+        4-c-recommendation: <p><span condition="/pensions/*/shouldLeaveW4pLine4cBlank" operator="isFalse"><fg-show path="/pensions/*/w4pLine4cWithSplitWithholdingStrategy"/></span><span condition="/pensions/*/shouldLeaveW4pLine4cBlank" operator="isTrue">Leave blank</span></p><p><modal-link for="modal-why-w-4p-step-4-c">Why?</modal-link></p>
+        5-field: 'Step 5: Sign Here'
+        5-recommendation: Sign and enter the date
+      time-sensitivity: Withholding updates are time sensitive. Submit your completed form to <span condition="/pensions/*/isFilerAssignmentSelf" operator="isTrue">your</span><span condition="/pensions/*/isFilerAssignmentSelf" operator="isFalse">their</span> <span condition="/pensions/*/isInFuture" operator="isTrue">new</span> pension or annuity provider as soon as possible.

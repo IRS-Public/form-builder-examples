@@ -1,0 +1,227 @@
+# Developer Tips
+
+You can access the current Fact Graph in the developer console, as `factGraph`.
+
+## IDE Support
+
+### IntelliJ
+
+#### Exclude generated code
+
+You will want to mark `/out` as excluded.
+
+Open the Project/File Explorer tab, right-click on the `/out` directory then select `Mark Directory as` -> `Excluded`
+
+#### Scala extension configuration
+
+With the scala extension installed, IntelliJ will give you a note to enable "nightly" mode to take advantage of the
+latest features.
+You should do this.
+
+If you run into issues, running `sbt compile` from "Run Anything" and then clicking "Sync all sbt Projects" typically
+resolves things.
+
+#### Automatic code formatting
+
+To enable format on save:
+1. Open Preferences and search for `scalafmt`. Go to `Editor` -> `Code Style` -> `Scala`.
+2. Select `Scalafmt` in the `Formatter` menu.
+3. Within the same Preferences window, search for `actions on save`. Go to `Tools` -> `Actions on Save`.
+4. Ensure `Reformat code` is selected.
+
+#### Live templates
+
+See the [Live Templates README](./ide/intellij/live-templates/README.md) for more information on how to configure Live Templates to simplify common boilerplate additions to TWE development.
+
+### VSCode
+
+1. Install Metals extension. Search for and install _Metals_ from the _Extensions Marketplace_.
+2. To enable format on save: Open the Command Palette using `Ctrl/Cmd + Shift + P` ->
+   `Preferences: Open Workspace Settings (JSON)` and add the following block:
+
+_Note 1: there can be only one global JSON object, if you already have settings, you will just be adding the rules
+inside of the global object to the existing global object._
+
+_Note 2: the editorconfig.* settings are in here because Editor Config is a suggested extension for this project._
+
+```json
+{
+  "[scala]": {
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "scalameta.metals",
+    "editor.formatOnSaveMode": "file"
+  },
+  "metals.enableScalafmt": true,
+  "editorconfig.enable": true,
+  "editorconfig.exclude": [
+    "**/*.scala"
+  ]
+}
+```
+
+#### Snippets
+
+We have snippets to simplify common boilerplate additions to TWE development. These snippets are setup automatically through the workspace snippets and they can be found in [fg-helpers.code-snippets](../../.vscode/fg-helpers.code-snippets).
+
+### Vim / Nvim
+
+1. Install Coursier
+
+```bash
+brew install coursier
+eval "$(coursier java --jvm 21 --env)" # you may not need this line
+```
+
+2. Use Coursier to install the following tools
+
+```bash
+# Install scalafmt
+coursier install scalafmt
+
+# Install the Metals language server
+coursier install metals
+```
+
+3. Vim - add the following to your `~/.vimrc`:
+
+```vimrc
+autocmd BufWritePre *.scala call s:scalafmt()
+
+function! s:scalafmt()
+  let l:cmd = 'scalafmt ' . shellescape(expand('%:p'))
+  let l:output = system(l:cmd)
+  if v:shell_error
+    echohl ErrorMsg | echo "Scalafmt failed:" l:output | echohl None
+  else
+    # Reload the file silently to avoid W11 warnings
+    silent! edit!
+  endif
+endfunction
+
+```
+4. Nvim - add the following to your `init.lua`:
+
+```lua
+vim.api.nvim_create_autocmd("BufWritePre", {
+  pattern = "*.scala",
+  callback = function()
+    local file = vim.fn.expand("%:p")
+    local result = vim.system({ "scalafmt", file }):wait()
+
+    if result.code ~= 0 then
+      vim.notify("Scalafmt failed:\n" .. result.stderr, vim.log.levels.ERROR)
+    else
+      -- Reload the file silently to avoid W11 warnings
+      vim.cmd("silent! edit!")
+    end
+  end,
+})
+```
+
+## Running on a Windows VM (Parallels) from MacOS
+
+Running the app in Windows on a VM also requires a few extra steps involving a `socat` relay.
+
+**1. Install socat with homebrew**
+```bash
+brew install socat
+```
+
+**2. Update the following code**
+
+`crypto.randomUUID` has wide support but requires secure contexts in some browsers or operating systems ([more on crypto.randomUUID](https://developer.mozilla.org/en-US/docs/Web/API/Crypto/randomUUID)). This is the case with doing local development with Windows on a virtual machine. Use this fall back to work with collections, such as in the income section.
+
+In `fg-components.js`, replace the `console.error` with the following code (just be sure to change it back before committing your work):
+
+```js
+const bytes = (typeof crypto !== 'undefined' && crypto.getRandomValues)
+    ? Array.from(crypto.getRandomValues(new Uint8Array(16)))
+    : Array.from({ length: 16 }, () => Math.floor(Math.random() * 256))
+
+  // Generate an RFC 4122 version 4 UUID so Fact Graph accepts collection item IDs.
+  bytes[6] = (bytes[6] & 0x0f) | 0x40
+  bytes[8] = (bytes[8] & 0x3f) | 0x80
+
+  const hex = Array.from(bytes, byte => byte.toString(16).padStart(2, '0'))
+  return `${hex[0]}${hex[1]}${hex[2]}${hex[3]}-${hex[4]}${hex[5]}-${hex[6]}${hex[7]}-${hex[8]}${hex[9]}-${hex[10]}${hex[11]}${hex[12]}${hex[13]}${hex[14]}${hex[15]}`
+```
+
+**3. Run the app**
+In a terminal window, run the app as you normally would with `make dev`
+
+**4. Set up the proxy in project root folder in another terminal window**
+```bash
+socat TCP-LISTEN:3000,bind=10.211.55.2,fork TCP:127.0.0.1:3000
+```
+
+**4. Visit this URL in Windows on Parallels**
+```
+http://10.211.55.2:3000/app/tax-withholding-estimator/
+```
+
+## Running from a Windows VM or Windows-based Machine
+
+In order to run to the Tax Withholding Estimator from a Windows, you will need to either install [Windows Subsystem for Linux](https://learn.microsoft.com/en-us/windows/wsl/about), or if you prefer, use the package manager [**Chocolatey**](https://chocolatey.org/) and run `choco install make`.
+
+Follow the rest of the onboarding instructions.
+
+## Pre-commit Hooks
+
+Install and initialize pre-commit with
+
+```bash
+brew install pre-commit
+pre-commit install
+```
+
+## How to follow the code
+
+The entry point of this code is `main.scala`. This reads xml files and parses them. This then constructs an HTML page
+that is saved as `index.html` in `/out`. You should be able to follow the logic just reading the code. (If there are
+areas that seem confusing please reach out!)
+
+`Website.scala` is where all of the parsing logic starts for the xml files. We effectively read all of the xml and then
+process that data and eventually pass the processed data to functions that return raw HTML.
+
+`fg-components.js` is where all of our Web Components are written and is the core js for our app outside of the
+factgraph.js. This is also where we mount the factGraph object to the browser/window.
+
+## U.S. Web Design System (USWDS)
+
+TWE uses the minimized USWDS v3.13.0 CSS file. However, some changes to the default setup are necessary, and therefore we cannot use the zip file provided on the design system’s documentation site. TWE uses semibold font weights, which are not turned on by default.
+
+If the USWDS needs to be updated, you will need clone the USWDS repo and recompile it to make the following changes to typography settings in `_settings-typography.scss`.
+
+```scss
+$theme-font-weight-semibold: false !default;
+```
+
+changes to:
+
+```scss
+$theme-font-weight-semibold: 600 !default;
+```
+
+Then run `npm run build`.
+
+Make sure the minimized CSS file is placed reflects the correct version number.
+You can verify the vendored CSS still includes semibold support by running `make validate-uswds`.
+
+## Audit Mode
+
+TWE comes bundled with an "Audit Mode" that lets users see how TWE arrives at its calculations.
+It can be toggled by running `enableAuditMode()` and `disableAuditMode()` in the browser console.
+
+### Updating the vendored copy of the Fact Graph
+
+The Fact Graph is used in two places: first as a declared Scala dependency in `build.sbt`, and second as a vendored JavaScript file that gets sent to the client.
+
+If you make changes to the Fact Graph, and you want to propagate those changes, you need to do two things:
+
+1. Run `make publish` in the Fact Graph repo
+
+   Note: Scala.js compilation occurs during `make publish`. It can produce slightly different output even with identical source code. As a result, the vendored files (`factgraph-3.1.0.js` and `main.mjs.map`) may change after running this command even if no Fact Graph source was modified. If you haven't made any Fact Graph changes, these don't need to be committed.
+2. Run `make copy-fg` in this repo
+
+   Note: `make copy-fg` target assumes that the Fact Graph repo is located in `../fact-graph`.
+

@@ -161,3 +161,35 @@ all-screens:
     condition-count: "조건 {0}개"
   screen:
     condition-count: "조건 {0}개"
+
+# The Taxpert Workspace — the shared debug surfaces from @taxpert/ui (the app-switcher nav and the
+# Outcome tracker). Supplied to the package by templates/fragments/taxpert-config.html, which is a
+# Thymeleaf fragment for exactly this reason: the package itself ships with no copy of its own.
+workspace:
+  flags:
+    ai-scenario-generation: "AI 시나리오 생성"
+    ai-fact-explanation: "AI 팩트 설명"
+  nav:
+    experience-explorer: "경험 탐색기"
+    product-experience: "제품 경험"
+    browse-all: "전체 화면 보기"
+    path-mode: "경로 모드"
+    fact-explorer: "팩트 탐색기"
+    authoring-suite: "작성 도구 모음"
+  outcomes:
+    filing-status: "파생된 신고 상태"
+    without-qualifying-child: "적격 자녀 없이 자격 충족"
+    qualifying-child: "적격 자녀 자격 요건"
+    marital-status: "혼인 상태"
+    household-filing-intent: "가구 및 신고 의사"
+    married-not-filing-jointly: "기혼이나 공동 신고 아님"
+    age-without-qualifying-child: "적격 자녀가 없는 경우의 연령"
+    age-with-qualifying-child: "적격 자녀가 있는 경우의 연령"
+    qualified: "자격 있음"
+    not-qualified: "자격 없음"
+  filing-status:
+    single: "독신"
+    married-filing-jointly: "부부 공동 신고"
+    married-filing-separately: "부부 개별 신고"
+    head-of-household: "세대주"
+    qualified-surviving-spouse: "적격 생존 배우자"

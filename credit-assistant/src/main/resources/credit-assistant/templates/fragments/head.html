@@ -36,6 +36,11 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
      global-nav.css loads unconditionally through main.css. The dock hides itself unless a tool is
      switched on, and fragments/tool-dock.html keeps it `hidden` while the workspace is off. -->
 <script type="module" src="/app/eitc/resources/vendor/taxpert-ui/tool-panels/js/taxpert-tool-dock.js"></script>
+<!-- Everything the shared workspace knows about this application: the nav taxonomy, the endpoints,
+     the feature flags, the outcomes the tracker follows. @taxpert/ui ships with none of it, and
+     reads the configuration when an element renders rather than when it loads — so this may sit
+     before or after the module tags above. See fragments/taxpert-config.html. -->
+<div th:replace="fragments/taxpert-config :: taxpert-config"></div>
 
 <script src="/app/eitc/resources/vendor/uswds-3.13.0/js/uswds-init.min.js"></script>
 <script defer src="/app/eitc/resources/vendor/uswds-3.13.0/js/uswds.min.js"></script>

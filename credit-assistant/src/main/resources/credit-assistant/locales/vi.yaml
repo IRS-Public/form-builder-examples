@@ -161,3 +161,35 @@ all-screens:
     condition-count: "{0} điều kiện"
   screen:
     condition-count: "{0} điều kiện"
+
+# The Taxpert Workspace — the shared debug surfaces from @taxpert/ui (the app-switcher nav and the
+# Outcome tracker). Supplied to the package by templates/fragments/taxpert-config.html, which is a
+# Thymeleaf fragment for exactly this reason: the package itself ships with no copy of its own.
+workspace:
+  flags:
+    ai-scenario-generation: "Tạo kịch bản bằng AI"
+    ai-fact-explanation: "Giải thích dữ kiện bằng AI"
+  nav:
+    experience-explorer: "Trình khám phá trải nghiệm"
+    product-experience: "Trải nghiệm sản phẩm"
+    browse-all: "Xem tất cả màn hình"
+    path-mode: "Chế độ đường dẫn"
+    fact-explorer: "Trình khám phá dữ kiện"
+    authoring-suite: "Bộ công cụ soạn thảo"
+  outcomes:
+    filing-status: "Tình trạng khai thuế được suy ra"
+    without-qualifying-child: "Đủ điều kiện khi không có con hợp lệ"
+    qualifying-child: "Điều kiện về con hợp lệ"
+    marital-status: "Tình trạng hôn nhân"
+    household-filing-intent: "Hộ gia đình và ý định khai thuế"
+    married-not-filing-jointly: "Đã kết hôn nhưng không khai chung"
+    age-without-qualifying-child: "Độ tuổi khi không có con hợp lệ"
+    age-with-qualifying-child: "Độ tuổi khi có con hợp lệ"
+    qualified: "Đủ điều kiện"
+    not-qualified: "Không đủ điều kiện"
+  filing-status:
+    single: "Độc thân"
+    married-filing-jointly: "Kết hôn khai chung"
+    married-filing-separately: "Kết hôn khai riêng"
+    head-of-household: "Chủ hộ"
+    qualified-surviving-spouse: "Vợ hoặc chồng còn sống đủ điều kiện"

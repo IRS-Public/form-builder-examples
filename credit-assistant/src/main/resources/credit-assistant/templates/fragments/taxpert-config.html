@@ -1,0 +1,133 @@
+<div th:fragment="taxpert-config" th:remove="tag">
+    <!--
+      Everything credit-assistant tells @taxpert/ui about itself.
+
+      The shared workspace — the global nav, the audit panel, the three tool panels — ships knowing
+      nothing about the application under it. It has no menu, no determinations, no feature flags and
+      no route prefix until a host calls configure(). This is that call, and it runs on every page
+      that mounts the workspace (fragments/head.html includes this file).
+
+      WHY A THYMELEAF FRAGMENT AND NOT A .js FILE. Everything here that a person reads — the nav
+      labels, the determination headings, the words an outcome is spoken in — is a Thymeleaf message
+      expression, resolved per locale at build time. website-static/js/** is served as static assets
+      and never passes through Thymeleaf, which is why scenario-filters.js is hard-coded English to
+      this day. Behaviour that cannot be a translated literal — the fact-graph port, and the fact
+      paths themselves — lives in website-static/js/taxpert/eitc-graph.js and is imported below.
+      (Each determination's `outcome` used to be there too, as a function. It is a declarative
+      descriptor now, which is what lets the Outcome tracker's content be edited from Workspace
+      settings; only the words it is spoken in still come from here.)
+
+      th:inline="javascript" is what makes those expressions resolve inside a script element; it
+      works on a type="module" script, and Thymeleaf JS-escapes each value as it substitutes it.
+      Note that message expressions are inlined inside comments too, which is why this one spells
+      none of them out.
+
+      ORDER DOES NOT MATTER. @taxpert/ui reads its configuration when an element *renders*, not when
+      it loads, and configure() dispatches `taxpert:config-changed` so anything already on screen
+      rebuilds. So this can land before or after the element modules in head.html.
+    -->
+    <script type="module" th:inline="javascript">
+        import { configure, configureFromUrl } from '/app/eitc/resources/vendor/taxpert-ui/shared/js/config.js'
+        import { eitcGraph, eitcDeterminations } from '/app/eitc/resources/js/taxpert/eitc-graph.js'
+
+        // The build's locale, key by key. eitc-graph.js takes a lookup rather than the strings
+        // themselves because its outcome() functions choose a key at runtime, from a fact value
+        // nobody knows here.
+        const strings = new Map([
+            ['components.boolean.yes', [[#{components.boolean.yes}]]],
+            ['components.boolean.no', [[#{components.boolean.no}]]],
+            ['workspace.outcomes.filing-status', [[#{workspace.outcomes.filing-status}]]],
+            ['workspace.outcomes.without-qualifying-child', [[#{workspace.outcomes.without-qualifying-child}]]],
+            ['workspace.outcomes.qualifying-child', [[#{workspace.outcomes.qualifying-child}]]],
+            ['workspace.outcomes.marital-status', [[#{workspace.outcomes.marital-status}]]],
+            ['workspace.outcomes.household-filing-intent', [[#{workspace.outcomes.household-filing-intent}]]],
+            ['workspace.outcomes.married-not-filing-jointly', [[#{workspace.outcomes.married-not-filing-jointly}]]],
+            ['workspace.outcomes.age-without-qualifying-child', [[#{workspace.outcomes.age-without-qualifying-child}]]],
+            ['workspace.outcomes.age-with-qualifying-child', [[#{workspace.outcomes.age-with-qualifying-child}]]],
+            ['workspace.outcomes.qualified', [[#{workspace.outcomes.qualified}]]],
+            ['workspace.outcomes.not-qualified', [[#{workspace.outcomes.not-qualified}]]],
+            ['workspace.filing-status.single', [[#{workspace.filing-status.single}]]],
+            ['workspace.filing-status.married-filing-jointly', [[#{workspace.filing-status.married-filing-jointly}]]],
+            ['workspace.filing-status.married-filing-separately', [[#{workspace.filing-status.married-filing-separately}]]],
+            ['workspace.filing-status.head-of-household', [[#{workspace.filing-status.head-of-household}]]],
+            ['workspace.filing-status.qualified-surviving-spouse', [[#{workspace.filing-status.qualified-surviving-spouse}]]],
+        ])
+        const t = (key) => strings.get(key) ?? key
+
+        configure({
+            app: { id: 'eitc', brand: 'Taxpert', storagePrefix: 'taxpert' },
+
+            // The app switcher. `id` is what a page passes as the nav's `active` attribute, and what
+            // toolsByDestination below names; `href` is a real link, so the menu navigates with no
+            // JavaScript at all. Path Mode is its own destination rather than a mode of Browse All:
+            // it happens to be served by the same generated page, told apart by `?mode=path`.
+            nav: {
+                menu: [
+                    {
+                        id: 'experience-explorer',
+                        label: [[#{workspace.nav.experience-explorer}]],
+                        children: [
+                            { id: 'product-experience', label: [[#{workspace.nav.product-experience}]], href: '/app/eitc/' },
+                            { id: 'browse-all', label: [[#{workspace.nav.browse-all}]], href: '/app/eitc/all-screens/' },
+                            { id: 'path-mode', label: [[#{workspace.nav.path-mode}]], href: '/app/eitc/all-screens/?mode=path' },
+                        ],
+                    },
+                    { id: 'fact-explorer', label: [[#{workspace.nav.fact-explorer}]], href: 'http://localhost:5180/studio' },
+                    { id: 'authoring-suite', label: [[#{workspace.nav.authoring-suite}]], href: '/app/eitc/author/' },
+                ],
+
+                // Where each tool button in the bar applies. Scenario belongs to the destinations
+                // that walk a scenario — the product experience, Path Mode, and the Fact Explorer,
+                // which loads a scenario onto its graph. Browse All lists every screen
+                // unconditionally, so there is no scenario there to manage. Display is about how the
+                // workspace renders, a question on every Experience Explorer destination. Tools acts
+                // on a rendered flow, which the Fact Explorer has no notion of. On the Authoring
+                // Suite no tool applies and the bar stays bare.
+                toolsByDestination: [
+                    { id: 'scenario', label: 'Scenario', icon: 'tune', destinations: ['product-experience', 'path-mode', 'fact-explorer'] },
+                    { id: 'display', label: 'Display', icon: 'visibility', destinations: ['product-experience', 'browse-all', 'path-mode'] },
+                    { id: 'tools', label: 'Tools', icon: 'build', destinations: ['product-experience', 'path-mode'] },
+                ],
+            },
+
+            endpoints: {
+                apiBase: 'http://localhost:8000',
+                scenariosBase: '/app/eitc/resources/scenarios',
+                factDictionaryUrl: '/app/eitc/resources/fact-dictionary.xml',
+            },
+
+            // The two AI features are separately flagged because they ship on separate timelines:
+            // generation writes a whole Fact Graph from a prompt, explanation only reads facts back.
+            // Each one's build-time default is the matching `*-default` attribute on
+            // <taxpert-audit-panel> (see fragments/audit-panel.html); Workspace settings overrides
+            // it at runtime in localStorage.
+            //
+            // `label` is the wording on that modal's row: it renders one row per entry here, so a
+            // flag is declared in exactly one place and a host with none gets an empty state rather
+            // than another application's features.
+            featureFlags: [
+                { name: 'aiScenarioGeneration', kebab: 'ai-scenario-generation', label: [[#{workspace.flags.ai-scenario-generation}]] },
+                { name: 'aiFactExplanation', kebab: 'ai-fact-explanation', label: [[#{workspace.flags.ai-fact-explanation}]] },
+            ],
+
+            // Inspect pins a cue to every rendered unit. `/taxYear` is printed as chrome on page
+            // after page and a cue on each one is noise, so it is exempt — an application fact, and
+            // therefore ours to name rather than the library's.
+            flowDom: { uncuedPaths: ['/taxYear'] },
+
+            graph: eitcGraph,
+            determinations: eitcDeterminations(t),
+        })
+
+        // The per-deployment layer: the same configuration as data, in a file this deployment
+        // serves. It lands after the call above — it is fetched — and configure() merges, so a
+        // deployment's file wins over the build's own values while a person's Workspace-settings
+        // overrides still win over both.
+        //
+        // The shipped file is `{}`: this deployment overrides nothing. Edit it to change what the
+        // workspace tracks, offers, or points at without touching a template — the change is then
+        // reviewable in git, which a localStorage override never is. Anything a person *reads*
+        // belongs above rather than in it: the file is served once and is not per-locale.
+        configureFromUrl('/app/eitc/resources/taxpert.config.json')
+    </script>
+</div>

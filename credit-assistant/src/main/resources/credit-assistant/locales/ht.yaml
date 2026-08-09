@@ -161,3 +161,35 @@ all-screens:
     condition-count: "{0} kondisyon"
   screen:
     condition-count: "{0} kondisyon"
+
+# The Taxpert Workspace — the shared debug surfaces from @taxpert/ui (the app-switcher nav and the
+# Outcome tracker). Supplied to the package by templates/fragments/taxpert-config.html, which is a
+# Thymeleaf fragment for exactly this reason: the package itself ships with no copy of its own.
+workspace:
+  flags:
+    ai-scenario-generation: "Jenerasyon senaryo ak IA"
+    ai-fact-explanation: "Eksplikasyon done ak IA"
+  nav:
+    experience-explorer: "Eksploratè eksperyans"
+    product-experience: "Eksperyans pwodwi a"
+    browse-all: "Gade tout ekran yo"
+    path-mode: "Mòd chemen"
+    fact-explorer: "Eksploratè done"
+    authoring-suite: "Suite otè"
+  outcomes:
+    filing-status: "Estati deklarasyon ki derive"
+    without-qualifying-child: "Kalifye san yon timoun ki kalifye"
+    qualifying-child: "Elijibilite pou timoun ki kalifye"
+    marital-status: "Estati matrimonyal"
+    household-filing-intent: "Fwaye ak entansyon pou deklare"
+    married-not-filing-jointly: "Marye men pa deklare ansanm"
+    age-without-qualifying-child: "Laj san yon timoun ki kalifye"
+    age-with-qualifying-child: "Laj ak yon timoun ki kalifye"
+    qualified: "Kalifye"
+    not-qualified: "Pa kalifye"
+  filing-status:
+    single: "Selibatè"
+    married-filing-jointly: "Marye k ap deklare ansanm"
+    married-filing-separately: "Marye k ap deklare separeman"
+    head-of-household: "Chèf fwaye"
+    qualified-surviving-spouse: "Konjwen sivivan ki kalifye"

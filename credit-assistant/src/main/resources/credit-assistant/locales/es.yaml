@@ -161,3 +161,35 @@ all-screens:
     condition-count: "{0} condiciones"
   screen:
     condition-count: "{0} condiciones"
+
+# The Taxpert Workspace — the shared debug surfaces from @taxpert/ui (the app-switcher nav and the
+# Outcome tracker). Supplied to the package by templates/fragments/taxpert-config.html, which is a
+# Thymeleaf fragment for exactly this reason: the package itself ships with no copy of its own.
+workspace:
+  flags:
+    ai-scenario-generation: "Generación de escenarios con IA"
+    ai-fact-explanation: "Explicaciones de hechos con IA"
+  nav:
+    experience-explorer: "Explorador de experiencias"
+    product-experience: "Experiencia del producto"
+    browse-all: "Ver todas las pantallas"
+    path-mode: "Modo de ruta"
+    fact-explorer: "Explorador de hechos"
+    authoring-suite: "Suite de autoría"
+  outcomes:
+    filing-status: "Estado civil derivado"
+    without-qualifying-child: "Califica sin un hijo que califica"
+    qualifying-child: "Elegibilidad por hijo que califica"
+    marital-status: "Estado civil"
+    household-filing-intent: "Hogar e intención de presentar"
+    married-not-filing-jointly: "Casado que no presenta conjuntamente"
+    age-without-qualifying-child: "Edad sin un hijo que califica"
+    age-with-qualifying-child: "Edad con un hijo que califica"
+    qualified: "Califica"
+    not-qualified: "No califica"
+  filing-status:
+    single: "Soltero"
+    married-filing-jointly: "Casado que presenta conjuntamente"
+    married-filing-separately: "Casado que presenta por separado"
+    head-of-household: "Cabeza de familia"
+    qualified-surviving-spouse: "Cónyuge sobreviviente que califica"

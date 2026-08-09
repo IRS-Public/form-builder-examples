@@ -1,0 +1,201 @@
+components:
+  fg-set:
+    required: (Requerido)
+  fg-collection:
+    paths:
+      /jobs:
+        name: trabajo
+        determiner: otro
+      /pensions:
+        name: pensión o anualidad
+        determiner: otro
+      /selfEmploymentSources:
+        name: trabajo por cuenta propia
+        determiner: otro
+      /socialSecuritySources:
+        name: ingresos por Seguro Social
+        determiner: otro
+    buttons:
+      remove: "Eliminar {0}"
+      add: "Agregar {0}"
+      add-with-determiner: "Agregar {1} {0}"
+    remove-item-modal:
+      heading:
+        remove: "¿Seguro que quieres eliminar {0}?"
+      body: "Esto borrará toda la información que llenaste sobre este {0}."
+      footer:
+        confirm: "Sí, eliminar este {0}"
+        cancel: "No, mantener este {0}"
+  modal:
+    close: Cerrar esta ventana
+  boolean:
+    yes: Sí
+    no: No
+  date:
+    month: Mes
+    day: Día
+    year: Año
+    select: "- Elegir -"
+    january: Enero
+    february: Febrero
+    march: Marzo
+    april: Abril
+    may: Mayo
+    june: Junio
+    july: Julio
+    august: Agosto
+    september: Septiembre
+    october: Octubre
+    november: Noviembre
+    december: Diciembre
+  select:
+    select: "-- Elegir --"
+
+title:
+  prefix: Estimador para Retención de Impuestos
+  suffix: Servicio de Impuestos Internos
+
+layout:
+  title: Estimador para Retención de Impuestos
+  skip-to-main: Saltar al contenido principal
+  identifier:
+    agency-identifier: Identificador de la agencia
+    disclaimer: Un sitio web oficial del <a class="usa-link" target="_blank" href="https://irs.gov">IRS<span class="usa-sr-only"> (abre en una nueva pestaña)</span></a>
+    about:
+      text: Acerca del IRS
+      link: https://www.irs.gov/es/about-irs
+    accessibility:
+      text: Accesibilidad
+      link: https://www.irs.gov/es/accessibility
+    privacy-policy:
+      text: Política de privacidad
+      link: https://www.irs.gov/es/privacy-disclosure/irs-privacy-policy
+    important-links: Enlaces importantes
+  irs:
+    name: IRS
+    domain: IRS.gov
+
+  banner:
+    how-you-know: Así es como usted puede verificarlo
+    official-domain: Los sitios web oficiales usan .gov
+    official-organization: Un sitio web <strong>.gov</strong> pertenece a una organización oficial del Gobierno de Estados Unidos.
+    secure-https: Los sitios web seguros .gov usan HTTPS
+    disclaimer: Un sitio oficial del Gobierno de Estados Unidos
+    lock-1: "Un <strong>candado</strong>"
+    lock-2: "o <strong>https://</strong> significa que usted se conectó de forma segura a un sitio web .gov. Comparta información sensible sólo en sitios web oficiales y seguros."
+
+buttons:
+  next: Siguiente
+  back: Volver
+
+alerts:
+  warning:
+    heading: Alerta
+    complete-required: Por favor, completa los campos requeridos.
+
+step-indicator:
+  completed: completo
+  not-completed: incompleto
+  step: Paso
+  of: de
+
+errors:
+  # Dollar errors
+  CombinedHyphensAndParentheses: Usa sólo números y un decimal.
+  InvalidCharacters: Usa sólo números y un decimal.
+  InvalidDollar: Usa sólo números y un decimal.
+  InvalidHyphens: Usa sólo números y un decimal.
+  InvalidParentheses: Usa sólo números y un decimal.
+  TooManyDecimals: Usa sólo números y un decimal.
+  TooManyFractionalDigits: Usa sólo dos dígitos para el decimal.
+
+  # Day errors
+  InvalidDay: Ingresa un día válido.
+  InvalidDayDueToLeapYear: Este día es inválido por ser año bisiesto.
+  InvalidMonth: Ingresa un mes válido.
+  InvalidDate: Ingresa una fecha válida.
+  InvalidLimit: El límite establecido no es válido.
+  IncompleteWritableDate: Ingresa una fecha completa o déjala en blanco.
+
+  # Enum errors
+  BlankEnum: El valor estaba en blanco.
+  InvalidEnum: No se encontró el valor.
+
+  # Generic errors
+  Required: Esta pregunta es requerida.
+  Default: Lo sentimos, algo salió mal.
+
+  # Limit errors
+  Max: Ingresa una cantidad menor a
+  Min: Ingresa una cantidad mayor a
+
+audit:
+  fact-select:
+    question: Ruta del hecho
+    blank: -- Elegir una ruta --
+  collection-id-label: ID de la colección
+  fact:
+    type: "Tipo de hecho:"
+    value: "Valor:"
+    remove: "Eliminar hecho"
+    definition: "Definición XML"
+
+results:
+  fg-withholding-adjustments:
+    w-4:
+      summary: Cambia <span condition="/jobs/*/isFilerAssignmentSelf" operator="isTrue">tu</span><span condition="/jobs/*/isFilerAssignmentSelf" operator="isFalse">su</span> <fg-show path="/jobs/*/grossIncome"/> Trabajo con W-2
+      download-and-submit: Descarga y completa el Formulario W-4 con nuestras recomendaciones. Luego, envía el formulario a <span condition="/jobs/*/isFilerAssignmentSelf" operator="isTrue">tu</span><span condition="/jobs/*/isFilerAssignmentSelf" operator="isFalse">su</span> empleador.
+      update-employer-software: O puedes usar nuestras recomendaciones para cambiar <span condition="/jobs/*/isFilerAssignmentSelf" operator="isTrue">tus</span><span condition="/jobs/*/isFilerAssignmentSelf" operator="isFalse">sus</span> retenciones directamente en el sistema de pago de <span condition="/jobs/*/isFilerAssignmentSelf" operator="isTrue">tu</span><span condition="/jobs/*/isFilerAssignmentSelf" operator="isFalse">su</span> empleador.
+      download-pre-filled: Descargar el Formulario W-4 pre-llenado
+      download-blank: Descargar el Formulario W-4 en blanco
+      recommendations:
+        caption: Instrucciones del Formulario W-4
+        field: Casilla del Formulario W-4
+        recommendation: Cómo responder
+        1-a-field: 'Paso 1 (a): Información personal'
+        1-a-recommendation: Llena <span condition="/jobs/*/isFilerAssignmentSelf" operator="isTrue">tu</span><span condition="/jobs/*/isFilerAssignmentSelf" operator="isFalse">su</span> nombre y dirección
+        1-b-field: 'Paso 1 (b): Número de Seguro Social'
+        1-b-recommendation: Llena <span condition="/jobs/*/isFilerAssignmentSelf" operator="isTrue">tu</span><span condition="/jobs/*/isFilerAssignmentSelf" operator="isFalse">su</span> número de Seguro Social
+        1-c-field: 'Paso 1 (c): Estado civil'
+        1-c-recommendation: <p><span condition="/isFilingStatusMFJ" operator="isTrue">Casado(a) que presenta una declaración conjunta</span><span condition="/isFilingStatusMFS" operator="isTrue">Casado(a) que presenta una declaración por separado</span><span condition="/isFilingStatusSingle" operator="isTrue">Soltero(a)</span><span condition="/isFilingStatusHOH" operator="isTrue">Cabeza de familia</span><span condition="/isFilingStatusQSS" operator="isTrue">Esposo(a) sobreviviente calificado</span></p><p><modal-link for="modal-why-step-1-c">¿Por qué?</modal-link></p>
+        2-c-field: 'Paso 2 (c): Trabajos múltiples o si tu esposo(a) trabaja'
+        2-c-recommendation: <p>No marques esta casilla</p><p><modal-link for="modal-why-w-4-step-2-c">¿Por qué?</modal-link></p>
+        3-field: 'Paso 3: Total de créditos'
+        3-recommendation: <p><span condition="/jobs/*/shouldLeaveW4Line3Blank" operator="isFalse"><fg-show path="/jobs/*/w4Line3WithSplitWithholdingStrategy"/></span><span condition="/jobs/*/shouldLeaveW4Line3Blank" operator="isTrue">Déjalo en blanco</span></p><p><modal-link for="modal-why-step-3">¿Por qué?</modal-link></p>
+        4-a-field: 'Paso 4 (a): Otros ingresos (no de trabajos)'
+        4-a-recommendation: <p><span condition="/jobs/*/shouldLeaveW4Line4aBlank" operator="isFalse"><fg-show path="/jobs/*/w4Line4aWithSplitWithholdingStrategy"/></span><span condition="/jobs/*/shouldLeaveW4Line4aBlank" operator="isTrue">Déjalo en blanco</span></p><p><modal-link for="modal-why-w-4-step-4-a">¿Por qué?</modal-link></p>
+        4-b-field: 'Paso 4 (b): Deducciones'
+        4-b-recommendation: <p><span condition="/jobs/*/shouldLeaveW4Line4bBlank" operator="isFalse"><fg-show path="/jobs/*/w4Line4bWithSplitWithholdingStrategy"/></span><span condition="/jobs/*/shouldLeaveW4Line4bBlank" operator="isTrue">Déjalo en blanco</span></p><p><modal-link for="modal-why-w-4-step-4-b">¿Por qué?</modal-link></p>
+        4-c-field: 'Paso 4 (c): Retenciones adicionales'
+        4-c-recommendation: <p><span condition="/jobs/*/shouldLeaveW4Line4cBlank" operator="isFalse"><fg-show path="/jobs/*/w4Line4cWithSplitWithholdingStrategy"/></span><span condition="/jobs/*/shouldLeaveW4Line4cBlank" operator="isTrue">Déjalo en blanco</span></p><p><modal-link for="modal-why-w-4-step-4-c">¿Por qué?</modal-link></p>
+        5-field: 'Paso 5: Firma aquí'
+        5-recommendation: Firma y fecha
+      time-sensitivity: Los cambios a tus retenciones son de prioridad. Envía el formulario con <span condition="/jobs/*/isFilerAssignmentSelf" operator="isTrue">tu</span><span condition="/jobs/*/isFilerAssignmentSelf" operator="isFalse">su</span> información a <span condition="/jobs/*/isFilerAssignmentSelf" operator="isTrue">tu</span><span condition="/jobs/*/isFilerAssignmentSelf" operator="isFalse">su</span> empleador lo antes posible.
+    w-4p:
+      summary: Cambia <span condition="/pensions/*/isFilerAssignmentSelf" operator="isTrue">tu</span><span condition="/pensions/*/isFilerAssignmentSelf" operator="isFalse">su</span> <span condition="/pensions/*/isInFuture" operator="isTrue">futura</span> pensión o anualidad de <fg-show path="/pensions/*/grossIncome"/>
+      download-and-submit: Descarga y completa el Formulario W-4P con nuestras recomendaciones. Luego, envía el formulario a <span condition="/pensions/*/isFilerAssignmentSelf" operator="isTrue">tu</span><span condition="/pensions/*/isFilerAssignmentSelf" operator="isFalse">su</span> <span condition="/pensions/*/isInFuture" operator="isTrue">nuevo</span> proveedor de pensión o anualidad.
+      download-pre-filled: Descargar el Formulario W-4P pre-llenado
+      download-blank: Descargar el Formulario W-4P en blanco
+      recommendations:
+        caption: Instrucciones del Formulario W-4P
+        field: Casilla del Formulario W-4P
+        recommendation: Cómo responder
+        1-a-field: 'Paso 1 (a): Información personal'
+        1-a-recommendation: Llena <span condition="/pensions/*/isFilerAssignmentSelf" operator="isTrue">tu</span><span condition="/pensions/*/isFilerAssignmentSelf" operator="isFalse">su</span> nombre y dirección
+        1-b-field: 'Paso 1 (b): Número de Seguro Social'
+        1-b-recommendation: Llena <span condition="/pensions/*/isFilerAssignmentSelf" operator="isTrue">tu</span><span condition="/pensions/*/isFilerAssignmentSelf" operator="isFalse">su</span> número de Seguro Social
+        1-c-field: 'Paso 1 (c): Estado civil'
+        1-c-recommendation: <p><span condition="/isFilingStatusMFJ" operator="isTrue">Casado(a) que presenta una declaración conjunta</span><span condition="/isFilingStatusMFS" operator="isTrue">Casado(a) que presenta una declaración por separado</span><span condition="/isFilingStatusSingle" operator="isTrue">Soltero(a)</span><span condition="/isFilingStatusHOH" operator="isTrue">Cabeza de familia</span><span condition="/isFilingStatusQSS" operator="isTrue">Esposo(a) sobreviviente calificado</span></p><p><modal-link for="modal-why-step-1-c">¿Por qué?</modal-link></p>
+        2-field: 'Paso 2: Trabajos múltiples o pensiones'
+        2-recommendation: <p>Deja la casilla en blanco</p><p><modal-link for="modal-why-w-4p-step-2">¿Por qué?</modal-link></p>
+        3-field: 'Paso 3: Total de créditos'
+        3-recommendation: <p><span condition="/pensions/*/shouldLeaveW4pLine3Blank" operator="isFalse"><fg-show path="/pensions/*/w4pLine3WithSplitWithholdingStrategy"/></span><span condition="/pensions/*/shouldLeaveW4pLine3Blank" operator="isTrue">Déjalo en blanco</span></p><p><modal-link for="modal-why-step-3">¿Por qué?</modal-link></p>
+        4-a-field: 'Paso 4 (a): Otros ingresos (no de trabajos)'
+        4-a-recommendation: <p><span condition="/pensions/*/shouldLeaveW4pLine4aBlank" operator="isFalse"><fg-show path="/pensions/*/w4pLine4aWithSplitWithholdingStrategy"/></span><span condition="/pensions/*/shouldLeaveW4pLine4aBlank" operator="isTrue">Déjalo en blanco</span></p><p><modal-link for="modal-why-w-4p-step-4-a">¿Por qué?</modal-link></p>
+        4-b-field: 'Paso 4 (b): Deducciones'
+        4-b-recommendation: <p><span condition="/pensions/*/shouldLeaveW4pLine4bBlank" operator="isFalse"><fg-show path="/pensions/*/w4pLine4bWithSplitWithholdingStrategy"/></span><span condition="/pensions/*/shouldLeaveW4pLine4bBlank" operator="isTrue">Déjalo en blanco</span></p><p><modal-link for="modal-why-w-4p-step-4-b">¿Por qué?</modal-link></p>
+        4-c-field: 'Paso 4 (c): Retenciones adicionales'
+        4-c-recommendation: <p><span condition="/pensions/*/shouldLeaveW4pLine4cBlank" operator="isFalse"><fg-show path="/pensions/*/w4pLine4cWithSplitWithholdingStrategy"/></span><span condition="/pensions/*/shouldLeaveW4pLine4cBlank" operator="isTrue">Déjalo en blanco</span></p><p><modal-link for="modal-why-w-4p-step-4-c">¿Por qué?</modal-link></p>
+        5-field: 'Paso 5: Firma aquí'
+        5-recommendation: Firma y fecha
+      time-sensitivity: Los cambios a <span condition="/pensions/*/isFilerAssignmentSelf" operator="isTrue">tus</span><span condition="/pensions/*/isFilerAssignmentSelf" operator="isFalse">sus</span> retenciones son de prioridad. Envía el formulario con <span condition="/pensions/*/isFilerAssignmentSelf" operator="isTrue">tu</span><span condition="/pensions/*/isFilerAssignmentSelf" operator="isFalse">su</span> información a <span condition="/pensions/*/isFilerAssignmentSelf" operator="isTrue">tu</span><span condition="/pensions/*/isFilerAssignmentSelf" operator="isFalse">su</span> <span condition="/pensions/*/isInFuture" operator="isTrue">nuevo</span> proveedor de pensión o anualidad lo antes posible.

@@ -161,3 +161,35 @@ all-screens:
     condition-count: "{0} 个条件"
   screen:
     condition-count: "{0} 个条件"
+
+# The Taxpert Workspace — the shared debug surfaces from @taxpert/ui (the app-switcher nav and the
+# Outcome tracker). Supplied to the package by templates/fragments/taxpert-config.html, which is a
+# Thymeleaf fragment for exactly this reason: the package itself ships with no copy of its own.
+workspace:
+  flags:
+    ai-scenario-generation: "AI 场景生成"
+    ai-fact-explanation: "AI 事实说明"
+  nav:
+    experience-explorer: "体验浏览器"
+    product-experience: "产品体验"
+    browse-all: "浏览全部屏幕"
+    path-mode: "路径模式"
+    fact-explorer: "事实浏览器"
+    authoring-suite: "编辑套件"
+  outcomes:
+    filing-status: "推导出的申报身份"
+    without-qualifying-child: "无合格子女时符合资格"
+    qualifying-child: "合格子女资格"
+    marital-status: "婚姻状况"
+    household-filing-intent: "家庭与申报意向"
+    married-not-filing-jointly: "已婚但不共同申报"
+    age-without-qualifying-child: "无合格子女时的年龄"
+    age-with-qualifying-child: "有合格子女时的年龄"
+    qualified: "符合资格"
+    not-qualified: "不符合资格"
+  filing-status:
+    single: "单身"
+    married-filing-jointly: "已婚共同申报"
+    married-filing-separately: "已婚分别申报"
+    head-of-household: "户主"
+    qualified-surviving-spouse: "合格未亡配偶"

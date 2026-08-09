@@ -161,3 +161,35 @@ all-screens:
     condition-count: "Условий: {0}"
   screen:
     condition-count: "Условий: {0}"
+
+# The Taxpert Workspace — the shared debug surfaces from @taxpert/ui (the app-switcher nav and the
+# Outcome tracker). Supplied to the package by templates/fragments/taxpert-config.html, which is a
+# Thymeleaf fragment for exactly this reason: the package itself ships with no copy of its own.
+workspace:
+  flags:
+    ai-scenario-generation: "Генерация сценариев с ИИ"
+    ai-fact-explanation: "Объяснение фактов с ИИ"
+  nav:
+    experience-explorer: "Обзор интерфейса"
+    product-experience: "Интерфейс продукта"
+    browse-all: "Все экраны"
+    path-mode: "Режим пути"
+    fact-explorer: "Обзор фактов"
+    authoring-suite: "Инструменты автора"
+  outcomes:
+    filing-status: "Производный налоговый статус"
+    without-qualifying-child: "Соответствие без ребёнка, дающего право"
+    qualifying-child: "Соответствие по ребёнку, дающему право"
+    marital-status: "Семейное положение"
+    household-filing-intent: "Домохозяйство и намерение подачи"
+    married-not-filing-jointly: "В браке, но подаёт не совместно"
+    age-without-qualifying-child: "Возраст без ребёнка, дающего право"
+    age-with-qualifying-child: "Возраст с ребёнком, дающим право"
+    qualified: "Соответствует"
+    not-qualified: "Не соответствует"
+  filing-status:
+    single: "Не в браке"
+    married-filing-jointly: "В браке, подают совместно"
+    married-filing-separately: "В браке, подают раздельно"
+    head-of-household: "Глава домохозяйства"
+    qualified-surviving-spouse: "Соответствующий требованиям вдовец или вдова"
