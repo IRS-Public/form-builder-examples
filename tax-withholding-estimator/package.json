@@ -1,0 +1,5 @@
+{
+  "devDependencies": {
+    "@taxpert/ui": "file:../taxpert-ui"
+  }
+}

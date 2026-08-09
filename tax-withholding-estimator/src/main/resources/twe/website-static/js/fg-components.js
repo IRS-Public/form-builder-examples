@@ -16,7 +16,7 @@ if (serializedGraphJSON) {
 window.factGraph = factGraph
 document.dispatchEvent(new CustomEvent('fg-load'))
 
-function saveFactGraph () {
+export function saveFactGraph () {
   sessionStorage.setItem('factGraph', factGraph.toJSON())
 }
 

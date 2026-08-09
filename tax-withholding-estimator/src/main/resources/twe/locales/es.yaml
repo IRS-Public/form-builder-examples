@@ -140,6 +140,40 @@ audit:
     remove: "Eliminar hecho"
     definition: "Definición XML"
 
+# Texto del espacio de trabajo compartido de Taxpert (@taxpert/ui). Ver la nota en en.yaml.
+workspace:
+  flags:
+    legacy-audit-panel: Panel de auditoría heredado de TWE
+  tools:
+    inspect: Inspeccionar
+    inspect-description: Inspeccione hechos, flujos y texto.
+    outcome-tracker: Seguimiento de resultados
+    outcome-tracker-description: Siga los resultados que determina esta aplicación.
+    watchlist: Lista de seguimiento
+    watchlist-description: Siga el valor de uno o más hechos mientras trabaja o carga escenarios.
+    overrides: Anulaciones
+    overrides-description: Establezca un hecho directamente, sin recorrer el flujo hasta la pantalla que lo pregunta.
+  nav:
+    experience-explorer: Explorador de experiencias
+    product-experience: Experiencia del producto
+    browse-all: Ver todas las pantallas
+  outcomes:
+    withholding-outcome: Resultado de la retención
+    balance-due: Saldo pendiente de {abs}
+    refund: Reembolso de {abs}
+    on-target: En el objetivo
+    owed-vs-withheld: Adeudado frente a retenido
+    direction: Dirección
+    underpayment-risk: Riesgo de multa por pago insuficiente
+    at-risk: En riesgo
+    not-at-risk: Sin riesgo
+    penalty-thresholds: Umbrales de la multa
+    adjustment-headroom: Aún se puede ajustar la retención
+    can-adjust: Sí
+    estimated-payments-only: "No — solo pagos estimados"
+    remaining-pay-periods: Períodos de pago restantes
+    estimated-payments: Pagos estimados
+
 results:
   fg-withholding-adjustments:
     w-4:

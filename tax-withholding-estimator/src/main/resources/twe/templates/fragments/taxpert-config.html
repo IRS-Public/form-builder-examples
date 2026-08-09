@@ -1,0 +1,155 @@
+<div th:fragment="taxpert-config" th:remove="tag">
+    <!--
+      Everything the Tax Withholding Estimator tells @taxpert/ui about itself.
+
+      The shared workspace — the global nav, the audit panel, the three tool panels — ships knowing
+      nothing about the application under it. It has no menu, no determinations, no feature flags
+      and no route prefix until a host calls configure(). This is that call, and it runs on every
+      page that mounts the workspace (fragments/head.html includes this file).
+
+      This app is the second host, and adopting the library took no edit inside the package: a
+      config object, a fact-graph adapter, and the vendored mirror the Makefile keeps in step.
+
+      WHY A THYMELEAF FRAGMENT AND NOT A .js FILE. Everything here that a person reads — the nav
+      labels, the outcome headings, the words an outcome is spoken in — is a Thymeleaf message
+      expression, resolved per locale at build time. website-static/js is served as static assets
+      and never passes through Thymeleaf, so a label written there would be English in the Spanish
+      build. Behaviour that cannot be a translated literal — the fact-graph port, and the fact
+      paths themselves — lives in website-static/js/taxpert/twe-graph.js and is imported below.
+      (Each determination's `outcome` used to be there too, as a function. It is a declarative
+      descriptor now, which is what lets the Outcome tracker's content be edited from Workspace
+      settings; only the words it is spoken in still come from here.)
+
+      th:inline="javascript" is what makes those expressions resolve inside a script element; it
+      works on a type="module" script, and Thymeleaf JS-escapes each value as it substitutes it.
+      Note that message expressions are inlined inside comments too, which is why this one spells
+      none of them out.
+
+      ORDER DOES NOT MATTER. @taxpert/ui reads its configuration when an element *renders*, not
+      when it loads, and configure() dispatches `taxpert:config-changed` so anything already on
+      screen rebuilds. So this can land before or after the element modules in head.html.
+    -->
+    <script type="module" th:inline="javascript">
+        import { configure, configureFromUrl } from '/app/tax-withholding-estimator/resources/vendor/taxpert-ui/shared/js/config.js'
+        import { tweGraph, tweDeterminations } from '/app/tax-withholding-estimator/resources/js/taxpert/twe-graph.js'
+
+        // The build's locale, key by key. twe-graph.js takes a lookup rather than the strings
+        // themselves because its outcome() functions choose a key at runtime, from a fact value
+        // nobody knows here.
+        const strings = new Map([
+            ['workspace.flags.legacy-audit-panel', [[#{workspace.flags.legacy-audit-panel}]]],
+            ['workspace.outcomes.withholding-outcome', [[#{workspace.outcomes.withholding-outcome}]]],
+            ['workspace.outcomes.balance-due', [[#{workspace.outcomes.balance-due}]]],
+            ['workspace.outcomes.refund', [[#{workspace.outcomes.refund}]]],
+            ['workspace.outcomes.on-target', [[#{workspace.outcomes.on-target}]]],
+            ['workspace.outcomes.owed-vs-withheld', [[#{workspace.outcomes.owed-vs-withheld}]]],
+            ['workspace.outcomes.direction', [[#{workspace.outcomes.direction}]]],
+            ['workspace.outcomes.underpayment-risk', [[#{workspace.outcomes.underpayment-risk}]]],
+            ['workspace.outcomes.at-risk', [[#{workspace.outcomes.at-risk}]]],
+            ['workspace.outcomes.not-at-risk', [[#{workspace.outcomes.not-at-risk}]]],
+            ['workspace.outcomes.penalty-thresholds', [[#{workspace.outcomes.penalty-thresholds}]]],
+            ['workspace.outcomes.adjustment-headroom', [[#{workspace.outcomes.adjustment-headroom}]]],
+            ['workspace.outcomes.can-adjust', [[#{workspace.outcomes.can-adjust}]]],
+            ['workspace.outcomes.estimated-payments-only', [[#{workspace.outcomes.estimated-payments-only}]]],
+            ['workspace.outcomes.remaining-pay-periods', [[#{workspace.outcomes.remaining-pay-periods}]]],
+            ['workspace.outcomes.estimated-payments', [[#{workspace.outcomes.estimated-payments}]]],
+        ])
+        const t = (key) => strings.get(key) ?? key
+
+        configure({
+            // storagePrefix is what stops this app and any other Taxpert app served from the same
+            // origin sharing a watchlist, a panel layout or a set of display options. Every
+            // storage key the workspace writes is namespaced with it.
+            app: { id: 'twe', brand: 'Tax Withholding Estimator', storagePrefix: 'twe' },
+
+            // The app switcher. `id` is what a page passes as the nav's `active` attribute, and
+            // what toolsByDestination below names; `href` is a real link, so the menu navigates
+            // with no JavaScript at all.
+            //
+            // Deliberately shorter than the other host's taxonomy: this app has no separate
+            // authoring surface and no fact-explorer view, so the menu says so rather than
+            // offering destinations that 404. That difference is the point — the menu is the
+            // host's, not the library's.
+            nav: {
+                menu: [
+                    {
+                        id: 'experience-explorer',
+                        label: [[#{workspace.nav.experience-explorer}]],
+                        children: [
+                            { id: 'product-experience', label: [[#{workspace.nav.product-experience}]], href: '/app/tax-withholding-estimator/' },
+                            { id: 'browse-all', label: [[#{workspace.nav.browse-all}]], href: '/app/tax-withholding-estimator/all-screens/' },
+                        ],
+                    },
+                ],
+
+                // Where each tool button in the bar applies. Scenario is here even though this app
+                // ships no scenario JSONs: most of that modal is reset / copy / paste, which work
+                // off the live Fact Graph and are exactly as useful here as in the other host. The
+                // modal hides its library section when no <option>s were supplied, so an app with
+                // no library gets the rest rather than nothing. Browse All Screens is a generated
+                // page that does not mount the workspace, so no tool applies there and its bar
+                // stays bare.
+                toolsByDestination: [
+                    { id: 'scenario', label: 'Scenario', icon: 'tune', destinations: ['product-experience'] },
+                    { id: 'display', label: 'Display', icon: 'visibility', destinations: ['product-experience'] },
+                    { id: 'tools', label: 'Tools', icon: 'build', destinations: ['product-experience'] },
+                ],
+            },
+
+            endpoints: {
+                // scenariosBase is left empty on purpose: this app serves no scenario JSONs, and
+                // the Manage scenario modal hides its library section when there are none rather
+                // than fetching from a directory that isn't there. apiBase likewise — the chat and
+                // AI-generation surfaces it feeds are gated behind flags this app does not declare,
+                // so nothing reaches for it.
+                factDictionaryUrl: '/app/tax-withholding-estimator/resources/fact-dictionary.xml',
+            },
+
+            // This app's one runtime flag: its own audit panel, the one that predates the shared
+            // workspace. It is a second right-hand panel with its own fact tracker, its own
+            // scenario copy/paste and an override-date control the workspace has no equivalent for,
+            // so it is kept — but off by default, behind Workspace settings, rather than opening
+            // on every page load and competing with the workspace for the viewport.
+            //
+            // Nothing else here is runtime: --auditMode and --allScreens decide what is generated,
+            // which is not something a person can switch on afterwards.
+            featureFlags: [
+                {
+                    name: 'legacyAuditPanel',
+                    kebab: 'legacy-audit-panel',
+                    label: t('workspace.flags.legacy-audit-panel'),
+                },
+            ],
+
+            // This app's flow markup is fg-set / fg-show / fg-alert with .twe-question labels —
+            // the convention flow-dom.js already defaults to — so only one key differs. /taxYear
+            // is printed as chrome on page after page, and an Inspect cue on each one is noise.
+            flowDom: { uncuedPaths: ['/taxYear'] },
+
+            // The three platform tools plus one this app declares. `facts` is what makes the
+            // Overrides tool generic: the legacy audit panel had a hand-built "Override Date"
+            // control wired to this exact path, and it is a list entry here instead — so the next
+            // fact worth overriding is a line of configuration rather than a new panel.
+            tools: [
+                { id: 'inspect', label: [[#{workspace.tools.inspect}]], description: [[#{workspace.tools.inspect-description}]], templateId: 'ttp-body-inspect' },
+                { id: 'outcome-tracker', label: [[#{workspace.tools.outcome-tracker}]], description: [[#{workspace.tools.outcome-tracker-description}]], templateId: 'ttp-body-outcome-tracker' },
+                { id: 'watchlist', label: [[#{workspace.tools.watchlist}]], description: [[#{workspace.tools.watchlist-description}]], templateId: 'ttp-body-watchlist' },
+                { id: 'overrides', label: [[#{workspace.tools.overrides}]], description: [[#{workspace.tools.overrides-description}]], templateId: 'ttp-body-overrides', facts: ['/overrideDate'] },
+            ],
+
+            graph: tweGraph,
+            determinations: tweDeterminations(t),
+        })
+
+        // The per-deployment layer: the same configuration as data, in a file this deployment
+        // serves. It lands after the call above — it is fetched — and configure() merges, so a
+        // deployment's file wins over the build's own values while a person's Workspace-settings
+        // overrides still win over both.
+        //
+        // The shipped file is `{}`: this deployment overrides nothing. Edit it to change what the
+        // workspace tracks, offers, or points at without touching a template — the change is then
+        // reviewable in git, which a localStorage override never is. Anything a person *reads*
+        // belongs above rather than in it: the file is served once and is not per-locale.
+        configureFromUrl('/app/tax-withholding-estimator/resources/taxpert.config.json')
+    </script>
+</div>

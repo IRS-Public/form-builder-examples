@@ -4,6 +4,14 @@
 /* Variables */
 @import "variables.css";
 
+/* Shared Taxpert UI (@taxpert/ui, vendored by `make copy-shared-ui`).
+   Both load unconditionally, unlike the workspace's audit-panel.css: each is scoped entirely to
+   its own custom elements and prefixed classes (--tgn-/.tgn-, --ttd-/.ttd-/.ttp-/.ttm-), so
+   neither restructures the product page. They come after variables.css so their token fallbacks
+   chain through this app's real USWDS variables. */
+@import "../vendor/taxpert-ui/global-nav/styles/global-nav.css";
+@import "../vendor/taxpert-ui/tool-panels/styles/tool-panels.css";
+
 /* Layout */
 @import "layout/header.css";
 @import "layout/main-content.css";

@@ -1,14 +1,14 @@
 const parser = new DOMParser()
 const XML_SERIALIZER = new XMLSerializer()
-const addFactForm = document.querySelector('#add-fact-form')
-const factSelect = document.querySelector('#fact-select')
-const factCollectionIdGroup = document.querySelector('#fact-collection-id-group')
-const factCollectionIdInput = document.querySelector('#fact-collection-id')
-const factCollectionIdOptions = document.querySelector('#fact-collection-id-options')
-const openAuditPanelButton = document.querySelector('#show-audit-panel')
-const closeAuditPanelButton = document.querySelector('#close-audit-panel')
-const auditPanel = document.querySelector('#audit-panel')
-const auditPanelResizer = document.querySelector('#audit-panel-resizer')
+const addFactForm = document.querySelector('#twe-add-fact-form')
+const factSelect = document.querySelector('#twe-fact-select')
+const factCollectionIdGroup = document.querySelector('#twe-fact-collection-id-group')
+const factCollectionIdInput = document.querySelector('#twe-fact-collection-id')
+const factCollectionIdOptions = document.querySelector('#twe-fact-collection-id-options')
+const openAuditPanelButton = document.querySelector('#show-twe-audit-panel')
+const closeAuditPanelButton = document.querySelector('#close-twe-audit-panel')
+const auditPanel = document.querySelector('#twe-audit-panel')
+const auditPanelResizer = document.querySelector('#twe-audit-panel-resizer')
 const AUDIT_PANEL_STORAGE_KEY = 'auditPanel'
 const AUDIT_PANEL_STORAGE_FIELDS = new Set(['isOpen', 'trackedFacts', 'showConditions', 'width'])
 const AUDIT_PANEL_DEFAULT_WIDTH = 38
@@ -89,8 +89,15 @@ export function hideConditions () {
   document.body.classList.remove('display-conditions')
   document.querySelectorAll('.fact-name').forEach(el => el.remove())
 }
-window.displayConditions = displayConditions
-window.hideConditions = hideConditions
+// Console/inline-handler entry points, every one namespaced.
+//
+// This module and @taxpert/ui's audit panel are the same code's ancestor and descendant, and both
+// used to claim these names bare — so on a page that loads both (an --auditMode product page)
+// whichever module script ran last silently took them over, and the legacy panel's own onclick=
+// handlers ended up driving the shared workspace's elements. `twe` in the name is what makes each
+// one unambiguously this panel's.
+window.tweDisplayConditions = displayConditions
+window.tweHideConditions = hideConditions
 
 // Save the open/closed state of the audit panel in session storage so it persists across page reloads and forward navigation.
 function getAuditPanelStorage () {
@@ -130,9 +137,9 @@ function setAuditPanelStorage (key, value) {
   sessionStorage.setItem(AUDIT_PANEL_STORAGE_KEY, JSON.stringify(storage))
 }
 
-window.enableAuditMode = enable
-window.disableAuditMode = disable
-window.trackSelectedFact = trackSelectedFact
+window.tweEnableAuditMode = enable
+window.tweDisableAuditMode = disable
+window.tweTrackSelectedFact = trackSelectedFact
 
 class FactLink extends HTMLElement {
   connectedCallback () {
@@ -143,7 +150,7 @@ class FactLink extends HTMLElement {
     link.href = `#${this.path}`
     while (this.firstChild) { link.appendChild(this.firstChild) } // Move all children to the link
     link.onclick = () => {
-      document.body.classList.add('audit-panel-open')
+      document.body.classList.add('twe-audit-panel-open')
       setAuditPanelStorage('isOpen', true)
       trackFact(this.path, this.collectionId)
       return false
@@ -151,7 +158,7 @@ class FactLink extends HTMLElement {
     this.replaceChildren(link)
   }
 }
-customElements.define('fact-link', FactLink)
+customElements.define('twe-fact-link', FactLink)
 
 class AuditedFact extends HTMLElement {
   constructor () {
@@ -166,16 +173,16 @@ class AuditedFact extends HTMLElement {
     }
     this.renderListener = () => this.render()
 
-    const templateContent = document.querySelector('#audit-panel__fact').content.cloneNode(true)
+    const templateContent = document.querySelector('#twe-audit-panel__fact').content.cloneNode(true)
     this.attachShadow({ mode: 'open' })
     this.shadowRoot.append(templateContent)
 
-    this.factPathElem = this.shadowRoot.querySelector('.audit-panel__fact__path')
-    this.factTypeElem = this.shadowRoot.querySelector('.audit-panel__fact__type')
-    this.factValueElem = this.shadowRoot.querySelector('.audit-panel__fact__value')
-    this.factDefinitionElem = this.shadowRoot.querySelector('.audit-panel__fact__definition')
+    this.factPathElem = this.shadowRoot.querySelector('.twe-audit-panel__fact__path')
+    this.factTypeElem = this.shadowRoot.querySelector('.twe-audit-panel__fact__type')
+    this.factValueElem = this.shadowRoot.querySelector('.twe-audit-panel__fact__value')
+    this.factDefinitionElem = this.shadowRoot.querySelector('.twe-audit-panel__fact__definition')
 
-    this.removeButton = this.shadowRoot.querySelector('.audit-panel__fact__remove')
+    this.removeButton = this.shadowRoot.querySelector('.twe-audit-panel__fact__remove')
   }
 
   connectedCallback () {
@@ -230,7 +237,7 @@ class AuditedFact extends HTMLElement {
       }
       // but we can resolve relative paths ("../income")
       const abstractPath = rawPath.replace('..', this.abstractPath.replace(/\*\/.*/, '*'))
-      const link = `<fact-link path="${abstractPath}" collectionId="${this.collectionId}">${rawPath}</fact-link>`
+      const link = `<twe-fact-link path="${abstractPath}" collectionId="${this.collectionId}">${rawPath}</twe-fact-link>`
       return result.replace(`path="${rawPath}"`, `path="${link}"`)
     }, stringDefinition)
 
@@ -242,7 +249,7 @@ class AuditedFact extends HTMLElement {
     this.append(definitionElement)
   }
 }
-customElements.define('audited-fact', AuditedFact)
+customElements.define('twe-audited-fact', AuditedFact)
 
 function trackSelectedFact () {
   const factPath = factSelect.value
@@ -266,9 +273,9 @@ function trackSelectedFact () {
 // Add a fact to the audit panel to track
 function trackFact (path, collectionId, setFocus = true) {
   const factPath = makeCollectionIdPath(path, collectionId)
-  const auditedFactsList = document.querySelector('#audit-panel__fact-list')
+  const auditedFactsList = document.querySelector('#twe-audit-panel__fact-list')
 
-  const existingFact = auditedFactsList.querySelector(`audited-fact[path="${factPath}"]`)
+  const existingFact = auditedFactsList.querySelector(`twe-audited-fact[path="${factPath}"]`)
   if (existingFact) {
     return existingFact.scrollIntoView()
   }
@@ -280,7 +287,7 @@ function trackFact (path, collectionId, setFocus = true) {
   trackedFacts.push({ path, collectionId })
   setAuditPanelStorage('trackedFacts', trackedFacts)
 
-  const auditedFact = document.createElement('audited-fact')
+  const auditedFact = document.createElement('twe-audited-fact')
   auditedFact.setAttribute('path', path)
   auditedFact.setAttribute('collectionId', collectionId)
 
@@ -301,7 +308,7 @@ function trackFact (path, collectionId, setFocus = true) {
 function setFactOptions () {
   const paths = window.factGraph.paths().sort()
   const options = paths.map((path) => `<option path=${path}>${path}</option>`)
-  document.querySelector('#fact-options').innerHTML = options
+  document.querySelector('#twe-fact-options').innerHTML = options
 }
 
 // If the selected fact is a collection fact, populate the collection ID options based on the current fact graph
@@ -354,7 +361,7 @@ function makeCollectionIdPath (abstractPath, id) {
 
 async function copyFactGraphToClipboard () {
   const fg = window.factGraph.toJson()
-  const status = document.getElementById('copy-fg-status')
+  const status = document.getElementById('twe-copy-fg-status')
   try {
     await navigator.clipboard.writeText(fg)
     status.classList.add('animate-success')
@@ -365,7 +372,7 @@ async function copyFactGraphToClipboard () {
     console.error(`Failed to copy: ${err}`)
   }
 }
-window.copyFactGraphToClipboard = copyFactGraphToClipboard
+window.tweCopyFactGraphToClipboard = copyFactGraphToClipboard
 
 // Enable audit mode
 function enableAuditMode () {
@@ -377,8 +384,8 @@ function enableAuditMode () {
   }, { once: true })
 
   // Set up the audit to display on the page and display the open button
-  document.querySelector('#audit-panel-styles').disabled = false
-  document.querySelector('#audit-panel').classList.remove('hidden')
+  document.querySelector('#twe-audit-panel-styles').disabled = false
+  document.querySelector('#twe-audit-panel').classList.remove('hidden')
   openAuditPanelButton.classList.remove('hidden')
 
   // Set up adjustable width controls for the audit panel
@@ -413,7 +420,7 @@ function enableAuditMode () {
 
     function applyAuditPanelWidth (width, persist = true) {
       const nextWidth = clampAuditPanelWidth(width)
-      document.documentElement.style.setProperty('--audit-panel-width', `${nextWidth}px`)
+      document.documentElement.style.setProperty('--twe-audit-panel-width', `${nextWidth}px`)
       updateAuditPanelResizerAccessibility(nextWidth)
 
       if (persist) {
@@ -424,7 +431,7 @@ function enableAuditMode () {
     }
 
     function applyDefaultAuditPanelWidth () {
-      document.documentElement.style.setProperty('--audit-panel-width', `${AUDIT_PANEL_DEFAULT_WIDTH}vw`)
+      document.documentElement.style.setProperty('--twe-audit-panel-width', `${AUDIT_PANEL_DEFAULT_WIDTH}vw`)
       const fallbackWidth = Math.round(window.innerWidth * AUDIT_PANEL_DEFAULT_WIDTH / 100)
       const renderedWidth = Math.round(auditPanel.getBoundingClientRect().width) || fallbackWidth
       updateAuditPanelResizerAccessibility(clampAuditPanelWidth(renderedWidth))
@@ -452,7 +459,7 @@ function enableAuditMode () {
 
       event.preventDefault()
       auditPanelResizer.setPointerCapture(event.pointerId)
-      document.body.classList.add('audit-panel-resizing')
+      document.body.classList.add('twe-audit-panel-resizing')
 
       const handlePointerMove = (moveEvent) => {
         applyAuditPanelWidth(window.innerWidth - moveEvent.clientX)
@@ -460,7 +467,7 @@ function enableAuditMode () {
 
       const handlePointerUp = () => {
         auditPanelResizer.releasePointerCapture(event.pointerId)
-        document.body.classList.remove('audit-panel-resizing')
+        document.body.classList.remove('twe-audit-panel-resizing')
         window.removeEventListener('pointermove', handlePointerMove)
         window.removeEventListener('pointerup', handlePointerUp)
       }
@@ -494,21 +501,21 @@ function enableAuditMode () {
 
   // Set up function to open the audit panel
   function openAuditPanel () {
-    document.body.classList.add('audit-panel-open')
+    document.body.classList.add('twe-audit-panel-open')
     setAuditPanelStorage('isOpen', true)
     closeAuditPanelButton.focus()
   }
 
   // Set up function to close the audit panel
   function closeAuditPanel () {
-    document.body.classList.remove('audit-panel-open')
+    document.body.classList.remove('twe-audit-panel-open')
     setAuditPanelStorage('isOpen', false)
     openAuditPanelButton.focus()
   }
 
   // Set up function to close the audit panel with the escape key
   function handleAuditPanelKeydown (event) {
-    if (event.key === 'Escape' && document.body.classList.contains('audit-panel-open')) {
+    if (event.key === 'Escape' && document.body.classList.contains('twe-audit-panel-open')) {
       event.preventDefault()
       closeAuditPanel()
     }
@@ -524,7 +531,7 @@ function enableAuditMode () {
 
   // If the audit panel was previously open, make sure to open it again when navigating forward or backwards
   if (getAuditPanelStorage().isOpen) {
-    document.body.classList.add('audit-panel-open')
+    document.body.classList.add('twe-audit-panel-open')
   }
 
   // If there are any facts stored in session storage, make sure to add them back
@@ -538,7 +545,7 @@ function enableAuditMode () {
   // Add links to all the <fg-show>s
   const fgShows = document.querySelectorAll('fg-show')
   for (const fgShow of fgShows) {
-    const factLink = document.createElement('fact-link')
+    const factLink = document.createElement('twe-fact-link')
     factLink.setAttribute('path', fgShow.path)
     factLink.append(fgShow.cloneNode())
     fgShow.parentElement.replaceChild(factLink, fgShow)
@@ -574,7 +581,7 @@ function enableAuditMode () {
   }
 
   // Set up the show conditions toggle
-  const conditionsCheckbox = document.querySelector('#show-conditions')
+  const conditionsCheckbox = document.querySelector('#twe-show-conditions')
   conditionsCheckbox.addEventListener('change', () => {
     setAuditPanelStorage('showConditions', conditionsCheckbox.checked)
     if (conditionsCheckbox.checked) {
@@ -607,10 +614,10 @@ export function enable () {
 
 // Disable audit mode and clear all tracked facts and stored state
 export function disable () {
-  document.querySelector('#audit-panel-styles').disabled = true
-  document.querySelector('#audit-panel').classList.add('hidden')
+  document.querySelector('#twe-audit-panel-styles').disabled = true
+  document.querySelector('#twe-audit-panel').classList.add('hidden')
   openAuditPanelButton.classList.add('hidden')
-  document.body.classList.remove('audit-panel-open')
+  document.body.classList.remove('twe-audit-panel-open')
   document.body.removeAttribute('style')
   sessionStorage.removeItem(AUDIT_PANEL_STORAGE_KEY)
   hideConditions()
@@ -631,14 +638,14 @@ export function disable () {
  * fires (as far as I can tell).
  */
 function loadFactGraphFromAuditPanel () {
-  const textarea = document.querySelector('#load-fact-graph')
+  const textarea = document.querySelector('#twe-load-fact-graph')
 
   try {
     window.loadFactGraph(textarea.value)
     clearAuditPanelFieldError(textarea)
   } catch (error) {
-    setAuditPanelFieldError(textarea, 'load-fact-graph-error', 'Enter a valid JSON')
+    setAuditPanelFieldError(textarea, 'twe-load-fact-graph-error', 'Enter a valid JSON')
     textarea.focus()
   }
 }
-window.loadFactGraphFromAuditPanel = loadFactGraphFromAuditPanel
+window.tweLoadFactGraphFromAuditPanel = loadFactGraphFromAuditPanel

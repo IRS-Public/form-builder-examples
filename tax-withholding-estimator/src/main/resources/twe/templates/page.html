@@ -11,6 +11,10 @@
 
     <div class="app-container">
       <header>
+        <!-- The shared Taxpert workspace is a developer surface, like this app's own audit panel,
+             so it is built only into an --auditMode build. Its two body-level elements are
+             gated the same way, further down. -->
+        <div th:if="${flags.auditMode}" th:replace="fragments/taxpert-global-nav"></div>
         <div th:replace="fragments/usa-banner"></div>
         <div class="logo-banner">
           <div class="grid-container">
@@ -29,7 +33,7 @@
       <main id="main-content">
         <h1 th:text="#{layout.title}"></h1>
 
-        <button class="hidden" id="show-audit-panel" type="button" aria-label="Open audit panel">
+        <button class="hidden" id="show-twe-audit-panel" type="button" aria-label="Open audit panel">
           <span class="usa-tooltip" data-position="left" title="Open audit panel">
           <svg class="usa-icon" aria-hidden="true" focusable="false" role="img">
             <use href="/app/tax-withholding-estimator/resources/vendor/uswds-3.13.0/img/sprite.svg#settings"></use>
@@ -124,10 +128,15 @@
       <div th:replace="~{errors}"></div>
     </div>
 
-    <div th:replace="fragments/audit-panel"></div>
+    <!-- This app's own audit panel and the shared Taxpert workspace are both developer surfaces,
+         built only into an --auditMode build. The legacy panel stays hidden until the
+         `legacyAuditPanel` flag is switched on in Workspace settings; the workspace opens with the
+         build. -->
+    <div th:if="${flags.auditMode}" th:replace="fragments/audit-panel"></div>
+    <div th:if="${flags.auditMode}" th:replace="fragments/taxpert-workspace"></div>
     <script type="module" th:if="${flags.auditMode}">
       // If configured, automatically enable Audit Mode on startup
-      import { enable } from '/app/tax-withholding-estimator/resources/js/audit-panel.js'
+      import { enable } from '/app/tax-withholding-estimator/resources/vendor/taxpert-ui/audit-panel/js/taxpert-audit-panel.js'
       enable()
     </script>
 

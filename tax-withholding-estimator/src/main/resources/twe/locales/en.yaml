@@ -154,6 +154,43 @@ audit:
     remove: "Remove fact"
     definition: "XML Definition"
 
+# Copy for the shared Taxpert workspace (@taxpert/ui): the global nav's taxonomy and the three
+# outcomes its Outcome tracker follows. The library ships none of this — it is handed over by
+# templates/fragments/taxpert-config.html, which is why these keys are resolvable per locale
+# rather than hardcoded English inside the bundle.
+workspace:
+  flags:
+    legacy-audit-panel: Legacy TWE audit panel
+  tools:
+    inspect: Inspect
+    inspect-description: Inspect facts, flows and text.
+    outcome-tracker: Outcome tracker
+    outcome-tracker-description: Track the outcomes this application determines.
+    watchlist: Watchlist
+    watchlist-description: Track the value of one or more facts as you work or load scenarios.
+    overrides: Overrides
+    overrides-description: Set a fact directly, without walking the flow to the screen that asks for it.
+  nav:
+    experience-explorer: Experience Explorer
+    product-experience: Product Experience
+    browse-all: Browse All Screens
+  outcomes:
+    withholding-outcome: Withholding outcome
+    balance-due: Balance due of {abs}
+    refund: Refund of {abs}
+    on-target: On target
+    owed-vs-withheld: Owed vs. withheld
+    direction: Direction
+    underpayment-risk: Underpayment penalty risk
+    at-risk: At risk
+    not-at-risk: Not at risk
+    penalty-thresholds: Penalty thresholds
+    adjustment-headroom: Can still adjust withholding
+    can-adjust: Yes
+    estimated-payments-only: "No — estimated payments only"
+    remaining-pay-periods: Remaining pay periods
+    estimated-payments: Estimated payments
+
 results:
   fg-withholding-adjustments:
     w-4:

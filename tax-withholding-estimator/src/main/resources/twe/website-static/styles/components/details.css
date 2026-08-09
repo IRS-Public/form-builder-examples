@@ -3,7 +3,7 @@
   to mimic the USWDS accordion style.
 */
 
-.flow, .audit-panel {
+.flow, .twe-audit-panel {
   details {
     margin: var(--flow-spacing--sm) 0;
 

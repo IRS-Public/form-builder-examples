@@ -1,0 +1,24 @@
+<div th:fragment="taxpert-global-nav" th:remove="tag">
+    <!--
+      The shared app switcher, and the switch that turns the Taxpert workspace on.
+
+      `workspace-on` follows the build, exactly as the other host's does: an --auditMode build opens
+      with the workspace already on, because that is the only reason the build exists. This app's
+      own audit panel no longer competes for the viewport — it is behind the `legacyAuditPanel`
+      flag in Workspace settings, off unless someone asks for it (see fragments/audit-panel.html),
+      so there is nothing here to hand back and forth.
+    -->
+    <taxpert-global-nav
+        app="tax-withholding-estimator"
+        active="product-experience"
+        workspace-label="TAXPERT WORKSPACE"
+        th:attrappend="workspace-on=${flags.auditMode} ? 'true' : 'false'"></taxpert-global-nav>
+
+    <script type="module">
+        import { enable, disable } from '/app/tax-withholding-estimator/resources/vendor/taxpert-ui/audit-panel/js/taxpert-audit-panel.js'
+        document.querySelector('taxpert-global-nav')?.addEventListener('workspace-toggle', (event) => {
+            if (event.detail.on) enable()
+            else disable()
+        })
+    </script>
+</div>
