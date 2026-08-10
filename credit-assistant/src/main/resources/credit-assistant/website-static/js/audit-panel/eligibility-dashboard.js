@@ -1,7 +1,7 @@
 // The audit panel's Eligibility Inspector: two flat lists of fact paths, each with a status swatch.
 //
 // It used to open with five hand-maintained arrays of fact paths — the same twenty-three paths, in
-// the same five groups, that @taxpert/ui's Outcome tracker also carried, kept in step by hand
+// the same five groups, that taxpert's Outcome tracker also carried, kept in step by hand
 // across two files. Both now read the one list: the tracker through `config.determinations`, and
 // this by reading that configuration back. taxpert-config.html supplies it (translated), from the
 // structure in ../taxpert/eitc-graph.js.
@@ -15,8 +15,8 @@
 // and within a determination, one section is one heading with its facts under it. A section's own
 // `rollupPath` is the fact that group concludes with, drawn with the `ap-dq-rollup` treatment.
 
-import { getConfig } from '../../vendor/taxpert-ui/shared/js/config.js'
-import { outcomeText } from '../../vendor/taxpert-ui/shared/js/outcome-kinds.js'
+import { getConfig } from '../../vendor/taxpert/shared/js/config.js'
+import { outcomeText } from '../../vendor/taxpert/shared/js/outcome-kinds.js'
 
 /** The determinations belonging to one of the two dashboards, in configured order. */
 function determinationsFor (dashboard) {

@@ -13,62 +13,80 @@ FACTS_CONFIG := $(FACTS_DIR)/FactDictionaryModule.rng
 FG_SOURCE_DIR := ../fact-graph/js/target/scala-3.3.6/factgraph-fastopt
 FG_TARGET_DIR := ./src/main/resources/credit-assistant/website-static/vendor/fact-graph
 
-SHARED_UI_SRC := node_modules/@taxpert/ui/src
-SHARED_UI_TARGET := $(RESOURCES_DIR)/website-static/vendor/taxpert-ui
+SHARED_UI_SRC := node_modules/taxpert/src
+SHARED_UI_TARGET := $(RESOURCES_DIR)/website-static/vendor/taxpert
 
 .PHONY: dev
-dev: copy-shared-ui ## Build and run development server, watching for changes (Default)
+dev: copy-fg copy-shared-ui ## Build and run development server, watching for changes (Default)
 	sbt -Dsmol.port=$(PORT) '~run --serve --auditMode --allScreens --scenarioMode'
 
 .PHONY: dev-ai
-dev-ai: copy-shared-ui ## Same as `dev`, but also reveals both AI/prompt features (Explain & Analyze chat, AI scenario generation)
+dev-ai: copy-fg copy-shared-ui ## Same as `dev`, but also reveals both AI/prompt features (Explain & Analyze chat, AI scenario generation)
 	sbt -Dsmol.port=$(PORT) '~run --serve --auditMode --allScreens --scenarioMode --aiScenarioGeneration --aiFactExplanation'
 
 .PHONY: dev-one-question
-dev-one-question: copy-shared-ui # Run in one question: one screen mode
+dev-one-question: copy-fg copy-shared-ui # Run in one question: one screen mode
 	sbt -Dsmol.port=$(PORT) '~run --serve --auditMode --allScreens --singleQuestionPerScreen --scenarioMode'
 
 .PHONY: debug
-debug: copy-shared-ui ## Same as `dev`, but also opens a port to attach a debugger (like your IDE)
+debug: copy-fg copy-shared-ui ## Same as `dev`, but also opens a port to attach a debugger (like your IDE)
 	sbt -Dsmol.port=$(PORT) -jvm-debug $(DEBUGGER_PORT) '~run --serve --auditMode --allScreens --scenarioMode'
 
 .PHONY: dev-author
-dev-author: copy-shared-ui ## Build + dev server with Author Mode editing enabled
+dev-author: copy-fg copy-shared-ui ## Build + dev server with Author Mode editing enabled
 	sbt -Dsmol.port=3003 -Dsmol.author.port=3004 '~run --serve --auditMode --allScreens --scenarioMode --authorMode'
 
 help: ## Print the help documentation
 	@grep -E '^[/a-zA-Z0-9_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
 .PHONY: credit-assistant
-credit-assistant: copy-shared-ui ## Build site for production
+credit-assistant: copy-fg copy-shared-ui ## Build site for production
 	sbt run
+
+.PHONY: site
+site: credit-assistant ## Alias for the production build, under the name every Formative app uses
 
 
 .PHONY: copy-fg
 copy-fg: ## Copy compiled Fact Graph from sibling repository
-	cp $(FG_SOURCE_DIR)/main.mjs $(FG_TARGET_DIR)/factgraph-3.1.0.js
-	cp $(FG_SOURCE_DIR)/main.mjs.map $(FG_TARGET_DIR)
+	@# Skipped rather than fatal when the sibling has not been built: this now runs ahead of
+	@# every dev server and production build, and not everyone working on templates or
+	@# locales has an sbt-built fact-graph sitting next door.
+	@if [ -f $(FG_SOURCE_DIR)/main.mjs ]; then \
+		cp $(FG_SOURCE_DIR)/main.mjs $(FG_TARGET_DIR)/factgraph-3.1.0.js; \
+		cp $(FG_SOURCE_DIR)/main.mjs.map $(FG_TARGET_DIR); \
+		echo "==> copied the fact-graph bundle from $(FG_SOURCE_DIR)"; \
+	else \
+		echo "==> no build at $(FG_SOURCE_DIR); keeping the vendored fact-graph bundle"; \
+		echo "    (run 'cd ../fact-graph && sbt fastOptJS' to refresh it)"; \
+	fi
 
 .PHONY: copy-shared-ui
-copy-shared-ui: ## Copy shared UI components (@taxpert/ui) from node_modules
-	# The vendored copy is a generated mirror of @taxpert/ui's src/ bundle dirs,
+copy-shared-ui: ## Copy shared UI components (taxpert) from node_modules
+	# The vendored copy is a generated mirror of taxpert's src/ bundle dirs,
 	# each one broken down into js/styles/images/fonts (same shape as vendor/uswds-3.13.0).
 	# Wipe first so renamed/removed source files never linger as stale vendored copies.
+	#
+	# Copies whatever bundles src/ contains rather than naming them. The list used to be
+	# spelled out here and in check-shared-ui, and a bundle missing from either silently
+	# never reached the browser — the failure taxpert's CLAUDE.md warns about under
+	# "a new top-level bundle is different". Deriving it means adding a bundle is a
+	# one-directory change again.
 	rm -rf $(SHARED_UI_TARGET)
 	mkdir -p $(SHARED_UI_TARGET)
-	cp -R $(SHARED_UI_SRC)/global-nav $(SHARED_UI_SRC)/shared $(SHARED_UI_SRC)/audit-panel \
-		$(SHARED_UI_SRC)/tool-panels $(SHARED_UI_TARGET)/
+	cp -R $(SHARED_UI_SRC)/. $(SHARED_UI_TARGET)/
 
 .PHONY: check-shared-ui
-check-shared-ui: ## Verify the vendored shared UI matches @taxpert/ui's source
+check-shared-ui: ## Verify the vendored shared UI matches taxpert's source
 	@# The mirror is generated and gitignored, so a build that skipped copy-shared-ui —
 	@# or a hand-edit of the mirror, which the next build silently overwrites — shows up
 	@# here as a diff rather than as stale UI in the browser.
-	@for bundle in global-nav shared audit-panel tool-panels; do \
-		diff -r -x .DS_Store $(SHARED_UI_SRC)/$$bundle $(SHARED_UI_TARGET)/$$bundle \
-			|| { echo "==> vendored shared UI is out of date — run 'make copy-shared-ui'"; exit 1; }; \
-	done
-	@echo "==> vendored shared UI matches @taxpert/ui"
+	@# Whole-tree diff rather than a per-bundle loop: the loop could only check bundles it
+	@# already knew about, so a bundle added to taxpert but not to its list passed here
+	@# while being absent from the browser. This also catches a stale bundle left behind.
+	@diff -r -x .DS_Store $(SHARED_UI_SRC) $(SHARED_UI_TARGET) \
+		|| { echo "==> vendored shared UI is out of date — run 'make copy-shared-ui'"; exit 1; }
+	@echo "==> vendored shared UI matches taxpert"
 
 .PHONY: test
 test: ## Run test suite
@@ -108,8 +126,11 @@ ci: ## Run most of the CI checks locally
 	# Skip semgrep (locally) for now
 
 .PHONY: validate-xml
-validate-xml: ## Validate .xml files
+validate-xml: ## Validate .xml files against their RELAX NG schemas
 	find $(FACTS_DIR) -name '*.xml' | xargs xmllint --quiet --relaxng $(FACTS_CONFIG) > /dev/null
+	@# The flow half of this check was declared (FLOW_DIR/FLOW_CONFIG) and then never run,
+	@# so FlowConfig.rng drifted away from the flow it describes without anything noticing.
+	find $(FLOW_DIR) -name '*.xml' | xargs xmllint --quiet --relaxng $(FLOW_CONFIG) > /dev/null
 
 .PHONY: validate-html
 validate-html: ## Validate .html files
@@ -128,3 +149,7 @@ validate-scala: ## Validate Scala code
 semgrep:
 	semgrep scan --verbose --metrics off --severity WARNING --error \
 		--config p/security-audit --config p/scala
+
+.PHONY: diff-out
+diff-out: ## Compare the output static assets on your current branch with `main`
+	./scripts/diff-out.sh

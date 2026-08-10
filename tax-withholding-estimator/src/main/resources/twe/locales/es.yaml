@@ -1,106 +1,45 @@
+# This application's own strings. The chrome the scaffold's templates need
+# (components.*, errors.*, step-indicator.*, layout.banner.*, …) ships with the
+# scaffold; declare a key here to override any of it.
 components:
-  fg-set:
-    required: (Requerido)
   fg-collection:
-    paths:
-      /jobs:
-        name: trabajo
-        determiner: otro
-      /pensions:
-        name: pensión o anualidad
-        determiner: otro
-      /selfEmploymentSources:
-        name: trabajo por cuenta propia
-        determiner: otro
-      /socialSecuritySources:
-        name: ingresos por Seguro Social
-        determiner: otro
     buttons:
-      remove: "Eliminar {0}"
-      add: "Agregar {0}"
-      add-with-determiner: "Agregar {1} {0}"
+      remove: Eliminar {0}
+      add: Agregar {0}
+      add-with-determiner: Agregar {1} {0}
     remove-item-modal:
       heading:
-        remove: "¿Seguro que quieres eliminar {0}?"
-      body: "Esto borrará toda la información que llenaste sobre este {0}."
+        remove: ¿Seguro que quieres eliminar {0}?
+      body: Esto borrará toda la información que llenaste sobre este {0}.
       footer:
-        confirm: "Sí, eliminar este {0}"
-        cancel: "No, mantener este {0}"
-  modal:
-    close: Cerrar esta ventana
-  boolean:
-    yes: Sí
-    no: No
+        confirm: Sí, eliminar este {0}
+        cancel: No, mantener este {0}
   date:
-    month: Mes
-    day: Día
-    year: Año
-    select: "- Elegir -"
-    january: Enero
-    february: Febrero
-    march: Marzo
-    april: Abril
-    may: Mayo
-    june: Junio
-    july: Julio
-    august: Agosto
-    september: Septiembre
-    october: Octubre
-    november: Noviembre
-    december: Diciembre
+    select: '- Elegir -'
   select:
-    select: "-- Elegir --"
-
+    select: -- Elegir --
 title:
   prefix: Estimador para Retención de Impuestos
   suffix: Servicio de Impuestos Internos
-
 layout:
   title: Estimador para Retención de Impuestos
-  skip-to-main: Saltar al contenido principal
   identifier:
-    agency-identifier: Identificador de la agencia
     disclaimer: Un sitio web oficial del <a class="usa-link" target="_blank" href="https://irs.gov">IRS<span class="usa-sr-only"> (abre en una nueva pestaña)</span></a>
     about:
       text: Acerca del IRS
-      link: https://www.irs.gov/es/about-irs
-    accessibility:
-      text: Accesibilidad
-      link: https://www.irs.gov/es/accessibility
-    privacy-policy:
-      text: Política de privacidad
-      link: https://www.irs.gov/es/privacy-disclosure/irs-privacy-policy
-    important-links: Enlaces importantes
-  irs:
-    name: IRS
-    domain: IRS.gov
-
   banner:
     how-you-know: Así es como usted puede verificarlo
-    official-domain: Los sitios web oficiales usan .gov
     official-organization: Un sitio web <strong>.gov</strong> pertenece a una organización oficial del Gobierno de Estados Unidos.
-    secure-https: Los sitios web seguros .gov usan HTTPS
     disclaimer: Un sitio oficial del Gobierno de Estados Unidos
-    lock-1: "Un <strong>candado</strong>"
-    lock-2: "o <strong>https://</strong> significa que usted se conectó de forma segura a un sitio web .gov. Comparta información sensible sólo en sitios web oficiales y seguros."
-
-buttons:
-  next: Siguiente
-  back: Volver
-
+    lock-2: o <strong>https://</strong> significa que usted se conectó de forma segura a un sitio web .gov. Comparta información sensible sólo en sitios web oficiales y seguros.
 alerts:
   warning:
     heading: Alerta
     complete-required: Por favor, completa los campos requeridos.
-
 step-indicator:
   completed: completo
   not-completed: incompleto
-  step: Paso
-  of: de
-
 errors:
-  # Dollar errors
   CombinedHyphensAndParentheses: Usa sólo números y un decimal.
   InvalidCharacters: Usa sólo números y un decimal.
   InvalidDollar: Usa sólo números y un decimal.
@@ -108,39 +47,29 @@ errors:
   InvalidParentheses: Usa sólo números y un decimal.
   TooManyDecimals: Usa sólo números y un decimal.
   TooManyFractionalDigits: Usa sólo dos dígitos para el decimal.
-
-  # Day errors
   InvalidDay: Ingresa un día válido.
   InvalidDayDueToLeapYear: Este día es inválido por ser año bisiesto.
   InvalidMonth: Ingresa un mes válido.
   InvalidDate: Ingresa una fecha válida.
   InvalidLimit: El límite establecido no es válido.
   IncompleteWritableDate: Ingresa una fecha completa o déjala en blanco.
-
-  # Enum errors
-  BlankEnum: El valor estaba en blanco.
   InvalidEnum: No se encontró el valor.
-
-  # Generic errors
   Required: Esta pregunta es requerida.
-  Default: Lo sentimos, algo salió mal.
-
-  # Limit errors
   Max: Ingresa una cantidad menor a
   Min: Ingresa una cantidad mayor a
-
 audit:
   fact-select:
-    question: Ruta del hecho
     blank: -- Elegir una ruta --
-  collection-id-label: ID de la colección
-  fact:
-    type: "Tipo de hecho:"
-    value: "Valor:"
-    remove: "Eliminar hecho"
-    definition: "Definición XML"
-
-# Texto del espacio de trabajo compartido de Taxpert (@taxpert/ui). Ver la nota en en.yaml.
+all-screens:
+  section:
+    about-you: Acerca de ti
+    income: Ingresos y pagos de impuestos
+    adjustments: Ajustes
+    deductions: Elección de deducción
+    additional-deductions: Deducciones adicionales
+    credits: Créditos
+    results: Resultado
+    other: Otros
 workspace:
   flags:
     legacy-audit-panel: Panel de auditoría heredado de TWE
@@ -157,6 +86,7 @@ workspace:
     experience-explorer: Explorador de experiencias
     product-experience: Experiencia del producto
     browse-all: Ver todas las pantallas
+    path-mode: Modo de recorrido
   outcomes:
     withholding-outcome: Resultado de la retención
     balance-due: Saldo pendiente de {abs}
@@ -170,10 +100,9 @@ workspace:
     penalty-thresholds: Umbrales de la multa
     adjustment-headroom: Aún se puede ajustar la retención
     can-adjust: Sí
-    estimated-payments-only: "No — solo pagos estimados"
+    estimated-payments-only: No — solo pagos estimados
     remaining-pay-periods: Períodos de pago restantes
     estimated-payments: Pagos estimados
-
 results:
   fg-withholding-adjustments:
     w-4:

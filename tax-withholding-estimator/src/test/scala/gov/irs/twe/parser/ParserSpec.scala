@@ -1,8 +1,9 @@
 package gov.irs.twe.parser
 
-import gov.irs.twe.exceptions.InvalidFormConfig
-import gov.irs.twe.loadTweFactDictionary
-import gov.irs.twe.parser.Flow
+import gov.irs.formative.exceptions.InvalidFormConfig
+import gov.irs.formative.loadFactDictionary
+import gov.irs.formative.parser.*
+import gov.irs.twe.app
 import org.scalatest.funspec.AnyFunSpec
 import scala.io.Source
 
@@ -41,10 +42,10 @@ class ParserSpec extends AnyFunSpec {
       val resolvedConfig = <FlowConfig>{resolvedChildren}</FlowConfig>
 
       // Load the fact dictionary
-      val tweFactDictionary = loadTweFactDictionary()
+      val tweFactDictionary = loadFactDictionary(app)
 
       // Parse the flow - this will throw InvalidFormConfig if any fact names are invalid
-      val flow = Flow.fromXmlConfig(resolvedConfig, tweFactDictionary.factDictionary)
+      val flow = Flow.fromXmlConfig(resolvedConfig, tweFactDictionary.factDictionary, app)
 
       // If we get here, the flow parsed successfully with all valid fact names
       assert(flow.pages.nonEmpty, "Flow should contain at least one page")

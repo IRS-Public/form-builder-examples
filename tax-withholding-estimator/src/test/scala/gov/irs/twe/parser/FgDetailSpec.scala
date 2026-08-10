@@ -1,13 +1,15 @@
 package gov.irs.twe.parser
 
-import gov.irs.twe.exceptions.InvalidFormConfig
-import gov.irs.twe.loadTweFactDictionary
+import gov.irs.formative.exceptions.InvalidFormConfig
+import gov.irs.formative.loadFactDictionary
+import gov.irs.formative.parser.*
+import gov.irs.twe.app
 import org.scalatest.funspec.AnyFunSpec
 import scala.xml.Elem
 
 class FgDetailSpec extends AnyFunSpec {
-  private val factDictionary = loadTweFactDictionary().factDictionary
-  private val flowParser = FlowParser(factDictionary)
+  private val factDictionary = loadFactDictionary(app).factDictionary
+  private val flowParser = FlowParser(factDictionary, app)
   private def testContext() = TranslationContext()
 
   describe("FgDetail.fromXml") {

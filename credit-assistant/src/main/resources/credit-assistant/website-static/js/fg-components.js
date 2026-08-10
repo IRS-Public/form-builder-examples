@@ -1,27 +1,14 @@
-import './fg-fact-graph.js'
-import { showOrHideAllElements } from './fg-conditions.js'
-import './fg-set.js'
-import './fg-collection.js'
-import './fg-display.js'
+// This application's flow entry point.
+//
+// The custom elements, the Fact Graph bootstrap and the navigation all come from taxpert's
+// flow-runtime bundle — importing it is what defines <fg-set>, <fg-collection>, <fg-show> and the
+// rest. What remains here is the two pieces that are this application's own business and could not
+// move into a shared package: its knockout gates and its destructive-change confirmations.
+//
+// Order matters only in that the runtime must be imported first: it owns the Fact Graph these two
+// modules read at import time.
+
+import '../vendor/taxpert/flow-runtime/js/flow-runtime.js'
+
 import './fg-knockout-handlers.js'
 import './fg-flow-confirmations.js'
-import { initSingleQuestionNav } from './fg-navigator.js'
-
-// Add show/hide functionality to all elements
-document.addEventListener('fg-update', showOrHideAllElements)
-showOrHideAllElements()
-
-// #page-content-wrapper / #loading-spinner exist on the flow page template (page.html) but not
-// on the /all-screens audit view, which renders all pages directly without a loading spinner.
-document.querySelector('#page-content-wrapper')?.classList.remove('hidden')
-document.querySelector('#loading-spinner')?.classList.add('hidden')
-
-initSingleQuestionNav()
-
-// Open all <details> elements that have a complete fact, so users can see information they've
-// entered if they return to a page.
-for (const fgSet of document.querySelectorAll('.fg-detail fg-set:not(.hidden)')) {
-  if (fgSet.isComplete()) {
-    fgSet.closest('.fg-detail').setAttribute('open', '')
-  }
-}

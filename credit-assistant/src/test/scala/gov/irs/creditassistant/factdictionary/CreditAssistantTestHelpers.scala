@@ -1,8 +1,9 @@
 package gov.irs.creditassistant.factdictionary
 
-import gov.irs.creditassistant.loadCreditAssistantFactDictionary
+import gov.irs.creditassistant.app
 import gov.irs.factgraph.types.Enum as FgEnum
 import gov.irs.factgraph.Graph
+import gov.irs.formative.loadFactDictionary
 import java.util.UUID
 import org.scalatest.matchers.should.Matchers
 
@@ -10,7 +11,7 @@ import org.scalatest.matchers.should.Matchers
 trait CreditAssistantTestHelpers extends Matchers:
 
   def newFactGraph(): Graph =
-    val creditAssistantFactDictionary = loadCreditAssistantFactDictionary()
+    val creditAssistantFactDictionary = loadFactDictionary(app)
     val factGraph = Graph(creditAssistantFactDictionary.factDictionary)
     factGraph
 

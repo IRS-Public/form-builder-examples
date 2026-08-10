@@ -805,6 +805,8 @@
   p-e28c1e: Puede solicitar el EITC para un máximo de tres hijos calificados.
   p-adf161: Para solicitar el crédito tributario por ingresos del trabajo, debe tener un hijo calificado.
   collection/familyAndHousehold:
+    # TODO: translate
+    itemName: child
     /familyAndHousehold/*/livedWithYouUS:
       question: ¿Este menor ha vivido con usted más de la mitad de <fg-show path="/taxYear"/> en los Estados Unidos?
       modalLink: <modal-link for="modal-residency">¿Qué significa "vivir contigo"?</modal-link>

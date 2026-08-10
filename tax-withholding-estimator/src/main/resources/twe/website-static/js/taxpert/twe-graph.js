@@ -1,4 +1,4 @@
-// What the Tax Withholding Estimator tells @taxpert/ui about itself that is *behaviour* rather
+// What the Tax Withholding Estimator tells taxpert about itself that is *behaviour* rather
 // than *words*.
 //
 // The workspace is configured from templates/fragments/taxpert-config.html, because every label it
@@ -8,13 +8,13 @@
 // fragment imports it. Every user-visible string here arrives through `t`, the translator the
 // fragment hands in; there is no English literal below.
 //
-// The *fact paths* are here too. They are the whole reason @taxpert/ui had to become
+// The *fact paths* are here too. They are the whole reason taxpert had to become
 // configuration-driven: they used to be one other application's twenty-three paths, compiled into
 // the library, which meant this app's Outcome tracker would have shown three permanently
 // unresolvable rows. Now the library ships none and this file supplies TWE's.
 
-import { windowFactGraphAdapter } from '../../vendor/taxpert-ui/shared/js/graph-adapter.js'
-import { saveFactGraph } from '../fg-components.js'
+import { windowFactGraphAdapter } from '../../vendor/taxpert/shared/js/graph-adapter.js'
+import { saveFactGraph } from '../../vendor/taxpert/flow-runtime/js/flow-runtime.js'
 
 /**
  * The fact-graph port for this application.
@@ -37,7 +37,7 @@ export const tweGraph = windowFactGraphAdapter({ save: saveFactGraph })
  * **Dollar**, not a boolean or an enum. `/withholdingGap` is positive when too little has been
  * withheld (a balance due), negative when too much has (a refund), zero when the year lands on
  * target. That is the `signed` outcome kind, and the reason it exists: the two direction templates
- * carry `{abs}`, which @taxpert/ui fills with fact-values.js's formatted value minus its sign
+ * carry `{abs}`, which taxpert fills with fact-values.js's formatted value minus its sign
  * ('$1,240'), so the words read naturally in either direction while the tracker's settled/pending
  * ring keeps working off the ordinary fact status.
  *

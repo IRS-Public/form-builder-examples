@@ -1,0 +1,73 @@
+/* The handful of rules where TWE genuinely differs from the Taxpert theme.
+ *
+ * Everything else it used to carry — variables.css, both layout files, nine of eleven component
+ * files — was byte-identical to credit-assistant's and now comes from taxpert's theme bundle.
+ * These are what was left after that subtraction, and they load after the theme so ordinary
+ * cascade order is all that makes them win.
+ */
+
+/* The "(Required)" marker, red rather than the theme's grey.
+ *
+ * The two forks disagreed here in markup: the scaffold's templates (taken from credit-assistant)
+ * put `usa-hint` on the marker, this app's copies put `usa-hint--required`, which USWDS colors
+ * `--secondary-dark`. Restoring it in CSS keeps the difference in the one place it belongs instead
+ * of forking five node templates over a class name. The selector is the marker's own shape — an
+ * aria-hidden span directly inside the field's label or legend — which is what distinguishes it
+ * from nodes/hint.html's `<div class="usa-hint">`. */
+.usa-label > span.usa-hint[aria-hidden='true'],
+.usa-legend > span.usa-hint[aria-hidden='true'] {
+  color: var(--error-dark);
+}
+
+/* The custom flow node this app registers (see gov.irs.twe.parser.FgWithholdingAdjustments). The
+   theme has no reason to know the element exists, but a custom element with no display is inline. */
+fg-withholding-adjustments {
+  display: block;
+}
+
+/* The year field of a date input is readonly when the flow pins it to the tax year, rather than
+   disabled, so it stays in the accessibility tree and submits its value. */
+.usa-input[readonly] {
+  background-color: var(--base-lighter);
+  border-color: var(--base-lighter);
+  color: var(--text-secondary);
+}
+
+/* Pull a following block back up over the flow's standard vertical rhythm. */
+.no-gap {
+  margin-top: calc(var(--flow-spacing--offset) * -1);
+}
+
+/* A <fg-detail> used as a collapsible section heading rather than as an inline "learn more". */
+details.fg-detail--as-section {
+  border-top: 2px solid var(--base-lighter);
+  margin-top: var(--flow-spacing--offset);
+  margin-bottom: calc(var(--flow-spacing--offset) * -1);
+
+  summary {
+    background-color: transparent;
+    background-position: right center;
+    padding: 0;
+  }
+
+  h3 {
+    font-weight: 600;
+    font-size: var(--font-size-8);
+    padding: var(--flow-spacing--offset) var(--units-205) var(--flow-spacing--offset) 0;
+    margin: 0;
+
+    @container app (min-width: 640px) {
+      font-size: var(--font-size-10);
+    }
+
+    @container app (min-width: 880px) {
+      font-size: var(--font-size-11);
+    }
+  }
+
+  .details-content {
+    border: none;
+    padding-left: 0;
+    padding-right: 0;
+  }
+}

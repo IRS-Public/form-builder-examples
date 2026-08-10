@@ -1,8 +1,9 @@
 package gov.irs.creditassistant.parser
 
-import gov.irs.creditassistant.exceptions.InvalidFormConfig
-import gov.irs.creditassistant.loadCreditAssistantFactDictionary
-import gov.irs.creditassistant.parser.Flow
+import gov.irs.creditassistant.app
+import gov.irs.formative.exceptions.InvalidFormConfig
+import gov.irs.formative.loadFactDictionary
+import gov.irs.formative.parser.*
 import org.scalatest.funspec.AnyFunSpec
 import scala.io.Source
 
@@ -41,10 +42,10 @@ class ParserSpec extends AnyFunSpec {
       val resolvedConfig = <FlowConfig>{resolvedChildren}</FlowConfig>
 
       // Load the fact dictionary
-      val caFactDictionary = loadCreditAssistantFactDictionary()
+      val caFactDictionary = loadFactDictionary(app)
 
       // Parse the flow - this will throw InvalidFormConfig if any fact names are invalid
-      val flow = Flow.fromXmlConfig(resolvedConfig, caFactDictionary.factDictionary)
+      val flow = Flow.fromXmlConfig(resolvedConfig, caFactDictionary.factDictionary, app)
 
       // If we get here, the flow parsed successfully with all valid fact names
       assert(flow.pages.nonEmpty, "Flow should contain at least one page")

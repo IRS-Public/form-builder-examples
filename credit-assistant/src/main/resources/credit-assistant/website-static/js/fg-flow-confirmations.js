@@ -1,5 +1,9 @@
-import { factGraph, saveFactGraph, resetEntireGraphKeepingTaxYear } from './fg-fact-graph.js'
-import { makeCollectionIdPath } from './fg-collection-utils.js'
+import {
+  factGraph,
+  saveFactGraph,
+  resetEntireGraph,
+} from '../vendor/taxpert/flow-runtime/js/fg-fact-graph.js'
+import { makeCollectionIdPath } from '../vendor/taxpert/flow-runtime/js/fg-collection-utils.js'
 
 /**
  * Destructive confirmations (TXE-21928): pending values and "show dialog" flags live on the fact
@@ -120,7 +124,8 @@ function wireFlowConfirmationModals () {
       document.body.classList.remove('usa-js-modal--active')
       return
     }
-    resetEntireGraphKeepingTaxYear(newYear)
+    // Reset everything, then re-assert the year they just chose.
+    resetEntireGraph({ '/chosenTaxYear': newYear })
   })
 
   document.getElementById('modal-confirm-mfj-to-nonmfj-continue')?.addEventListener('click', () => {

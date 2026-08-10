@@ -1,195 +1,56 @@
-components:
-  fg-set:
-    required: "(Required)"
-  fg-collection:
-    buttons:
-      remove: "Remove {0}"
-      add: "Add {0}"
-      add-with-determiner: "Add {1} {0}"
-    remove-item-modal:
-      heading:
-        remove: "Are you sure you want to remove this {0}?"
-      body: "This will delete any information you’ve already entered about this {0}."
-      footer:
-        confirm: "Yes, remove this {0}"
-        cancel: "No, keep this {0}"
-    determiners:
-      another: another
-      more: more
-  modal:
-    close: Close this window
-    ok: Okay
-  boolean:
-    yes: "Yes"
-    no: "No"
-  date:
-    month: Month
-    day: Day
-    year: Year
-    select: "- Select -"
-    january: January
-    february: February
-    march: March
-    april: April
-    may: May
-    june: June
-    july: July
-    august: August
-    september: September
-    october: October
-    november: November
-    december: December
-  select:
-    select: "--Select one --"
-
+# This application's own strings. The chrome the scaffold's templates need
+# (components.*, errors.*, step-indicator.*, layout.banner.*, …) ships with the
+# scaffold; declare a key here to override any of it.
 title:
   prefix: EITC Assistant
   suffix: Internal Revenue Service
-
+  format: '{0}'
 layout:
   title: EITC Assistant
-  skip-to-main: Skip to main content
-  identifier:
-    agency-identifier: Agency identifier
-    disclaimer: An official website of the <a class="usa-link" target="_blank" href="https://irs.gov">IRS<span class="usa-sr-only"> (opens in a new tab)</span></a>
-    about: About
-    accessibility: Accessibility
-    privacy-policy: Privacy policy
-    important-links: Important links
   usgov:
     name: United States government
-  irs:
-    name: IRS
-    domain: IRS.gov
-
-  banner:
-    how-you-know: Here’s how you know
-    official-domain: Official websites use .gov
-    official-organization: A <strong>.gov</strong> website belongs to an official government organization in the United States.
-    secure-https: Secure .gov websites use HTTPS
-    disclaimer: An official website of the United States government
-    lock-1: "A <strong>lock</strong>"
-    lock-2: "or <strong>https://</strong> means you’ve safely connected to the .gov website. Share sensitive information only on official, secure websites."
-
-buttons:
-  next: Next
-  continue: Continue
-  back: Back
-  submit: Submit
-
-alerts:
-  warning:
-    complete-required: Please complete the required fields
-
-step-indicator:
-  completed: completed
-  not-completed: not completed
-  step: Step
-  of: of
-
-# Note that these errors use CamelCase because they come from the Fact Graph. Some of these errors
-# are user errors (i.e. they entered an amount larger than the limit) but not all of them are (i.e.
-# if the limit is misconfigured). I've tried to the denote the ones that should only appear if
-# there's a bug that needs to be fixed.
-errors:
-  # Dollar errors
-  CombinedHyphensAndParentheses: Enter only numbers and a decimal.
-  # Not obvious to me why the fact graph breaks down invalid characters
-  # this way but I don't think it needs to be exposed to the user
-  InvalidCharacters: Enter only numbers and a decimal.
-  InvalidDollar: Enter only numbers and a decimal.
-  InvalidHyphens: Enter only numbers and a decimal.
-  InvalidParentheses: Enter only numbers and a decimal.
-  TooManyDecimals: Enter a number with only one decimal.
-  TooManyFractionalDigits: Enter only two digits after the decimal.
-
-  # Day errors
-  InvalidDay: Enter a valid day.
-  InvalidDayDueToLeapYear: Invalid day due to leap year.
-  InvalidMonth: Enter a valid month.
-  InvalidDate: Enter a valid date.
-  InvalidLimit: Invalid limit set. # Server error
-  IncompleteWritableDate: Enter a complete date or leave blank
-
-  # Enum errors
-  BlankEnum: Value was blank. # Server error
-  InvalidEnum: Value not found. # Server error
-
-  Required: This question is required
-  Default: Sorry, something went wrong # Server error
-
-  # Limit errors
-  #
-  # There are a few other limits types in the Fact Graph, but we don't use them for TWE. Strangely,
-  # Dollar et. al. have their own limit validations, like ExceedsMaxLimit. I don't know under what
-  # circumstances those would trigger; I think it's a vestige of a different way of setting limits
-  #
-  # Yes, it would be nice to do proper parameterization rather than just appending the limit value
-  # to the end of the string
-  Max: Enter an amount less than
-  Min: Enter an amount more than
-
-audit:
-  fact-select:
-    question: Fact Path
-    blank: -- Select a path --
-  collection-id-label: Collection ID
-  fact:
-    type: "Fact Type:"
-    value: "Value:"
-    remove: "Remove fact"
-    definition: "XML Definition"
-
 all-screens:
   toolbar:
-    label: "Audit toolbar"
-    show-conditions: "Show conditions"
-    section-label: "Section"
-    section-all: "All sections"
-    horizontal-layout: "Horizontal layout"
-    scenario-label: "Scenario"
-    scenario-placeholder: "Load a scenario…"
-    scenario-clear: "Clear scenario"
+    label: Audit toolbar
+    show-conditions: Show conditions
+    section-label: Section
+    section-all: All sections
+    horizontal-layout: Horizontal layout
+    scenario-label: Scenario
+    scenario-placeholder: Load a scenario…
+    scenario-clear: Clear scenario
   section:
-    about-you: "About you"
-    filing-status: "Filing status"
-    agi: "Adjusted gross income"
-    qualifying-children: "Qualifying children"
-    results: "Results"
-    other: "Other"
-    page-count: "{0} pages"
-    condition-count: "{0} conditions"
-  screen:
-    condition-count: "{0} conditions"
-
-# The Taxpert Workspace — the shared debug surfaces from @taxpert/ui (the app-switcher nav and the
-# Outcome tracker). Supplied to the package by templates/fragments/taxpert-config.html, which is a
-# Thymeleaf fragment for exactly this reason: the package itself ships with no copy of its own.
+    about-you: About you
+    filing-status: Filing status
+    agi: Adjusted gross income
+    qualifying-children: Qualifying children
+    results: Results
+    other: Other
 workspace:
   flags:
-    ai-scenario-generation: "AI scenario generation"
-    ai-fact-explanation: "AI fact explanations"
+    ai-scenario-generation: AI scenario generation
+    ai-fact-explanation: AI fact explanations
   nav:
-    experience-explorer: "Experience Explorer"
-    product-experience: "Product Experience"
-    browse-all: "Browse All"
-    path-mode: "Path Mode"
-    fact-explorer: "Fact Explorer"
-    authoring-suite: "Authoring Suite"
+    experience-explorer: Experience Explorer
+    product-experience: Product Experience
+    browse-all: Browse All
+    path-mode: Path Mode
+    fact-explorer: Fact Explorer
+    authoring-suite: Authoring Suite
   outcomes:
-    filing-status: "Derived Filing Status"
-    without-qualifying-child: "Qualifies without a qualifying child"
-    qualifying-child: "Qualifying child eligibility"
-    marital-status: "Marital status"
-    household-filing-intent: "Household & filing intent"
-    married-not-filing-jointly: "Married not filing jointly"
-    age-without-qualifying-child: "Age without a qualifying child"
-    age-with-qualifying-child: "Age with a qualifying child"
-    qualified: "Qualified"
-    not-qualified: "Not qualified"
+    filing-status: Derived Filing Status
+    without-qualifying-child: Qualifies without a qualifying child
+    qualifying-child: Qualifying child eligibility
+    marital-status: Marital status
+    household-filing-intent: Household & filing intent
+    married-not-filing-jointly: Married not filing jointly
+    age-without-qualifying-child: Age without a qualifying child
+    age-with-qualifying-child: Age with a qualifying child
+    qualified: Qualified
+    not-qualified: Not qualified
   filing-status:
-    single: "Single"
-    married-filing-jointly: "Married filing jointly"
-    married-filing-separately: "Married filing separately"
-    head-of-household: "Head of household"
-    qualified-surviving-spouse: "Qualified surviving spouse"
+    single: Single
+    married-filing-jointly: Married filing jointly
+    married-filing-separately: Married filing separately
+    head-of-household: Head of household
+    qualified-surviving-spouse: Qualified surviving spouse

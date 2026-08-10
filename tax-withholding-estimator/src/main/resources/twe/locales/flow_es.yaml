@@ -112,6 +112,7 @@
       class="usa-link">impuestos estimados. <span class="usa-sr-only">(abre en una nueva pestaña)</span></a>
   p-0ec9f9: <modal-link for="modal-what-counts-job">¿Qué cuenta como un trabajo?</modal-link>
   collection/jobs:
+    itemName: trabajo
     /jobs/*/filerAssignment:
       question: ¿Quién recibe estos ingresos?
       options:
@@ -369,6 +370,7 @@
   h3-4ef0c3: Ingresos por pensión o anualidades
   p-6b097c: <modal-link for="modal-what-counts-pension">¿Qué cuenta como una pensión o anualidad?</modal-link>
   collection/pensions:
+    itemName: pensión o anualidad
     /pensions/*/filerAssignment:
       question: ¿A quién le paga esta pensión o anualidad?
       options:
@@ -501,6 +503,7 @@
         condition="/isFilingStatusMFJ" operator="isTrue">tuyo o de tu esposo(a)</span>. También puede incluir ingresos como trabajador independiente, contratista o de economía por encargo.
   p-d93391: <modal-link for="modal-what-counts-self-employment">¿Qué cuenta como un trabajo por cuenta propia?</modal-link>
   collection/selfEmploymentSources:
+    itemName: trabajo por cuenta propia
     /selfEmploymentSources/*/filerAssignment:
       question: ¿Quién recibe este ingreso?
       options:
@@ -522,6 +525,7 @@
   h3-941f47: Ingresos por Seguro Social
   p-0c991a: <modal-link for="modal-what-counts-social-security">¿Qué cuenta como ingresos por Seguro Social?</modal-link>
   collection/socialSecuritySources:
+    itemName: ingresos por Seguro Social
     /socialSecuritySources/*/filerAssignment:
       question: ¿A quién se le paga este ingreso de Seguro Social?
       options:

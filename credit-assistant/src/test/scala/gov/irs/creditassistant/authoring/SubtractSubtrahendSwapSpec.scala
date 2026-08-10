@@ -1,6 +1,8 @@
 package gov.irs.creditassistant.authoring
 
+import gov.irs.creditassistant.app
 import gov.irs.factgraph.FactDictionary
+import gov.irs.formative.authoring.DerivedXml
 import io.circe.parser
 import org.scalatest.funspec.AnyFunSpec
 import org.scalatest.matchers.should.Matchers
@@ -17,7 +19,7 @@ import scala.xml.NodeBuffer
   */
 class SubtractSubtrahendSwapSpec extends AnyFunSpec with Matchers {
 
-  private val factsDir = os.pwd / "src" / "main" / "resources" / "credit-assistant" / "facts"
+  private val factsDir = app.factsDir
   private def sortedFactFiles() = os.list(factsDir).filter(p => os.isFile(p) && p.ext == "xml").sortBy(_.last)
 
   // Exactly what the editor sends after removing <Int>1</Int> and adding a <Dollar>5000</Dollar>.

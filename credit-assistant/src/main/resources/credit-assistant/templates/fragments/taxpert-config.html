@@ -1,6 +1,6 @@
 <div th:fragment="taxpert-config" th:remove="tag">
     <!--
-      Everything credit-assistant tells @taxpert/ui about itself.
+      Everything credit-assistant tells taxpert about itself.
 
       The shared workspace — the global nav, the audit panel, the three tool panels — ships knowing
       nothing about the application under it. It has no menu, no determinations, no feature flags and
@@ -22,12 +22,12 @@
       Note that message expressions are inlined inside comments too, which is why this one spells
       none of them out.
 
-      ORDER DOES NOT MATTER. @taxpert/ui reads its configuration when an element *renders*, not when
+      ORDER DOES NOT MATTER. taxpert reads its configuration when an element *renders*, not when
       it loads, and configure() dispatches `taxpert:config-changed` so anything already on screen
       rebuilds. So this can land before or after the element modules in head.html.
     -->
     <script type="module" th:inline="javascript">
-        import { configure, configureFromUrl } from '/app/eitc/resources/vendor/taxpert-ui/shared/js/config.js'
+        import { configure, configureFromUrl } from '/app/eitc/resources/vendor/taxpert/shared/js/config.js'
         import { eitcGraph, eitcDeterminations } from '/app/eitc/resources/js/taxpert/eitc-graph.js'
 
         // The build's locale, key by key. eitc-graph.js takes a lookup rather than the strings

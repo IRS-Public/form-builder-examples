@@ -460,6 +460,20 @@
       <attribute name="path">
         <data type="anyURI"/>
       </attribute>
+      <!-- What one item of this collection is called, and the word the "add another" button uses.
+           Both used to be looked up out of the locale by fact path; they are properties of the flow,
+           so the flow declares them and the locale translates the name like any other authored text. -->
+      <attribute name="item-name">
+        <text/>
+      </attribute>
+      <optional>
+        <attribute name="determiner">
+          <choice>
+            <value>another</value>
+            <value>more</value>
+          </choice>
+        </attribute>
+      </optional>
       <ref name="BlockContent"/>
     </element>
   </define>

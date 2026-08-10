@@ -1,36 +1,25 @@
 /* U.S. Web Design System (vendor-compiled) */
 @import "../vendor/uswds-3.13.0/styles/uswds.min.css";
 
-/* Variables */
-@import "variables.css";
+/* The Taxpert theme (vendored from taxpert): design tokens, page layout, and the styling for
+   every element the scaffold generates. This used to be sixteen files here, byte-identical to
+   another Formative app's copies of them. Anything this app genuinely styles differently goes
+   *below* this import and wins by ordinary cascade order. */
+@import "../vendor/taxpert/theme/styles/theme.css";
 
-/* Shared Taxpert UI (@taxpert/ui, vendored by `make copy-shared-ui`).
-   Both load unconditionally, unlike the workspace's audit-panel.css: each is scoped entirely to
-   its own custom elements and prefixed classes (--tgn-/.tgn-, --ttd-/.ttd-/.ttp-/.ttm-), so
-   neither restructures the product page. They come after variables.css so their token fallbacks
-   chain through this app's real USWDS variables. */
-@import "../vendor/taxpert-ui/global-nav/styles/global-nav.css";
-@import "../vendor/taxpert-ui/tool-panels/styles/tool-panels.css";
+/* Shared UI components (vendored from taxpert) */
+@import "../vendor/taxpert/global-nav/styles/global-nav.css";
+/* The workspace tool panels. Loaded here rather than behind the toggled
+   <link id="audit-panel-styles"> because, like the nav's, every selector in it is scoped to the
+   bundle's own custom elements and .ttd-/.ttp-/.ttm- classes — it cannot reach the product page the
+   way panel-shell.css's .audit-mode layout rules do. */
+@import "../vendor/taxpert/tool-panels/styles/tool-panels.css";
 
-/* Layout */
-@import "layout/header.css";
-@import "layout/main-content.css";
-
-/* Components */
-@import "components/alerts.css";
-@import "components/buttons.css";
-@import "components/details.css";
-@import "components/fg-collections.css";
-@import "components/forms.css";
-@import "components/modals.css";
-@import "components/step-indicator.css";
-@import "components/stacked-button-group.css";
-@import "components/tables.css";
-@import "components/estimate.css";
+/* This app's own: the custom flow node it registers, and its overrides of the theme. */
 @import "components/fg-withholding-adjustment.css";
+@import "components/twe-overrides.css";
 
-/* Utilities */
-@import "utilities/utilities.css";
+/* Utilities — generated from this app's own flow conditions, so not part of the theme. */
 @import "utilities/display-conditions.css";
 
 @view-transition {

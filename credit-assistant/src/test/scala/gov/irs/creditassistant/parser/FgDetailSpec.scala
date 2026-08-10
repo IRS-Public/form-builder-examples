@@ -1,13 +1,15 @@
 package gov.irs.creditassistant.parser
 
-import gov.irs.creditassistant.exceptions.InvalidFormConfig
-import gov.irs.creditassistant.loadCreditAssistantFactDictionary
+import gov.irs.creditassistant.app
+import gov.irs.formative.exceptions.InvalidFormConfig
+import gov.irs.formative.loadFactDictionary
+import gov.irs.formative.parser.*
 import org.scalatest.funspec.AnyFunSpec
 import scala.xml.Elem
 
 class FgDetailSpec extends AnyFunSpec {
-  private val factDictionary = loadCreditAssistantFactDictionary().factDictionary
-  private val flowParser = FlowParser(factDictionary)
+  private val factDictionary = loadFactDictionary(app).factDictionary
+  private val flowParser = FlowParser(factDictionary, app)
   private def testContext() = TranslationContext()
 
   describe("FgDetail.fromXml") {

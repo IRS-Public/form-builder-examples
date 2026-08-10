@@ -1,195 +1,56 @@
-components:
-  fg-set:
-    required: "(Обязательно)"
-  fg-collection:
-    buttons:
-      remove: "Удалить {0}"
-      add: "Добавить {0}"
-      add-with-determiner: "Добавить {1} {0}"
-    remove-item-modal:
-      heading:
-        remove: "Удалить {0}?"
-      body: "Вы уверены, что хотите удалить {0} из расчета EITC?"
-      footer:
-        confirm: "Подтвердить {0}"
-        cancel: "Отменить {0}"
-    determiners:
-      another: "другой"
-      more: "еще"
-  modal:
-    close: "Закрыть это окно"
-    ok: "ОК"
-  boolean:
-    yes: "Да"
-    no: "Нет"
-  date:
-    month: "Месяц"
-    day: "День"
-    year: "Год"
-    select: "- Выбрать -"
-    january: "Январь"
-    february: "Февраль"
-    march: "Март"
-    april: "Апрель"
-    may: "Май"
-    june: "Июнь"
-    july: "Июль"
-    august: "Август"
-    september: "Сентябрь"
-    october: "Октябрь"
-    november: "Ноябрь"
-    december: "Декабрь"
-  select:
-    select: "-- Выберите один --"
-
+# This application's own strings. The chrome the scaffold's templates need
+# (components.*, errors.*, step-indicator.*, layout.banner.*, …) ships with the
+# scaffold; declare a key here to override any of it.
 title:
-  prefix: "Помощник по EITC"
-  suffix: "Налоговое управление США"
-
+  prefix: Помощник по EITC
+  suffix: Налоговое управление США
+  format: '{0}'
 layout:
-  title: "Помощник по EITC"
-  skip-to-main: "Перейти к основному контенту"
-  identifier:
-    agency-identifier: "Идентификатор агентства"
-    disclaimer: "Официальный веб-сайт <a class=\"usa-link\" target=\"_blank\" href=\"https://irs.gov\">IRS<span class=\"usa-sr-only\"> (открывается в новой вкладке)</span></a>"
-    about: "О нас"
-    accessibility: "Доступность"
-    privacy-policy: "Политика конфиденциальности"
-    important-links: "Важные ссылки"
+  title: Помощник по EITC
   usgov:
-    name: "Правительство США"
-  irs:
-    name: "IRS"
-    domain: "IRS.gov"
-
-  banner:
-    how-you-know: "Как это узнать"
-    official-domain: "Официальные веб-сайты используют .gov"
-    official-organization: "Веб-сайт <strong>.gov</strong> принадлежит официальной правительственной организации США."
-    secure-https: "Безопасные веб-сайты .gov используют HTTPS"
-    disclaimer: "Официальный веб-сайт правительства США"
-    lock-1: "<strong>Замок</strong>"
-    lock-2: "или <strong>https://</strong> означает, что вы безопасно подключились к веб-сайту .gov. Делитесь конфиденциальной информацией только на официальных, безопасных веб-сайтах."
-
-buttons:
-  next: "Далее"
-  continue: "Продолжить"
-  back: "Назад"
-  submit: "Отправить"
-
-alerts:
-  warning:
-    complete-required: "Пожалуйста, заполните обязательные поля"
-
-step-indicator:
-  completed: "завершено"
-  not-completed: "не завершено"
-  step: "Шаг"
-  of: "из"
-
-# Note that these errors use CamelCase because they come from the Fact Graph. Some of these errors
-# are user errors (i.e. they entered an amount larger than the limit) but not all of them are (i.e.
-# if the limit is misconfigured). I've tried to the denote the ones that should only appear if
-# there's a bug that needs to be fixed.
-errors:
-  # Dollar errors
-  CombinedHyphensAndParentheses: "Введите только цифры и десятичную точку."
-  # Not obvious to me why the fact graph breaks down invalid characters
-  # this way but I don't think it needs to be exposed to the user
-  InvalidCharacters: "Введите только цифры и десятичную точку."
-  InvalidDollar: "Введите только цифры и десятичную точку."
-  InvalidHyphens: "Введите только цифры и десятичную точку."
-  InvalidParentheses: "Введите только цифры и десятичную точку."
-  TooManyDecimals: "Введите число только с одной десятичной точкой."
-  TooManyFractionalDigits: "Введите только два знака после запятой."
-
-  # Day errors
-  InvalidDay: "Введите действительный день."
-  InvalidDayDueToLeapYear: "Недействительный день из-за високосного года."
-  InvalidMonth: "Введите действительный месяц."
-  InvalidDate: "Введите действительную дату."
-  InvalidLimit: "Установлен недействительный лимит."
-  IncompleteWritableDate: "Введите полную дату или оставьте поле пустым."
-
-  # Enum errors
-  BlankEnum: "Значение было пустым."
-  InvalidEnum: "Значение не найдено."
-
-  Required: "Этот вопрос обязателен для заполнения"
-  Default: "Извините, что-то пошло не так"
-
-  # Limit errors
-  #
-  # There are a few other limits types in the Fact Graph, but we don't use them for TWE. Strangely,
-  # Dollar et. al. have their own limit validations, like ExceedsMaxLimit. I don't know under what
-  # circumstances those would trigger; I think it's a vestige of a different way of setting limits
-  #
-  # Yes, it would be nice to do proper parameterization rather than just appending the limit value
-  # to the end of the string
-  Max: "Введите сумму меньше"
-  Min: "Введите сумму больше"
-
-audit:
-  fact-select:
-    question: "Путь факта"
-    blank: "-- Выберите путь --"
-  collection-id-label: "ID коллекции"
-  fact:
-    type: "Тип факта:"
-    value: "Значение:"
-    remove: "Удалить факт"
-    definition: "XML-определение"
-
+    name: Правительство США
 all-screens:
   toolbar:
-    label: "Панель аудита"
-    show-conditions: "Показать условия"
-    section-label: "Раздел"
-    section-all: "Все разделы"
-    horizontal-layout: "Горизонтальный вид"
-    scenario-label: "Сценарий"
-    scenario-placeholder: "Загрузить сценарий…"
-    scenario-clear: "Очистить сценарий"
+    label: Панель аудита
+    show-conditions: Показать условия
+    section-label: Раздел
+    section-all: Все разделы
+    horizontal-layout: Горизонтальный вид
+    scenario-label: Сценарий
+    scenario-placeholder: Загрузить сценарий…
+    scenario-clear: Очистить сценарий
   section:
-    about-you: "О вас"
-    filing-status: "Статус подачи"
-    agi: "Скорректированный валовой доход"
-    qualifying-children: "Дети, дающие право"
-    results: "Результаты"
-    other: "Прочее"
-    page-count: "Страниц: {0}"
-    condition-count: "Условий: {0}"
-  screen:
-    condition-count: "Условий: {0}"
-
-# The Taxpert Workspace — the shared debug surfaces from @taxpert/ui (the app-switcher nav and the
-# Outcome tracker). Supplied to the package by templates/fragments/taxpert-config.html, which is a
-# Thymeleaf fragment for exactly this reason: the package itself ships with no copy of its own.
+    about-you: О вас
+    filing-status: Статус подачи
+    agi: Скорректированный валовой доход
+    qualifying-children: Дети, дающие право
+    results: Результаты
+    other: Прочее
 workspace:
   flags:
-    ai-scenario-generation: "Генерация сценариев с ИИ"
-    ai-fact-explanation: "Объяснение фактов с ИИ"
+    ai-scenario-generation: Генерация сценариев с ИИ
+    ai-fact-explanation: Объяснение фактов с ИИ
   nav:
-    experience-explorer: "Обзор интерфейса"
-    product-experience: "Интерфейс продукта"
-    browse-all: "Все экраны"
-    path-mode: "Режим пути"
-    fact-explorer: "Обзор фактов"
-    authoring-suite: "Инструменты автора"
+    experience-explorer: Обзор интерфейса
+    product-experience: Интерфейс продукта
+    browse-all: Все экраны
+    path-mode: Режим пути
+    fact-explorer: Обзор фактов
+    authoring-suite: Инструменты автора
   outcomes:
-    filing-status: "Производный налоговый статус"
-    without-qualifying-child: "Соответствие без ребёнка, дающего право"
-    qualifying-child: "Соответствие по ребёнку, дающему право"
-    marital-status: "Семейное положение"
-    household-filing-intent: "Домохозяйство и намерение подачи"
-    married-not-filing-jointly: "В браке, но подаёт не совместно"
-    age-without-qualifying-child: "Возраст без ребёнка, дающего право"
-    age-with-qualifying-child: "Возраст с ребёнком, дающим право"
-    qualified: "Соответствует"
-    not-qualified: "Не соответствует"
+    filing-status: Производный налоговый статус
+    without-qualifying-child: Соответствие без ребёнка, дающего право
+    qualifying-child: Соответствие по ребёнку, дающему право
+    marital-status: Семейное положение
+    household-filing-intent: Домохозяйство и намерение подачи
+    married-not-filing-jointly: В браке, но подаёт не совместно
+    age-without-qualifying-child: Возраст без ребёнка, дающего право
+    age-with-qualifying-child: Возраст с ребёнком, дающим право
+    qualified: Соответствует
+    not-qualified: Не соответствует
   filing-status:
-    single: "Не в браке"
-    married-filing-jointly: "В браке, подают совместно"
-    married-filing-separately: "В браке, подают раздельно"
-    head-of-household: "Глава домохозяйства"
-    qualified-surviving-spouse: "Соответствующий требованиям вдовец или вдова"
+    single: Не в браке
+    married-filing-jointly: В браке, подают совместно
+    married-filing-separately: В браке, подают раздельно
+    head-of-household: Глава домохозяйства
+    qualified-surviving-spouse: Соответствующий требованиям вдовец или вдова

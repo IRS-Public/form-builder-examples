@@ -32,7 +32,8 @@ import gov.irs.factgraph.{ types, FactDefinition, Graph }
 import gov.irs.factgraph.compnodes.{ EnumNode, MultiEnumNode }
 import gov.irs.factgraph.types.{ Day, Dollar, Enum as FgEnum }
 import gov.irs.factgraph.types.Collection
-import gov.irs.twe.loadTweFactDictionary
+import gov.irs.formative.loadFactDictionary
+import gov.irs.twe.app
 import scala.util.{ Failure, Success, Try }
 
 val INPUT_NAME_COL = 0
@@ -135,7 +136,7 @@ private def parseScenario(rows: List[List[String]], scenarioColumn: Int): Scenar
   var spreadsheetFacts = SHEET_ROW_TO_WRITABLE_FACT.map((sheetKey, factPath) => factPath -> csv(sheetKey))
 
   // Create the fact graph
-  val tweFactDictionary = loadTweFactDictionary()
+  val tweFactDictionary = loadFactDictionary(app)
   val factGraph = Graph(tweFactDictionary.factDictionary)
 
   // Add the Social Security sources to the fact graph

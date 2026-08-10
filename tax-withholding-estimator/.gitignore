@@ -8,10 +8,10 @@ projects/*/
 # node
 node_modules/
 
-# Generated mirror of taxpert-ui/src, written by `make copy-shared-ui` (a prerequisite of
-# every build target). It is a copy, never a source: edit /taxpert-ui/ and re-run the target.
+# Generated mirror of taxpert/src, written by `make copy-shared-ui` (a prerequisite of
+# every build target). It is a copy, never a source: edit /taxpert/ and re-run the target.
 # `make check-shared-ui` fails the build if this drifts from the package.
-src/main/resources/twe/website-static/vendor/taxpert-ui/
+src/main/resources/twe/website-static/vendor/taxpert/
 
 # Metals
 .bsp/

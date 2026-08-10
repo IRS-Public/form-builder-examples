@@ -1,6 +1,8 @@
 package gov.irs.creditassistant.authoring
 
+import gov.irs.creditassistant.app
 import gov.irs.factgraph.FactDictionary
+import gov.irs.formative.authoring.DerivedXml
 import org.scalatest.funspec.AnyFunSpec
 import org.scalatest.matchers.should.Matchers
 import scala.xml.{ Elem, Node, NodeBuffer }
@@ -14,7 +16,7 @@ import scala.xml.{ Elem, Node, NodeBuffer }
   */
 class DerivedXmlRoundTripSpec extends AnyFunSpec with Matchers {
 
-  private val factsDir = os.pwd / "src" / "main" / "resources" / "credit-assistant" / "facts"
+  private val factsDir = app.factsDir
 
   private def factFiles(): Seq[os.Path] =
     os.list(factsDir).filter(p => os.isFile(p) && p.ext == "xml").sortBy(_.last)

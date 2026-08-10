@@ -1,195 +1,56 @@
-components:
-  fg-set:
-    required: "(必填)"
-  fg-collection:
-    buttons:
-      remove: "刪除 {0}"
-      add: "新增 {0}"
-      add-with-determiner: "新增 {1} {0}"
-    remove-item-modal:
-      heading:
-        remove: "刪除 {0}？"
-      body: "您確定要將此 {0} 從 EITC 計算中刪除嗎？"
-      footer:
-        confirm: "確認 {0}"
-        cancel: "取消 {0}"
-    determiners:
-      another: "另一個"
-      more: "更多"
-  modal:
-    close: "關閉此視窗"
-    ok: "確定"
-  boolean:
-    yes: "是"
-    no: "否"
-  date:
-    month: "月"
-    day: "日"
-    year: "年"
-    select: "- 選擇 -"
-    january: "一月"
-    february: "二月"
-    march: "三月"
-    april: "四月"
-    may: "五月"
-    june: "六月"
-    july: "七月"
-    august: "八月"
-    september: "九月"
-    october: "十月"
-    november: "十一月"
-    december: "十二月"
-  select:
-    select: "-- 請選擇 --"
-
+# This application's own strings. The chrome the scaffold's templates need
+# (components.*, errors.*, step-indicator.*, layout.banner.*, …) ships with the
+# scaffold; declare a key here to override any of it.
 title:
-  prefix: "EITC 助手"
-  suffix: "美國國家稅務局"
-
+  prefix: EITC 助手
+  suffix: 美國國家稅務局
+  format: '{0}'
 layout:
-  title: "勞動所得稅抵免 (EITC) 助手"
-  skip-to-main: "跳至主要內容"
-  identifier:
-    agency-identifier: "機構標識符"
-    disclaimer: "<a class=\"usa-link\" target=\"_blank\" href=\"https://irs.gov\">IRS<span class=\"usa-sr-only\">（在新分頁中開啟）</span></a>的官方網站"
-    about: "關於"
-    accessibility: "無障礙存取"
-    privacy-policy: "隱私權政策"
-    important-links: "重要連結"
+  title: 勞動所得稅抵免 (EITC) 助手
   usgov:
-    name: "美國政府"
-  irs:
-    name: "IRS"
-    domain: "IRS.gov"
-
-  banner:
-    how-you-know: "如何確認"
-    official-domain: "官方網站使用 .gov"
-    official-organization: "<strong>.gov</strong> 網站屬於美國官方政府組織。"
-    secure-https: "安全的 .gov 網站使用 HTTPS"
-    disclaimer: "美國政府官方網站"
-    lock-1: "<strong>鎖型圖示</strong>"
-    lock-2: "或 <strong>https://</strong> 表示您已安全連線至 .gov 網站。請僅在官方且安全的網站上分享敏感資訊。"
-
-buttons:
-  next: "下一步"
-  continue: "繼續"
-  back: "返回"
-  submit: "提交"
-
-alerts:
-  warning:
-    complete-required: "請填寫必填欄位。"
-
-step-indicator:
-  completed: "已完成"
-  not-completed: "未完成"
-  step: "步驟"
-  of: "/"
-
-# Note that these errors use CamelCase because they come from the Fact Graph. Some of these errors
-# are user errors (i.e. they entered an amount larger than the limit) but not all of them are (i.e.
-# if the limit is misconfigured). I've tried to the denote the ones that should only appear if
-# there's a bug that needs to be fixed.
-errors:
-  # Dollar errors
-  CombinedHyphensAndParentheses: "只能輸入數字和小數點。"
-  # Not obvious to me why the fact graph breaks down invalid characters
-  # this way but I don't think it needs to be exposed to the user
-  InvalidCharacters: "只能輸入數字和小數點。"
-  InvalidDollar: "只能輸入數字和小數點。"
-  InvalidHyphens: "只能輸入數字和小數點。"
-  InvalidParentheses: "只能輸入數字和小數點。"
-  TooManyDecimals: "請輸入僅包含一個小數點的數字。"
-  TooManyFractionalDigits: "小數點後只能輸入兩位數字。"
-
-  # Day errors
-  InvalidDay: "請輸入有效的日期。"
-  InvalidDayDueToLeapYear: "由於閏年，該日期無效。"
-  InvalidMonth: "請輸入有效的月份。"
-  InvalidDate: "請輸入有效的日期。"
-  InvalidLimit: "設定的限制無效。"
-  IncompleteWritableDate: "請輸入完整的日期或留空。"
-
-  # Enum errors
-  BlankEnum: "值為空。"
-  InvalidEnum: "找不到該值。"
-
-  Required: '繼續前需要回答此問題'
-  Default: "抱歉，發生了一些問題。"
-
-  # Limit errors
-  #
-  # There are a few other limits types in the Fact Graph, but we don't use them for TWE. Strangely,
-  # Dollar et. al. have their own limit validations, like ExceedsMaxLimit. I don't know under what
-  # circumstances those would trigger; I think it's a vestige of a different way of setting limits
-  #
-  # Yes, it would be nice to do proper parameterization rather than just appending the limit value
-  # to the end of the string
-  Max: "請輸入小於以下數值的金額："
-  Min: "請輸入大於以下數值的金額："
-
-audit:
-  fact-select:
-    question: "事實路徑"
-    blank: "-- 選擇路徑 --"
-  collection-id-label: "集合 ID"
-  fact:
-    type: "事實類型："
-    value: "值："
-    remove: "刪除事實"
-    definition: "XML 定義"
-
+    name: 美國政府
 all-screens:
   toolbar:
-    label: "稽核工具列"
-    show-conditions: "顯示條件"
-    section-label: "部分"
-    section-all: "所有部分"
-    horizontal-layout: "橫向版面"
-    scenario-label: "情境"
-    scenario-placeholder: "載入情境…"
-    scenario-clear: "清除情境"
+    label: 稽核工具列
+    show-conditions: 顯示條件
+    section-label: 部分
+    section-all: 所有部分
+    horizontal-layout: 橫向版面
+    scenario-label: 情境
+    scenario-placeholder: 載入情境…
+    scenario-clear: 清除情境
   section:
-    about-you: "關於您"
-    filing-status: "申報狀態"
-    agi: "調整後總收入"
-    qualifying-children: "符合條件的子女"
-    results: "結果"
-    other: "其他"
-    page-count: "{0} 頁"
-    condition-count: "{0} 個條件"
-  screen:
-    condition-count: "{0} 個條件"
-
-# The Taxpert Workspace — the shared debug surfaces from @taxpert/ui (the app-switcher nav and the
-# Outcome tracker). Supplied to the package by templates/fragments/taxpert-config.html, which is a
-# Thymeleaf fragment for exactly this reason: the package itself ships with no copy of its own.
+    about-you: 關於您
+    filing-status: 申報狀態
+    agi: 調整後總收入
+    qualifying-children: 符合條件的子女
+    results: 結果
+    other: 其他
 workspace:
   flags:
-    ai-scenario-generation: "AI 情境產生"
-    ai-fact-explanation: "AI 事實說明"
+    ai-scenario-generation: AI 情境產生
+    ai-fact-explanation: AI 事實說明
   nav:
-    experience-explorer: "體驗瀏覽器"
-    product-experience: "產品體驗"
-    browse-all: "瀏覽全部畫面"
-    path-mode: "路徑模式"
-    fact-explorer: "事實瀏覽器"
-    authoring-suite: "編輯套件"
+    experience-explorer: 體驗瀏覽器
+    product-experience: 產品體驗
+    browse-all: 瀏覽全部畫面
+    path-mode: 路徑模式
+    fact-explorer: 事實瀏覽器
+    authoring-suite: 編輯套件
   outcomes:
-    filing-status: "推導出的申報身分"
-    without-qualifying-child: "無合格子女時符合資格"
-    qualifying-child: "合格子女資格"
-    marital-status: "婚姻狀況"
-    household-filing-intent: "家庭與申報意向"
-    married-not-filing-jointly: "已婚但不共同申報"
-    age-without-qualifying-child: "無合格子女時的年齡"
-    age-with-qualifying-child: "有合格子女時的年齡"
-    qualified: "符合資格"
-    not-qualified: "不符合資格"
+    filing-status: 推導出的申報身分
+    without-qualifying-child: 無合格子女時符合資格
+    qualifying-child: 合格子女資格
+    marital-status: 婚姻狀況
+    household-filing-intent: 家庭與申報意向
+    married-not-filing-jointly: 已婚但不共同申報
+    age-without-qualifying-child: 無合格子女時的年齡
+    age-with-qualifying-child: 有合格子女時的年齡
+    qualified: 符合資格
+    not-qualified: 不符合資格
   filing-status:
-    single: "單身"
-    married-filing-jointly: "已婚共同申報"
-    married-filing-separately: "已婚分開申報"
-    head-of-household: "戶主"
-    qualified-surviving-spouse: "合格未亡配偶"
+    single: 單身
+    married-filing-jointly: 已婚共同申報
+    married-filing-separately: 已婚分開申報
+    head-of-household: 戶主
+    qualified-surviving-spouse: 合格未亡配偶

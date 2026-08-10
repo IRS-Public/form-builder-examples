@@ -1,6 +1,6 @@
 package gov.irs.creditassistant
 
-import gov.irs.creditassistant.generatedFlowContentPath
+import gov.irs.formative.generatedFlowContentPath
 import io.circe.yaml.parser
 import io.circe.Json
 import io.circe.ParsingFailure
@@ -95,7 +95,7 @@ class YamlValidatorSpec extends AnyFunSpec {
   describe("flow yaml") {
     it("should have the same keys in all locales") {
 
-      val enFile = os.read(generatedFlowContentPath)
+      val enFile = os.read(generatedFlowContentPath(app))
       val enKeys = parser.parse(enFile).map(getAllKeys(_))
 
       SUPPORTED_LOCALES.foreach { locale =>
@@ -106,7 +106,7 @@ class YamlValidatorSpec extends AnyFunSpec {
     }
 
     it("should not contain empty or null values in any flow locale") {
-      val enFile = os.read(generatedFlowContentPath)
+      val enFile = os.read(generatedFlowContentPath(app))
       assertNoEmptyLeaves(parser.parse(enFile), "flow_en.yaml")
 
       SUPPORTED_LOCALES.foreach { locale =>

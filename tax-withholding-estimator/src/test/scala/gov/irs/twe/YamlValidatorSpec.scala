@@ -1,6 +1,7 @@
 package gov.irs.twe
 
-import gov.irs.twe.generatedFlowContentPath
+import gov.irs.formative.{ chromeLocaleContent, generatedFlowContentPath }
+import gov.irs.twe.app
 import io.circe.{ Json, ParsingFailure }
 import io.circe.yaml.parser
 import org.scalatest.funspec.AnyFunSpec
@@ -9,11 +10,22 @@ import scala.util.{ Failure, Success, Try }
 import scala.xml.{ Elem, Node, XML }
 
 class YamlValidatorSpec extends AnyFunSpec {
-  private val EN_YAML = Source.fromResource("twe/locales/en.yaml").mkString
-  private val ES_YAML = Source.fromResource("twe/locales/es.yaml").mkString
+  // The *layered* locale — the scaffold's chrome with this app's file on top — because that is what a
+  // page actually resolves against, and the two layers are not used symmetrically here. TWE's English
+  // chrome matched the scaffold's and was deleted; its Spanish is a different register throughout
+  // ("Ingresa" vs "Ingrese", "Elegir" vs "Seleccione"), so es.yaml still overrides all of it. Comparing
+  // the raw files would read that as 33 Spanish-only keys, when every one of them resolves in English
+  // too — from the layer below.
+  private val EN_JSON = layeredLocale("en")
+  private val ES_JSON = layeredLocale("es")
+
+  private def layeredLocale(languageCode: String): Either[ParsingFailure, Json] =
+    parser
+      .parse(Source.fromResource(s"twe/locales/$languageCode.yaml").mkString)
+      .map(app => chromeLocaleContent(languageCode).fold(app)(_.deepMerge(app)))
 
   // Can't access fromResource for the EN flow file because of sbt setting
-  private val FLOW_EN_YAML = os.read(generatedFlowContentPath)
+  private val FLOW_EN_YAML = os.read(generatedFlowContentPath(app))
   private val FLOW_ES_YAML = Source.fromResource("twe/locales/flow_es.yaml").mkString
 
   private val ignoredTranslationKeys: Set[String] = Set(
@@ -40,13 +52,13 @@ class YamlValidatorSpec extends AnyFunSpec {
 
   describe("main yaml") {
     it("should have the same keys in en and sp") {
-      val enKeys = parser.parse(EN_YAML).map(getAllKeys(_))
-      val esKeys = parser.parse(ES_YAML).map(getAllKeys(_))
+      val enKeys = EN_JSON.map(getAllKeys(_))
+      val esKeys = ES_JSON.map(getAllKeys(_))
       findKeyDifferences(enKeys, esKeys)
     }
 
     it("each content key should include equivalent tags (and attributes) in en and sp") {
-      findTagDifferences(parser.parse(EN_YAML), parser.parse(ES_YAML))
+      findTagDifferences(EN_JSON, ES_JSON)
     }
   }
 

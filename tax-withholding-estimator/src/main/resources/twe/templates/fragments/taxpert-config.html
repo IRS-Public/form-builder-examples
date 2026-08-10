@@ -1,6 +1,6 @@
 <div th:fragment="taxpert-config" th:remove="tag">
     <!--
-      Everything the Tax Withholding Estimator tells @taxpert/ui about itself.
+      Everything the Tax Withholding Estimator tells taxpert about itself.
 
       The shared workspace — the global nav, the audit panel, the three tool panels — ships knowing
       nothing about the application under it. It has no menu, no determinations, no feature flags
@@ -25,12 +25,12 @@
       Note that message expressions are inlined inside comments too, which is why this one spells
       none of them out.
 
-      ORDER DOES NOT MATTER. @taxpert/ui reads its configuration when an element *renders*, not
+      ORDER DOES NOT MATTER. taxpert reads its configuration when an element *renders*, not
       when it loads, and configure() dispatches `taxpert:config-changed` so anything already on
       screen rebuilds. So this can land before or after the element modules in head.html.
     -->
     <script type="module" th:inline="javascript">
-        import { configure, configureFromUrl } from '/app/tax-withholding-estimator/resources/vendor/taxpert-ui/shared/js/config.js'
+        import { configure, configureFromUrl } from '/app/tax-withholding-estimator/resources/vendor/taxpert/shared/js/config.js'
         import { tweGraph, tweDeterminations } from '/app/tax-withholding-estimator/resources/js/taxpert/twe-graph.js'
 
         // The build's locale, key by key. twe-graph.js takes a lookup rather than the strings
@@ -57,7 +57,7 @@
         const t = (key) => strings.get(key) ?? key
 
         configure({
-            // storagePrefix is what stops this app and any other Taxpert app served from the same
+            // storagePrefix is what stops this app and any other Formative app served from the same
             // origin sharing a watchlist, a panel layout or a set of display options. Every
             // storage key the workspace writes is namespaced with it.
             app: { id: 'twe', brand: 'Tax Withholding Estimator', storagePrefix: 'twe' },
@@ -78,21 +78,23 @@
                         children: [
                             { id: 'product-experience', label: [[#{workspace.nav.product-experience}]], href: '/app/tax-withholding-estimator/' },
                             { id: 'browse-all', label: [[#{workspace.nav.browse-all}]], href: '/app/tax-withholding-estimator/all-screens/' },
+                            { id: 'path-mode', label: [[#{workspace.nav.path-mode}]], href: '/app/tax-withholding-estimator/all-screens/?mode=path' },
                         ],
                     },
                 ],
 
                 // Where each tool button in the bar applies. Scenario is here even though this app
                 // ships no scenario JSONs: most of that modal is reset / copy / paste, which work
-                // off the live Fact Graph and are exactly as useful here as in the other host. The
-                // modal hides its library section when no <option>s were supplied, so an app with
-                // no library gets the rest rather than nothing. Browse All Screens is a generated
-                // page that does not mount the workspace, so no tool applies there and its bar
-                // stays bare.
+                // off the live Fact Graph and are exactly as useful here as in the other host — and
+                // Path Mode is a reading of one Fact Graph, so loading answers into it is the whole
+                // point. The modal hides its library section when no <option>s were supplied, so an
+                // app with no library gets the rest rather than nothing. Browse All shows every
+                // screen unconditionally, so only Display applies there: nothing it draws depends
+                // on an answer.
                 toolsByDestination: [
-                    { id: 'scenario', label: 'Scenario', icon: 'tune', destinations: ['product-experience'] },
-                    { id: 'display', label: 'Display', icon: 'visibility', destinations: ['product-experience'] },
-                    { id: 'tools', label: 'Tools', icon: 'build', destinations: ['product-experience'] },
+                    { id: 'scenario', label: 'Scenario', icon: 'tune', destinations: ['product-experience', 'path-mode'] },
+                    { id: 'display', label: 'Display', icon: 'visibility', destinations: ['product-experience', 'browse-all', 'path-mode'] },
+                    { id: 'tools', label: 'Tools', icon: 'build', destinations: ['product-experience', 'path-mode'] },
                 ],
             },
 

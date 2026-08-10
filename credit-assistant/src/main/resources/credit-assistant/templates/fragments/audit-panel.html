@@ -14,9 +14,9 @@
    </template>
 </taxpert-audit-panel>
 <script type="module">
-   // Register credit-assistant's EITC-specific panel extensions (kept in CA, not taxpert-ui):
+   // Register credit-assistant's EITC-specific panel extensions (kept in CA, not taxpert):
    // the Eligibility dashboard and the scenario-filter vocabulary.
-   import '/app/eitc/resources/vendor/taxpert-ui/audit-panel/js/taxpert-audit-panel.js'
+   import '/app/eitc/resources/vendor/taxpert/audit-panel/js/taxpert-audit-panel.js'
    import { registerEligibilityDashboard } from '/app/eitc/resources/js/eligibility-dashboard-plugin.js'
    import { registerScenarioFilters } from '/app/eitc/resources/js/scenario-filters.js'
    const panel = document.querySelector('#audit-panel')

@@ -1,0 +1,8 @@
+<!--
+  TWE's own additions to <head>: the PDF library and the module that fills a W-4 with the taxpayer's
+  answers. Nothing else in Taxpert produces a filled form, so neither belongs in the scaffold.
+-->
+<th:block th:fragment="app-head">
+  <script type="module" th:src="|${basePath}/resources/vendor/pdf-lib-1.17.1.min.js|"></script>
+  <script type="module" th:src="|${basePath}/resources/js/w4-pdf.js|"></script>
+</th:block>

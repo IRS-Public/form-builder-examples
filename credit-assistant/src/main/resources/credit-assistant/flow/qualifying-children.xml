@@ -24,7 +24,7 @@
         </div>
       </div>
       <!-- TODO: ensure that removing a child that is eligible actually removes it from the collection so that we don't over represent the number of QCs      -->
-      <fg-collection path="/familyAndHousehold" item-name="child" determiner="another" add-item-if-true="/flowShouldAllowAddAnotherQualifyingChild" if-true="/primaryFilerIsClaimingQualifyingChildren">
+      <fg-collection path="/familyAndHousehold" item-name="child" determiner="another" add-item-if-true="/flowShouldAllowAddAnotherQualifyingChild" seed-item-if-true="/flowCohortEitcRequiresQualifyingChildEntry" if-true="/primaryFilerIsClaimingQualifyingChildren">
 
         <fg-set path="/familyAndHousehold/*/livedWithYouUS">
           <question>Has this child lived with you more than half of <fg-show path="/taxYear"/> in the United States?</question>

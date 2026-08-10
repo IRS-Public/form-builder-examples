@@ -1113,6 +1113,8 @@
   p-adf161: Чтобы иметь право на получение EITC, у вас должен быть как минимум один
     ребенок, соответствующий требованиям.
   collection/familyAndHousehold:
+    # TODO: translate
+    itemName: child
     /familyAndHousehold/*/livedWithYouUS:
       question: Проживал ли этот ребенок с вами более половины <fg-show path="/taxYear"/>
         года в США?

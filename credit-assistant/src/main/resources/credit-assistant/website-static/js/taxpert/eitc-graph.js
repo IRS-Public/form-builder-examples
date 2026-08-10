@@ -1,4 +1,4 @@
-// What credit-assistant tells @taxpert/ui about itself that is *behaviour* rather than *words*.
+// What credit-assistant tells taxpert about itself that is *behaviour* rather than *words*.
 //
 // The workspace is configured from templates/fragments/taxpert-config.html, because every label it
 // carries goes through Thymeleaf's `#{...}` and is therefore translated once per locale at build
@@ -7,13 +7,13 @@
 // fragment imports it.
 //
 // Each determination's `outcome` used to be the second of those — a function turning a raw fact
-// value into a word. It is a declarative descriptor now (see @taxpert/ui's shared/js/outcome-kinds.js),
+// value into a word. It is a declarative descriptor now (see taxpert's shared/js/outcome-kinds.js),
 // which is what makes the determination list JSON end to end and therefore editable from the
 // Workspace settings UI. The *translated words* still come from `t`, so this file still needs the
 // fragment to hand it one.
 //
 // The *fact paths* are here too, and that is the point of the file. They used to exist twice: once
-// in @taxpert/ui's outcome-determinations.js for the Outcome tracker, and once in
+// in taxpert's outcome-determinations.js for the Outcome tracker, and once in
 // ./audit-panel/eligibility-dashboard.js for the audit panel's Eligibility dashboard — the same
 // twenty-three paths, in the same five groups, kept in step by hand. Both surfaces now read the one
 // list: the tracker through config.determinations, the dashboard by reading that config back.
@@ -21,8 +21,8 @@
 // Every string the two surfaces show comes in through `t`, the translator the fragment hands to
 // eitcDeterminations(). Nothing here is user-visible English.
 
-import { windowFactGraphAdapter } from '../../vendor/taxpert-ui/shared/js/graph-adapter.js'
-import { saveFactGraph } from '../fg-fact-graph.js'
+import { windowFactGraphAdapter } from '../../vendor/taxpert/shared/js/graph-adapter.js'
+import { saveFactGraph } from '../../vendor/taxpert/flow-runtime/js/fg-fact-graph.js'
 
 /**
  * The fact-graph port for this application.
@@ -67,7 +67,7 @@ const FILING_STATUS_KEYS = new Map([
  * disqualifiers, whose sense is inverted (disqualified means you do *not* qualify). The rollup also stays in its own section's fact list, so the
  * expanded view still shows it in place alongside the answers that feed it.
  *
- * Two keys are ours rather than @taxpert/ui's, and it ignores both: `dashboard` says which of the
+ * Two keys are ours rather than taxpert's, and it ignores both: `dashboard` says which of the
  * audit panel's two legacy lists a determination's sections belong to, and a section's own
  * `rollupPath` is the fact that list marks as its conclusion.
  *

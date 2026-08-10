@@ -1,3 +1,11 @@
+/* Which of *this* application's flow elements get an outline when the "show conditions"
+   display option is on. The list is the app's own flow vocabulary — register a custom flow node
+   and add it here.
+
+   Everything else that option draws — the <condition-detail> chips, the popover, the human-readable
+   fact view — is taxpert's own markup and is styled by the theme
+   (vendor/taxpert/theme/styles/utilities/condition-detail.css), which main.css already imports. */
+
 .display-conditions {
   div[condition],
   p[condition],
@@ -12,47 +20,5 @@
     padding: 0 var(--units-2) var(--units-2);
     position: relative;
     margin-bottom: var(--units-05);
-  }
-
-  .fact-name {
-    background-color: var(--accent-warm);
-    color: var(--base-darkest);
-    display: block;
-    font-size: 1rem;
-    left: 0;
-    margin: 0 -1rem var(--units-1);
-    padding: 0 var(--units-05);
-    top: 0;
-  }
-
-  span[condition] {
-    background-color: var(--warning-lighter);
-    border: 1px solid var(--accent-warm);
-    color: var(--base-dark);
-    font-style: italic;
-    padding: 0 .5ch;
-
-    .fact-name {
-      background-color: transparent;
-      display: inline;
-      color: var(--base-dark);
-      font-style: normal;
-      font-weight: normal;
-      margin: 0;
-      margin-left: .5ch;
-
-      &::before {
-        content: "(";
-      }
-      &::after {
-        content: ")";
-      }
-    }
-  }
-
-  /* This overrides our fix for a JAWS issue where it reads
-   some of the conditional content as a single word. */
-  fg-set span[condition]:not(.hidden) {
-    display: inline;
   }
 }

@@ -1,195 +1,56 @@
-components:
-  fg-set:
-    required: "(Bắt buộc)"
-  fg-collection:
-    buttons:
-      remove: "Xóa {0}"
-      add: "Thêm {0}"
-      add-with-determiner: "Thêm {1} {0}"
-    remove-item-modal:
-      heading:
-        remove: "Xóa {0}?"
-      body: "Bạn có chắc chắn muốn xóa {0} này khỏi tính toán EITC không?"
-      footer:
-        confirm: "Xác nhận {0}"
-        cancel: "Hủy {0}"
-    determiners:
-      another: "khác"
-      more: "nữa"
-  modal:
-    close: "Đóng cửa sổ này"
-    ok: "Đồng ý"
-  boolean:
-    yes: "Có"
-    no: "Không"
-  date:
-    month: "Tháng"
-    day: "Ngày"
-    year: "Năm"
-    select: "- Chọn -"
-    january: "Tháng 1"
-    february: "Tháng 2"
-    march: "Tháng 3"
-    april: "Tháng 4"
-    may: "Tháng 5"
-    june: "Tháng 6"
-    july: "Tháng 7"
-    august: "Tháng 8"
-    september: "Tháng 9"
-    october: "Tháng 10"
-    november: "Tháng 11"
-    december: "Tháng 12"
-  select:
-    select: "-- Chọn một --"
-
+# This application's own strings. The chrome the scaffold's templates need
+# (components.*, errors.*, step-indicator.*, layout.banner.*, …) ships with the
+# scaffold; declare a key here to override any of it.
 title:
-  prefix: "Trợ lý EITC"
-  suffix: "Sở Thuế vụ"
-
+  prefix: Trợ lý EITC
+  suffix: Sở Thuế vụ
+  format: '{0}'
 layout:
-  title: "Trợ lý Tín dụng Thuế Thu nhập Kiếm được (EITC)"
-  skip-to-main: "Chuyển đến nội dung chính"
-  identifier:
-    agency-identifier: "Mã định danh cơ quan"
-    disclaimer: "Một trang web chính thức của <a class=\"usa-link\" target=\"_blank\" href=\"https://irs.gov\">IRS<span class=\"usa-sr-only\"> (mở trong tab mới)</span></a>"
-    about: "Giới thiệu"
-    accessibility: "Trợ năng"
-    privacy-policy: "Chính sách bảo mật"
-    important-links: "Các liên kết quan trọng"
+  title: Trợ lý Tín dụng Thuế Thu nhập Kiếm được (EITC)
   usgov:
-    name: "Chính phủ Hoa Kỳ"
-  irs:
-    name: "IRS"
-    domain: "IRS.gov"
-
-  banner:
-    how-you-know: "Làm thế nào để bạn biết"
-    official-domain: "Các trang web chính thức sử dụng .gov"
-    official-organization: "Trang web <strong>.gov</strong> thuộc về một tổ chức chính thức của chính phủ Hoa Kỳ."
-    secure-https: "Các trang web .gov an toàn sử dụng HTTPS"
-    disclaimer: "Một trang web chính thức của chính phủ Hoa Kỳ"
-    lock-1: "<strong>Ổ khóa</strong>"
-    lock-2: "hoặc <strong>https://</strong> có nghĩa là bạn đã kết nối an toàn với trang web .gov. Chỉ chia sẻ thông tin nhạy cảm trên các trang web chính thức, an toàn."
-
-buttons:
-  next: "Tiếp theo"
-  continue: "Tiếp tục"
-  back: "Quay lại"
-  submit: "Gửi"
-
-alerts:
-  warning:
-    complete-required: "Vui lòng trả lời các câu hỏi bắt buộc."
-
-step-indicator:
-  completed: "đã hoàn thành"
-  not-completed: "chưa hoàn thành"
-  step: "Bước"
-  of: "của"
-
-# Note that these errors use CamelCase because they come from the Fact Graph. Some of these errors
-# are user errors (i.e. they entered an amount larger than the limit) but not all of them are (i.e.
-# if the limit is misconfigured). I've tried to the denote the ones that should only appear if
-# there's a bug that needs to be fixed.
-errors:
-  # Dollar errors
-  CombinedHyphensAndParentheses: "Chỉ nhập số và dấu thập phân."
-  # Not obvious to me why the fact graph breaks down invalid characters
-  # this way but I don't think it needs to be exposed to the user
-  InvalidCharacters: "Chỉ nhập số và dấu thập phân."
-  InvalidDollar: "Chỉ nhập số và dấu thập phân."
-  InvalidHyphens: "Chỉ nhập số và dấu thập phân."
-  InvalidParentheses: "Chỉ nhập số và dấu thập phân."
-  TooManyDecimals: "Chỉ nhập số có một dấu thập phân."
-  TooManyFractionalDigits: "Chỉ nhập hai chữ số sau dấu thập phân."
-
-  # Day errors
-  InvalidDay: "Nhập một ngày hợp lệ."
-  InvalidDayDueToLeapYear: "Ngày không hợp lệ do năm nhuận."
-  InvalidMonth: "Nhập một tháng hợp lệ."
-  InvalidDate: "Nhập một ngày hợp lệ."
-  InvalidLimit: "Giới hạn được thiết lập không hợp lệ."
-  IncompleteWritableDate: "Nhập ngày đầy đủ hoặc để trống."
-
-  # Enum errors
-  BlankEnum: "Giá trị bị trống."
-  InvalidEnum: "Không tìm thấy giá trị."
-
-  Required: "Bắt buộc phải trả lời câu hỏi này để tiếp tục."
-  Default: "Rất tiếc, đã xảy ra lỗi."
-
-  # Limit errors
-  #
-  # There are a few other limits types in the Fact Graph, but we don't use them for TWE. Strangely,
-  # Dollar et. al. have their own limit validations, like ExceedsMaxLimit. I don't know under what
-  # circumstances those would trigger; I think it's a vestige of a different way of setting limits
-  #
-  # Yes, it would be nice to do proper parameterization rather than just appending the limit value
-  # to the end of the string
-  Max: "Nhập số tiền nhỏ hơn"
-  Min: "Nhập số tiền lớn hơn"
-
-audit:
-  fact-select:
-    question: "Đường dẫn dữ kiện"
-    blank: "-- Chọn một đường dẫn --"
-  collection-id-label: "ID Bộ sưu tập"
-  fact:
-    type: "Loại dữ kiện:"
-    value: "Giá trị:"
-    remove: "Xóa dữ kiện"
-    definition: "Định nghĩa XML"
-
+    name: Chính phủ Hoa Kỳ
 all-screens:
   toolbar:
-    label: "Thanh công cụ kiểm toán"
-    show-conditions: "Hiển thị điều kiện"
-    section-label: "Phần"
-    section-all: "Tất cả các phần"
-    horizontal-layout: "Bố cục ngang"
-    scenario-label: "Kịch bản"
-    scenario-placeholder: "Tải kịch bản…"
-    scenario-clear: "Xóa kịch bản"
+    label: Thanh công cụ kiểm toán
+    show-conditions: Hiển thị điều kiện
+    section-label: Phần
+    section-all: Tất cả các phần
+    horizontal-layout: Bố cục ngang
+    scenario-label: Kịch bản
+    scenario-placeholder: Tải kịch bản…
+    scenario-clear: Xóa kịch bản
   section:
-    about-you: "Về bạn"
-    filing-status: "Tình trạng khai thuế"
-    agi: "Tổng thu nhập điều chỉnh"
-    qualifying-children: "Trẻ đủ điều kiện"
-    results: "Kết quả"
-    other: "Khác"
-    page-count: "{0} trang"
-    condition-count: "{0} điều kiện"
-  screen:
-    condition-count: "{0} điều kiện"
-
-# The Taxpert Workspace — the shared debug surfaces from @taxpert/ui (the app-switcher nav and the
-# Outcome tracker). Supplied to the package by templates/fragments/taxpert-config.html, which is a
-# Thymeleaf fragment for exactly this reason: the package itself ships with no copy of its own.
+    about-you: Về bạn
+    filing-status: Tình trạng khai thuế
+    agi: Tổng thu nhập điều chỉnh
+    qualifying-children: Trẻ đủ điều kiện
+    results: Kết quả
+    other: Khác
 workspace:
   flags:
-    ai-scenario-generation: "Tạo kịch bản bằng AI"
-    ai-fact-explanation: "Giải thích dữ kiện bằng AI"
+    ai-scenario-generation: Tạo kịch bản bằng AI
+    ai-fact-explanation: Giải thích dữ kiện bằng AI
   nav:
-    experience-explorer: "Trình khám phá trải nghiệm"
-    product-experience: "Trải nghiệm sản phẩm"
-    browse-all: "Xem tất cả màn hình"
-    path-mode: "Chế độ đường dẫn"
-    fact-explorer: "Trình khám phá dữ kiện"
-    authoring-suite: "Bộ công cụ soạn thảo"
+    experience-explorer: Trình khám phá trải nghiệm
+    product-experience: Trải nghiệm sản phẩm
+    browse-all: Xem tất cả màn hình
+    path-mode: Chế độ đường dẫn
+    fact-explorer: Trình khám phá dữ kiện
+    authoring-suite: Bộ công cụ soạn thảo
   outcomes:
-    filing-status: "Tình trạng khai thuế được suy ra"
-    without-qualifying-child: "Đủ điều kiện khi không có con hợp lệ"
-    qualifying-child: "Điều kiện về con hợp lệ"
-    marital-status: "Tình trạng hôn nhân"
-    household-filing-intent: "Hộ gia đình và ý định khai thuế"
-    married-not-filing-jointly: "Đã kết hôn nhưng không khai chung"
-    age-without-qualifying-child: "Độ tuổi khi không có con hợp lệ"
-    age-with-qualifying-child: "Độ tuổi khi có con hợp lệ"
-    qualified: "Đủ điều kiện"
-    not-qualified: "Không đủ điều kiện"
+    filing-status: Tình trạng khai thuế được suy ra
+    without-qualifying-child: Đủ điều kiện khi không có con hợp lệ
+    qualifying-child: Điều kiện về con hợp lệ
+    marital-status: Tình trạng hôn nhân
+    household-filing-intent: Hộ gia đình và ý định khai thuế
+    married-not-filing-jointly: Đã kết hôn nhưng không khai chung
+    age-without-qualifying-child: Độ tuổi khi không có con hợp lệ
+    age-with-qualifying-child: Độ tuổi khi có con hợp lệ
+    qualified: Đủ điều kiện
+    not-qualified: Không đủ điều kiện
   filing-status:
-    single: "Độc thân"
-    married-filing-jointly: "Kết hôn khai chung"
-    married-filing-separately: "Kết hôn khai riêng"
-    head-of-household: "Chủ hộ"
-    qualified-surviving-spouse: "Vợ hoặc chồng còn sống đủ điều kiện"
+    single: Độc thân
+    married-filing-jointly: Kết hôn khai chung
+    married-filing-separately: Kết hôn khai riêng
+    head-of-household: Chủ hộ
+    qualified-surviving-spouse: Vợ hoặc chồng còn sống đủ điều kiện

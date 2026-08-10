@@ -1,195 +1,56 @@
-components:
-  fg-set:
-    required: "(필수)"
-  fg-collection:
-    buttons:
-      remove: "{0} 삭제"
-      add: "{0} 추가"
-      add-with-determiner: "{1} {0} 추가"
-    remove-item-modal:
-      heading:
-        remove: "{0} 삭제?"
-      body: "이 {0}을(를) EITC 계산에서 삭제하시겠습니까?"
-      footer:
-        confirm: "{0} 확인"
-        cancel: "{0} 취소"
-    determiners:
-      another: "또 다른"
-      more: "더"
-  modal:
-    close: "이 창 닫기"
-    ok: "확인"
-  boolean:
-    yes: "예"
-    no: "아니요"
-  date:
-    month: "월"
-    day: "일"
-    year: "연도"
-    select: "- 선택 -"
-    january: "1월"
-    february: "2월"
-    march: "3월"
-    april: "4월"
-    may: "5월"
-    june: "6월"
-    july: "7월"
-    august: "8월"
-    september: "9월"
-    october: "10월"
-    november: "11월"
-    december: "12월"
-  select:
-    select: "-- 선택 --"
-
+# This application's own strings. The chrome the scaffold's templates need
+# (components.*, errors.*, step-indicator.*, layout.banner.*, …) ships with the
+# scaffold; declare a key here to override any of it.
 title:
-  prefix: "EITC 도우미"
-  suffix: "국세청"
-
+  prefix: EITC 도우미
+  suffix: 국세청
+  format: '{0}'
 layout:
-  title: "근로소득세액공제(EITC) 도우미"
-  skip-to-main: "본문으로 건너뛰기"
-  identifier:
-    agency-identifier: "기관 식별자"
-    disclaimer: "공식 웹사이트 <a class=\"usa-link\" target=\"_blank\" href=\"https://irs.gov\">IRS<span class=\"usa-sr-only\"> (새 탭에서 열림)</span></a>"
-    about: "소개"
-    accessibility: "접근성"
-    privacy-policy: "개인정보처리방침"
-    important-links: "주요 링크"
+  title: 근로소득세액공제(EITC) 도우미
   usgov:
-    name: "미국 정부"
-  irs:
-    name: "IRS"
-    domain: "IRS.gov"
-
-  banner:
-    how-you-know: "확인하는 방법"
-    official-domain: "공식 웹사이트는 .gov를 사용합니다"
-    official-organization: "<strong>.gov</strong> 웹사이트는 미국 공식 정부 기관에 속해 있습니다."
-    secure-https: "안전한 .gov 웹사이트는 HTTPS를 사용합니다"
-    disclaimer: "미국 정부 공식 웹사이트"
-    lock-1: "<strong>자물쇠 아이콘</strong>"
-    lock-2: "또는 <strong>https://</strong>는 .gov 웹사이트에 안전하게 연결되었음을 의미합니다. 민감한 정보는 안전한 공식 웹사이트에서만 공유하세요."
-
-buttons:
-  next: "다음"
-  continue: "계속"
-  back: "뒤로"
-  submit: "제출"
-
-alerts:
-  warning:
-    complete-required: "필수 항목을 입력해 주세요."
-
-step-indicator:
-  completed: "완료됨"
-  not-completed: "완료되지 않음"
-  step: "단계"
-  of: "중"
-
-# Note that these errors use CamelCase because they come from the Fact Graph. Some of these errors
-# are user errors (i.e. they entered an amount larger than the limit) but not all of them are (i.e.
-# if the limit is misconfigured). I've tried to the denote the ones that should only appear if
-# there's a bug that needs to be fixed.
-errors:
-  # Dollar errors
-  CombinedHyphensAndParentheses: "숫자와 소수점만 입력하십시오."
-  # Not obvious to me why the fact graph breaks down invalid characters
-  # this way but I don't think it needs to be exposed to the user
-  InvalidCharacters: "숫자와 소수점만 입력하십시오."
-  InvalidDollar: "숫자와 소수점만 입력하십시오."
-  InvalidHyphens: "숫자와 소수점만 입력하십시오."
-  InvalidParentheses: "숫자와 소수점만 입력하십시오."
-  TooManyDecimals: "소수점이 하나만 포함된 숫자를 입력하십시오."
-  TooManyFractionalDigits: "소수점 뒤에 두 자리 숫자만 입력하십시오."
-
-  # Day errors
-  InvalidDay: "유효한 일을 입력하십시오."
-  InvalidDayDueToLeapYear: "윤년으로 인해 유효하지 않은 일입니다."
-  InvalidMonth: "유효한 월을 입력하십시오."
-  InvalidDate: "유효한 날짜를 입력하십시오."
-  InvalidLimit: "유효하지 않은 한도가 설정되었습니다."
-  IncompleteWritableDate: "전체 날짜를 입력하거나 비워 두십시오."
-
-  # Enum errors
-  BlankEnum: "값이 비어 있습니다."
-  InvalidEnum: "값을 찾을 수 없습니다."
-
-  Required: "계속하려면 이 질문에 답해야 합니다."
-  Default: "죄송합니다. 문제가 발생했습니다."
-
-  # Limit errors
-  #
-  # There are a few other limits types in the Fact Graph, but we don't use them for TWE. Strangely,
-  # Dollar et. al. have their own limit validations, like ExceedsMaxLimit. I don't know under what
-  # circumstances those would trigger; I think it's a vestige of a different way of setting limits
-  #
-  # Yes, it would be nice to do proper parameterization rather than just appending the limit value
-  # to the end of the string
-  Max: "다음보다 작은 금액을 입력하십시오:"
-  Min: "다음보다 큰 금액을 입력하십시오:"
-
-audit:
-  fact-select:
-    question: "팩트 경로"
-    blank: "-- 경로 선택 --"
-  collection-id-label: "컬렉션 ID"
-  fact:
-    type: "팩트 유형:"
-    value: "값:"
-    remove: "팩트 삭제"
-    definition: "XML 정의"
-
+    name: 미국 정부
 all-screens:
   toolbar:
-    label: "감사 도구 모음"
-    show-conditions: "조건 표시"
-    section-label: "섹션"
-    section-all: "모든 섹션"
-    horizontal-layout: "수평 레이아웃"
-    scenario-label: "시나리오"
-    scenario-placeholder: "시나리오 불러오기…"
-    scenario-clear: "시나리오 지우기"
+    label: 감사 도구 모음
+    show-conditions: 조건 표시
+    section-label: 섹션
+    section-all: 모든 섹션
+    horizontal-layout: 수평 레이아웃
+    scenario-label: 시나리오
+    scenario-placeholder: 시나리오 불러오기…
+    scenario-clear: 시나리오 지우기
   section:
-    about-you: "본인 정보"
-    filing-status: "신고 상태"
-    agi: "조정총소득"
-    qualifying-children: "적격 자녀"
-    results: "결과"
-    other: "기타"
-    page-count: "페이지 {0}개"
-    condition-count: "조건 {0}개"
-  screen:
-    condition-count: "조건 {0}개"
-
-# The Taxpert Workspace — the shared debug surfaces from @taxpert/ui (the app-switcher nav and the
-# Outcome tracker). Supplied to the package by templates/fragments/taxpert-config.html, which is a
-# Thymeleaf fragment for exactly this reason: the package itself ships with no copy of its own.
+    about-you: 본인 정보
+    filing-status: 신고 상태
+    agi: 조정총소득
+    qualifying-children: 적격 자녀
+    results: 결과
+    other: 기타
 workspace:
   flags:
-    ai-scenario-generation: "AI 시나리오 생성"
-    ai-fact-explanation: "AI 팩트 설명"
+    ai-scenario-generation: AI 시나리오 생성
+    ai-fact-explanation: AI 팩트 설명
   nav:
-    experience-explorer: "경험 탐색기"
-    product-experience: "제품 경험"
-    browse-all: "전체 화면 보기"
-    path-mode: "경로 모드"
-    fact-explorer: "팩트 탐색기"
-    authoring-suite: "작성 도구 모음"
+    experience-explorer: 경험 탐색기
+    product-experience: 제품 경험
+    browse-all: 전체 화면 보기
+    path-mode: 경로 모드
+    fact-explorer: 팩트 탐색기
+    authoring-suite: 작성 도구 모음
   outcomes:
-    filing-status: "파생된 신고 상태"
-    without-qualifying-child: "적격 자녀 없이 자격 충족"
-    qualifying-child: "적격 자녀 자격 요건"
-    marital-status: "혼인 상태"
-    household-filing-intent: "가구 및 신고 의사"
-    married-not-filing-jointly: "기혼이나 공동 신고 아님"
-    age-without-qualifying-child: "적격 자녀가 없는 경우의 연령"
-    age-with-qualifying-child: "적격 자녀가 있는 경우의 연령"
-    qualified: "자격 있음"
-    not-qualified: "자격 없음"
+    filing-status: 파생된 신고 상태
+    without-qualifying-child: 적격 자녀 없이 자격 충족
+    qualifying-child: 적격 자녀 자격 요건
+    marital-status: 혼인 상태
+    household-filing-intent: 가구 및 신고 의사
+    married-not-filing-jointly: 기혼이나 공동 신고 아님
+    age-without-qualifying-child: 적격 자녀가 없는 경우의 연령
+    age-with-qualifying-child: 적격 자녀가 있는 경우의 연령
+    qualified: 자격 있음
+    not-qualified: 자격 없음
   filing-status:
-    single: "독신"
-    married-filing-jointly: "부부 공동 신고"
-    married-filing-separately: "부부 개별 신고"
-    head-of-household: "세대주"
-    qualified-surviving-spouse: "적격 생존 배우자"
+    single: 독신
+    married-filing-jointly: 부부 공동 신고
+    married-filing-separately: 부부 개별 신고
+    head-of-household: 세대주
+    qualified-surviving-spouse: 적격 생존 배우자

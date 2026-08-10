@@ -49,19 +49,21 @@ COPY --from=factgraph \
      /build/fact-graph/js/target/scala-3.3.6/factgraph-fastopt/main.mjs.map \
      ./src/main/resources/credit-assistant/website-static/vendor/fact-graph/main.mjs.map
 # Equivalent of `make copy-shared-ui`: vendor the shared UI components from the
-# sibling ../taxpert-ui repo (see docker-compose.yml — same reason this build's
+# sibling ../taxpert repo (see docker-compose.yml — same reason this build's
 # context is the repo root, not just credit-assistant/). Mirrors the bundle-dir
-# layout (global-nav/, audit-panel/, shared/, tool-panels/, each with js/styles/…).
+# layout (global-nav/, audit-panel/, shared/, tool-panels/, flow-runtime/, theme/,
+# each with js/styles/…).
+#
+# One COPY of the whole src/ tree rather than one per bundle: the per-bundle list had to
+# be kept in step with taxpert by hand, and a bundle missing from it produced an image
+# whose UI was silently incomplete. `make copy-shared-ui` derives the list the same way.
 #
 # Wipe first, exactly as the Makefile recipe does: COPY merges into the destination
-# rather than replacing it, so without this a file deleted or renamed in taxpert-ui/src
+# rather than replacing it, so without this a file deleted or renamed in taxpert/src
 # could survive in the image as a stale vendored copy. (The mirror is untracked and
 # .dockerignore'd, so this only bites when a developer's working tree carries one.)
-RUN rm -rf ./src/main/resources/credit-assistant/website-static/vendor/taxpert-ui
-COPY taxpert-ui/src/global-nav ./src/main/resources/credit-assistant/website-static/vendor/taxpert-ui/global-nav
-COPY taxpert-ui/src/audit-panel ./src/main/resources/credit-assistant/website-static/vendor/taxpert-ui/audit-panel
-COPY taxpert-ui/src/shared ./src/main/resources/credit-assistant/website-static/vendor/taxpert-ui/shared
-COPY taxpert-ui/src/tool-panels ./src/main/resources/credit-assistant/website-static/vendor/taxpert-ui/tool-panels
+RUN rm -rf ./src/main/resources/credit-assistant/website-static/vendor/taxpert
+COPY taxpert/src ./src/main/resources/credit-assistant/website-static/vendor/taxpert
 # Generate out/app/eitc/** with the audit UI baked in (no --serve -> exits after writing).
 RUN --mount=type=cache,target=/root/.cache/coursier \
     --mount=type=cache,target=/root/.sbt \
