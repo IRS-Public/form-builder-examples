@@ -71,8 +71,6 @@ all-screens:
     results: Resultado
     other: Otros
 workspace:
-  flags:
-    legacy-audit-panel: Panel de auditoría heredado de TWE
   tools:
     inspect: Inspeccionar
     inspect-description: Inspeccione hechos, flujos y texto.
@@ -87,6 +85,7 @@ workspace:
     product-experience: Experiencia del producto
     browse-all: Ver todas las pantallas
     path-mode: Modo de recorrido
+    fact-explorer: Explorador de hechos
   outcomes:
     withholding-outcome: Resultado de la retención
     balance-due: Saldo pendiente de {abs}

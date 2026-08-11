@@ -1,0 +1,44 @@
+{
+  "$comment": [
+    "This app, as Fact Explorer sees it. See credit-assistant/fact-explorer.app.json for the",
+    "mechanism; Fact Explorer's scripts/build-registry.mjs globs ../*/fact-explorer.app.json, so this",
+    "file is the whole of the registration. Keep in step with src/main/scala/gov/irs/twe/Main.scala",
+    "and this repo's Makefile.",
+    "",
+    "This app is the one that proves the registry is not credit-assistant-shaped: it has no scenarios",
+    "at all, and it registers a flow node type the scaffold has never heard of. Both are declared",
+    "below rather than special-cased in Fact Explorer."
+  ],
+
+  "id": "twe",
+  "label": "Tax Withholding Estimator",
+  "appId": "twe",
+  "basePath": "/app/tax-withholding-estimator",
+
+  "storagePrefix": "twe",
+  "devPort": 3000,
+
+  "resourceRoot": "src/main/resources",
+  "taxYear": 2025,
+
+  "engine": {
+    "bundle": "resources/vendor/fact-graph/factgraph-3.1.0.js",
+    "dictionary": "resources/fact-dictionary.xml"
+  },
+
+  "capabilities": {
+    "allScreens": true,
+    "scenarioMode": false,
+    "authorMode": false
+  },
+
+  "scenarios": null,
+
+  "$comment_customFlowTags": [
+    "Mirrors FormativeApp.nodeTypes in Main.scala. A tag listed here reaches the graph as a real",
+    "node and passes validate(); one that is not is dropped by the generator. The two input types",
+    "TWE also registers (single-checkbox, date) need no declaration — inputType is a free string on",
+    "FlowElement, and only tags are validated."
+  ],
+  "customFlowTags": ["fg-withholding-adjustments"]
+}

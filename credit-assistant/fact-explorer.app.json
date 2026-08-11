@@ -1,0 +1,47 @@
+{
+  "$comment": [
+    "This app, as Fact Explorer sees it. The descriptor lives here rather than in Fact Explorer so",
+    "the values sit beside the Main.scala they mirror (appId, basePath, storagePrefix) and move with",
+    "the app if it is ever extracted. Fact Explorer's scripts/build-registry.mjs globs",
+    "../*/fact-explorer.app.json and merges every one it finds into public/data/apps.json — so this",
+    "file IS the registration, and there is nothing to add to a list anywhere else.",
+    "Keep in step with src/main/scala/gov/irs/creditassistant/Main.scala and this repo's Makefile PORT."
+  ],
+
+  "id": "credit-assistant",
+  "label": "Credit Assistant",
+  "appId": "credit-assistant",
+  "basePath": "/app/eitc",
+
+  "storagePrefix": "credit-assistant",
+  "devPort": 3003,
+
+  "resourceRoot": "src/main/resources",
+  "taxYear": 2025,
+
+  "engine": {
+    "bundle": "resources/vendor/fact-graph/factgraph-3.1.0.js",
+    "dictionary": "resources/fact-dictionary.xml"
+  },
+
+  "capabilities": {
+    "allScreens": true,
+    "scenarioMode": true,
+    "authorMode": true
+  },
+
+  "scenarios": {
+    "dir": "scenarios",
+    "vocabulary": "eitc"
+  },
+
+  "customFlowTags": [],
+
+  "pagePrefixes": {
+    "/": "about",
+    "/filing-status": "fs",
+    "/agi": "agi",
+    "/qualifying-children": "qc",
+    "/results": "results"
+  }
+}

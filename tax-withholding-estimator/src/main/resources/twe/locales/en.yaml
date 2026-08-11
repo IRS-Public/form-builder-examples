@@ -30,8 +30,6 @@ all-screens:
     results: Results
     other: Other
 workspace:
-  flags:
-    legacy-audit-panel: Legacy TWE audit panel
   tools:
     inspect: Inspect
     inspect-description: Inspect facts, flows and text.
@@ -46,6 +44,7 @@ workspace:
     product-experience: Product Experience
     browse-all: Browse All Screens
     path-mode: Path Mode
+    fact-explorer: Fact Explorer
   outcomes:
     withholding-outcome: Withholding outcome
     balance-due: Balance due of {abs}

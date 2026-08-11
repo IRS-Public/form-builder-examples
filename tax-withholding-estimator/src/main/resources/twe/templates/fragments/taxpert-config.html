@@ -37,7 +37,6 @@
         // themselves because its outcome() functions choose a key at runtime, from a fact value
         // nobody knows here.
         const strings = new Map([
-            ['workspace.flags.legacy-audit-panel', [[#{workspace.flags.legacy-audit-panel}]]],
             ['workspace.outcomes.withholding-outcome', [[#{workspace.outcomes.withholding-outcome}]]],
             ['workspace.outcomes.balance-due', [[#{workspace.outcomes.balance-due}]]],
             ['workspace.outcomes.refund', [[#{workspace.outcomes.refund}]]],
@@ -67,9 +66,8 @@
             // with no JavaScript at all.
             //
             // Deliberately shorter than the other host's taxonomy: this app has no separate
-            // authoring surface and no fact-explorer view, so the menu says so rather than
-            // offering destinations that 404. That difference is the point — the menu is the
-            // host's, not the library's.
+            // authoring surface, so the menu says so rather than offering a destination that
+            // 404s. That difference is the point — the menu is the host's, not the library's.
             nav: {
                 menu: [
                     {
@@ -81,6 +79,16 @@
                             { id: 'path-mode', label: [[#{workspace.nav.path-mode}]], href: '/app/tax-withholding-estimator/all-screens/?mode=path' },
                         ],
                     },
+                    // This app *does* have a Fact Explorer now: Fact Explorer holds every app
+                    // beside it and finds this one through
+                    // ../tax-withholding-estimator/fact-explorer.app.json. The app id is part of the
+                    // URL — a bare /fact-explorer lands on whichever app is default, which is the
+                    // other one.
+                    //
+                    // A `//` comment, not an HTML one: `<!-- … -->` is legal in a classic script and
+                    // a *syntax error* in a module, which would take this whole file down and with it
+                    // configure() — leaving a nav with no menu and no feature flags.
+                    { id: 'fact-explorer', label: [[#{workspace.nav.fact-explorer}]], href: 'http://localhost:5180/fact-explorer/twe' },
                 ],
 
                 // Where each tool button in the bar applies. Scenario is here even though this app
@@ -98,6 +106,46 @@
                 ],
             },
 
+            // The other Formative applications this workspace can be pointed at — the "Applications"
+            // section of Workspace settings (the nav's gear). Switching keeps the destination you
+            // are on: Browse All here goes to Browse All there.
+            //
+            // Each sibling's destinations are written out because only this page knows them: the
+            // workspace ships no notion of what 'browse-all' means as a URL, and a sibling served
+            // from another origin cannot be derived from a base path. This is the same act as
+            // writing `nav.menu` above, for one more application.
+            //
+            // Our own entries are root-relative so they keep working when this site is read through
+            // Fact Explorer's dev proxy; the sibling's are absolute because nginx here serves
+            // only this application, so a relative path to it would 404. This app has no Authoring
+            // Suite, so it offers none — and switching *from* the sibling's authoring suite lands on
+            // this app's first destination rather than a URL it does not serve.
+            apps: {
+                current: 'twe',
+                items: [
+                    {
+                        id: 'twe',
+                        label: 'Tax Withholding Estimator',
+                        destinations: [
+                            { id: 'product-experience', label: [[#{workspace.nav.product-experience}]], href: '/app/tax-withholding-estimator/' },
+                            { id: 'browse-all', label: [[#{workspace.nav.browse-all}]], href: '/app/tax-withholding-estimator/all-screens/' },
+                            { id: 'path-mode', label: [[#{workspace.nav.path-mode}]], href: '/app/tax-withholding-estimator/all-screens/?mode=path' },
+                            { id: 'fact-explorer', label: [[#{workspace.nav.fact-explorer}]], href: 'http://localhost:5180/fact-explorer/twe' },
+                        ],
+                    },
+                    {
+                        id: 'credit-assistant',
+                        label: 'EITC Assistant',
+                        destinations: [
+                            { id: 'product-experience', label: [[#{workspace.nav.product-experience}]], href: 'http://localhost:3003/app/eitc/' },
+                            { id: 'browse-all', label: [[#{workspace.nav.browse-all}]], href: 'http://localhost:3003/app/eitc/all-screens/' },
+                            { id: 'path-mode', label: [[#{workspace.nav.path-mode}]], href: 'http://localhost:3003/app/eitc/all-screens/?mode=path' },
+                            { id: 'fact-explorer', label: [[#{workspace.nav.fact-explorer}]], href: 'http://localhost:5180/fact-explorer/credit-assistant' },
+                        ],
+                    },
+                ],
+            },
+
             endpoints: {
                 // scenariosBase is left empty on purpose: this app serves no scenario JSONs, and
                 // the Manage scenario modal hides its library section when there are none rather
@@ -107,21 +155,25 @@
                 factDictionaryUrl: '/app/tax-withholding-estimator/resources/fact-dictionary.xml',
             },
 
-            // This app's one runtime flag: its own audit panel, the one that predates the shared
-            // workspace. It is a second right-hand panel with its own fact tracker, its own
-            // scenario copy/paste and an override-date control the workspace has no equivalent for,
-            // so it is kept — but off by default, behind Workspace settings, rather than opening
-            // on every page load and competing with the workspace for the viewport.
+            // No runtime flags. This app declared exactly one — `legacyAuditPanel`, which brought
+            // back the right-hand rail that predates the shared workspace — and it is gone, because
+            // everything it offered now has a better home in the workspace itself:
             //
-            // Nothing else here is runtime: --auditMode and --allScreens decide what is generated,
-            // which is not something a person can switch on afterwards.
-            featureFlags: [
-                {
-                    name: 'legacyAuditPanel',
-                    kebab: 'legacy-audit-panel',
-                    label: t('workspace.flags.legacy-audit-panel'),
-                },
-            ],
+            //   its fact tracker        → the Watchlist tool
+            //   its scenario copy/paste → the Scenario modal (the nav's Scenario button)
+            //   its "Override Date"     → the Overrides tool, `facts: ['/overrideDate']` below
+            //
+            // The last of those is the one that made this safe to remove: a hand-built control for
+            // one fact became a list entry, so the next fact worth overriding is a line of
+            // configuration rather than a reason to keep a whole second panel alive.
+            //
+            // A flag that is not declared here is not offered anywhere — the Workspace settings
+            // modal renders one row per entry — so this reads as "this application has nothing in
+            // testing", which is true.
+            //
+            // Nothing else here is runtime either: --auditMode and --allScreens decide what is
+            // generated, which is not something a person can switch on afterwards.
+            featureFlags: [],
 
             // This app's flow markup is fg-set / fg-show / fg-alert with .twe-question labels —
             // the convention flow-dom.js already defaults to — so only one key differs. /taxYear
@@ -129,9 +181,9 @@
             flowDom: { uncuedPaths: ['/taxYear'] },
 
             // The three platform tools plus one this app declares. `facts` is what makes the
-            // Overrides tool generic: the legacy audit panel had a hand-built "Override Date"
-            // control wired to this exact path, and it is a list entry here instead — so the next
-            // fact worth overriding is a line of configuration rather than a new panel.
+            // Overrides tool generic: the retired rail had a hand-built "Override Date" control
+            // wired to this exact path, and it is a list entry here instead — so the next fact
+            // worth overriding is a line of configuration rather than a new panel.
             tools: [
                 { id: 'inspect', label: [[#{workspace.tools.inspect}]], description: [[#{workspace.tools.inspect-description}]], templateId: 'ttp-body-inspect' },
                 { id: 'outcome-tracker', label: [[#{workspace.tools.outcome-tracker}]], description: [[#{workspace.tools.outcome-tracker-description}]], templateId: 'ttp-body-outcome-tracker' },

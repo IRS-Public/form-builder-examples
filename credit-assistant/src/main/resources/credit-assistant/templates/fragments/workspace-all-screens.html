@@ -1,0 +1,14 @@
+<!--/*
+  The screens toolbar on the Browse All / Path Mode page — its section tabs and layout switch.
+
+  Not gated on --auditMode: the toolbar is that page's own chrome rather than part of the audit panel,
+  and the page only exists under --allScreens at all. Here rather than in the library because the
+  toolbar lives in taxpert — see fragments/workspace-head.html.
+*/-->
+<th:block th:fragment="workspace-all-screens-head">
+    <link rel="stylesheet" th:href="|${basePath}/resources/vendor/taxpert/audit-panel/styles/all-screens-toolbar.css|" />
+</th:block>
+
+<th:block th:fragment="workspace-all-screens-body">
+    <script type="module" th:src="|${basePath}/resources/vendor/taxpert/audit-panel/js/all-screens-toolbar.js|"></script>
+</th:block>

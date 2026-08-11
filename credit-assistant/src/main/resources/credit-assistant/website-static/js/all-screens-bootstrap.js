@@ -5,7 +5,7 @@
 // the shared <taxpert-screens-toolbar>. What stays here is the two things the toolbar cannot own:
 // this app's condition evaluator, which Path Mode needs to decide what would be on screen, and the
 // section list, derived from the server-rendered section cards.
-import { checkCondition } from '../vendor/taxpert/flow-runtime/js/fg-conditions.js'
+import { checkCondition } from '../vendor/formative/flow-runtime/js/fg-conditions.js'
 
 // Force every collection to render its first child instance, even with an empty fact graph, so the
 // all-screens view shows collection questions. (Was the first line of the old initAllScreens.)

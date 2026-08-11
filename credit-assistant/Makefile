@@ -72,8 +72,14 @@ copy-shared-ui: ## Copy shared UI components (taxpert) from node_modules
 	# never reached the browser — the failure taxpert's CLAUDE.md warns about under
 	# "a new top-level bundle is different". Deriving it means adding a bundle is a
 	# one-directory change again.
-	rm -rf $(SHARED_UI_TARGET)
+	@# Emptied rather than removed, and that is not a style choice. docker-compose.override.yml
+	@# bind-mounts taxpert/src over this exact directory, and Docker Desktop stamps a
+	@# `user:<you> deny delete` ACL on any host directory it has mounted — so `rm -rf` on the
+	@# directory itself fails with "Permission denied" *after* recursively deleting everything
+	@# inside it, leaving an empty mirror and a failed build. Clearing the contents does the same
+	@# job, keeps the mount point the compose file needs, and works whether or not the stack is up.
 	mkdir -p $(SHARED_UI_TARGET)
+	find $(SHARED_UI_TARGET) -mindepth 1 -delete
 	cp -R $(SHARED_UI_SRC)/. $(SHARED_UI_TARGET)/
 
 .PHONY: check-shared-ui
@@ -113,6 +119,10 @@ clean: ## Clean all the build artifacts
 .PHONY: ci-setup
 ci-setup: ## Install validation and linting tools
 	npm --prefix $(RESOURCES_DIR) install
+	@# The shared UI package itself: a file: dependency on the sibling /taxpert checkout,
+	@# which is what copy-shared-ui mirrors out of node_modules. Without this, a clean
+	@# checkout (a diff-out worktree, CI) fails in copy-shared-ui rather than here.
+	npm install
 
 
 .PHONY: ci
@@ -121,6 +131,7 @@ ci: ## Run most of the CI checks locally
 	make check-shared-ui
 	make validate-xml
 	make validate-html
+	make validate-templates
 	make validate-js
 	make validate-scala
 	# Skip semgrep (locally) for now
@@ -135,6 +146,21 @@ validate-xml: ## Validate .xml files against their RELAX NG schemas
 .PHONY: validate-html
 validate-html: ## Validate .html files
 	npm --prefix $(RESOURCES_DIR) run html-validate -- "$(HTML_VALIDATE_TARGET)"
+
+.PHONY: validate-templates
+validate-templates: ## Reject HTML comments inside inline <script> blocks
+	@# `<!-- … -->` is a legal, ignored token in a classic script and a *syntax error* in a module
+	@# ("HTML comments are not allowed in modules"). One of them in taxpert-config.html killed the
+	@# whole configure() call: the nav rendered with no menu, Workspace settings listed no feature
+	@# flags, and no tool buttons appeared — with nothing in the build output and only a single
+	@# console line to go on. html-validate does not look inside script bodies, so this does.
+	@# A line already inside a `//` comment is prose about the hazard, not the hazard.
+	@bad=$$(find $(RESOURCES_DIR)/templates -name '*.html' -print0 \
+		| xargs -0 awk '/<script/{ins=1} /<\/script>/{ins=0} \
+			ins && /<!--/ && $$0 !~ /^[[:space:]]*(\/\/|\*)/ {print FILENAME":"FNR": "$$0}'); \
+	if [ -n "$$bad" ]; then \
+		echo "==> HTML comment inside a <script> — use // instead:"; echo "$$bad"; exit 1; \
+	fi
 
 .PHONY: validate-js
 validate-js: ## Run javascript linter
@@ -153,3 +179,14 @@ semgrep:
 .PHONY: diff-out
 diff-out: ## Compare the output static assets on your current branch with `main`
 	./scripts/diff-out.sh
+
+.PHONY: fact-explorer
+fact-explorer: ## Build with the Formative Graph and print this app's Fact Explorer URL
+	@# Not folded into `dev`: the Scala generator is not yet at parity with fact-explorer's own
+	@# node generator (no shows/exits edges), and Fact Explorer prefers the app-served graph wherever
+	@# it finds one — so building with --formativeGraph by default would hand it the sparser graph.
+	$(MAKE) copy-fg copy-shared-ui
+	sbt 'run --formativeGraph'
+	@echo "==> regenerate Fact Explorer's registry, then open:"
+	@echo "    cd ../fact-explorer && npm run build-registry && npm run dev"
+	@echo "    http://localhost:5180/fact-explorer/credit-assistant"

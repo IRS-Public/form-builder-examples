@@ -55,7 +55,17 @@
         const t = (key) => strings.get(key) ?? key
 
         configure({
-            app: { id: 'eitc', brand: 'Taxpert', storagePrefix: 'taxpert' },
+            // storagePrefix is what stops this app and any other Formative app served from the same
+            // origin from sharing a watchlist, a panel layout or a set of display options. It was
+            // 'taxpert' — the package-wide default, i.e. not actually namespaced at all, which is the
+            // collision the option exists to prevent. It is this app's `appId` now, matching what the
+            // scaffold renders for the flow runtime in fragments/head.html, so one app means one
+            // prefix rather than one per layer.
+            //
+            // Adopting it costs a developer their stored watchlist and panel layout once, on the next
+            // load. That is the documented trade in taxpert's storage-keys.js: all of it is dev-tool
+            // state that takes seconds to recreate, and migration code for it would outlive its use.
+            app: { id: 'eitc', brand: 'Taxpert', storagePrefix: 'credit-assistant' },
 
             // The app switcher. `id` is what a page passes as the nav's `active` attribute, and what
             // toolsByDestination below names; `href` is a real link, so the menu navigates with no
@@ -72,7 +82,15 @@
                             { id: 'path-mode', label: [[#{workspace.nav.path-mode}]], href: '/app/eitc/all-screens/?mode=path' },
                         ],
                     },
-                    { id: 'fact-explorer', label: [[#{workspace.nav.fact-explorer}]], href: 'http://localhost:5180/studio' },
+                    // The app id is part of the URL: Fact Explorer holds every app beside it, so a
+                    // bare /fact-explorer would land on whichever one is default rather than this one.
+                    //
+                    // A `//` comment, not an HTML one. `<!-- … -->` is legal in a classic script and a
+                    // *syntax error* in a module — "HTML comments are not allowed in modules" — which
+                    // takes down this whole file, and with it configure(): the nav renders with no
+                    // menu, Workspace settings lists no feature flags, and no tool buttons appear.
+                    // Everything else in here is already a JS comment; keep it that way.
+                    { id: 'fact-explorer', label: [[#{workspace.nav.fact-explorer}]], href: 'http://localhost:5180/fact-explorer/credit-assistant' },
                     { id: 'authoring-suite', label: [[#{workspace.nav.authoring-suite}]], href: '/app/eitc/author/' },
                 ],
 
@@ -87,6 +105,49 @@
                     { id: 'scenario', label: 'Scenario', icon: 'tune', destinations: ['product-experience', 'path-mode', 'fact-explorer'] },
                     { id: 'display', label: 'Display', icon: 'visibility', destinations: ['product-experience', 'browse-all', 'path-mode'] },
                     { id: 'tools', label: 'Tools', icon: 'build', destinations: ['product-experience', 'path-mode'] },
+                ],
+            },
+
+            // The other Formative applications this workspace can be pointed at — the "Applications"
+            // section of Workspace settings (the nav's gear). Switching keeps the destination you
+            // are on: Browse All here goes to Browse All there.
+            //
+            // Each sibling's destinations are written out because only this page knows them: the
+            // workspace ships no notion of what 'browse-all' means as a URL, and a sibling served
+            // from another origin cannot be derived from a base path. This is the same act as
+            // writing `nav.menu` above, for one more application.
+            //
+            // Our own entries are root-relative so they keep working when this site is read through
+            // Fact Explorer's dev proxy; the sibling's are absolute because nginx here serves
+            // only this application, so a relative path to it would 404.
+            //
+            // Fact Explorer holds the same list, built from the fact-explorer.app.json descriptors —
+            // there is no shared source for these two because an application must not have to fetch
+            // a registry from another origin to know its own menu.
+            apps: {
+                current: 'credit-assistant',
+                items: [
+                    {
+                        id: 'credit-assistant',
+                        label: 'EITC Assistant',
+                        destinations: [
+                            { id: 'product-experience', label: [[#{workspace.nav.product-experience}]], href: '/app/eitc/' },
+                            { id: 'browse-all', label: [[#{workspace.nav.browse-all}]], href: '/app/eitc/all-screens/' },
+                            { id: 'path-mode', label: [[#{workspace.nav.path-mode}]], href: '/app/eitc/all-screens/?mode=path' },
+                            { id: 'fact-explorer', label: [[#{workspace.nav.fact-explorer}]], href: 'http://localhost:5180/fact-explorer/credit-assistant' },
+                            { id: 'authoring-suite', label: [[#{workspace.nav.authoring-suite}]], href: '/app/eitc/author/' },
+                        ],
+                    },
+                    {
+                        id: 'twe',
+                        label: 'Tax Withholding Estimator',
+                        destinations: [
+                            { id: 'product-experience', label: [[#{workspace.nav.product-experience}]], href: 'http://localhost:3000/app/tax-withholding-estimator/' },
+                            { id: 'browse-all', label: [[#{workspace.nav.browse-all}]], href: 'http://localhost:3000/app/tax-withholding-estimator/all-screens/' },
+                            { id: 'path-mode', label: [[#{workspace.nav.path-mode}]], href: 'http://localhost:3000/app/tax-withholding-estimator/all-screens/?mode=path' },
+                            { id: 'fact-explorer', label: [[#{workspace.nav.fact-explorer}]], href: 'http://localhost:5180/fact-explorer/twe' },
+                        ],
+                    },
                 ],
             },
 

@@ -2,8 +2,8 @@ import {
   factGraph,
   saveFactGraph,
   resetEntireGraph,
-} from '../vendor/taxpert/flow-runtime/js/fg-fact-graph.js'
-import { makeCollectionIdPath } from '../vendor/taxpert/flow-runtime/js/fg-collection-utils.js'
+} from '../vendor/formative/flow-runtime/js/fg-fact-graph.js'
+import { makeCollectionIdPath } from '../vendor/formative/flow-runtime/js/fg-collection-utils.js'
 
 /**
  * Destructive confirmations (TXE-21928): pending values and "show dialog" flags live on the fact

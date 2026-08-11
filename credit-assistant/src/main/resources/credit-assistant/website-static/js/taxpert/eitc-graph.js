@@ -22,7 +22,7 @@
 // eitcDeterminations(). Nothing here is user-visible English.
 
 import { windowFactGraphAdapter } from '../../vendor/taxpert/shared/js/graph-adapter.js'
-import { saveFactGraph } from '../../vendor/taxpert/flow-runtime/js/fg-fact-graph.js'
+import { saveFactGraph } from '../../vendor/formative/flow-runtime/js/fg-fact-graph.js'
 
 /**
  * The fact-graph port for this application.
@@ -34,7 +34,7 @@ import { saveFactGraph } from '../../vendor/taxpert/flow-runtime/js/fg-fact-grap
  *
  * `save` is not optional. A write that is not persisted is gone at the next navigation, and this
  * app's saveFactGraph() does two things the library cannot guess: it writes sessionStorage under
- * this app's key, and it publishes on the BroadcastChannel that keeps Formative Studio's overlay in
+ * this app's key, and it publishes on the BroadcastChannel that keeps Fact Explorer's overlay in
  * step. That is exactly why the port takes it rather than reaching for a global.
  */
 export const eitcGraph = windowFactGraphAdapter({ save: saveFactGraph })
