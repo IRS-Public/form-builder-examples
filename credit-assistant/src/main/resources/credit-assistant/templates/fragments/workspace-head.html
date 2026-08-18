@@ -27,6 +27,17 @@
          hides itself unless a tool is switched on. -->
     <script type="module" th:src="|${basePath}/resources/vendor/taxpert/tool-panels/js/taxpert-tool-dock.js|"></script>
 
+    <!-- The workspace sub-nav on the product pages (page.html mounts
+         <taxpert-screens-toolbar mode="product">): the bar under the global nav that names which
+         destination you are on. Browse All / Path Mode load the same two files from
+         fragments/workspace-all-screens.html, which is *not* gated on --auditMode — that page is
+         chrome all the way down and exists without a workspace. So on an --auditMode --allScreens
+         build the listing page links this stylesheet twice, from the two independent conditions.
+         Same URL, same rules, one fetch: keeping the conditions separate is worth more than the
+         duplicate is worth avoiding. -->
+    <link rel="stylesheet" th:href="|${basePath}/resources/vendor/taxpert/audit-panel/styles/all-screens-toolbar.css|" />
+    <script type="module" th:src="|${basePath}/resources/vendor/taxpert/audit-panel/js/all-screens-toolbar.js|"></script>
+
     <!-- The nav's workspace switch. Listened for on `document` rather than on the element, because
          this runs in <head> and the nav does not exist yet; the event is dispatched with
          bubbles+composed for exactly this. -->
