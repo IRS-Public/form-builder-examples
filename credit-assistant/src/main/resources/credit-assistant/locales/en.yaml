@@ -31,13 +31,6 @@ workspace:
     ai-scenario-generation: AI scenario generation
     ai-fact-explanation: AI fact explanations
     author-mode: Author Mode
-  nav:
-    experience-explorer: Experience Explorer
-    product-experience: Product Experience
-    browse-all: Browse All
-    path-mode: Path Mode
-    fact-explorer: Fact Explorer
-    authoring-suite: Authoring Suite
   outcomes:
     filing-status: Derived Filing Status
     without-qualifying-child: Qualifies without a qualifying child

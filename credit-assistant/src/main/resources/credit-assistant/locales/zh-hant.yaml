@@ -31,13 +31,6 @@ workspace:
     ai-scenario-generation: AI 情境產生
     ai-fact-explanation: AI 事實說明
     author-mode: 作者模式
-  nav:
-    experience-explorer: 體驗瀏覽器
-    product-experience: 產品體驗
-    browse-all: 瀏覽全部畫面
-    path-mode: 路徑模式
-    fact-explorer: 事實瀏覽器
-    authoring-suite: 編輯套件
   outcomes:
     filing-status: 推導出的申報身分
     without-qualifying-child: 無合格子女時符合資格

@@ -31,13 +31,6 @@ workspace:
     ai-scenario-generation: AI 시나리오 생성
     ai-fact-explanation: AI 팩트 설명
     author-mode: 저작 모드
-  nav:
-    experience-explorer: 경험 탐색기
-    product-experience: 제품 경험
-    browse-all: 전체 화면 보기
-    path-mode: 경로 모드
-    fact-explorer: 팩트 탐색기
-    authoring-suite: 작성 도구 모음
   outcomes:
     filing-status: 파생된 신고 상태
     without-qualifying-child: 적격 자녀 없이 자격 충족

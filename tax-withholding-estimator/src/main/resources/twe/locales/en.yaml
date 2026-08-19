@@ -39,12 +39,6 @@ workspace:
     watchlist-description: Track the value of one or more facts as you work or load scenarios.
     overrides: Overrides
     overrides-description: Set a fact directly, without walking the flow to the screen that asks for it.
-  nav:
-    experience-explorer: Experience Explorer
-    product-experience: Product Experience
-    browse-all: Browse All Screens
-    path-mode: Path Mode
-    fact-explorer: Fact Explorer
   outcomes:
     withholding-outcome: Withholding outcome
     balance-due: Balance due of {abs}

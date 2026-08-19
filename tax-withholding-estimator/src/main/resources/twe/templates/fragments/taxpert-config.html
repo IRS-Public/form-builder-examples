@@ -10,9 +10,10 @@
       This app is the second host, and adopting the library took no edit inside the package: a
       config object, a fact-graph adapter, and the vendored mirror the Makefile keeps in step.
 
-      WHY A THYMELEAF FRAGMENT AND NOT A .js FILE. Everything here that a person reads — the nav
-      labels, the outcome headings, the words an outcome is spoken in — is a Thymeleaf message
-      expression, resolved per locale at build time. website-static/js is served as static assets
+      WHY A THYMELEAF FRAGMENT AND NOT A .js FILE. Everything here that a person reads and that
+      belongs to the *product* — the outcome headings, the words an outcome is spoken in — is a
+      Thymeleaf message expression, resolved per locale at build time. (The nav labels are the
+      exception, and say why at `nav:` below.) website-static/js is served as static assets
       and never passes through Thymeleaf, so a label written there would be English in the Spanish
       build. Behaviour that cannot be a translated literal — the fact-graph port, and the fact
       paths themselves — lives in website-static/js/taxpert/twe-graph.js and is imported below.
@@ -68,15 +69,25 @@
             // Deliberately shorter than the other host's taxonomy: this app has no separate
             // authoring surface, so the menu says so rather than offering a destination that
             // 404s. That difference is the point — the menu is the host's, not the library's.
+            //
+            // These labels are English literals, not #{workspace.nav.*} message expressions, and
+            // that is the one deliberate exception to this file's "everything a person reads is a
+            // message expression" rule. The language switcher is the *product's* control: picking
+            // Spanish asks for the estimator in Spanish. It was also translating the workspace
+            // around it, which put two names on one destination in a single view — the sub-nav under
+            // the bar reads "Product Experience" (taxpert's own markup, English everywhere) while
+            // the menu item pointing at it read the translated one. The workspace is one surface in
+            // one language; the product underneath it is the thing that translates. `apps.items`
+            // below names the same destinations and follows the same rule.
             nav: {
                 menu: [
                     {
                         id: 'experience-explorer',
-                        label: [[#{workspace.nav.experience-explorer}]],
+                        label: 'Experience Explorer',
                         children: [
-                            { id: 'product-experience', label: [[#{workspace.nav.product-experience}]], href: '/app/tax-withholding-estimator/' },
-                            { id: 'browse-all', label: [[#{workspace.nav.browse-all}]], href: '/app/tax-withholding-estimator/all-screens/' },
-                            { id: 'path-mode', label: [[#{workspace.nav.path-mode}]], href: '/app/tax-withholding-estimator/all-screens/?mode=path' },
+                            { id: 'product-experience', label: 'Product Experience', href: '/app/tax-withholding-estimator/' },
+                            { id: 'browse-all', label: 'Browse All Screens', href: '/app/tax-withholding-estimator/all-screens/' },
+                            { id: 'path-mode', label: 'Path Mode', href: '/app/tax-withholding-estimator/all-screens/?mode=path' },
                         ],
                     },
                     // This app *does* have a Fact Explorer now: Fact Explorer holds every app
@@ -88,7 +99,7 @@
                     // A `//` comment, not an HTML one: `<!-- … -->` is legal in a classic script and
                     // a *syntax error* in a module, which would take this whole file down and with it
                     // configure() — leaving a nav with no menu and no feature flags.
-                    { id: 'fact-explorer', label: [[#{workspace.nav.fact-explorer}]], href: 'http://localhost:5180/fact-explorer/twe' },
+                    { id: 'fact-explorer', label: 'Fact Explorer', href: 'http://localhost:5180/fact-explorer/twe' },
                 ],
 
                 // Where each tool button in the bar applies. Scenario is here even though this app
@@ -127,20 +138,20 @@
                         id: 'twe',
                         label: 'Tax Withholding Estimator',
                         destinations: [
-                            { id: 'product-experience', label: [[#{workspace.nav.product-experience}]], href: '/app/tax-withholding-estimator/' },
-                            { id: 'browse-all', label: [[#{workspace.nav.browse-all}]], href: '/app/tax-withholding-estimator/all-screens/' },
-                            { id: 'path-mode', label: [[#{workspace.nav.path-mode}]], href: '/app/tax-withholding-estimator/all-screens/?mode=path' },
-                            { id: 'fact-explorer', label: [[#{workspace.nav.fact-explorer}]], href: 'http://localhost:5180/fact-explorer/twe' },
+                            { id: 'product-experience', label: 'Product Experience', href: '/app/tax-withholding-estimator/' },
+                            { id: 'browse-all', label: 'Browse All Screens', href: '/app/tax-withholding-estimator/all-screens/' },
+                            { id: 'path-mode', label: 'Path Mode', href: '/app/tax-withholding-estimator/all-screens/?mode=path' },
+                            { id: 'fact-explorer', label: 'Fact Explorer', href: 'http://localhost:5180/fact-explorer/twe' },
                         ],
                     },
                     {
                         id: 'credit-assistant',
                         label: 'EITC Assistant',
                         destinations: [
-                            { id: 'product-experience', label: [[#{workspace.nav.product-experience}]], href: 'http://localhost:3003/app/eitc/' },
-                            { id: 'browse-all', label: [[#{workspace.nav.browse-all}]], href: 'http://localhost:3003/app/eitc/all-screens/' },
-                            { id: 'path-mode', label: [[#{workspace.nav.path-mode}]], href: 'http://localhost:3003/app/eitc/all-screens/?mode=path' },
-                            { id: 'fact-explorer', label: [[#{workspace.nav.fact-explorer}]], href: 'http://localhost:5180/fact-explorer/credit-assistant' },
+                            { id: 'product-experience', label: 'Product Experience', href: 'http://localhost:3003/app/eitc/' },
+                            { id: 'browse-all', label: 'Browse All Screens', href: 'http://localhost:3003/app/eitc/all-screens/' },
+                            { id: 'path-mode', label: 'Path Mode', href: 'http://localhost:3003/app/eitc/all-screens/?mode=path' },
+                            { id: 'fact-explorer', label: 'Fact Explorer', href: 'http://localhost:5180/fact-explorer/credit-assistant' },
                         ],
                     },
                 ],

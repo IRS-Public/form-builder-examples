@@ -31,13 +31,6 @@ workspace:
     ai-scenario-generation: AI 场景生成
     ai-fact-explanation: AI 事实说明
     author-mode: 作者模式
-  nav:
-    experience-explorer: 体验浏览器
-    product-experience: 产品体验
-    browse-all: 浏览全部屏幕
-    path-mode: 路径模式
-    fact-explorer: 事实浏览器
-    authoring-suite: 编辑套件
   outcomes:
     filing-status: 推导出的申报身份
     without-qualifying-child: 无合格子女时符合资格

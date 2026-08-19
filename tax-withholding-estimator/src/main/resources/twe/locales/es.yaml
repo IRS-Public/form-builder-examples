@@ -80,12 +80,6 @@ workspace:
     watchlist-description: Siga el valor de uno o más hechos mientras trabaja o carga escenarios.
     overrides: Anulaciones
     overrides-description: Establezca un hecho directamente, sin recorrer el flujo hasta la pantalla que lo pregunta.
-  nav:
-    experience-explorer: Explorador de experiencias
-    product-experience: Experiencia del producto
-    browse-all: Ver todas las pantallas
-    path-mode: Modo de recorrido
-    fact-explorer: Explorador de hechos
   outcomes:
     withholding-outcome: Resultado de la retención
     balance-due: Saldo pendiente de {abs}

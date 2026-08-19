@@ -31,13 +31,6 @@ workspace:
     ai-scenario-generation: Jenerasyon senaryo ak IA
     ai-fact-explanation: Eksplikasyon done ak IA
     author-mode: Mòd Otè
-  nav:
-    experience-explorer: Eksploratè eksperyans
-    product-experience: Eksperyans pwodwi a
-    browse-all: Gade tout ekran yo
-    path-mode: Mòd chemen
-    fact-explorer: Eksploratè done
-    authoring-suite: Suite otè
   outcomes:
     filing-status: Estati deklarasyon ki derive
     without-qualifying-child: Kalifye san yon timoun ki kalifye

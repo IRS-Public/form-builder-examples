@@ -7,9 +7,11 @@
       no route prefix until a host calls configure(). This is that call, and it runs on every page
       that mounts the workspace (fragments/head.html includes this file).
 
-      WHY A THYMELEAF FRAGMENT AND NOT A .js FILE. Everything here that a person reads — the nav
-      labels, the determination headings, the words an outcome is spoken in — is a Thymeleaf message
-      expression, resolved per locale at build time. website-static/js/** is served as static assets
+      WHY A THYMELEAF FRAGMENT AND NOT A .js FILE. Everything here that a person reads and that
+      belongs to the *product* — the determination headings, the words an outcome is spoken in — is a
+      Thymeleaf message expression, resolved per locale at build time. (The nav labels are the
+      exception, and say why at `nav:` below: they name the workspace's own destinations, which the
+      workspace already names in English everywhere else.) website-static/js/** is served as static assets
       and never passes through Thymeleaf, which is why scenario-filters.js is hard-coded English to
       this day. Behaviour that cannot be a translated literal — the fact-graph port, and the fact
       paths themselves — lives in website-static/js/taxpert/eitc-graph.js and is imported below.
@@ -71,15 +73,25 @@
             // toolsByDestination below names; `href` is a real link, so the menu navigates with no
             // JavaScript at all. Path Mode is its own destination rather than a mode of Browse All:
             // it happens to be served by the same generated page, told apart by `?mode=path`.
+            //
+            // These labels are English literals, not #{workspace.nav.*} message expressions, and
+            // that is the one deliberate exception to this file's "everything a person reads is a
+            // message expression" rule. The language switcher is the *product's* control: picking
+            // Kreyòl asks for the questionnaire in Kreyòl. It was also translating the workspace
+            // around it, which put two names on one destination in a single view — the sub-nav under
+            // the bar reads "Product Experience" (taxpert's own markup, English everywhere), while
+            // the menu item pointing at it read "Eksperyans pwodwi a". The workspace is one surface
+            // in one language; the product underneath it is the thing that translates. `apps.items`
+            // below names the same destinations and follows the same rule.
             nav: {
                 menu: [
                     {
                         id: 'experience-explorer',
-                        label: [[#{workspace.nav.experience-explorer}]],
+                        label: 'Experience Explorer',
                         children: [
-                            { id: 'product-experience', label: [[#{workspace.nav.product-experience}]], href: '/app/eitc/' },
-                            { id: 'browse-all', label: [[#{workspace.nav.browse-all}]], href: '/app/eitc/all-screens/' },
-                            { id: 'path-mode', label: [[#{workspace.nav.path-mode}]], href: '/app/eitc/all-screens/?mode=path' },
+                            { id: 'product-experience', label: 'Product Experience', href: '/app/eitc/' },
+                            { id: 'browse-all', label: 'Browse All', href: '/app/eitc/all-screens/' },
+                            { id: 'path-mode', label: 'Path Mode', href: '/app/eitc/all-screens/?mode=path' },
                         ],
                     },
                     // The app id is part of the URL: Fact Explorer holds every app beside it, so a
@@ -90,8 +102,8 @@
                     // takes down this whole file, and with it configure(): the nav renders with no
                     // menu, Workspace settings lists no feature flags, and no tool buttons appear.
                     // Everything else in here is already a JS comment; keep it that way.
-                    { id: 'fact-explorer', label: [[#{workspace.nav.fact-explorer}]], href: 'http://localhost:5180/fact-explorer/credit-assistant' },
-                    { id: 'authoring-suite', label: [[#{workspace.nav.authoring-suite}]], href: '/app/eitc/author/', ff: 'author-mode' },
+                    { id: 'fact-explorer', label: 'Fact Explorer', href: 'http://localhost:5180/fact-explorer/credit-assistant' },
+                    { id: 'authoring-suite', label: 'Authoring Suite', href: '/app/eitc/author/', ff: 'author-mode' },
                 ],
 
                 // Where each tool button in the bar applies. Scenario belongs to the destinations
@@ -131,21 +143,21 @@
                         id: 'credit-assistant',
                         label: 'EITC Assistant',
                         destinations: [
-                            { id: 'product-experience', label: [[#{workspace.nav.product-experience}]], href: '/app/eitc/' },
-                            { id: 'browse-all', label: [[#{workspace.nav.browse-all}]], href: '/app/eitc/all-screens/' },
-                            { id: 'path-mode', label: [[#{workspace.nav.path-mode}]], href: '/app/eitc/all-screens/?mode=path' },
-                            { id: 'fact-explorer', label: [[#{workspace.nav.fact-explorer}]], href: 'http://localhost:5180/fact-explorer/credit-assistant' },
-                            { id: 'authoring-suite', label: [[#{workspace.nav.authoring-suite}]], href: '/app/eitc/author/' },
+                            { id: 'product-experience', label: 'Product Experience', href: '/app/eitc/' },
+                            { id: 'browse-all', label: 'Browse All', href: '/app/eitc/all-screens/' },
+                            { id: 'path-mode', label: 'Path Mode', href: '/app/eitc/all-screens/?mode=path' },
+                            { id: 'fact-explorer', label: 'Fact Explorer', href: 'http://localhost:5180/fact-explorer/credit-assistant' },
+                            { id: 'authoring-suite', label: 'Authoring Suite', href: '/app/eitc/author/' },
                         ],
                     },
                     {
                         id: 'twe',
                         label: 'Tax Withholding Estimator',
                         destinations: [
-                            { id: 'product-experience', label: [[#{workspace.nav.product-experience}]], href: 'http://localhost:3000/app/tax-withholding-estimator/' },
-                            { id: 'browse-all', label: [[#{workspace.nav.browse-all}]], href: 'http://localhost:3000/app/tax-withholding-estimator/all-screens/' },
-                            { id: 'path-mode', label: [[#{workspace.nav.path-mode}]], href: 'http://localhost:3000/app/tax-withholding-estimator/all-screens/?mode=path' },
-                            { id: 'fact-explorer', label: [[#{workspace.nav.fact-explorer}]], href: 'http://localhost:5180/fact-explorer/twe' },
+                            { id: 'product-experience', label: 'Product Experience', href: 'http://localhost:3000/app/tax-withholding-estimator/' },
+                            { id: 'browse-all', label: 'Browse All', href: 'http://localhost:3000/app/tax-withholding-estimator/all-screens/' },
+                            { id: 'path-mode', label: 'Path Mode', href: 'http://localhost:3000/app/tax-withholding-estimator/all-screens/?mode=path' },
+                            { id: 'fact-explorer', label: 'Fact Explorer', href: 'http://localhost:5180/fact-explorer/twe' },
                         ],
                     },
                 ],

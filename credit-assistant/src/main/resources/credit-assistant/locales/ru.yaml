@@ -31,13 +31,6 @@ workspace:
     ai-scenario-generation: Генерация сценариев с ИИ
     ai-fact-explanation: Объяснение фактов с ИИ
     author-mode: Режим автора
-  nav:
-    experience-explorer: Обзор интерфейса
-    product-experience: Интерфейс продукта
-    browse-all: Все экраны
-    path-mode: Режим пути
-    fact-explorer: Обзор фактов
-    authoring-suite: Инструменты автора
   outcomes:
     filing-status: Производный налоговый статус
     without-qualifying-child: Соответствие без ребёнка, дающего право

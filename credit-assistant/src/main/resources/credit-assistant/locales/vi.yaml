@@ -31,13 +31,6 @@ workspace:
     ai-scenario-generation: Tạo kịch bản bằng AI
     ai-fact-explanation: Giải thích dữ kiện bằng AI
     author-mode: Chế độ tác giả
-  nav:
-    experience-explorer: Trình khám phá trải nghiệm
-    product-experience: Trải nghiệm sản phẩm
-    browse-all: Xem tất cả màn hình
-    path-mode: Chế độ đường dẫn
-    fact-explorer: Trình khám phá dữ kiện
-    authoring-suite: Bộ công cụ soạn thảo
   outcomes:
     filing-status: Tình trạng khai thuế được suy ra
     without-qualifying-child: Đủ điều kiện khi không có con hợp lệ
