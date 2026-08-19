@@ -7,7 +7,7 @@ This directory contains configurations for templates that allow you to quickly r
 > [!NOTE]
 > Live Templates cannot currently be automatically shared as an IntelliJ configuration in version control such that they will be automatically configured when opening this project.
 >
-> Instead, You must manually import Live Templates.
+> Instead, you must import them manually.
 
 To import the existing, shared templates in this repository:
 

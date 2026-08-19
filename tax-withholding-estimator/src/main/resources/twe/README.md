@@ -1,7 +1,15 @@
 # Resources for building TWE
 
-This directory contains the fact and flow configs, as well as all  the static files that get bundled into the website.
+Everything the site generator reads from disk lives here: the fact dictionary (`facts/`), the flow
+(`flow/`), the locale YAML (`locales/`), this app's Thymeleaf overrides (`templates/`), and the
+static files copied verbatim into the built site (`website-static/`). The generator reads these from
+the source tree rather than the classpath, so an edit takes effect on the next `sbt run` with no
+resource copy in between.
 
-It also contains a `package.json` file for locking down versions of the tools that we use to validate our HTML and JavaScript files.
-The node environment is deliberately included down here, rather than at the package root, because node is not required to actually build the application;
-it is only required for running various CI checks.
+`package.json`, `eslint.config.js` and `htmlvalidate.json` pin the tools that lint the JavaScript and
+validate the generated HTML, plus the `pdf-lib` release the vendored bundle under
+`website-static/vendor/` tracks. The Node environment sits down here rather than at the repository
+root because Node is not required to build the site, only to run the checks.
+
+Its scripts back three targets in the app's `Makefile`: `npm run lint` is `make validate-js`,
+`npm run format` is part of `make format`, and `npm run html-validate` is `make validate-html`.
