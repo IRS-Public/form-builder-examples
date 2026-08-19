@@ -30,6 +30,7 @@ workspace:
   flags:
     ai-scenario-generation: AI 情境產生
     ai-fact-explanation: AI 事實說明
+    author-mode: 作者模式
   nav:
     experience-explorer: 體驗瀏覽器
     product-experience: 產品體驗

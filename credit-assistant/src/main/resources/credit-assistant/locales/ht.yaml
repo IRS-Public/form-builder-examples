@@ -30,6 +30,7 @@ workspace:
   flags:
     ai-scenario-generation: Jenerasyon senaryo ak IA
     ai-fact-explanation: Eksplikasyon done ak IA
+    author-mode: Mòd Otè
   nav:
     experience-explorer: Eksploratè eksperyans
     product-experience: Eksperyans pwodwi a

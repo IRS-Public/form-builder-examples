@@ -30,6 +30,7 @@ workspace:
   flags:
     ai-scenario-generation: AI 场景生成
     ai-fact-explanation: AI 事实说明
+    author-mode: 作者模式
   nav:
     experience-explorer: 体验浏览器
     product-experience: 产品体验

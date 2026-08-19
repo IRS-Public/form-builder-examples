@@ -30,6 +30,7 @@ workspace:
   flags:
     ai-scenario-generation: Tạo kịch bản bằng AI
     ai-fact-explanation: Giải thích dữ kiện bằng AI
+    author-mode: Chế độ tác giả
   nav:
     experience-explorer: Trình khám phá trải nghiệm
     product-experience: Trải nghiệm sản phẩm

@@ -30,6 +30,7 @@ workspace:
   flags:
     ai-scenario-generation: Генерация сценариев с ИИ
     ai-fact-explanation: Объяснение фактов с ИИ
+    author-mode: Режим автора
   nav:
     experience-explorer: Обзор интерфейса
     product-experience: Интерфейс продукта

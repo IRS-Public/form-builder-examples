@@ -91,7 +91,7 @@
                     // menu, Workspace settings lists no feature flags, and no tool buttons appear.
                     // Everything else in here is already a JS comment; keep it that way.
                     { id: 'fact-explorer', label: [[#{workspace.nav.fact-explorer}]], href: 'http://localhost:5180/fact-explorer/credit-assistant' },
-                    { id: 'authoring-suite', label: [[#{workspace.nav.authoring-suite}]], href: '/app/eitc/author/' },
+                    { id: 'authoring-suite', label: [[#{workspace.nav.authoring-suite}]], href: '/app/eitc/author/', ff: 'author-mode' },
                 ],
 
                 // Where each tool button in the bar applies. Scenario belongs to the destinations
@@ -159,6 +159,8 @@
 
             // The two AI features are separately flagged because they ship on separate timelines:
             // generation writes a whole Fact Graph from a prompt, explanation only reads facts back.
+            // authorMode is a third, unrelated to either: it gates the "Authoring Suite" nav item
+            // (nav.menu's `ff: 'author-mode'` above) rather than anything inside the audit panel.
             // Each one's build-time default is the matching `*-default` attribute on
             // <taxpert-audit-panel> (see fragments/audit-panel.html); Workspace settings overrides
             // it at runtime in localStorage.
@@ -169,6 +171,7 @@
             featureFlags: [
                 { name: 'aiScenarioGeneration', kebab: 'ai-scenario-generation', label: [[#{workspace.flags.ai-scenario-generation}]] },
                 { name: 'aiFactExplanation', kebab: 'ai-fact-explanation', label: [[#{workspace.flags.ai-fact-explanation}]] },
+                { name: 'authorMode', kebab: 'author-mode', label: [[#{workspace.flags.author-mode}]] },
             ],
 
             // Inspect pins a cue to every rendered unit. `/taxYear` is printed as chrome on page

@@ -30,6 +30,7 @@ workspace:
   flags:
     ai-scenario-generation: AI 시나리오 생성
     ai-fact-explanation: AI 팩트 설명
+    author-mode: 저작 모드
   nav:
     experience-explorer: 경험 탐색기
     product-experience: 제품 경험
