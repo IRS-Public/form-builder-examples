@@ -1,5 +1,5 @@
 {
   "devDependencies": {
-    "taxpert": "file:../../packages/ui"
+    "taxpert": "^0.1.0"
   }
 }

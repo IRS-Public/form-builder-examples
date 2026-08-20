@@ -223,5 +223,5 @@ If you make changes to the Fact Graph, and you want to propagate those changes, 
    Note: Scala.js compilation occurs during `make publish`. It can produce slightly different output even with identical source code. As a result, the vendored files (`factgraph-3.1.0.js` and `main.mjs.map`) may change after running this command even if no Fact Graph source was modified. If you haven't made any Fact Graph changes, these don't need to be committed.
 2. Run `make copy-fg` in this repo
 
-   Note: `make copy-fg` target assumes that the Fact Graph repo is located in `https://github.com/IRS-Public/fact-graph`.
+   Note: `make copy-fg` target assumes that a [fact-graph](https://github.com/IRS-Public/fact-graph) checkout sits beside this app at `../fact-graph`.
 

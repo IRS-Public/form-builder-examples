@@ -61,6 +61,28 @@ copy-fg: ## Copy compiled Fact Graph from sibling repository
 		echo "    (run 'cd ../fact-graph && sbt fastOptJS' to refresh it)"; \
 	fi
 
+# ── Developing against an unpublished taxpert ────────────────────────────────────────────────────
+#
+# package.json depends on the published `taxpert` package. This repository is deliberately NOT a
+# sibling-path dependency any more: these two apps live in their own repository now, and an app in
+# its own repository is exactly what an outside adopter has, so it must resolve the workspace UI the
+# way they would. Until taxpert is published to npm, point this at a checkout of it:
+#
+#   make link-taxpert TAXPERT_UI=/path/to/taxpert/packages/ui
+#
+# That installs it into node_modules without touching package.json, so `make copy-shared-ui` and
+# `make check-shared-ui` work unchanged and the committed dependency stays honest.
+TAXPERT_UI ?=
+
+.PHONY: link-taxpert
+link-taxpert: ## Install the workspace UI from a local taxpert checkout (set TAXPERT_UI=...)
+	@test -n "$(TAXPERT_UI)" || { \
+	  echo "error: set TAXPERT_UI=/path/to/taxpert/packages/ui"; exit 1; }
+	@test -d "$(TAXPERT_UI)/src" || { \
+	  echo "error: $(TAXPERT_UI) has no src/ — is that the packages/ui directory?"; exit 1; }
+	npm install --no-save "file:$(TAXPERT_UI)"
+
+
 .PHONY: copy-shared-ui
 copy-shared-ui: ## Copy shared UI components (taxpert) from node_modules
 	# The vendored copy is a generated mirror of taxpert's src/ bundle dirs,
@@ -119,10 +141,18 @@ clean: ## Clean all the build artifacts
 .PHONY: ci-setup
 ci-setup: ## Install validation and linting tools
 	npm --prefix $(RESOURCES_DIR) install
-	@# The shared UI package itself: a file: dependency on the sibling /taxpert checkout,
-	@# which is what copy-shared-ui mirrors out of node_modules. Without this, a clean
-	@# checkout (a diff-out worktree, CI) fails in copy-shared-ui rather than here.
-	npm install
+	@# The workspace UI. package.json names the published `taxpert` package, so a plain
+	@# `npm install` is what will work once it is on the registry. Until then it 404s, and
+	@# `make link-taxpert TAXPERT_UI=/path/to/taxpert/packages/ui` is what puts it in
+	@# node_modules — this step then leaves it alone. Without either, the failure would
+	@# surface later and less clearly, inside copy-shared-ui.
+	@if [ -d node_modules/taxpert ]; then \
+		echo "==> node_modules/taxpert is present; leaving it alone"; \
+	elif [ -n "$(TAXPERT_UI)" ]; then \
+		$(MAKE) link-taxpert; \
+	else \
+		npm install; \
+	fi
 
 
 .PHONY: ci

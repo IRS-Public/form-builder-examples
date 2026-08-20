@@ -125,7 +125,7 @@ It contained nice integrations with the Fact Graph, like the `path` attribute (l
 It also supported an "All-Screens" view, which became a load-bearing tool for product, design, *and* engineering workflows.
 
 The main limitation of the Direct File Flow, with respect to these goals, was its JSX specification.
-JSX is not a data format: it's an [XML-like JavaScript extension]("https://facebook.github.io/jsx/") that transpiles to `React.createElement` calls (or other framework equivalent).
+JSX is not a data format: it's an [XML-like JavaScript extension](https://facebook.github.io/jsx/) that transpiles to `React.createElement` calls (or other framework equivalent).
 While it's possible to write code [that introspects the resulting React tree](https://github.com/IRS-Public/direct-file/blob/e0d5c84451cc52b72d20d04652e306bf4af1a43c/direct-file/df-client/df-client-app/src/all-screens/AllScreensContent.tsx#L98), at that point the declarative representation has been lost and cannot be recreated.
 
 Nevertheless, these are absolutely the correct goals, fulfilling them simply requires finishing the transition of the Flow from JSX to a cross-platform, serializable data format: XML.

@@ -1,7 +1,7 @@
 {
   "devDependencies": {
     "@eslint/js": "^10.0.1",
-    "taxpert": "file:../../packages/ui",
+    "taxpert": "^0.1.0",
     "eslint": "^10.3.0"
   }
 }
