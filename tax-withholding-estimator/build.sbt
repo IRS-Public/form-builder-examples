@@ -7,12 +7,11 @@ ThisBuild / scalaVersion := "3.7.2"
 // GitHub Packages requires authentication even to *read* a public package: set GITHUB_OWNER to the
 // org, and GITHUB_ACTOR / GITHUB_TOKEN to a login and a PAT carrying `read:packages`. A CI job on
 // GitHub already has the latter two.
-val githubOwner = sys.env.getOrElse("GITHUB_OWNER", "REPLACE-ME-ORG")
+val githubOwner = sys.env.getOrElse("GITHUB_OWNER", "IRS-Public")
 
-ThisBuild / resolvers ++= Seq(
-  "formative" at s"https://maven.pkg.github.com/$githubOwner/formative",
-  "factgraph" at s"https://maven.pkg.github.com/$githubOwner/fact-graph",
-  )
+// Only formative comes from GitHub Packages. gov.irs:factgraph arrives transitively and is
+// resolved as a plain library — see formative's build.sbt for how to get it into ~/.ivy2/local.
+ThisBuild / resolvers += "formative" at s"https://maven.pkg.github.com/$githubOwner/formative"
 ThisBuild / credentials += Credentials(
   "GitHub Package Registry",
   "maven.pkg.github.com",
