@@ -61,7 +61,7 @@ _Note 2: the editorconfig.* settings are in here because Editor Config is a sugg
 
 #### Snippets
 
-We have snippets to simplify common boilerplate additions to EITC Assistant development. These snippets are setup automatically through the workspace snippets and they can be found in [fg-helpers.code-snippets](../../.vscode/fg-helpers.code-snippets).
+We have snippets to simplify common boilerplate additions to EITC Assistant development. These snippets are setup automatically through the workspace snippets and they can be found in `.vscode/fg-helpers.code-snippets`, which is not committed — see your editor's workspace snippets.
 
 ### Vim / Nvim
 
@@ -197,5 +197,5 @@ If you make changes to the Fact Graph, and you want to propagate those changes, 
    Note: Scala.js compilation occurs during `make publish`. It can produce slightly different output even with identical source code. As a result, the vendored files (`factgraph-3.1.0.js` and `main.mjs.map`) may change after running this command even if no Fact Graph source was modified. If you haven't made any Fact Graph changes, these don't need to be committed.
 2. Run `make copy-fg` in this repo
 
-   Note: `make copy-fg` target assumes that the Fact Graph repo is located in `../fact-graph`.
+   Note: `make copy-fg` target assumes that the Fact Graph repo is located in `https://github.com/IRS-Public/fact-graph`.
 

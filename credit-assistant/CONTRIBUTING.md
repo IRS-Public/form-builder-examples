@@ -46,7 +46,7 @@ As a contributor to this repository, assume that any contribution and associated
 Individual contributors are responsible for sharing only what they are comfortable with making available to the public domain.
 As a result, individuals should configure their accounts and git configurations accordingly.
 
-As a matter of policy, the IRS requires that internal contributors use their GitHub `no-reply` email address for authoring commits. See [ONBOARDING - Configure Commit Email Address](/ONBOARDING.md#configure-commit-email-address).
+As a matter of policy, the IRS requires that internal contributors use their GitHub `no-reply` email address for authoring commits. See [Onboarding — Configure Commit Email Address](docs/onboarding/onboarding-irs.md).
 
 
 ### Best Practices

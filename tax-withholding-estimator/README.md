@@ -47,18 +47,18 @@ Steps 1 through 3 are owned by this repository. Step 4 is mostly owned by the li
 
 | Package | What it is | How it arrives |
 |---|---|---|
-| **Formative** (`gov.irs::formative`) | The Scala scaffold: flow parser, site generators, Thymeleaf engine, node templates, chrome locales, RELAX NG schemas, plus the browser theme and the flow runtime it serves. See [`../formative/README.md`](../formative/README.md). | An sbt dependency, published to the local Ivy repository by `sbt publishLocal` in `../formative`. |
-| **Fact Graph** (`gov.irs:factgraph`) | The declarative evaluation engine, cross-compiled to the JVM and to JavaScript. See [`../fact-graph/README.md`](../fact-graph/README.md). | Transitively through Formative on the JVM side. The browser bundle is copied in by `make copy-fg`. |
-| **Taxpert** (`taxpert`, npm) | The optional workspace UI laid over a running app: global nav, audit panel, tool panels, all-screens toolbar. See [`../taxpert/README.md`](../taxpert/README.md). | An npm `file:` dependency on the sibling checkout, mirrored into `website-static/vendor/taxpert/` by `make copy-shared-ui`. |
+| **Formative** (`gov.irs::formative`) | The Scala scaffold: flow parser, site generators, Thymeleaf engine, node templates, chrome locales, RELAX NG schemas, plus the browser theme and the flow runtime it serves. See [`https://github.com/IRS-Public/formative`](https://github.com/IRS-Public/formative). | An sbt dependency, published to the local Ivy repository by `sbt publishLocal` in `https://github.com/IRS-Public/formative`. |
+| **Fact Graph** (`gov.irs:factgraph`) | The declarative evaluation engine, cross-compiled to the JVM and to JavaScript. See [`https://github.com/IRS-Public/fact-graph`](https://github.com/IRS-Public/fact-graph). | Transitively through Formative on the JVM side. The browser bundle is copied in by `make copy-fg`. |
+| **Taxpert** (`taxpert`, npm) | The optional workspace UI laid over a running app: global nav, audit panel, tool panels, all-screens toolbar. See [`../../packages/ui/README.md`](../../packages/ui/README.md). | An npm `file:` dependency on the sibling checkout, mirrored into `website-static/vendor/taxpert/` by `make copy-shared-ui`. |
 
-An application built on Formative is called a **Formative app**. This repository and [`../credit-assistant/`](../credit-assistant/README.md) are the two that exist. Credit Assistant is the smaller of the two and the easier introduction to the scaffold. TWE uses every extension point Formative offers, so read it when you want to see how far an app can customize the generated site.
+An application built on Formative is called a **Formative app**. This repository and [`../../examples/credit-assistant/`](../../examples/credit-assistant/README.md) are the two that exist. Credit Assistant is the smaller of the two and the easier introduction to the scaffold. TWE uses every extension point Formative offers, so read it when you want to see how far an app can customize the generated site.
 
 Two other components in the monorepo can point at this app but are not required to build or run it:
 
-- [`../fact-explorer/`](../fact-explorer/README.md), a React and Vite SPA that visualizes any Formative app's flow and facts as a graph. It discovers this app through the `fact-explorer.app.json` descriptor at this directory's root, which also declares the custom flow tag below.
-- [`../api/`](../api/README.md), a FastAPI backend for the audit panel's chat feature. This app does not wire it up, and the panel falls through to an empty endpoint.
+- [`../../packages/fact-explorer/`](../../packages/fact-explorer/README.md), a React and Vite SPA that visualizes any Formative app's flow and facts as a graph. It discovers this app through the `fact-explorer.app.json` descriptor at this directory's root, which also declares the custom flow tag below.
+- [`../../services/assistant/`](../../services/assistant/README.md), a FastAPI backend for the audit panel's chat feature. This app does not wire it up, and the panel falls through to an empty endpoint.
 
-New apps are generated from the cookiecutter in [`../formative-template/`](../formative-template/README.md).
+New apps are generated from the cookiecutter in [`https://github.com/IRS-Public/formative-template/`](https://github.com/IRS-Public/formative-template/README.md).
 
 ## Requirements
 
@@ -75,14 +75,14 @@ Scala and sbt can be installed with [Coursier](https://get-coursier.io/), [SDKMA
 ## Quickstart
 
 ```bash
-# 1. Publish the Fact Graph engine to your local Ivy repository
-cd ../fact-graph && make publish
+# 1. Fact Graph is on no remote — clone it and publish to your local Ivy repository
+git clone https://github.com/IRS-Public/fact-graph.git && (cd fact-graph && make publish)
 
-# 2. Publish the Formative scaffold to your local Ivy repository
-cd ../formative && sbt publishLocal
+# 2. Formative resolves from GitHub Packages, which needs auth even to read
+export GITHUB_OWNER=IRS-Public GITHUB_ACTOR=<login> GITHUB_TOKEN=<PAT with read:packages>
 
 # 3. Install the npm dependencies (including the taxpert file: dependency)
-cd ../tax-withholding-estimator && make ci-setup
+make ci-setup
 
 # 4. Build and serve, rebuilding on change
 make
@@ -120,7 +120,7 @@ Override the HTTP port with `make dev PORT=4000`, and the debug port with `DEBUG
 | `make twe` | Production build into `./out`, no server |
 | `make site` | Alias for `twe`, under the name every Formative app uses |
 | `make fact-explorer` | Build with `--formativeGraph` (emits `resources/formative-graph.json`) and print this app's Fact Explorer URL |
-| `make copy-fg` | Copy the compiled Fact Graph JS bundle from `../fact-graph` |
+| `make copy-fg` | Copy the compiled Fact Graph JS bundle from `https://github.com/IRS-Public/fact-graph` |
 | `make copy-shared-ui` | Regenerate the vendored `taxpert` mirror from `node_modules/taxpert/src` |
 | `make clean` | Remove `./target/`, `./project/*/target/`, and `./out/` |
 | `make diff-out` | Build `main` in a throwaway worktree and diff the two `out/` trees |
@@ -134,7 +134,7 @@ Override the HTTP port with `make dev PORT=4000`, and the debug port with `DEBUG
 | `make format` | `xmllint --format` over `facts/*.xml`, then `scalafmtAll`, then Prettier over the JS |
 | `make ci` | Production build, then every check below |
 | `make ci-setup` | `npm install` in `src/main/resources/twe/` and at this directory's root |
-| `make check-shared-ui` | Fail if the vendored `taxpert` mirror has drifted from `../taxpert/src` |
+| `make check-shared-ui` | Fail if the vendored `taxpert` mirror has drifted from `../../packages/ui/src` |
 | `make validate-xml` | `xmllint --relaxng` over `facts/*.xml` and `flow/*.xml` |
 | `make validate-html` | `html-validate` over the generated HTML in `./out` |
 | `make validate-templates` | Reject HTML comments inside inline `<script>` blocks |
@@ -147,7 +147,7 @@ Override the HTTP port with `make dev PORT=4000`, and the debug port with `DEBUG
 
 ```
 build.sbt                              gov.irs::formative, plus scala-csv for the UAT suite
-package.json                           one devDependency: taxpert (file:../taxpert)
+package.json                           one devDependency: taxpert (file:../../packages/ui)
 fact-explorer.app.json                 this app, as Fact Explorer discovers it
 Dockerfile, nginx.conf                 container build and static serving
 scripts/                               diff-out.sh, check-uswds-semibold.sh, fgs.sh, reorder-yaml.sh
@@ -253,7 +253,7 @@ Formative's template engine consults two `ClassLoaderTemplateResolver`s, `{appId
 | `fragments/audit-panel.html` | Overrides the mount, dropping the chat and scenario endpoints this app has no backend for |
 | `fragments/workspace-head.html`, `workspace-enable.html`, `workspace-all-screens.html`, `taxpert-config.html` | Fill the four workspace mounts, below |
 
-Neither app overrides `page.html` or `all-screens.html`. If you find yourself about to, the change most likely belongs either in `../formative/` (the markup) or in `../taxpert/` (the styling and toolbars).
+Neither app overrides `page.html` or `all-screens.html`. If you find yourself about to, the change most likely belongs either in `https://github.com/IRS-Public/formative` (the markup) or in `../../packages/ui/` (the styling and toolbars).
 
 ### 5. The workspace mounts
 
@@ -294,15 +294,15 @@ The library's templates reference a small number of app-owned paths under `{base
 
 | Directory | Source | How it is refreshed | Tracked in git? |
 |---|---|---|---|
-| `vendor/taxpert/` | `../taxpert/src/` | `make copy-shared-ui`, which every build and dev target depends on | No, gitignored. A fresh clone has none until a build runs |
+| `vendor/taxpert/` | `../../packages/ui/src/` | `make copy-shared-ui`, which every build and dev target depends on | No, gitignored. A fresh clone has none until a build runs |
 | `vendor/formative/` | The `formative` jar | Extracted by the generator on every build | No, it only exists in `./out` |
-| `vendor/fact-graph/` | `../fact-graph` | `make copy-fg` | Yes |
+| `vendor/fact-graph/` | `https://github.com/IRS-Public/fact-graph` | `make copy-fg` | Yes |
 | `vendor/uswds-3.13.0/` | USWDS release | Manually, on a USWDS upgrade. `make validate-uswds` guards the semibold weights | Yes |
 | `vendor/pdf-lib-1.17.1.min.js` | pdf-lib release | Manually | Yes |
 
-To change any shared workspace UI, edit `../taxpert/src/`, run `cd ../taxpert && npm test`, then `make copy-shared-ui` here. `make check-shared-ui` (run by `make ci`) fails if the mirror and `../taxpert/src` disagree, which is what catches a hand-edit before it reaches a browser.
+To change any shared workspace UI, edit `../../packages/ui/src/`, run `cd ../../packages/ui && npm test`, then `make copy-shared-ui` here. `make check-shared-ui` (run by `make ci`) fails if the mirror and `../../packages/ui/src` disagree, which is what catches a hand-edit before it reaches a browser.
 
-To change the theme or the flow runtime, edit `../formative/src/main/resources/formative/website-static/`, then `cd ../formative && sbt publishLocal` and restart. There is no `make` target for these, and no live reload.
+To change the theme or the flow runtime, edit `formative/src/main/resources/formative/website-static/`, then `cd formative && sbt publishLocal` and restart. There is no `make` target for these, and no live reload.
 
 ## Internationalization
 
@@ -346,7 +346,7 @@ Content conventions are in [docs/design/twe-content-guidelines.md](./docs/design
 
 ## Gotchas
 
-- **The scaffold must be republished before this app sees a change to it.** `cd ../formative && sbt test publishLocal`. This applies to parser changes, generator changes, node templates, chrome locales, the theme, and the flow runtime. After a scaffold change, run `make ci` in **both** apps, because the second app is what catches an app-specific assumption.
+- **The scaffold must be republished before this app sees a change to it.** `cd formative && sbt test publishLocal`. This applies to parser changes, generator changes, node templates, chrome locales, the theme, and the flow runtime. After a scaffold change, run `make ci` in **both** apps, because the second app is what catches an app-specific assumption.
 - **Flow, facts, and this app's locales are read from disk, not the classpath.** The library's own templates and base locales do come off the classpath.
 - **`make ci-setup` runs `npm install` twice**, once in `src/main/resources/twe/` for the lint tooling and once at this directory's root for the `taxpert` dependency. A clean checkout that skips it fails inside `copy-shared-ui`.
 - **`make fact-explorer` is separate from `make dev` on purpose.** The Scala graph generator does not yet emit the `shows` and `exits` edges Fact Explorer's own generator produces, and Fact Explorer prefers an app-served graph wherever it finds one.
@@ -357,7 +357,7 @@ Content conventions are in [docs/design/twe-content-guidelines.md](./docs/design
 
 Report security issues through [SECURITY.md](./SECURITY.md).
 
-This codebase is dedicated to the public domain under the Creative Commons Zero v1.0 Universal license (CC0 1.0). This directory does not currently carry its own `LICENSE.md` or `CONTRIBUTING.md`. The sibling app's copies are at [`../credit-assistant/LICENSE.md`](../credit-assistant/LICENSE.md) and [`../credit-assistant/CONTRIBUTING.md`](../credit-assistant/CONTRIBUTING.md).
+This codebase is dedicated to the public domain under the Creative Commons Zero v1.0 Universal license (CC0 1.0). This directory does not currently carry its own `LICENSE.md` or `CONTRIBUTING.md`. The sibling app's copies are at [`../../examples/credit-assistant/LICENSE.md`](../../examples/credit-assistant/LICENSE.md) and [`../../examples/credit-assistant/CONTRIBUTING.md`](../../examples/credit-assistant/CONTRIBUTING.md).
 
 ## Authorities
 
