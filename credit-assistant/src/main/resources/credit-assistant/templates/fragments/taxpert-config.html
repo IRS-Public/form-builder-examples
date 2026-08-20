@@ -57,7 +57,7 @@
         const t = (key) => strings.get(key) ?? key
 
         configure({
-            // storagePrefix is what stops this app and any other Formative app served from the same
+            // storagePrefix is what stops this app and any other Form Builder app served from the same
             // origin from sharing a watchlist, a panel layout or a set of display options. It was
             // 'taxpert' — the package-wide default, i.e. not actually namespaced at all, which is the
             // collision the option exists to prevent. It is this app's `appId` now, matching what the
@@ -120,7 +120,7 @@
                 ],
             },
 
-            // The other Formative applications this workspace can be pointed at — the "Applications"
+            // The other Form Builder applications this workspace can be pointed at — the "Applications"
             // section of Workspace settings (the nav's gear). Switching keeps the destination you
             // are on: Browse All here goes to Browse All there.
             //

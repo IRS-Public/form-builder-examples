@@ -2,7 +2,7 @@
 
 The EITC Assistant is an online tool provided by the Internal Revenue Service (IRS) to help taxpayers determine whether they are eligible for the [Earned Income Tax Credit (EITC)](https://www.irs.gov/credits-deductions/individuals/earned-income-tax-credit-eitc) and, if so, estimate the amount of the credit. By guiding users through the relevant questions and rules, it can reduce common errors, improve claim accuracy, and help taxpayers better understand the basis for their eligibility and credit calculation.
 
-This directory holds the EITC-specific half of that tool: the flow XML, the fact dictionary, the locale files, the brand CSS, and a `Main.scala` of about forty lines. Everything else (the XML parser, the site generators, the Thymeleaf engine, the browser theme, the flow runtime) comes from **Formative**, a Scala library described under [Assembly](#assembly) below.
+This directory holds the EITC-specific half of that tool: the flow XML, the fact dictionary, the locale files, the brand CSS, and a `Main.scala` of about forty lines. Everything else (the XML parser, the site generators, the Thymeleaf engine, the browser theme, the flow runtime) comes from **Form Builder**, a Scala library described under [Assembly](#assembly) below.
 
 This codebase is actively maintained and reflects the version of the EITC Assistant that went live on April 29, 2026. Releases starting with v26.1.1 use the [Fact Graph](https://github.com/IRS-Public/fact-graph) to model the Internal Revenue Code, following similar projects like the [Tax Withholding Estimator](https://github.com/IRS-Public/tax-withholding-estimator) and [Direct File](https://github.com/IRS-Public/direct-file). Prior versions of the application, which used an imperative JavaScript approach, can be seen in the first few commits in this repository.
 
@@ -33,18 +33,18 @@ Steps 1 through 3 are owned by this repository. Step 4 is almost entirely owned 
 
 | Package | What it is | How it arrives |
 |---|---|---|
-| **Formative** (`gov.irs::formative`) | The Scala scaffold: flow parser, site generators, Thymeleaf engine, node templates, chrome locales, RELAX NG schemas, plus the browser theme and the flow runtime it serves. See [`https://github.com/IRS-Public/formative`](https://github.com/IRS-Public/formative). | An sbt dependency, published to the local Ivy repository by `sbt publishLocal` in `https://github.com/IRS-Public/formative`. |
-| **Fact Graph** (`gov.irs:factgraph`) | The declarative evaluation engine, cross-compiled to the JVM and to JavaScript. See [`https://github.com/IRS-Public/fact-graph`](https://github.com/IRS-Public/fact-graph). | Transitively through Formative on the JVM side. The browser bundle is copied in by `make copy-fg`. |
+| **Form Builder** (`gov.irs::form-builder`) | The Scala scaffold: flow parser, site generators, Thymeleaf engine, node templates, chrome locales, RELAX NG schemas, plus the browser theme and the flow runtime it serves. See [`https://github.com/IRS-Public/form-builder`](https://github.com/IRS-Public/form-builder). | An sbt dependency, published to the local Ivy repository by `sbt publishLocal` in `https://github.com/IRS-Public/form-builder`. |
+| **Fact Graph** (`gov.irs:factgraph`) | The declarative evaluation engine, cross-compiled to the JVM and to JavaScript. See [`https://github.com/IRS-Public/fact-graph`](https://github.com/IRS-Public/fact-graph). | Transitively through Form Builder on the JVM side. The browser bundle is copied in by `make copy-fg`. |
 | **Taxpert** (`taxpert`, npm) | The optional workspace UI laid over a running app: global nav, audit panel, tool panels, all-screens toolbar. See [`../../packages/ui/README.md`](../../packages/ui/README.md). | An npm `file:` dependency on the sibling checkout, mirrored into `website-static/vendor/taxpert/` by `make copy-shared-ui`. |
 
-An application built on Formative is called a **Formative app**. This repository and [`../../examples/tax-withholding-estimator/`](../../examples/tax-withholding-estimator/) are the two that exist. This one is the simpler of the two, and is a reasonable reference when reading the scaffold.
+An application built on Form Builder is called a **Form Builder app**. This repository and [`../../examples/tax-withholding-estimator/`](../../examples/tax-withholding-estimator/) are the two that exist. This one is the simpler of the two, and is a reasonable reference when reading the scaffold.
 
 Two other components in the monorepo can point at this app but are not required to build or run it:
 
-- [`../../packages/fact-explorer/`](../../packages/fact-explorer/README.md), a React and Vite SPA that visualizes any Formative app's flow and facts as a graph. It discovers this app through the `fact-explorer.app.json` descriptor at this directory's root.
+- [`../../packages/fact-explorer/`](../../packages/fact-explorer/README.md), a React and Vite SPA that visualizes any Form Builder app's flow and facts as a graph. It discovers this app through the `fact-explorer.app.json` descriptor at this directory's root.
 - [`../../services/assistant/`](../../services/assistant/README.md), a FastAPI backend that powers the audit panel's chat feature. The panel points at `http://localhost:8000`, and the app runs without it.
 
-New apps are generated from the cookiecutter in [`https://github.com/IRS-Public/formative-template/`](https://github.com/IRS-Public/formative-template/README.md).
+New apps are generated from the cookiecutter in [`https://github.com/IRS-Public/form-builder-template/`](https://github.com/IRS-Public/form-builder-template/README.md).
 
 ## Requirements
 
@@ -64,7 +64,7 @@ Scala and sbt can be installed with [Coursier](https://get-coursier.io/), [SDKMA
 # 1. Fact Graph is on no remote — clone it and publish to your local Ivy repository
 git clone https://github.com/IRS-Public/fact-graph.git && (cd fact-graph && make publish)
 
-# 2. Formative resolves from GitHub Packages, which needs auth even to read
+# 2. Form Builder resolves from GitHub Packages, which needs auth even to read
 export GITHUB_OWNER=IRS-Public GITHUB_ACTOR=<login> GITHUB_TOKEN=<PAT with read:packages>
 
 # 3. Install the npm dependencies (including the taxpert file: dependency)
@@ -86,7 +86,7 @@ Step 1 is optional if you are only working on templates, locales, or CSS. `make 
 
 ### Docker
 
-`examples/credit-assistant/Dockerfile` builds a static image in four stages: publish `factgraph`, publish `formative`, run the generator, then serve `./out` with nginx. Its build context is the repository root, because the two Scala libraries it depends on are built from source rather than pulled from a remote. The mode flags are baked in at build time, so changing them means rebuilding the image.
+`examples/credit-assistant/Dockerfile` builds a static image in four stages: publish `factgraph`, publish `form-builder`, run the generator, then serve `./out` with nginx. Its build context is the repository root, because the two Scala libraries it depends on are built from source rather than pulled from a remote. The mode flags are baked in at build time, so changing them means rebuilding the image.
 
 From the repository root, `docker compose up credit-assistant` serves it on **http://localhost:3003**. `docker compose up` also brings up `tax-withholding-estimator` (3000), `fact-explorer` (5180), the `api` backend (8000), and ChromaDB (8001).
 
@@ -113,8 +113,8 @@ Override the HTTP port with `make dev PORT=4000`, and the debug port with `DEBUG
 | Target | Effect |
 |---|---|
 | `make credit-assistant` | Production build into `./out`, no server |
-| `make site` | Alias for `credit-assistant`, under the name every Formative app uses |
-| `make fact-explorer` | Build with `--formativeGraph` (emits `resources/formative-graph.json`) and print this app's Fact Explorer URL |
+| `make site` | Alias for `credit-assistant`, under the name every Form Builder app uses |
+| `make fact-explorer` | Build with `--formBuilderGraph` (emits `resources/form-builder-graph.json`) and print this app's Fact Explorer URL |
 | `make copy-fg` | Copy the compiled Fact Graph JS bundle from `https://github.com/IRS-Public/fact-graph` |
 | `make copy-shared-ui` | Regenerate the vendored `taxpert` mirror from `node_modules/taxpert/src` |
 | `make clean` | Remove `./target/`, `./project/*/target/`, and `./out/` |
@@ -140,7 +140,7 @@ Override the HTTP port with `make dev PORT=4000`, and the debug port with `DEBUG
 ## Layout
 
 ```
-build.sbt                              one dependency: gov.irs::formative
+build.sbt                              one dependency: gov.irs::form-builder
 package.json                           devDependencies: eslint, taxpert (file:../../packages/ui)
 fact-explorer.app.json                 this app, as Fact Explorer discovers it
 Dockerfile, nginx.conf                 container build and static serving
@@ -196,11 +196,11 @@ Every file in `facts/` is loaded **alphabetically** and merged into one dictiona
 | `qualifying-children.xml` | The qualifying-child collection |
 | `results.xml` | Determination and credit amount |
 
-Each `<page route="...">` becomes one HTML page per language. The elements a page is built from (`<fg-set>`, `<fg-collection>`, `<fg-alert>`, `<fg-detail>`, `<modal-dialog>`) are the scaffold's, and their parsers and templates live in `https://github.com/IRS-Public/formative`.
+Each `<page route="...">` becomes one HTML page per language. The elements a page is built from (`<fg-set>`, `<fg-collection>`, `<fg-alert>`, `<fg-detail>`, `<modal-dialog>`) are the scaffold's, and their parsers and templates live in `https://github.com/IRS-Public/form-builder`.
 
 ## App configuration
 
-`src/main/scala/gov/irs/creditassistant/Main.scala` builds one `FormativeApp` and hands it to `Formative.run`. That is this app's entire Scala surface.
+`src/main/scala/gov/irs/creditassistant/Main.scala` builds one `FormBuilderApp` and hands it to `FormBuilder.run`. That is this app's entire Scala surface.
 
 | Field | Value | Meaning |
 |---|---|---|
@@ -218,11 +218,11 @@ The directory name, the resource directory name, and the URL segment are three i
 
 ## Extension points
 
-Formative offers five seams. This app uses two of them, which is what makes it the smaller example. [`../../examples/tax-withholding-estimator/`](../../examples/tax-withholding-estimator/README.md) exercises all five.
+Form Builder offers five seams. This app uses two of them, which is what makes it the smaller example. [`../../examples/tax-withholding-estimator/`](../../examples/tax-withholding-estimator/README.md) exercises all five.
 
 | Seam | Used here? |
 |---|---|
-| Template overrides (`{appId}/templates/` resolves before `formative/templates/`) | Only for the fragments listed below. No node or input template is overridden |
+| Template overrides (`{appId}/templates/` resolves before `form-builder/templates/`) | Only for the fragments listed below. No node or input template is overridden |
 | Locale layering (app YAML over library YAML over generated `flow_{lang}.yaml`) | Yes, `locales/{lang}.yaml` |
 | `nodeTypes` (custom flow elements) | No |
 | `inputTypes` (custom or replacement input types) | No |
@@ -230,7 +230,7 @@ Formative offers five seams. This app uses two of them, which is what makes it t
 
 ### Static assets the scaffold expects
 
-The library's templates reference a small number of app-owned paths under `{basePath}/resources/`. Supplying them is part of being a Formative app.
+The library's templates reference a small number of app-owned paths under `{basePath}/resources/`. Supplying them is part of being a Form Builder app.
 
 | Path | Referenced by | Present here |
 |---|---|---|
@@ -241,11 +241,11 @@ The library's templates reference a small number of app-owned paths under `{base
 | `styles/components/author-mode.css` | `author-mode.html`, under `--authorMode` | Yes |
 | `js/author-mode.js` | `author-mode.html`, under `--authorMode` | Yes |
 
-`website-static/js/fg-components.js` is the flow entry point. It imports the scaffold's runtime from `vendor/formative/flow-runtime/js/flow-runtime.js`, which is what defines `<fg-set>`, `<fg-collection>`, and `<fg-show>`, and then imports this app's two additions: `fg-knockout-handlers.js` (reveal-on-continue behaviour for the knockout gates) and `fg-flow-confirmations.js`.
+`website-static/js/fg-components.js` is the flow entry point. It imports the scaffold's runtime from `vendor/form-builder/flow-runtime/js/flow-runtime.js`, which is what defines `<fg-set>`, `<fg-collection>`, and `<fg-show>`, and then imports this app's two additions: `fg-knockout-handlers.js` (reveal-on-continue behaviour for the knockout gates) and `fg-flow-confirmations.js`.
 
 ### Workspace mount fragments
 
-Formative decides that there is a workspace slot and when it is filled (`--auditMode`). It ships an empty or minimal default for each fragment below and names no path inside `vendor/taxpert/` anywhere. Filling them is this app's job, which is what lets an app drop the workspace dependency entirely.
+Form Builder decides that there is a workspace slot and when it is filled (`--auditMode`). It ships an empty or minimal default for each fragment below and names no path inside `vendor/taxpert/` anywhere. Filling them is this app's job, which is what lets an app drop the workspace dependency entirely.
 
 | `templates/fragments/` | Fills |
 |---|---|
@@ -266,13 +266,13 @@ Formative decides that there is a workspace slot and when it is filled (`--audit
 | Directory | Source | How it is refreshed | Tracked in git? |
 |---|---|---|---|
 | `vendor/taxpert/` | `../../packages/ui/src/` | `make copy-shared-ui`, which every build and dev target depends on | No, gitignored. A fresh clone has none until a build runs |
-| `vendor/formative/` | The `formative` jar | Extracted by the generator on every build | No, it only exists in `./out` |
+| `vendor/form-builder/` | The `form-builder` jar | Extracted by the generator on every build | No, it only exists in `./out` |
 | `vendor/fact-graph/` | `https://github.com/IRS-Public/fact-graph` | `make copy-fg` | Yes |
 | `vendor/uswds-3.13.0/` | USWDS release | Manually, on a USWDS upgrade | Yes |
 
 To change any shared workspace UI, edit `../../packages/ui/src/`, run `cd ../../packages/ui && npm test`, then `make copy-shared-ui` here. `make check-shared-ui` (run by `make ci`) fails if the mirror and `../../packages/ui/src` disagree, which is what catches a hand-edit before it reaches a browser.
 
-To change the theme or the flow runtime, edit `formative/src/main/resources/formative/website-static/`, then `cd formative && sbt publishLocal` and restart. There is no `make` target for these, and no live reload.
+To change the theme or the flow runtime, edit `form-builder/src/main/resources/form-builder/website-static/`, then `cd form-builder && sbt publishLocal` and restart. There is no `make` target for these, and no live reload.
 
 ## Internationalization
 
@@ -284,7 +284,7 @@ Eight languages, two tiers per language.
 | `locales/flow_en.yaml` | The build | Extracted from the flow XML on every run. Do not edit |
 | `locales/flow_{lang}.yaml` | Humans | Translations of the keys in `flow_en.yaml` |
 
-Lookup order is `{lang}.yaml`, then `flow_{lang}.yaml`. Formative ships its own eight-language chrome YAML underneath both (`components.*`, `buttons.*`, `alerts.*`, `errors.*`, `step-indicator.*`, `layout.*`, `audit.*`, `all-screens.*`), and this app's file layers over it. `locales/en.yaml` here therefore holds only what this app adds or replaces, chiefly its `title`, its `all-screens.section.*` keys (one per flow module), and the whole `workspace.*` tree the nav and tool panels are labelled from. Because of that layering, `YamlValidatorSpec` compares the merged result rather than this app's file on its own.
+Lookup order is `{lang}.yaml`, then `flow_{lang}.yaml`. Form Builder ships its own eight-language chrome YAML underneath both (`components.*`, `buttons.*`, `alerts.*`, `errors.*`, `step-indicator.*`, `layout.*`, `audit.*`, `all-screens.*`), and this app's file layers over it. `locales/en.yaml` here therefore holds only what this app adds or replaces, chiefly its `title`, its `all-screens.section.*` keys (one per flow module), and the whole `workspace.*` tree the nav and tool panels are labelled from. Because of that layering, `YamlValidatorSpec` compares the merged result rather than this app's file on its own.
 
 ## Testing
 
@@ -306,7 +306,7 @@ Five CSV fixtures in `src/test/resources/csv/` drive table-based scenario suites
 
 ## Gotchas
 
-- **The scaffold must be republished before this app sees a change to it.** `cd formative && sbt test publishLocal`. This applies to parser changes, generator changes, node templates, chrome locales, the theme, and the flow runtime.
+- **The scaffold must be republished before this app sees a change to it.** `cd form-builder && sbt test publishLocal`. This applies to parser changes, generator changes, node templates, chrome locales, the theme, and the flow runtime.
 - **`defaultPort` and the dev port differ.** `Main.scala` declares 3002, but the Makefile always passes `-Dsmol.port=3003`, so `make dev` serves on 3003. `fact-explorer.app.json` records 3003 to match the Makefile.
 - **Flow, facts, and this app's locales are read from disk, not the classpath.** Author Mode patches XML on disk and re-runs the generator in process, and a classpath read would serve sbt's stale `target/` copy. The library's own templates and base locales do come off the classpath.
 - **`make ci-setup` runs `npm install` twice**, once in `src/main/resources/credit-assistant/` for the lint tooling and once at this directory's root for the `taxpert` dependency. A clean checkout that skips it fails inside `copy-shared-ui`.

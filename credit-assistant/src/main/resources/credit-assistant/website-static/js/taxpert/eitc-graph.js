@@ -22,7 +22,7 @@
 // eitcDeterminations(). Nothing here is user-visible English.
 
 import { windowFactGraphAdapter } from '../../vendor/taxpert/shared/js/graph-adapter.js'
-import { saveFactGraph } from '../../vendor/formative/flow-runtime/js/fg-fact-graph.js'
+import { saveFactGraph } from '../../vendor/form-builder/flow-runtime/js/fg-fact-graph.js'
 
 /**
  * The fact-graph port for this application.

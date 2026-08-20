@@ -9,7 +9,7 @@
 // This app had none of it until recently: it shipped a fork of the page template from before any of
 // this existed, which rendered a bare, empty document. The template is the scaffold's now and this
 // file is the whole of what the page needs from the app.
-import { checkCondition } from '../vendor/formative/flow-runtime/js/fg-conditions.js'
+import { checkCondition } from '../vendor/form-builder/flow-runtime/js/fg-conditions.js'
 
 // Every collection renders its first item even against an empty fact graph, so collection questions
 // appear in a listing whose whole point is that nothing has been answered.

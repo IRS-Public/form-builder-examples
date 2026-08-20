@@ -7,7 +7,7 @@
 // It uses only the flow runtime's public surface — the fact graph and the collection-id helper —
 // which is what makes registering a node from outside the package possible at all.
 
-import { factGraph, configureCollectionIds } from '../vendor/formative/flow-runtime/js/flow-runtime.js'
+import { factGraph, configureCollectionIds } from '../vendor/form-builder/flow-runtime/js/flow-runtime.js'
 
 class FgWithholdingAdjustments extends HTMLElement {
   constructor () {

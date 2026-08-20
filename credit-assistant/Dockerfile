@@ -5,7 +5,7 @@
 # Build context is the REPO ROOT (see docker-compose.yml) because this build vendors the workspace
 # UI from packages/ui, which lives outside this directory.
 #
-# The two Scala libraries are no longer built here: gov.irs::formative resolves from GitHub
+# The two Scala libraries are no longer built here: gov.irs::form-builder resolves from GitHub
 # Packages, and gov.irs:factgraph under it. GitHub Packages requires auth even to read, so the
 # build needs a token — passed as a build secret, never as an ARG, so it stays out of image layers:
 #
@@ -33,7 +33,7 @@ ENV PATH="/opt/sbt/bin:${PATH}"
 
 # ---- stage 1: generate the static credit-assistant site --------------------------
 FROM sbt-base AS build
-# gov.irs::formative resolves from GitHub Packages, which requires auth even to read.
+# gov.irs::form-builder resolves from GitHub Packages, which requires auth even to read.
 # Pass the token as a build secret so it never lands in an image layer:
 #   docker build --secret id=github_token,env=GITHUB_TOKEN --build-arg GITHUB_OWNER=... .
 ARG GITHUB_OWNER
@@ -49,8 +49,8 @@ COPY examples/credit-assistant/ ./
 # repo root, not just credit-assistant/). Mirrors the bundle-dir layout (global-nav/,
 # audit-panel/, shared/, tool-panels/, flow-runtime/, each with js/styles/…).
 #
-# The theme is NOT here: it ships inside the formative jar and the `sbt run` below
-# extracts it into out/.../resources/vendor/formative/. See FormativeAssets.scala.
+# The theme is NOT here: it ships inside the form-builder jar and the `sbt run` below
+# extracts it into out/.../resources/vendor/form-builder/. See FormBuilderAssets.scala.
 #
 # One COPY of the whole src/ tree rather than one per bundle: the per-bundle list had to
 # be kept in step with taxpert by hand, and a bundle missing from it produced an image

@@ -1,6 +1,6 @@
 package gov.irs.creditassistant
 
-import gov.irs.formative.generatedFlowContentPath
+import gov.irs.formbuilder.generatedFlowContentPath
 import io.circe.yaml.parser
 import io.circe.Json
 import io.circe.ParsingFailure

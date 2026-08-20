@@ -7,7 +7,7 @@
 #
 # Nothing here names an app: the script locates itself, works out which subdirectory of the
 # monorepo it belongs to, and builds the `site` target of that subdirectory's Makefile. The copy in
-# every Formative app is byte-identical, which is the point.
+# every Form Builder app is byte-identical, which is the point.
 
 set -euo pipefail
 

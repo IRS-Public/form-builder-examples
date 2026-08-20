@@ -1,17 +1,17 @@
 ThisBuild / version := "0.1.0-SNAPSHOT"
 ThisBuild / scalaVersion := "3.7.2"
 
-// ── Resolving gov.irs::formative from GitHub Packages ─────────────────────────────────────────
+// ── Resolving gov.irs::form-builder from GitHub Packages ─────────────────────────────────────────
 //
-// formative and fact-graph are no longer built beside this app, so both resolve from a registry.
+// form-builder and fact-graph are no longer built beside this app, so both resolve from a registry.
 // GitHub Packages requires authentication even to *read* a public package: set GITHUB_OWNER to the
 // org, and GITHUB_ACTOR / GITHUB_TOKEN to a login and a PAT carrying `read:packages`. A CI job on
 // GitHub already has the latter two.
 val githubOwner = sys.env.getOrElse("GITHUB_OWNER", "IRS-Public")
 
-// Only formative comes from GitHub Packages. gov.irs:factgraph arrives transitively and is
-// resolved as a plain library — see formative's build.sbt for how to get it into ~/.ivy2/local.
-ThisBuild / resolvers += "formative" at s"https://maven.pkg.github.com/$githubOwner/formative"
+// Only form-builder comes from GitHub Packages. gov.irs:factgraph arrives transitively and is
+// resolved as a plain library — see form-builder's build.sbt for how to get it into ~/.ivy2/local.
+ThisBuild / resolvers += "form-builder" at s"https://maven.pkg.github.com/$githubOwner/form-builder"
 ThisBuild / credentials += Credentials(
   "GitHub Package Registry",
   "maven.pkg.github.com",
@@ -34,7 +34,7 @@ lazy val root = (project in file("."))
     // The site generator: parser, generators, Thymeleaf engine, node templates, base locales.
     // Everything this app used to depend on directly — thymeleaf, jsoup, circe, scala-csv, smol,
     // os-lib, scala-xml, factgraph — arrives transitively through it.
-    libraryDependencies += "gov.irs" %% "formative" % "0.1.0",
+    libraryDependencies += "gov.irs" %% "form-builder" % "0.1.0",
 
     // Still direct: the UAT scenario suite reads the spreadsheet itself.
     libraryDependencies += "com.github.tototoshi" %% "scala-csv" % "2.0.0",

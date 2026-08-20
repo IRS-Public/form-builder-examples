@@ -2,7 +2,7 @@ package gov.irs.twe.factDictionary
 
 import gov.irs.factgraph.{ FactDictionary, FactDictionaryForTests, Graph, Path }
 import gov.irs.factgraph.types.WritableType
-import gov.irs.formative.loadFactXml
+import gov.irs.formbuilder.loadFactXml
 import gov.irs.twe.app
 
 def setupFactDictionary(): FactDictionary =

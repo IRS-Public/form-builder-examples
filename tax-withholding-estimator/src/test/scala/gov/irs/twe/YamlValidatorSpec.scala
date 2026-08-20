@@ -1,6 +1,6 @@
 package gov.irs.twe
 
-import gov.irs.formative.{ chromeLocaleContent, generatedFlowContentPath }
+import gov.irs.formbuilder.{ chromeLocaleContent, generatedFlowContentPath }
 import gov.irs.twe.app
 import io.circe.{ Json, ParsingFailure }
 import io.circe.yaml.parser

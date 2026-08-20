@@ -1,13 +1,13 @@
 package gov.irs.twe.inputs
 
 import gov.irs.factgraph.{ FactDictionary, Path }
-import gov.irs.formative.exceptions.InvalidFormConfig
-import gov.irs.formative.parser.{ Input, InputContext, InputParser }
+import gov.irs.formbuilder.exceptions.InvalidFormConfig
+import gov.irs.formbuilder.parser.{ Input, InputContext, InputParser }
 
 /** `<input type="date" previous-years="1"/>` — the scaffold's date input, with the free-text year replaced by a select
   * over a window around the tax year.
   *
-  * This is registered under `"date"`, not under a new name: [[gov.irs.formative.FormativeApp.inputTypes]] is merged
+  * This is registered under `"date"`, not under a new name: [[gov.irs.formbuilder.FormBuilderApp.inputTypes]] is merged
   * *over* the built-ins, so registering an existing name reshapes that input rather than adding a second one. The
   * template that renders it is TWE's own `nodes/inputs/date.html`, which wins by the same app-first resolution.
   *

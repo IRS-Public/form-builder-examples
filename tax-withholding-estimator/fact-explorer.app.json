@@ -35,7 +35,7 @@
   "scenarios": null,
 
   "$comment_customFlowTags": [
-    "Mirrors FormativeApp.nodeTypes in Main.scala. A tag listed here reaches the graph as a real",
+    "Mirrors FormBuilderApp.nodeTypes in Main.scala. A tag listed here reaches the graph as a real",
     "node and passes validate(); one that is not is dropped by the generator. The two input types",
     "TWE also registers (single-checkbox, date) need no declaration — inputType is a free string on",
     "FlowElement, and only tags are validated."

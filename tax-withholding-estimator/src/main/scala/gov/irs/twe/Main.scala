@@ -1,17 +1,17 @@
 package gov.irs.twe
 
-import gov.irs.formative.{ Formative, FormativeApp }
+import gov.irs.formbuilder.{ FormBuilder, FormBuilderApp }
 import gov.irs.twe.inputs.{ SingleCheckbox, YearRangeDate }
 import gov.irs.twe.parser.FgWithholdingAdjustments
 import scala.collection.immutable.ListMap
 
-/** The Tax Withholding Estimator, expressed as configuration over `gov.irs::formative`.
+/** The Tax Withholding Estimator, expressed as configuration over `gov.irs::form-builder`.
   *
   * This app used to carry its own copy of the whole generator — 28 Scala files, 23 of which shared a basename with
   * credit-assistant's and most of which differed only by their package line. All of that is the scaffold's now. What is
   * left is the three things the two forks actually disagreed about, and they are the three registrations below.
   */
-val app: FormativeApp = FormativeApp(
+val app: FormBuilderApp = FormBuilderApp(
   appId = "twe",
   basePath = "/app/tax-withholding-estimator",
   outSubdir = "app/tax-withholding-estimator",
@@ -24,11 +24,11 @@ val app: FormativeApp = FormativeApp(
   nodeTypes = Map("fg-withholding-adjustments" -> FgWithholdingAdjustments),
 
   // One input the scaffold does not ship, and one it does that this app wants a different shape of. Registering an
-  // existing name replaces the built-in rather than adding a second one — see FormativeApp.inputTypes.
+  // existing name replaces the built-in rather than adding a second one — see FormBuilderApp.inputTypes.
   inputTypes = Map(
     "single-checkbox" -> SingleCheckbox,
     "date" -> YearRangeDate,
   ),
 )
 
-@main def main(args: String*): Unit = Formative.run(app, args)
+@main def main(args: String*): Unit = FormBuilder.run(app, args)

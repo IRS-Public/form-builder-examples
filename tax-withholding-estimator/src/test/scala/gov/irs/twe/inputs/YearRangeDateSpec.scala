@@ -1,9 +1,9 @@
 package gov.irs.twe.inputs
 
 import gov.irs.factgraph.FactDictionary
-import gov.irs.formative.generators.Website
-import gov.irs.formative.parser.Flow
-import gov.irs.formative.FormativeApp
+import gov.irs.formbuilder.generators.Website
+import gov.irs.formbuilder.parser.Flow
+import gov.irs.formbuilder.FormBuilderApp
 import gov.irs.twe.app
 import org.jsoup.Jsoup
 import org.scalatest.funspec.AnyFunSpec
@@ -13,13 +13,13 @@ import scala.xml.Elem
 
 /** The registered input type, end to end.
   *
-  * This is the proof that [[gov.irs.formative.FormativeApp.inputTypes]] is a real extension point and not just a hook
+  * This is the proof that [[gov.irs.formbuilder.FormBuilderApp.inputTypes]] is a real extension point and not just a hook
   * that compiles: nothing in the scaffold knows what `previous-years` means, and the year select below only exists
   * because this app registered a parser for `date` and shipped a template to match. The scaffold's own date input
   * renders a plain text field, which is what the first case asserts is *no longer* what TWE gets.
   */
 class YearRangeDateSpec extends AnyFunSpec {
-  private given FormativeApp = app
+  private given FormBuilderApp = app
 
   private val dateDictionaryConfig = <FactDictionaryModule>
     <Facts>

@@ -1,6 +1,6 @@
 package gov.irs.twe.inputs
 
-import gov.irs.formative.parser.{ Input, InputContext, InputParser }
+import gov.irs.formbuilder.parser.{ Input, InputContext, InputParser }
 
 /** `<input type="single-checkbox"/>` — one boolean rendered as a lone checkbox with the question as its label.
   *

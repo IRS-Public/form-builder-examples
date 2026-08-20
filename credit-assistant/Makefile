@@ -44,7 +44,7 @@ credit-assistant: copy-fg copy-shared-ui ## Build site for production
 	sbt run
 
 .PHONY: site
-site: credit-assistant ## Alias for the production build, under the name every Formative app uses
+site: credit-assistant ## Alias for the production build, under the name every Form Builder app uses
 
 
 .PHONY: copy-fg
@@ -181,12 +181,12 @@ diff-out: ## Compare the output static assets on your current branch with `main`
 	./scripts/diff-out.sh
 
 .PHONY: fact-explorer
-fact-explorer: ## Build with the Formative Graph and print this app's Fact Explorer URL
+fact-explorer: ## Build with the Form Builder Graph and print this app's Fact Explorer URL
 	@# Not folded into `dev`: the Scala generator is not yet at parity with fact-explorer's own
 	@# node generator (no shows/exits edges), and Fact Explorer prefers the app-served graph wherever
-	@# it finds one — so building with --formativeGraph by default would hand it the sparser graph.
+	@# it finds one — so building with --formBuilderGraph by default would hand it the sparser graph.
 	$(MAKE) copy-fg copy-shared-ui
-	sbt 'run --formativeGraph'
+	sbt 'run --formBuilderGraph'
 	@echo "==> regenerate Fact Explorer's registry, then open:"
 	@echo "    cd ../fact-explorer && npm run build-registry && npm run dev"
 	@echo "    http://localhost:5180/fact-explorer/credit-assistant"

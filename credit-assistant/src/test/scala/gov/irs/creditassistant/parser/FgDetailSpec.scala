@@ -1,9 +1,9 @@
 package gov.irs.creditassistant.parser
 
 import gov.irs.creditassistant.app
-import gov.irs.formative.exceptions.InvalidFormConfig
-import gov.irs.formative.loadFactDictionary
-import gov.irs.formative.parser.*
+import gov.irs.formbuilder.exceptions.InvalidFormConfig
+import gov.irs.formbuilder.loadFactDictionary
+import gov.irs.formbuilder.parser.*
 import org.scalatest.funspec.AnyFunSpec
 import scala.xml.Elem
 

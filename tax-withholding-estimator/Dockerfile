@@ -5,7 +5,7 @@
 # Build context is the REPO ROOT (see docker-compose.yml) because this build vendors the workspace
 # UI from packages/ui, which lives outside this directory.
 #
-# The two Scala libraries are no longer built here: gov.irs::formative resolves from GitHub
+# The two Scala libraries are no longer built here: gov.irs::form-builder resolves from GitHub
 # Packages, and gov.irs:factgraph under it. GitHub Packages requires auth even to read, so the
 # build needs a token — passed as a build secret, never as an ARG, so it stays out of image layers:
 #
@@ -33,7 +33,7 @@ ENV PATH="/opt/sbt/bin:${PATH}"
 
 # ---- stage 1: generate the static site -------------------------------------------
 FROM sbt-base AS build
-# gov.irs::formative resolves from GitHub Packages, which requires auth even to read.
+# gov.irs::form-builder resolves from GitHub Packages, which requires auth even to read.
 # Pass the token as a build secret so it never lands in an image layer:
 #   docker build --secret id=github_token,env=GITHUB_TOKEN --build-arg GITHUB_OWNER=... .
 ARG GITHUB_OWNER

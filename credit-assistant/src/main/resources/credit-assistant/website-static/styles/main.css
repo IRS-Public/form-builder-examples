@@ -1,14 +1,14 @@
 /* U.S. Web Design System (vendor-compiled) */
 @import "../vendor/uswds-3.13.0/styles/uswds.min.css";
 
-/* The Formative theme: design tokens, page layout, and the styling for every element the scaffold
-   generates. This used to be twenty-odd files here, byte-identical to another Formative app's copies
+/* The Form Builder theme: design tokens, page layout, and the styling for every element the scaffold
+   generates. This used to be twenty-odd files here, byte-identical to another Form Builder app's copies
    of them. Anything this app genuinely styles differently goes *below* this import and wins by
    ordinary cascade order.
 
    Not vendored by npm like the imports below it — the scaffold extracts this out of its own jar into
-   resources/vendor/formative/ when it generates the site, so it needs no build step here. */
-@import "../vendor/formative/theme/styles/theme.css";
+   resources/vendor/form-builder/ when it generates the site, so it needs no build step here. */
+@import "../vendor/form-builder/theme/styles/theme.css";
 
 /* Shared UI components (vendored from taxpert) */
 @import "../vendor/taxpert/global-nav/styles/global-nav.css";

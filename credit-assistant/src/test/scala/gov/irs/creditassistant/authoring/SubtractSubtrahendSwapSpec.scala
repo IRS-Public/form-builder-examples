@@ -2,7 +2,7 @@ package gov.irs.creditassistant.authoring
 
 import gov.irs.creditassistant.app
 import gov.irs.factgraph.FactDictionary
-import gov.irs.formative.authoring.DerivedXml
+import gov.irs.formbuilder.authoring.DerivedXml
 import io.circe.parser
 import org.scalatest.funspec.AnyFunSpec
 import org.scalatest.matchers.should.Matchers

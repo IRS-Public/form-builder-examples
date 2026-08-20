@@ -1,9 +1,9 @@
 package gov.irs.creditassistant
 
-import gov.irs.formative.{ Formative, FormativeApp }
+import gov.irs.formbuilder.{ FormBuilder, FormBuilderApp }
 import scala.collection.immutable.ListMap
 
-/** Credit Assistant, expressed as configuration over `gov.irs::formative`.
+/** Credit Assistant, expressed as configuration over `gov.irs::form-builder`.
   *
   * Everything that used to live in this package — the flow parser, the generators, the Thymeleaf engine, the node
   * templates, the chrome locales, Author Mode — is the scaffold's now, because none of it was ever about the EITC. What
@@ -14,7 +14,7 @@ import scala.collection.immutable.ListMap
   * proof that they are three independent names: it lives in `credit-assistant/`, keeps its resources under
   * `credit-assistant/`, and serves from `/app/eitc`.
   */
-val app: FormativeApp = FormativeApp(
+val app: FormBuilderApp = FormBuilderApp(
   appId = "credit-assistant",
   basePath = "/app/eitc",
   outSubdir = "app/eitc",
@@ -34,4 +34,4 @@ val app: FormativeApp = FormativeApp(
   brand = "Credit Assistant",
 )
 
-@main def main(args: String*): Unit = Formative.run(app, args)
+@main def main(args: String*): Unit = FormBuilder.run(app, args)

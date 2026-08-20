@@ -13,7 +13,7 @@
 import {
   registerContinueHandler,
   revealOnContinue,
-} from '../vendor/formative/flow-runtime/js/continue-handlers.js'
+} from '../vendor/form-builder/flow-runtime/js/continue-handlers.js'
 
 const gates = [
   // Income page, while earned income is non-positive.

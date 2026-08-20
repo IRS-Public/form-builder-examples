@@ -32,7 +32,7 @@ import gov.irs.factgraph.{ types, FactDefinition, Graph }
 import gov.irs.factgraph.compnodes.{ EnumNode, MultiEnumNode }
 import gov.irs.factgraph.types.{ Day, Dollar, Enum as FgEnum }
 import gov.irs.factgraph.types.Collection
-import gov.irs.formative.loadFactDictionary
+import gov.irs.formbuilder.loadFactDictionary
 import gov.irs.twe.app
 import scala.util.{ Failure, Success, Try }
 
