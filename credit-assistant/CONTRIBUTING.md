@@ -31,7 +31,7 @@ This repository lives in the public domain in the United States (see [License](L
 
 In this model, individual maintainers are responsible for the quality of the code, commits, and other contributions to the repository.
 
-For further understanding of the rationale behind open source, see [here](https://github.com/irs-public/fact-graph/blob/main/docs/oss/benefits.md).
+For further understanding of the rationale behind open source, see [here](https://github.com/IRS-Public/fact-graph/blob/main/docs/oss/benefits.md).
 
 ### Know what is public
 

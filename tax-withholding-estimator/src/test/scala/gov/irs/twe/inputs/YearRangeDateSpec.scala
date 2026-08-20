@@ -13,8 +13,8 @@ import scala.xml.Elem
 
 /** The registered input type, end to end.
   *
-  * This is the proof that [[gov.irs.formbuilder.FormBuilderApp.inputTypes]] is a real extension point and not just a hook
-  * that compiles: nothing in the scaffold knows what `previous-years` means, and the year select below only exists
+  * This is the proof that [[gov.irs.formbuilder.FormBuilderApp.inputTypes]] is a real extension point and not just a
+  * hook that compiles: nothing in the scaffold knows what `previous-years` means, and the year select below only exists
   * because this app registered a parser for `date` and shipped a template to match. The scaffold's own date input
   * renders a plain text field, which is what the first case asserts is *no longer* what TWE gets.
   */
