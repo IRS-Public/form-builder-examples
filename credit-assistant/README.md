@@ -2,9 +2,9 @@
 
 The EITC Assistant is an online tool provided by the Internal Revenue Service (IRS) to help taxpayers determine whether they are eligible for the [Earned Income Tax Credit (EITC)](https://www.irs.gov/credits-deductions/individuals/earned-income-tax-credit-eitc) and, if so, estimate the amount of the credit. By guiding users through the relevant questions and rules, it can reduce common errors, improve claim accuracy, and help taxpayers better understand the basis for their eligibility and credit calculation.
 
-This directory holds the EITC-specific half of that tool: the flow XML, the fact dictionary, the locale files, the brand CSS, and a `Main.scala` of about forty lines. Everything else (the XML parser, the site generators, the Thymeleaf engine, the browser theme, the flow runtime) comes from **Form Builder**, a Scala library described under [Assembly](#assembly) below.
+This directory holds the EITC-specific half of that tool: the flow XML, the fact dictionary, the locale files, the brand CSS, and a 37-line `Main.scala`. The XML parser, the site generators, the Thymeleaf engine, the browser theme and the flow runtime all come from **Form Builder**, a Scala library described under [Assembly](#assembly) below.
 
-This codebase is actively maintained and reflects the version of the EITC Assistant that went live on April 29, 2026. Releases starting with v26.1.1 use the [Fact Graph](https://github.com/IRS-Public/fact-graph) to model the Internal Revenue Code, following similar projects like the [Tax Withholding Estimator](https://github.com/IRS-Public/tax-withholding-estimator) and [Direct File](https://github.com/IRS-Public/direct-file). Prior versions of the application, which used an imperative JavaScript approach, can be seen in the first few commits in this repository.
+This codebase is actively maintained and reflects the version of the EITC Assistant that went live on April 29, 2026. Releases starting with v26.1.1 use the [Fact Graph](https://github.com/IRS-Public/fact-graph) to model the Internal Revenue Code, following similar projects like the [Tax Withholding Estimator](../tax-withholding-estimator/README.md) and [Direct File](https://github.com/IRS-Public/direct-file). Prior versions of the application, which used an imperative JavaScript approach, can be seen in the first few commits of the history this code was split out of.
 
 For background on the tax rules themselves, see [Publication 596](https://www.irs.gov/publications/p596).
 
@@ -27,22 +27,22 @@ The build takes two kinds of XML and produces a static site.
 3. **Locale YAML** supplies the words, in eight languages.
 4. **Thymeleaf templates** turn parsed flow nodes into HTML, once per language.
 
-Steps 1 through 3 are owned by this repository. Step 4 is almost entirely owned by the library.
+Steps 1 through 3 are owned by this directory. Step 4 is almost entirely owned by the library.
 
 ### The three packages this app builds on
 
 | Package | What it is | How it arrives |
 |---|---|---|
-| **Form Builder** (`gov.irs::form-builder`) | The Scala scaffold: flow parser, site generators, Thymeleaf engine, node templates, chrome locales, RELAX NG schemas, plus the browser theme and the flow runtime it serves. See [IRS-Public/form-builder](https://github.com/IRS-Public/form-builder). | An sbt dependency, published to the local Ivy repository by `sbt publishLocal` in [its own repository](https://github.com/IRS-Public/form-builder). |
-| **Fact Graph** (`gov.irs:factgraph`) | The declarative evaluation engine, cross-compiled to the JVM and to JavaScript. See [IRS-Public/fact-graph](https://github.com/IRS-Public/fact-graph). | Transitively through Form Builder on the JVM side. The browser bundle is copied in by `make copy-fg`. |
-| **Taxpert** (`taxpert`, npm) | The optional workspace UI laid over a running app: global nav, audit panel, tool panels, all-screens toolbar. See [`taxpert/packages/ui/README.md`](https://github.com/IRS-Public/taxpert/blob/main/packages/ui/README.md). | An npm dependency (`taxpert@^0.1.0`), mirrored into `website-static/vendor/taxpert/` by `make copy-shared-ui`. Until taxpert is published, `make link-taxpert TAXPERT_UI=…` installs it from a checkout. |
+| **Form Builder** (`gov.irs::form-builder` 0.1.0) | The Scala library: flow parser, site generators, Thymeleaf engine, node templates, chrome locales, RELAX NG schemas, plus the browser theme and the flow runtime it serves. See [IRS-Public/form-builder](https://github.com/IRS-Public/form-builder). | An sbt dependency resolved from GitHub Packages. `build.sbt` adds the resolver and reads `GITHUB_OWNER`, `GITHUB_ACTOR` and `GITHUB_TOKEN` from the environment. |
+| **Fact Graph** (`gov.irs:factgraph` 3.1.0-SNAPSHOT) | The declarative evaluation engine, cross-compiled to the JVM and to JavaScript. See [IRS-Public/fact-graph](https://github.com/IRS-Public/fact-graph). | Transitively through Form Builder on the JVM side. The browser bundle is committed here and refreshed by `make copy-fg`. |
+| **Taxpert** (`taxpert` ^0.1.0, npm) | The optional workspace UI laid over a running app: global nav, audit panel, tool panels, all-screens toolbar. See [taxpert's `packages/ui`](https://github.com/IRS-Public/taxpert/blob/main/packages/ui/README.md). | An npm devDependency, mirrored into `website-static/vendor/taxpert/` by `make copy-shared-ui`. Until taxpert is published, `make link-taxpert TAXPERT_UI=…` installs it from a checkout. |
 
-An application built on Form Builder is called a **Form Builder app**. This repository holds the two that exist: this one and [`../tax-withholding-estimator/`](../tax-withholding-estimator/). Credit Assistant is the simpler of the two, and is a reasonable reference when reading the scaffold.
+An application built on Form Builder is called a **Form Builder app**. This repository holds the two that exist: this one and [`../tax-withholding-estimator/`](../tax-withholding-estimator/README.md). Credit Assistant is the simpler of the two and a reasonable place to start when reading the library.
 
-Two other components in the monorepo can point at this app but are not required to build or run it:
+Two components in the [taxpert repository](https://github.com/IRS-Public/taxpert) can point at this app. Neither is needed to build or run it.
 
-- [`taxpert/packages/fact-explorer/`](https://github.com/IRS-Public/taxpert/blob/main/packages/fact-explorer/README.md), a React and Vite SPA that visualizes any Form Builder app's flow and facts as a graph. It discovers this app through the `fact-explorer.app.json` descriptor at this directory's root.
-- [`taxpert/services/assistant/`](https://github.com/IRS-Public/taxpert/blob/main/services/assistant/README.md), a FastAPI backend that powers the audit panel's chat feature. The panel points at `http://localhost:8000`, and the app runs without it.
+- [`packages/fact-explorer/`](https://github.com/IRS-Public/taxpert/blob/main/packages/fact-explorer/README.md), a React and Vite SPA that visualizes any Form Builder app's flow and facts as a graph. It discovers this app through the `fact-explorer.app.json` descriptor at this directory's root.
+- [`services/assistant/`](https://github.com/IRS-Public/taxpert/blob/main/services/assistant/README.md), a FastAPI backend that powers the audit panel's chat feature. The panel points at `http://localhost:8000`, and the app runs without it.
 
 New apps are generated from the cookiecutter in [IRS-Public/form-builder-template](https://github.com/IRS-Public/form-builder-template).
 
@@ -61,40 +61,43 @@ Scala and sbt can be installed with [Coursier](https://get-coursier.io/), [SDKMA
 ## Quickstart
 
 ```bash
-# 1. Fact Graph is on no remote — clone it and publish to your local Ivy repository
-git clone https://github.com/IRS-Public/fact-graph.git && (cd fact-graph && make publish)
+# 1. Fact Graph is on no public registry. Clone it and publish to your local Ivy repository.
+#    Cloning it into this repository's root makes `make copy-fg` find its browser bundle too.
+git clone https://github.com/IRS-Public/fact-graph.git
+(cd fact-graph && sbt publishLocal fastOptJS)
 
 # 2. Form Builder resolves from GitHub Packages, which needs auth even to read
 export GITHUB_OWNER=IRS-Public GITHUB_ACTOR=<login> GITHUB_TOKEN=<PAT with read:packages>
 
-# 3. Install the npm dependencies (including the taxpert file: dependency)
+# 3. Install the npm dependencies. Until taxpert is published, add
+#    TAXPERT_UI=/path/to/taxpert/packages/ui
 make ci-setup
 
 # 4. Build and serve, rebuilding on change
 make
 ```
 
-`make` with no target runs `make dev`. The site is served at **http://localhost:3003/app/eitc**. Two other destinations exist under the development flags:
+`make` with no target runs `make dev`. That serves the site at **http://localhost:3003/app/eitc** with `--auditMode --allScreens --scenarioMode`, so two extra destinations exist alongside the flow:
 
-| URL | Flag that produces it |
+| URL | Available under |
 |---|---|
 | `http://localhost:3003/app/eitc` | Always |
-| `http://localhost:3003/app/eitc/all-screens/` | `--allScreens` |
+| `http://localhost:3003/app/eitc/all-screens/` | `--allScreens`, which `make dev` passes |
 | `http://localhost:3003/app/eitc/author/` | `--authorMode` (`make dev-author`), with its editing API on port 3004 |
 
-Step 1 is optional if you are only working on templates, locales, or CSS. `make copy-fg` skips silently when the sibling repository has not been built, and the checked-in browser bundle under `website-static/vendor/fact-graph/` is used instead.
+Step 1 is optional if you are only working on templates, locales, or CSS. `make copy-fg` prints a message and moves on when it finds no build at `../fact-graph/js/target/`, and the checked-in browser bundle under `website-static/vendor/fact-graph/` is used instead.
 
 ### Docker
 
-`examples/credit-assistant/Dockerfile` builds a static image in four stages: publish `factgraph`, publish `form-builder`, run the generator, then serve `./out` with nginx. Its build context is the repository root, because the two Scala libraries it depends on are built from source rather than pulled from a remote. The mode flags are baked in at build time, so changing them means rebuilding the image.
+[`Dockerfile`](./Dockerfile) generates the site with sbt in one stage and serves `./out` with nginx in a second, using [`nginx.conf`](./nginx.conf). The mode flags are baked in at build time, so changing them means rebuilding the image. The GitHub Packages token is passed as a BuildKit secret rather than a build argument, so it stays out of the image layers.
 
-From the repository root, `docker compose up credit-assistant` serves it on **http://localhost:3003**. `docker compose up` also brings up `tax-withholding-estimator` (3000), `fact-explorer` (5180), the `api` backend (8000), and ChromaDB (8001).
+The file has not been updated for the split into separate repositories. Its `COPY` steps still name `examples/credit-assistant/` and `packages/ui/src`, and its header comments reference a `docker-compose.yml` that this repository does not contain. Read it for the build shape, and expect to fix those paths before it builds.
 
-More setup notes, including LSP integration, are in the [Dev Onboarding Docs](./docs/onboarding/onboarding-dev.md). IRS employees should start with the [IRS Onboarding Docs](./docs/onboarding/onboarding-irs.md), and non-developers with the [Non-Dev Onboarding Docs](./docs/onboarding/onboarding-nondev.md).
+More setup notes, including LSP integration, are in the [Dev Onboarding Docs](./docs/onboarding/onboarding-dev.md). IRS employees should start with the [IRS Onboarding Docs](./docs/onboarding/onboarding-irs.md), and non-developers with the [Non-Dev Onboarding Docs](./docs/onboarding/onboarding-nondev.md). One IDE guide lives under [`docs/onboarding/ide/intellij/live-templates/`](./docs/onboarding/ide/intellij/live-templates/README.md), covering the shared flow-XML Live Templates.
 
 ## Make targets
 
-Run `make help` for the same list from the shell.
+`make help` prints most of this list from the shell. `dev-one-question` is the one target it omits, because its help comment is not marked for the help scraper.
 
 ### Running
 
@@ -106,7 +109,7 @@ Run `make help` for the same list from the shell.
 | `make dev-author` | As `dev`, plus `--authorMode`, which serves the authoring UI and starts its editing API on port 3004 |
 | `make debug` | As `dev`, with a JVM debug port on 5005 |
 
-Override the HTTP port with `make dev PORT=4000`, and the debug port with `DEBUGGER_PORT`.
+Override the HTTP port with `make dev PORT=4000`, and the debug port with `DEBUGGER_PORT`. `dev-author` hardcodes 3003 and 3004 and ignores `PORT`.
 
 ### Building
 
@@ -117,8 +120,9 @@ Override the HTTP port with `make dev PORT=4000`, and the debug port with `DEBUG
 | `make fact-explorer` | Build with `--formBuilderGraph` (emits `resources/form-builder-graph.json`) and print this app's Fact Explorer URL |
 | `make copy-fg` | Copy the compiled Fact Graph JS bundle from a `../fact-graph` checkout |
 | `make copy-shared-ui` | Regenerate the vendored `taxpert` mirror from `node_modules/taxpert/src` |
+| `make link-taxpert` | Install the workspace UI from a local checkout. Requires `TAXPERT_UI=/path/to/taxpert/packages/ui` |
 | `make clean` | Remove `./target/`, `./project/*/target/`, and `./out/` |
-| `make diff-out` | Build `main` in a throwaway worktree and diff the two `out/` trees |
+| `make diff-out` | Build `main` in a throwaway worktree and diff the two `out/` trees, via `scripts/diff-out.sh` |
 
 ### Testing and validation
 
@@ -126,10 +130,10 @@ Override the HTTP port with `make dev PORT=4000`, and the debug port with `DEBUG
 |---|---|
 | `make test` | ScalaTest suite plus `scalafmtCheckAll` |
 | `make test-watch` | The suite, re-run on change |
-| `make format` | `xmllint --format` over `facts/*.xml`, then `scalafmtAll`, then Prettier over the JS |
-| `make ci` | Production build, then every check below |
+| `make format` | `xmllint --format` over `facts/*.xml`, then `scalafmtAll`, then `eslint --fix` over the JS |
+| `make ci` | Production build, then every check below except `semgrep` |
 | `make ci-setup` | `npm install` in `src/main/resources/credit-assistant/` and at this directory's root |
-| `make check-shared-ui` | Fail if the vendored `taxpert` mirror has drifted from `taxpert/packages/ui/src` |
+| `make check-shared-ui` | Fail if the vendored `taxpert` mirror has drifted from `node_modules/taxpert/src` |
 | `make validate-xml` | `xmllint --relaxng` over `facts/*.xml` and `flow/*.xml` |
 | `make validate-html` | `html-validate` over the generated HTML in `./out` |
 | `make validate-templates` | Reject HTML comments inside inline `<script>` blocks |
@@ -140,9 +144,10 @@ Override the HTTP port with `make dev PORT=4000`, and the debug port with `DEBUG
 ## Layout
 
 ```
-build.sbt                              one dependency: gov.irs::form-builder
+build.sbt                              one dependency: gov.irs::form-builder 0.1.0
 package.json                           devDependencies: eslint, taxpert (^0.1.0)
 fact-explorer.app.json                 this app, as Fact Explorer discovers it
+code.json                              federal source-code inventory metadata
 Dockerfile, nginx.conf                 container build and static serving
 scripts/diff-out.sh                    backing script for `make diff-out`
 src/main/scala/gov/irs/creditassistant/Main.scala
@@ -155,12 +160,12 @@ Inside `src/main/resources/credit-assistant/`:
 | Directory | Contents |
 |---|---|
 | `facts/` | The fact dictionary, split by domain, plus `FactDictionaryModule.rng` |
-| `flow/` | The flow, split into modules, plus `FlowConfig.rng` |
+| `flow/` | The flow, split into five modules, plus `index.xml` and `FlowConfig.rng` |
 | `locales/` | Eight `{lang}.yaml` files and eight `flow_{lang}.yaml` files |
 | `templates/` | This app's Thymeleaf overrides. Five fragments, and no node or input template |
 | `website-static/` | Everything copied verbatim to `{basePath}/resources/` |
 | `scenarios/` | 114 saved Fact Graph states the audit panel can load, served only under `--scenarioMode` |
-| `package.json`, `eslint.config.js`, `htmlvalidate.json` | The Node toolchain for linting. Node is deliberately not required to build the site |
+| `package.json`, `eslint.config.js`, `htmlvalidate.json` | The Node toolchain for linting. Node is not required to build the site, only to run the checks |
 
 ### Fact dictionary
 
@@ -196,11 +201,11 @@ Every file in `facts/` is loaded **alphabetically** and merged into one dictiona
 | `qualifying-children.xml` | The qualifying-child collection |
 | `results.xml` | Determination and credit amount |
 
-Each `<page route="...">` becomes one HTML page per language. The elements a page is built from (`<fg-set>`, `<fg-collection>`, `<fg-alert>`, `<fg-detail>`, `<modal-dialog>`) are the scaffold's, and their parsers and templates live in [form-builder](https://github.com/IRS-Public/form-builder).
+Each `<page route="...">` becomes one HTML page per language. The elements a page is built from (`<fg-set>`, `<fg-collection>`, `<fg-alert>`, `<fg-detail>`, `<modal-dialog>`) belong to the library, and their parsers and templates live in [form-builder](https://github.com/IRS-Public/form-builder).
 
 ## App configuration
 
-`src/main/scala/gov/irs/creditassistant/Main.scala` builds one `FormBuilderApp` and hands it to `FormBuilder.run`. That is this app's entire Scala surface.
+`src/main/scala/gov/irs/creditassistant/Main.scala` builds one `FormBuilderApp` and hands it to `FormBuilder.run`. That is this app's entire Scala surface, 37 lines including the doc comment.
 
 | Field | Value | Meaning |
 |---|---|---|
@@ -211,24 +216,26 @@ Each `<page route="...">` becomes one HTML page per language. The elements a pag
 | `defaultPort` | `3002` | The dev server port when `-Dsmol.port` is unset |
 | `brand` | `Credit Assistant` | The product name in the dev server banner |
 | `storagePrefix` | not set, so it defaults to `appId` | Namespaces every browser storage key the site writes |
-| `nodeTypes` | empty | This app registers no custom flow elements |
-| `inputTypes` | empty | This app registers no custom input types |
+| `nodeTypes` | not set, so empty | This app registers no custom flow elements |
+| `inputTypes` | not set, so empty | This app registers no custom input types |
 
 The directory name, the resource directory name, and the URL segment are three independent names, and this app has different values for two of them. It lives in `credit-assistant/`, keeps its resources under `credit-assistant/`, and serves from `/app/eitc`.
 
 ## Extension points
 
-Form Builder offers five seams. This app uses two of them, which is what makes it the smaller example. [`../tax-withholding-estimator/`](../tax-withholding-estimator/README.md) exercises all five.
+Form Builder offers five seams. This app uses three of them, which is what makes it the smaller example. [`../tax-withholding-estimator/`](../tax-withholding-estimator/README.md) exercises all five.
 
 | Seam | Used here? |
 |---|---|
-| Template overrides (`{appId}/templates/` resolves before `form-builder/templates/`) | Only for the fragments listed below. No node or input template is overridden |
+| Template overrides (`{appId}/templates/` resolves before `form-builder/templates/`) | Yes, but only the five fragments listed below. No node or input template is overridden |
 | Locale layering (app YAML over library YAML over generated `flow_{lang}.yaml`) | Yes, `locales/{lang}.yaml` |
 | `nodeTypes` (custom flow elements) | No |
 | `inputTypes` (custom or replacement input types) | No |
 | Workspace mount fragments | Yes, all four |
 
-### Static assets the scaffold expects
+Of the five fragments this app overrides, four are the workspace mounts and the fifth is `fragments/audit-panel.html`, where the library's version is a working default that this app replaces to register its own panel extensions.
+
+### Static assets the library expects
 
 The library's templates reference a small number of app-owned paths under `{basePath}/resources/`. Supplying them is part of being a Form Builder app.
 
@@ -241,7 +248,7 @@ The library's templates reference a small number of app-owned paths under `{base
 | `styles/components/author-mode.css` | `author-mode.html`, under `--authorMode` | Yes |
 | `js/author-mode.js` | `author-mode.html`, under `--authorMode` | Yes |
 
-`website-static/js/fg-components.js` is the flow entry point. It imports the scaffold's runtime from `vendor/form-builder/flow-runtime/js/flow-runtime.js`, which is what defines `<fg-set>`, `<fg-collection>`, and `<fg-show>`, and then imports this app's two additions: `fg-knockout-handlers.js` (reveal-on-continue behaviour for the knockout gates) and `fg-flow-confirmations.js`.
+`website-static/js/fg-components.js` is the flow entry point. It imports the library's runtime from `vendor/form-builder/flow-runtime/js/flow-runtime.js`, which is what defines `<fg-set>`, `<fg-collection>` and `<fg-show>`, and then imports this app's two additions: `fg-knockout-handlers.js` (reveal-on-continue behaviour for the knockout gates) and `fg-flow-confirmations.js`.
 
 ### Workspace mount fragments
 
@@ -255,7 +262,7 @@ Form Builder decides that there is a workspace slot and when it is filled (`--au
 | `taxpert-config.html` | The `configure()` call: nav taxonomy, app switcher, endpoints, feature flags, tools, and the determinations the Outcome tracker follows |
 | `audit-panel.html` | The `<taxpert-audit-panel>` element itself, with this app's chat and scenario endpoints and its two panel extensions |
 
-`taxpert-config.html` is a Thymeleaf fragment rather than a `.js` file so that every user-visible string in it can be a translated message key. The parts that cannot be a literal (the fact-graph adapter and the fact paths) live in `website-static/js/taxpert/eitc-graph.js` and are imported from it.
+`taxpert-config.html` is a Thymeleaf fragment, so every user-visible string in it can be a translated message key. The parts that cannot be a literal (the fact-graph adapter and the fact paths) live in `website-static/js/taxpert/eitc-graph.js` and are imported from it.
 
 `website-static/taxpert.config.json` is fetched at runtime and merged over that call, so a deployment can change workspace settings without a rebuild. The shipped file is `{}`.
 
@@ -265,14 +272,14 @@ Form Builder decides that there is a workspace slot and when it is filled (`--au
 
 | Directory | Source | How it is refreshed | Tracked in git? |
 |---|---|---|---|
-| `vendor/taxpert/` | `taxpert/packages/ui/src/` | `make copy-shared-ui`, which every build and dev target depends on | No, gitignored. A fresh clone has none until a build runs |
+| `vendor/taxpert/` | `node_modules/taxpert/src/` | `make copy-shared-ui`, which every build and dev target depends on | No, gitignored. A fresh clone has none until a build runs |
 | `vendor/form-builder/` | The `form-builder` jar | Extracted by the generator on every build | No, it only exists in `./out` |
-| `vendor/fact-graph/` | `../fact-graph` (a [fact-graph](https://github.com/IRS-Public/fact-graph) checkout) | `make copy-fg` | Yes |
+| `vendor/fact-graph/` | A [fact-graph](https://github.com/IRS-Public/fact-graph) checkout at `../fact-graph` | `make copy-fg` | Yes, apart from the `.map` file |
 | `vendor/uswds-3.13.0/` | USWDS release | Manually, on a USWDS upgrade | Yes |
 
-To change any shared workspace UI, edit `packages/ui/src/` in the taxpert repository, run `npm test` there, then `make copy-shared-ui` here. `make check-shared-ui` (run by `make ci`) fails if the mirror and `taxpert/packages/ui/src` disagree, which is what catches a hand-edit before it reaches a browser.
+To change any shared workspace UI, edit `packages/ui/src/` in the [taxpert](https://github.com/IRS-Public/taxpert) repository, run `npm test` there, reinstall it here, then `make copy-shared-ui`. `make check-shared-ui` (run by `make ci`) fails if the mirror and the installed package disagree, which catches a hand-edit before it reaches a browser.
 
-To change the theme or the flow runtime, edit `form-builder/src/main/resources/form-builder/website-static/`, then `cd form-builder && sbt publishLocal` and restart. There is no `make` target for these, and no live reload.
+To change the theme or the flow runtime, edit `src/main/resources/form-builder/website-static/` in the [form-builder](https://github.com/IRS-Public/form-builder) repository, publish it, and restart. There is no `make` target for these, and no live reload.
 
 ## Internationalization
 
@@ -306,11 +313,11 @@ Five CSV fixtures in `src/test/resources/csv/` drive table-based scenario suites
 
 ## Gotchas
 
-- **The scaffold must be republished before this app sees a change to it.** `cd form-builder && sbt test publishLocal`. This applies to parser changes, generator changes, node templates, chrome locales, the theme, and the flow runtime.
+- **A change to Form Builder has to be republished before this app sees it.** In a form-builder checkout, `sbt test publishLocal`, then point `build.sbt` at that version. This applies to parser changes, generator changes, node templates, chrome locales, the theme, and the flow runtime. After such a change, run `make ci` in both applications, because the second one is what catches an app-specific assumption.
 - **`defaultPort` and the dev port differ.** `Main.scala` declares 3002, but the Makefile always passes `-Dsmol.port=3003`, so `make dev` serves on 3003. `fact-explorer.app.json` records 3003 to match the Makefile.
 - **Flow, facts, and this app's locales are read from disk, not the classpath.** Author Mode patches XML on disk and re-runs the generator in process, and a classpath read would serve sbt's stale `target/` copy. The library's own templates and base locales do come off the classpath.
 - **`make ci-setup` runs `npm install` twice**, once in `src/main/resources/credit-assistant/` for the lint tooling and once at this directory's root for the `taxpert` dependency. A clean checkout that skips it fails inside `copy-shared-ui`.
-- **`make fact-explorer` is separate from `make dev` on purpose.** The Scala graph generator does not yet emit the `shows` and `exits` edges Fact Explorer's own generator produces, and Fact Explorer prefers an app-served graph wherever it finds one.
+- **`make fact-explorer` is separate from `make dev` on purpose.** The Scala graph generator does not yet emit the `shows` and `exits` edges Fact Explorer's own generator produces, and Fact Explorer prefers an app-served graph wherever it finds one. The target's closing message still prints a `cd ../fact-explorer` path from the old monorepo layout. Fact Explorer now lives at `packages/fact-explorer` in the taxpert repository.
 - **HTML comments inside an inline `<script type="module">` are a syntax error**, and they fail silently at runtime. `make validate-templates` exists to catch that.
 
 ## Contributing

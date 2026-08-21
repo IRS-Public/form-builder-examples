@@ -9,6 +9,12 @@
   Every URL is built from ${basePath}, so nothing here repeats this app's route prefix.
 */-->
 <th:block th:fragment="workspace-head">
+    <!-- The workspace's favicon. The module makes the Taxpert mark the tab's only icon, replacing
+         the application icons the scaffold's fragments/head.html links on every generated page, so
+         a tab under the workspace is not the same tab as this app served plain. To keep this
+         application's own favicon instead, delete this one line. -->
+    <script type="module" th:src="|${basePath}/resources/vendor/taxpert/shared/js/favicon.js|"></script>
+
     <link rel="stylesheet" th:href="|${basePath}/resources/vendor/taxpert/audit-panel/styles/audit-panel.css|"
           id="audit-panel-styles" disabled />
 

@@ -86,8 +86,8 @@
                         label: 'Experience Explorer',
                         children: [
                             { id: 'product-experience', label: 'Product Experience', href: '/app/tax-withholding-estimator/' },
-                            { id: 'browse-all', label: 'Browse All Screens', href: '/app/tax-withholding-estimator/all-screens/' },
                             { id: 'path-mode', label: 'Path Mode', href: '/app/tax-withholding-estimator/all-screens/?mode=path' },
+                            { id: 'browse-all', label: 'Browse All Screens', href: '/app/tax-withholding-estimator/all-screens/' },
                         ],
                     },
                     // This app *does* have a Fact Explorer now: Fact Explorer holds every app
@@ -112,7 +112,7 @@
                 // on an answer.
                 toolsByDestination: [
                     { id: 'scenario', label: 'Scenario', icon: 'tune', destinations: ['product-experience', 'path-mode'] },
-                    { id: 'display', label: 'Display', icon: 'visibility', destinations: ['product-experience', 'browse-all', 'path-mode'] },
+                    { id: 'display', label: 'Display', icon: 'visibility', destinations: ['product-experience', 'path-mode', 'browse-all'] },
                     { id: 'tools', label: 'Tools', icon: 'build', destinations: ['product-experience', 'path-mode'] },
                 ],
             },
@@ -139,8 +139,8 @@
                         label: 'Tax Withholding Estimator',
                         destinations: [
                             { id: 'product-experience', label: 'Product Experience', href: '/app/tax-withholding-estimator/' },
-                            { id: 'browse-all', label: 'Browse All Screens', href: '/app/tax-withholding-estimator/all-screens/' },
                             { id: 'path-mode', label: 'Path Mode', href: '/app/tax-withholding-estimator/all-screens/?mode=path' },
+                            { id: 'browse-all', label: 'Browse All Screens', href: '/app/tax-withholding-estimator/all-screens/' },
                             { id: 'fact-explorer', label: 'Fact Explorer', href: 'http://localhost:5180/fact-explorer/twe' },
                         ],
                     },
@@ -149,8 +149,8 @@
                         label: 'EITC Assistant',
                         destinations: [
                             { id: 'product-experience', label: 'Product Experience', href: 'http://localhost:3003/app/eitc/' },
-                            { id: 'browse-all', label: 'Browse All Screens', href: 'http://localhost:3003/app/eitc/all-screens/' },
                             { id: 'path-mode', label: 'Path Mode', href: 'http://localhost:3003/app/eitc/all-screens/?mode=path' },
+                            { id: 'browse-all', label: 'Browse All Screens', href: 'http://localhost:3003/app/eitc/all-screens/' },
                             { id: 'fact-explorer', label: 'Fact Explorer', href: 'http://localhost:5180/fact-explorer/credit-assistant' },
                         ],
                     },

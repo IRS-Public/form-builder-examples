@@ -7,6 +7,11 @@
 */-->
 <th:block th:fragment="workspace-all-screens-head">
     <link rel="stylesheet" th:href="|${basePath}/resources/vendor/taxpert/audit-panel/styles/all-screens-toolbar.css|" />
+
+    <!-- The workspace's favicon, on a page that is workspace chrome all the way down whether or not
+         the build asked for --auditMode. Same module and same override as
+         fragments/workspace-head.html; installing it twice is a no-op. -->
+    <script type="module" th:src="|${basePath}/resources/vendor/taxpert/shared/js/favicon.js|"></script>
 </th:block>
 
 <th:block th:fragment="workspace-all-screens-body">
