@@ -37,7 +37,7 @@ Steps 1 through 3 are owned by this repository. Step 4 is almost entirely owned 
 | **Fact Graph** (`gov.irs:factgraph`) | The declarative evaluation engine, cross-compiled to the JVM and to JavaScript. See [IRS-Public/fact-graph](https://github.com/IRS-Public/fact-graph). | Transitively through Form Builder on the JVM side. The browser bundle is copied in by `make copy-fg`. |
 | **Taxpert** (`taxpert`, npm) | The optional workspace UI laid over a running app: global nav, audit panel, tool panels, all-screens toolbar. See [`taxpert/packages/ui/README.md`](https://github.com/IRS-Public/taxpert/blob/main/packages/ui/README.md). | An npm dependency (`taxpert@^0.1.0`), mirrored into `website-static/vendor/taxpert/` by `make copy-shared-ui`. Until taxpert is published, `make link-taxpert TAXPERT_UI=…` installs it from a checkout. |
 
-An application built on Form Builder is called a **Form Builder app**. This repository and [`../tax-withholding-estimator/`](../tax-withholding-estimator/) are the two that exist. This one is the simpler of the two, and is a reasonable reference when reading the scaffold.
+An application built on Form Builder is called a **Form Builder app**. This repository holds the two that exist: this one and [`../tax-withholding-estimator/`](../tax-withholding-estimator/). Credit Assistant is the simpler of the two, and is a reasonable reference when reading the scaffold.
 
 Two other components in the monorepo can point at this app but are not required to build or run it:
 

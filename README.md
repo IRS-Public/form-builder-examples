@@ -29,11 +29,27 @@ session store, no application server.
 Only the first is required. An application still runs with no taxpert: the theme and the questionnaire
 runtime come from Form Builder's jar. Taxpert is how you see *inside* a running application.
 
+### Contributing
+Please see [CONTRIBUTING.md](./CONTRIBUTING.md) for details.
+
+This codebase is dedicated to the public domain under the [Creative Commons Zero v1.0 Universal](LICENSE.md) license (CC0 1.0).
+
+## Legal Disclaimer: Public Repository Access
+
+> This repository contains draft and under-development source code. It is made available to the public solely for transparency, collaboration, and research purposes.
+>
+> **No Endorsement or Warranty**
+>
+> IRS does not endorse, maintain, or guarantee the accuracy, completeness, or functionality of the code in this repository. The IRS assumes no responsibility or liability for any use of the code by external parties, including individuals, developers, or organizations. This includes—but is not limited to—any tax consequences, computation errors, data loss, or other outcomes resulting from the use or modification of this code.
+>
+> Use of the code in this repository is at your own risk. This repository is not intended for production use or public consumption as a finalized product.
+
+
 ## Getting a build to run
 
 Three prerequisites, in the order you will hit them.
 
-**1. Fact Graph** is on neither Maven Central nor GitHub Packages, so it comes from a local publish:
+**1. Fact Graph** comes from a local publish:
 
 ```bash
 git clone https://github.com/IRS-Public/fact-graph

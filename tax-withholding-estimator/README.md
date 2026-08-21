@@ -51,7 +51,7 @@ Steps 1 through 3 are owned by this repository. Step 4 is mostly owned by the li
 | **Fact Graph** (`gov.irs:factgraph`) | The declarative evaluation engine, cross-compiled to the JVM and to JavaScript. See [IRS-Public/fact-graph](https://github.com/IRS-Public/fact-graph). | Transitively through Form Builder on the JVM side. The browser bundle is copied in by `make copy-fg`. |
 | **Taxpert** (`taxpert`, npm) | The optional workspace UI laid over a running app: global nav, audit panel, tool panels, all-screens toolbar. See [`taxpert/packages/ui/README.md`](https://github.com/IRS-Public/taxpert/blob/main/packages/ui/README.md). | An npm dependency (`taxpert@^0.1.0`), mirrored into `website-static/vendor/taxpert/` by `make copy-shared-ui`. Until taxpert is published, `make link-taxpert TAXPERT_UI=…` installs it from a checkout. |
 
-An application built on Form Builder is called a **Form Builder app**. This repository and [`../credit-assistant/`](../credit-assistant/README.md) are the two that exist. Credit Assistant is the smaller of the two and the easier introduction to the scaffold. TWE uses every extension point Form Builder offers, so read it when you want to see how far an app can customize the generated site.
+An application built on Form Builder is called a **Form Builder app**. This repository holds the two that exist: this one and [`../credit-assistant/`](../credit-assistant/README.md). Credit Assistant is the smaller of the two and the easier introduction to the scaffold. TWE uses every extension point Form Builder offers, so read it when you want to see how far an app can customize the generated site.
 
 Two other components in the monorepo can point at this app but are not required to build or run it:
 
@@ -357,7 +357,7 @@ Content conventions are in [docs/design/twe-content-guidelines.md](./docs/design
 
 Report security issues through [SECURITY.md](./SECURITY.md).
 
-This codebase is dedicated to the public domain under the Creative Commons Zero v1.0 Universal license (CC0 1.0). This directory does not currently carry its own `LICENSE.md` or `CONTRIBUTING.md`. The sibling app's copies are at [`../credit-assistant/LICENSE.md`](../credit-assistant/LICENSE.md) and [`../credit-assistant/CONTRIBUTING.md`](../credit-assistant/CONTRIBUTING.md).
+This codebase is dedicated to the public domain under the Creative Commons Zero v1.0 Universal license (CC0 1.0). Both applications in this repository are covered by the repository's [`LICENSE.md`](../LICENSE.md) and [`CONTRIBUTING.md`](../CONTRIBUTING.md).
 
 ## Authorities
 
