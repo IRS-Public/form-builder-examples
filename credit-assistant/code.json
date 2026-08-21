@@ -23,7 +23,7 @@
     "repositoryURL": "https://github.com/IRS-Public/eitc-assistant",
     "repositoryVisibility": "public",
     "homepageURL": "https://apps.irs.gov/app/eitc/",
-    "disclaimerURL": "https://github.com/IRS-public/eitc-assitant?tab=readme-ov-file#legal-disclaimer-public-repository-access",
+    "disclaimerURL": "https://github.com/IRS-Public/eitc-assistant?tab=readme-ov-file#legal-disclaimer-public-repository-access",
     "vcs": "git",
     "platforms": [
         "web"

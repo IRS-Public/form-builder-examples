@@ -34,7 +34,7 @@
     "softwareType": [
         "standalone/mobile",
         "standalone/desktop",
-        "standalone/web",
+        "standalone/web"
     ],
     "languages": [
         "HTML",
@@ -68,12 +68,12 @@
     "group": "IRS/IT",
     "userType": [
         "government",
-        "taxpayers",
+        "taxpayers"
     ],
     "maturityModelTier": 3,
     "date": {
         "created": "2026-02-26T22:34:18Z",
         "lastModified": "2026-02-26T22:34:18Z",
         "metadataLastUpdated": "2026-02-26T22:34:18Z"
-    },
+    }
 }
