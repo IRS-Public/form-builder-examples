@@ -47,9 +47,9 @@ Steps 1 through 3 are owned by this directory. Step 4 is mostly owned by the lib
 
 | Package | What it is | How it arrives |
 |---|---|---|
-| **Form Builder** (`gov.irs::form-builder` 0.1.0) | The Scala library: flow parser, site generators, Thymeleaf engine, node templates, chrome locales, RELAX NG schemas, plus the browser theme and the flow runtime it serves. See [IRS-Public/form-builder](https://github.com/IRS-Public/form-builder). | An sbt dependency resolved from GitHub Packages. `build.sbt` adds the resolver and reads `GITHUB_OWNER`, `GITHUB_ACTOR` and `GITHUB_TOKEN` from the environment. |
+| **Form Builder** (`gov.irs::form-builder` 0.1.0-SNAPSHOT) | The Scala library: flow parser, site generators, Thymeleaf engine, node templates, chrome locales, RELAX NG schemas, plus the browser theme and the flow runtime it serves. See [IRS-Public/form-builder](https://github.com/IRS-Public/form-builder). | An sbt dependency resolved from the local Ivy cache at `~/.ivy2/local`, where `sbt publishLocal` in a form-builder checkout puts it. That directory is already first in sbt's resolver chain, so `build.sbt` declares no resolver and no credentials. |
 | **Fact Graph** (`gov.irs:factgraph` 3.1.0-SNAPSHOT) | The declarative evaluation engine, cross-compiled to the JVM and to JavaScript. See [IRS-Public/fact-graph](https://github.com/IRS-Public/fact-graph). | Transitively through Form Builder on the JVM side. The browser bundle is committed here and refreshed by `make copy-fg`. |
-| **Taxpert** (`taxpert` ^0.1.0, npm) | The optional workspace UI laid over a running app: global nav, audit panel, tool panels, all-screens toolbar. See [taxpert's `packages/ui`](https://github.com/IRS-Public/taxpert/blob/main/packages/ui/README.md). | An npm devDependency, mirrored into `website-static/vendor/taxpert/` by `make copy-shared-ui`. Until taxpert is published, `make link-taxpert TAXPERT_UI=…` installs it from a checkout. |
+| **Taxpert** (`taxpert`, npm) | The optional workspace UI laid over a running app: global nav, audit panel, tool panels, all-screens toolbar. See [taxpert's `packages/ui`](https://github.com/IRS-Public/taxpert/blob/main/packages/ui/README.md). | A `file:` npm devDependency on a taxpert checkout at `../taxpert/packages/ui`, mirrored into `website-static/vendor/taxpert/` by `make copy-shared-ui`. `make link-taxpert TAXPERT_UI=…` installs it from a checkout kept elsewhere. |
 
 One more direct sbt dependency is specific to this app: `com.github.tototoshi::scala-csv`, which the UAT scenario suite uses to read its spreadsheet.
 
@@ -77,31 +77,38 @@ Scala and sbt can be installed with [Coursier](https://get-coursier.io/), [SDKMA
 ## Quickstart
 
 ```bash
-# 1. Fact Graph is on no public registry. Clone it and publish to your local Ivy repository.
-#    Cloning it into this repository's root makes `make copy-fg` find its browser bundle too.
+# 1. Clone the three libraries into this repository's root, beside the two applications.
+#    None of them is on a public artifact registry, and every relative path below assumes
+#    this layout.
 git clone https://github.com/IRS-Public/fact-graph.git
-(cd fact-graph && sbt publishLocal fastOptJS)
+git clone https://github.com/IRS-Public/form-builder.git
+git clone https://github.com/IRS-Public/taxpert.git
 
-# 2. Form Builder resolves from GitHub Packages, which needs auth even to read
-export GITHUB_OWNER=IRS-Public GITHUB_ACTOR=<login> GITHUB_TOKEN=<PAT with read:packages>
+# 2. Publish fact-graph and form-builder to your local Ivy repository, install the npm
+#    dependencies, and vendor the Fact Graph bundle and the taxpert mirror
+make bootstrap
 
-# 3. Install the npm dependencies. Until taxpert is published, add
-#    TAXPERT_UI=/path/to/taxpert/packages/ui
-make ci-setup
-
-# 4. Build and serve, rebuilding on change
+# 3. Build and serve, rebuilding on change
 make
 ```
 
 `make` with no target runs `make dev`. The site is served at **http://localhost:3000/app/tax-withholding-estimator**, and the Browse All listing at **http://localhost:3000/app/tax-withholding-estimator/all-screens/**.
 
-Step 1 is optional if you are only working on templates, locales, or CSS. `make copy-fg` prints a message and moves on when it finds no build at `../fact-graph/js/target/`, and the checked-in browser bundle under `website-static/vendor/fact-graph/` is used instead.
+All three clones are needed for a build from scratch: `gov.irs::factgraph` is published to no registry, so form-builder cannot resolve without a local publish of it. What is optional is refreshing the *browser* bundle — `make copy-fg` prints a message and moves on when it finds no build at `../fact-graph/js/target/`, and the checked-in bundle under `website-static/vendor/fact-graph/` is used instead.
 
 ### Docker
 
-[`Dockerfile`](./Dockerfile) generates the site with sbt in one stage and serves `./out` with nginx in a second, using [`nginx.conf`](./nginx.conf). The mode flags are baked in at build time, so changing them means rebuilding the image. The GitHub Packages token is passed as a BuildKit secret rather than a build argument, so it stays out of the image layers.
+[`Dockerfile`](./Dockerfile) builds in three stages: the first publishes fact-graph and form-builder into the image's own Ivy cache, the second generates the site with sbt, and the third serves `./out` with nginx, using [`nginx.conf`](./nginx.conf). The mode flags are baked in at build time, so changing them means rebuilding the image.
 
-The file has not been updated for the split into separate repositories. Its `COPY` steps still name `examples/tax-withholding-estimator/` and `packages/ui/src`, and its header comments reference a `docker-compose.yml` that this repository does not contain. Read it for the build shape, and expect to fix those paths before it builds.
+The build context is this directory. The three libraries are separate repositories rather than subdirectories of it, so each arrives as a named additional build context, and nothing is authenticated:
+
+```bash
+docker build \
+  --build-context fact_graph=../fact-graph \
+  --build-context form-builder=../form-builder \
+  --build-context taxpert=../taxpert/packages/ui \
+  -t tax-withholding-estimator .
+```
 
 More setup notes, including LSP integration, are in the [Dev Onboarding Docs](./docs/onboarding/onboarding-dev.md). IRS employees should start with the [IRS Onboarding Docs](./docs/onboarding/onboarding-irs.md), and non-developers with the [Non-Dev Onboarding Docs](./docs/onboarding/onboarding-nondev.md). Two IDE guides live under `docs/onboarding/ide/intellij/`: the shared [Live Templates](./docs/onboarding/ide/intellij/live-templates/README.md), and [debugging a UAT scenario](./docs/onboarding/ide/intellij/scenario-debugging/README.md) with IntelliJ Watches.
 
@@ -122,12 +129,13 @@ Override the HTTP port with `make dev PORT=4000`, and the debug port with `DEBUG
 
 | Target | Effect |
 |---|---|
+| `make bootstrap` | One-time setup: publish fact-graph and form-builder to `~/.ivy2/local`, install the npm dependencies, and vendor the Fact Graph bundle and the taxpert mirror |
 | `make twe` | Production build into `./out`, no server |
 | `make site` | Alias for `twe`, under the name every Form Builder app uses |
 | `make fact-explorer` | Build with `--formBuilderGraph` (emits `resources/form-builder-graph.json`) and print this app's Fact Explorer URL |
 | `make copy-fg` | Copy the compiled Fact Graph JS bundle from a `../fact-graph` checkout |
 | `make copy-shared-ui` | Regenerate the vendored `taxpert` mirror from `node_modules/taxpert/src` |
-| `make link-taxpert` | Install the workspace UI from a local checkout. Requires `TAXPERT_UI=/path/to/taxpert/packages/ui` |
+| `make link-taxpert` | Install the workspace UI from a taxpert checkout kept somewhere other than `../taxpert`. Requires `TAXPERT_UI=/path/to/taxpert/packages/ui` |
 | `make clean` | Remove `./target/`, `./project/*/target/`, and `./out/` |
 | `make diff-out` | Build `main` in a throwaway worktree and diff the two `out/` trees, via `scripts/diff-out.sh` |
 

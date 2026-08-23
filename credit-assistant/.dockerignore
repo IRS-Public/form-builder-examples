@@ -1,0 +1,15 @@
+# The build context is this application's own directory. fact-graph, form-builder and taxpert arrive
+# as separate named build contexts (see the Dockerfile header) rather than subdirectories of this
+# one, so this only needs to keep this application's own heavy, regenerable trees out of the context.
+**/node_modules
+**/target
+**/out
+**/.git
+**/.bsp
+**/.bloop
+**/.metals
+
+# A generated mirror: the image vendors this from the taxpert context during the build, so a
+# developer's local copy must not ride along and win. The USWDS mirror under
+# website-static/vendor/uswds-3.13.0/ is committed rather than generated, so it stays.
+src/main/resources/credit-assistant/website-static/vendor/taxpert/

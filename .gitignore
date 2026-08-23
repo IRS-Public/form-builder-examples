@@ -4,6 +4,13 @@
 # Generated website files
 out/
 
+# Checkouts of the three libraries the two applications build against, cloned here so that the
+# relative paths in each Makefile — ../fact-graph, ../form-builder, ../taxpert/packages/ui — resolve.
+# They are other repositories; nothing here tracks their contents.
+/fact-graph/
+/form-builder/
+/taxpert/
+
 # Generated mirrors of taxpert's packages/ui/src, written by `make copy-shared-ui` (a prerequisite
 # of every build target here) and by each Docker build's own COPY step. Kept out of git so they can
 # never drift from the taxpert source they mirror; `make check-shared-ui` fails the build if they do.

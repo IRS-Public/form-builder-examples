@@ -35,9 +35,9 @@ The two directories share no code and no build. Each has its own `build.sbt`, `p
 
 | Repository | Provides | How it arrives |
 |---|---|---|
-| [form-builder](https://github.com/IRS-Public/form-builder) | The Scala library that turns Flow XML plus a Fact Dictionary into a static site. It also ships the browser theme and the flow runtime inside its jar | sbt dependency `gov.irs::form-builder` `0.1.0`, resolved from GitHub Packages |
+| [form-builder](https://github.com/IRS-Public/form-builder) | The Scala library that turns Flow XML plus a Fact Dictionary into a static site. It also ships the browser theme and the flow runtime inside its jar | sbt dependency `gov.irs::form-builder` `0.1.0-SNAPSHOT`, resolved from the local Ivy cache. `sbt publishLocal` in a checkout puts it there |
 | [fact-graph](https://github.com/IRS-Public/fact-graph) | The declarative evaluation engine, cross-compiled to the JVM and to JavaScript | Transitively on the JVM side. The browser bundle is committed under each app's `website-static/vendor/fact-graph/` and refreshed by `make copy-fg` |
-| [taxpert](https://github.com/IRS-Public/taxpert) | The optional workspace UI (global nav, audit panel, tool panels), plus Fact Explorer and the assistant backend | npm dependency `taxpert`, mirrored into `website-static/vendor/taxpert/` by `make copy-shared-ui` |
+| [taxpert](https://github.com/IRS-Public/taxpert) | The optional workspace UI (global nav, audit panel, tool panels), plus Fact Explorer and the assistant backend | A `file:` npm dependency on a checkout at `taxpert/packages/ui`, mirrored into `website-static/vendor/taxpert/` by `make copy-shared-ui` |
 
 Only Form Builder is required. An application still runs with no taxpert installed, because the theme
 and the questionnaire runtime come from Form Builder's jar. Taxpert adds the tooling that lets you
@@ -45,52 +45,48 @@ inspect a running application.
 
 ## Getting a build to run
 
-Three prerequisites, in the order you will hit them.
-
-**1. Fact Graph** is on no public artifact registry, so it comes from a local publish:
+None of the three libraries is on a public artifact registry, so all three come from checkouts.
+Clone them into the root of this repository, beside the two application directories:
 
 ```bash
 git clone https://github.com/IRS-Public/fact-graph
-cd fact-graph
-sbt publishLocal    # lands 3.1.0-SNAPSHOT in ~/.ivy2/local, first in sbt's resolver chain
-sbt fastOptJS       # the browser bundle, for `make copy-fg`
+git clone https://github.com/IRS-Public/form-builder
+git clone https://github.com/IRS-Public/taxpert
 ```
 
-Each app's `make copy-fg` looks for the compiled bundle at `../fact-graph/js/target/`, relative to the
-app directory. Cloning fact-graph into the root of this repository, beside `credit-assistant/` and
-`tax-withholding-estimator/`, is what makes that path resolve. The target prints a message and moves
-on when it finds nothing there, and the committed bundle is used instead.
+That layout is what the relative paths in each Makefile and `package.json` resolve against —
+`../fact-graph`, `../form-builder` and `../taxpert/packages/ui`, all relative to the application
+directory. The three clones are gitignored here; each is its own repository.
 
-**2. Form Builder** resolves from GitHub Packages, which requires authentication even to read a public
-package. Export a token with `read:packages` before building:
+Then, in either application directory:
 
 ```bash
-export GITHUB_OWNER=IRS-Public
-export GITHUB_ACTOR=<your-github-username>
-export GITHUB_TOKEN=<a PAT with read:packages>
+make bootstrap  # once: publish the two Scala libraries, install the npm dependencies, vendor the assets
+make dev        # build and serve, watching for changes
 ```
 
-**3. Taxpert** is an ordinary npm dependency that has not been published yet. Until it is, install it
-from a checkout of the taxpert repository:
+`make bootstrap` runs `sbt compile fastOptJS publishLocal` in fact-graph and `sbt publishLocal` in
+form-builder, which lands both in `~/.ivy2/local` — already first in sbt's resolver chain, so
+neither `build.sbt` declares a resolver or credentials. It then runs `npm install`, which resolves
+`taxpert` from its checkout, and vendors the Fact Graph browser bundle and the taxpert mirror into
+`website-static/vendor/`.
+
+A taxpert checkout kept somewhere other than the repository root can be installed from where it is,
+without editing `package.json`:
 
 ```bash
 make link-taxpert TAXPERT_UI=/path/to/taxpert/packages/ui
 ```
 
-That installs into `node_modules` without touching `package.json`, so `make copy-shared-ui` and
-`make check-shared-ui` work unchanged and the committed dependency stays accurate. `make ci-setup`
-accepts the same variable and leaves an already-installed copy alone:
+`make ci-setup` accepts the same variable, and installs only what the build and the validators need.
+
+Fact Graph is optional if you are only working on templates, locales, or CSS: `make copy-fg` prints
+a message and moves on when it finds no build at `../fact-graph/js/target/`, and each application's
+committed browser bundle is used instead.
+
+The other targets you will reach for:
 
 ```bash
-make ci-setup TAXPERT_UI=/path/to/taxpert/packages/ui
-```
-
-Once taxpert is published to npm, drop the variable and a plain `npm install` resolves it.
-
-Then, in either application directory:
-
-```bash
-make dev        # build and serve, watching for changes
 make test       # ScalaTest plus scalafmt check
 make ci         # the full build-and-validate pass
 make help       # every documented target
@@ -121,10 +117,28 @@ TWE does not wire those features up.
 ## Docker
 
 Each application carries a `Dockerfile` and an `nginx.conf` that build the site with sbt and serve
-`./out` with nginx. Both Dockerfiles still assume the older monorepo layout: their `COPY` paths name
-`examples/<app>/` and `packages/ui/src`, and their header comments reference a `docker-compose.yml`
-that this repository does not contain. Treat them as a reference for the two-stage build shape rather
-than as something that builds as written.
+`./out` with nginx, in three stages: one publishes fact-graph and form-builder into the image's own
+Ivy cache, one generates the site, and one serves it.
+
+The build context is the application's own directory. The three libraries are separate repositories
+rather than subdirectories of this one, so each arrives as a named additional build context:
+
+```bash
+cd credit-assistant
+docker build \
+  --build-context fact_graph=../fact-graph \
+  --build-context form-builder=../form-builder \
+  --build-context taxpert=../taxpert/packages/ui \
+  -t credit-assistant .
+```
+
+The same three flags build `tax-withholding-estimator`. Nothing is authenticated and no secret is
+mounted: the libraries are built from the checkouts you already have.
+
+The mode flags are baked in at build time, because the generated site is static and there is no
+server at runtime to pass them to. Credit Assistant's image is built with
+`--auditMode --allScreens --scenarioMode`, TWE's with `--auditMode --allScreens`; changing either
+means rebuilding the image.
 
 ## Contributing
 

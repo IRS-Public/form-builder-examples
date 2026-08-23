@@ -16,6 +16,17 @@ FG_TARGET_DIR := ./src/main/resources/credit-assistant/website-static/vendor/fac
 SHARED_UI_SRC := node_modules/taxpert/src
 SHARED_UI_TARGET := $(RESOURCES_DIR)/website-static/vendor/taxpert
 
+.PHONY: bootstrap
+bootstrap: ## One-time setup: publish the sibling libraries and vendor their assets
+	@# fact-graph and form-builder resolve through the local Ivy cache, taxpert through a file: npm
+	@# dependency. All three come from checkouts cloned into the root of this repository beside the
+	@# two apps, so a fresh clone has to build them once before it can build itself.
+	$(MAKE) -C ../fact-graph publish
+	cd ../form-builder && sbt publishLocal
+	npm install
+	npm --prefix $(RESOURCES_DIR) install
+	$(MAKE) copy-fg copy-shared-ui
+
 .PHONY: dev
 dev: copy-fg copy-shared-ui ## Build and run development server, watching for changes (Default)
 	sbt -Dsmol.port=$(PORT) '~run --serve --auditMode --allScreens --scenarioMode'
@@ -58,20 +69,21 @@ copy-fg: ## Copy compiled Fact Graph from sibling repository
 		echo "==> copied the fact-graph bundle from $(FG_SOURCE_DIR)"; \
 	else \
 		echo "==> no build at $(FG_SOURCE_DIR); keeping the vendored fact-graph bundle"; \
-		echo "    (run 'cd ../fact-graph && sbt fastOptJS' to refresh it)"; \
+		echo "    (run 'make bootstrap', or 'make -C ../fact-graph publish', to refresh it)"; \
 	fi
 
-# ── Developing against an unpublished taxpert ────────────────────────────────────────────────────
+# ── A taxpert checkout somewhere other than ../taxpert ───────────────────────────────────────────
 #
-# package.json depends on the published `taxpert` package. This repository is deliberately NOT a
-# sibling-path dependency any more: these two apps live in their own repository now, and an app in
-# its own repository is exactly what an outside adopter has, so it must resolve the workspace UI the
-# way they would. Until taxpert is published to npm, point this at a checkout of it:
+# package.json depends on `taxpert` at `file:../taxpert/packages/ui` — a checkout of the taxpert
+# repository cloned into the root of this repository, beside the two apps. That is what a plain
+# `npm install` resolves, and it is the normal path; `make bootstrap` runs it for you.
+#
+# When your checkout lives somewhere else, install it from there without editing package.json:
 #
 #   make link-taxpert TAXPERT_UI=/path/to/taxpert/packages/ui
 #
-# That installs it into node_modules without touching package.json, so `make copy-shared-ui` and
-# `make check-shared-ui` work unchanged and the committed dependency stays honest.
+# `make copy-shared-ui` and `make check-shared-ui` read node_modules either way, so they work
+# unchanged and the committed dependency keeps naming the conventional location.
 TAXPERT_UI ?=
 
 .PHONY: link-taxpert
@@ -141,14 +153,10 @@ clean: ## Clean all the build artifacts
 .PHONY: ci-setup
 ci-setup: ## Install validation and linting tools
 	npm --prefix $(RESOURCES_DIR) install
-	@# The workspace UI. package.json names the published `taxpert` package, so a plain
-	@# `npm install` is what will work once it is on the registry. Until then it 404s, and
-	@# `make link-taxpert TAXPERT_UI=/path/to/taxpert/packages/ui` is what puts it in
-	@# node_modules — this step then leaves it alone. Without either, the failure would
-	@# surface later and less clearly, inside copy-shared-ui.
-	@if [ -d node_modules/taxpert ]; then \
-		echo "==> node_modules/taxpert is present; leaving it alone"; \
-	elif [ -n "$(TAXPERT_UI)" ]; then \
+	@# The workspace UI. `taxpert` is a file: dependency on ../taxpert/packages/ui, so a plain
+	@# `npm install` resolves it out of that checkout — no registry and no credentials involved.
+	@# TAXPERT_UI redirects it at a checkout kept somewhere else.
+	@if [ -n "$(TAXPERT_UI)" ]; then \
 		$(MAKE) link-taxpert; \
 	else \
 		npm install; \
