@@ -1,24 +1,24 @@
 # Form Builder reference applications
 
-Two working applications built on [Form Builder](https://github.com/IRS-Public/form-builder), kept in
-one repository so the library has something real to be read against. Each one is a static site: the
-build reads Flow XML and a Fact Dictionary and writes HTML, CSS and a small amount of JavaScript.
+Three working applications built on [Form Builder](https://github.com/IRS-Public/form-builder), kept
+in one repository so the library has something real to be read against. Each one is a static site:
+the build reads Flow XML and a Fact Dictionary and writes HTML, CSS and a small amount of JavaScript.
 There is no database, no session store, and no application server at runtime.
 
 **This repository is demonstration code.** Nothing here is a library, and nothing here is meant to be
-depended on. The reusable parts live in three other repositories, and these two applications are what
-they look like in use.
+depended on. The reusable parts live in three other repositories, and these three applications are
+what they look like in use.
 
-| | [`credit-assistant/`](credit-assistant/README.md) | [`tax-withholding-estimator/`](tax-withholding-estimator/README.md) |
-|---|---|---|
-| What it does | Screens a taxpayer for the Earned Income Tax Credit | Estimates federal income-tax withholding |
-| Served at | `/app/eitc` | `/app/tax-withholding-estimator` |
-| Dev port | 3003 | 3000 |
-| Languages | 8 | 2 (English, Spanish) |
-| Scala source | `Main.scala` only | `Main.scala` plus three extension registrations |
-| Extension points used | 3 of 5 | 5 of 5 |
-| Production build target | `make credit-assistant` | `make twe` |
-| Read it for | The smaller introduction to the library | How far an application can customize the generated site |
+| | [`credit-assistant/`](credit-assistant/README.md) | [`tax-withholding-estimator/`](tax-withholding-estimator/README.md) | [`benefits-enrollment/`](benefits-enrollment/README.md) |
+|---|---|---|---|
+| What it does | Screens a taxpayer for the Earned Income Tax Credit | Estimates federal income-tax withholding | Screens a household for SNAP and Medicaid |
+| Served at | `/app/eitc` | `/app/tax-withholding-estimator` | `/app/benefits` |
+| Dev port | 3003 | 3000 | 3006 |
+| Languages | 8 | 2 (English, Spanish) | 1 (English) |
+| Scala source | `Main.scala` only | `Main.scala` plus three extension registrations | `Main.scala` only |
+| Extension points used | 3 of 5 | 5 of 5 | 2 of 5 |
+| Production build target | `make credit-assistant` | `make twe` | `make site` |
+| Read it for | The smaller introduction to the library | How far an application can customize the generated site | Collapsing a legacy 121-page prototype into one `<fg-collection>` |
 
 ## Repository layout
 
@@ -26,10 +26,11 @@ they look like in use.
 |---|---|
 | `credit-assistant/` | The EITC application. Its own sbt build, Makefile, docs, and resources |
 | `tax-withholding-estimator/` | The withholding application, same shape |
-| `CONTRIBUTING.md`, `LICENSE.md` | Cover both applications |
+| `benefits-enrollment/` | The SNAP/Medicaid application, same shape — a conversion of the 2016 [USDS benefits enrollment prototype](https://github.com/usds/benefits-enrollment-prototype) |
+| `CONTRIBUTING.md`, `LICENSE.md` | Cover all three applications |
 
-The two directories share no code and no build. Each has its own `build.sbt`, `package.json`,
-`Makefile`, and `fact-explorer.app.json`, and each can be built without the other.
+The three directories share no code and no build. Each has its own `build.sbt`, `package.json`,
+`Makefile`, and `fact-explorer.app.json`, and each can be built without the others.
 
 ## The three repositories these depend on
 
@@ -58,7 +59,7 @@ That layout is what the relative paths in each Makefile and `package.json` resol
 `../fact-graph`, `../form-builder` and `../taxpert/packages/ui`, all relative to the application
 directory. The three clones are gitignored here; each is its own repository.
 
-Then, in either application directory:
+Then, in any application directory:
 
 ```bash
 make bootstrap  # once: publish the two Scala libraries, install the npm dependencies, vendor the assets
@@ -92,16 +93,18 @@ make ci         # the full build-and-validate pass
 make help       # every documented target
 ```
 
-The two Makefiles are close but not identical. `make site` is the app-agnostic alias for the
-production build in both. Credit Assistant additionally has `make dev-ai`, `make dev-one-question`
-and `make dev-author`. TWE additionally has `make validate-uswds`. See each application's README for
-its full target list.
+The three Makefiles are close but not identical. `make site` is the app-agnostic alias for the
+production build in all three, and it is Benefits Enrollment's only production build target — unlike
+the other two, it has no app-named alias (`make credit-assistant`, `make twe`). Credit Assistant
+additionally has `make dev-ai`, `make dev-one-question` and `make dev-author`. TWE additionally has
+`make validate-uswds`. Benefits Enrollment additionally has `make dev-one-question` and
+`make dev-author`. See each application's README for its full target list.
 
 ## Seeing inside a running application
 
 Fact Explorer, in the taxpert repository, discovers applications by scanning a directory one level
 deep for `fact-explorer.app.json` descriptors. One sits at the root of each application here, so
-pointing the scan at this repository finds both:
+pointing the scan at this repository finds all three:
 
 ```bash
 cd /path/to/taxpert
@@ -110,9 +113,9 @@ FORM_BUILDER_APPS_DIR=/path/to/form-builder-examples \
 ```
 
 The workspace UI in the applications themselves is switched on by a build flag. `make dev` already
-passes `--auditMode` in both. In credit-assistant, `make dev-ai` also passes
+passes `--auditMode` in all three. In credit-assistant, `make dev-ai` also passes
 `--aiScenarioGeneration --aiFactExplanation`, which reveal the two AI features in the audit panel.
-TWE does not wire those features up.
+Neither TWE nor Benefits Enrollment wires those features up.
 
 ## Docker
 
@@ -132,13 +135,15 @@ docker build \
   -t credit-assistant .
 ```
 
-The same three flags build `tax-withholding-estimator`. Nothing is authenticated and no secret is
-mounted: the libraries are built from the checkouts you already have.
+The same three flags build `tax-withholding-estimator` and `benefits-enrollment`. Nothing is
+authenticated and no secret is mounted: the libraries are built from the checkouts you already have.
 
 The mode flags are baked in at build time, because the generated site is static and there is no
 server at runtime to pass them to. Credit Assistant's image is built with
 `--auditMode --allScreens --scenarioMode`, TWE's with `--auditMode --allScreens`; changing either
-means rebuilding the image.
+means rebuilding the image. Benefits Enrollment's image passes no flags at all — its `sbt run` is a
+plain production build, with the workspace, all-screens page and scenario mode left out entirely
+rather than toggled off.
 
 ## Contributing
 
