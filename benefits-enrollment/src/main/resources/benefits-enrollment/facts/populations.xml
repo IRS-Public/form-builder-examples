@@ -1,0 +1,120 @@
+<?xml version="1.0"?>
+<?xml-model href="./FactDictionaryModule.rng"?>
+<FactDictionaryModule>
+  <Facts>
+    <!-- The prototype tracked two overlapping populations as two hand-entered integers,
+         householdSize and householdShareMeals, and then capped the visible person panels with
+         a DOM loop that removed every person panel past the entered size. Both counts are derived here.
+
+         Every alias below is a Filter, and so is derived and read-only: fg-collection's addItem()
+         writes through factGraph.addToCollection, which needs a writable Collection. Editing always
+         targets /householdMembers. -->
+
+    <Fact path="/taxHouseholdMembers">
+      <Name>Tax household</Name>
+      <Description>Prototype: the people counted by householdSize. The path inside a Filter
+        predicate is prefix-less — it names a fact on the item being tested.</Description>
+      <Derived>
+        <Filter path="/householdMembers">
+          <Dependency path="inTaxHousehold"/>
+        </Filter>
+      </Derived>
+    </Fact>
+
+    <Fact path="/taxHouseholdSize">
+      <Description>Derived, not asked. Replaces the writable householdSize, and with it the DOM
+        capping loops and the person5 / person6 off-by-ones they caused.</Description>
+      <Derived>
+        <CollectionSize>
+          <Dependency path="/taxHouseholdMembers"/>
+        </CollectionSize>
+      </Derived>
+    </Fact>
+
+    <Fact path="/mealShareMembers">
+      <Name>Meal-share household</Name>
+      <Description>Prototype: the people counted by householdShareMeals — who this household buys
+        and prepares food with, which SNAP treats as the relevant unit.</Description>
+      <Derived>
+        <Filter path="/householdMembers">
+          <Dependency path="sharesMeals"/>
+        </Filter>
+      </Derived>
+    </Fact>
+
+    <Fact path="/mealShareHouseholdSize">
+      <Derived>
+        <CollectionSize>
+          <Dependency path="/mealShareMembers"/>
+        </CollectionSize>
+      </Derived>
+    </Fact>
+
+    <Fact path="/mealShareOnlyMembers">
+      <Description>The population that gave household-meals-only-names.html its reason to exist:
+        people who share meals but are not in the tax household, and so had no record to hang a
+        name on. Filtering a filter, the same idiom TWE uses for its pension sub-collections.</Description>
+      <Derived>
+        <Filter path="/mealShareMembers">
+          <Not>
+            <Dependency path="inTaxHousehold"/>
+          </Not>
+        </Filter>
+      </Derived>
+    </Fact>
+
+    <Fact path="/mealShareOnlyCount">
+      <Derived>
+        <CollectionSize>
+          <Dependency path="/mealShareOnlyMembers"/>
+        </CollectionSize>
+      </Derived>
+    </Fact>
+
+    <Fact path="/applicantMembers">
+      <Description>Prototype: the people whose applyForHouseholdMemberN box was ticked.</Description>
+      <Derived>
+        <Filter path="/householdMembers">
+          <Dependency path="isApplicant"/>
+        </Filter>
+      </Derived>
+    </Fact>
+
+    <Fact path="/countApplicants">
+      <Description>Count tallies how many of a wildcard boolean are true; CollectionSize measures a
+        collection. Between them they answer every counting predicate the prototype used.</Description>
+      <Derived>
+        <Count>
+          <Dependency path="/householdMembers/*/isApplicant"/>
+        </Count>
+      </Derived>
+    </Fact>
+
+    <Fact path="/countPeopleMarkedAsSelf">
+      <Derived>
+        <Count>
+          <Dependency path="/householdMembers/*/isSelf"/>
+        </Count>
+      </Derived>
+    </Fact>
+
+    <Fact path="/householdMemberCount">
+      <Derived>
+        <CollectionSize>
+          <Dependency path="/householdMembers"/>
+        </CollectionSize>
+      </Derived>
+    </Fact>
+
+    <Fact path="/totalHouseholdIncome">
+      <Description>Not a rule the prototype had — it computed no totals anywhere, deferring every
+        determination past the screener to a caseworker. Derived here because the collection makes
+        it one line, and because the review page needs something to show.</Description>
+      <Derived>
+        <CollectionSum>
+          <Dependency path="/householdMembers/*/totalIncome"/>
+        </CollectionSum>
+      </Derived>
+    </Fact>
+  </Facts>
+</FactDictionaryModule>

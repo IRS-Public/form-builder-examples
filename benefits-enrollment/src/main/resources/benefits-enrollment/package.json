@@ -1,0 +1,21 @@
+{
+  "name": "benefits-enrollment-static-resources",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Lint and validation tooling for the static resources, plus the vendored USWDS distribution.",
+  "dependencies": {
+    "@uswds/uswds": "3.13.0"
+  },
+  "devDependencies": {
+    "eslint": "^9.39.4",
+    "eslint-plugin-security": "^4.0.0",
+    "html-validate": "^10.17.0",
+    "neostandard": "^0.13.0"
+  },
+  "scripts": {
+    "html-validate": "html-validate --config htmlvalidate.json",
+    "lint": "eslint",
+    "format": "eslint --fix"
+  }
+}

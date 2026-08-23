@@ -1,0 +1,344 @@
+<?xml version="1.0"?>
+<?xml-model href="./FactDictionaryModule.rng"?>
+<FactDictionaryModule>
+  <Facts>
+    <!-- Facts that belong to the application as a whole rather than to any one person. The
+         prototype called most of these "applicant*" and stored them beside the household members;
+         the split here is per-application vs per-person, not applicant vs everyone else. -->
+
+    <!-- ── Program selection ──────────────────────────────────────────────────────────────── -->
+
+    <Fact path="/benefitChoices">
+      <Name>Benefits applied for</Name>
+      <Description>Prototype: select-benefits.html's two checkboxes.</Description>
+      <Writable>
+        <MultiEnum optionsPath="/benefitOptions"/>
+      </Writable>
+    </Fact>
+
+    <Fact path="/isApplyingForFoodAssistance">
+      <Description>Replaces the prototype's global $('.snap-only').remove(). Program relevance was
+        DOM surgery on every page load; here it is a Boolean the flow gates on.</Description>
+      <Derived>
+        <EnumOptionsContains>
+          <Options>
+            <Dependency path="/benefitChoices"/>
+          </Options>
+          <Value>
+            <Enum optionsPath="/benefitOptions">foodAssistance</Enum>
+          </Value>
+        </EnumOptionsContains>
+      </Derived>
+    </Fact>
+
+    <Fact path="/isApplyingForHealthcare">
+      <Description>Replaces $('.medicaid-only').remove().</Description>
+      <Derived>
+        <EnumOptionsContains>
+          <Options>
+            <Dependency path="/benefitChoices"/>
+          </Options>
+          <Value>
+            <Enum optionsPath="/benefitOptions">healthcare</Enum>
+          </Value>
+        </EnumOptionsContains>
+      </Derived>
+    </Fact>
+
+    <Fact path="/hasChosenABenefit">
+      <Description>select-benefits.html alerted when neither box was ticked. A MultiEnum answered
+        with nothing selected is still complete, so emptiness needs its own test.</Description>
+      <Derived>
+        <Any>
+          <Dependency path="/isApplyingForFoodAssistance"/>
+          <Dependency path="/isApplyingForHealthcare"/>
+        </Any>
+      </Derived>
+    </Fact>
+
+    <!-- ── Screener ───────────────────────────────────────────────────────────────────────── -->
+
+    <Fact path="/householdZipCode">
+      <Description>Prototype: householdZipCode, re-used to prefill the address pages.</Description>
+      <Writable>
+        <String/>
+        <Limit type="Match">
+          <String>^\d{5}(-\d{4})?$</String>
+        </Limit>
+      </Writable>
+    </Fact>
+
+    <Fact path="/screenerHouseholdIncome">
+      <Name>Household income in the last 30 days</Name>
+      <Description>Prototype: householdIncome, asked only on the SNAP path.</Description>
+      <Writable>
+        <Dollar/>
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+
+    <!-- ── Who is applying ────────────────────────────────────────────────────────────────── -->
+
+    <Fact path="/applyingFor">
+      <Writable>
+        <Enum optionsPath="/applyingForOptions"/>
+      </Writable>
+    </Fact>
+
+    <Fact path="/isApplyingForSelfOnly">
+      <Description>The "Myself" arm, which the prototype tested as a bare string comparison in five
+        different navigation scripts.</Description>
+      <Derived>
+        <Equal>
+          <Left>
+            <Dependency path="/applyingFor"/>
+          </Left>
+          <Right>
+            <Enum optionsPath="/applyingForOptions">myself</Enum>
+          </Right>
+        </Equal>
+      </Derived>
+    </Fact>
+
+    <Fact path="/isApplyingOnBehalfOfOthers">
+      <Description>The "One or more people" arm. This is why the person filling in the form is not
+        automatically a household member, and so why /householdMembers/*/isSelf is a real question
+        rather than an assumed first row.</Description>
+      <Derived>
+        <Equal>
+          <Left>
+            <Dependency path="/applyingFor"/>
+          </Left>
+          <Right>
+            <Enum optionsPath="/applyingForOptions">oneOrMorePeople</Enum>
+          </Right>
+        </Equal>
+      </Derived>
+    </Fact>
+
+    <!-- ── Mailing address ────────────────────────────────────────────────────────────────── -->
+
+    <Fact path="/mailingAddressStreet">
+      <Writable>
+        <String/>
+      </Writable>
+    </Fact>
+
+    <Fact path="/mailingAddressStreetLine2">
+      <Writable>
+        <String/>
+      </Writable>
+      <Placeholder>
+        <String></String>
+      </Placeholder>
+    </Fact>
+
+    <Fact path="/mailingAddressCity">
+      <Writable>
+        <String/>
+      </Writable>
+    </Fact>
+
+    <Fact path="/mailingAddressState">
+      <Writable>
+        <Enum optionsPath="/stateOptions"/>
+      </Writable>
+    </Fact>
+
+    <Fact path="/mailingAddressZip">
+      <Writable>
+        <String/>
+        <Limit type="Match">
+          <String>^\d{5}(-\d{4})?$</String>
+        </Limit>
+      </Writable>
+    </Fact>
+
+    <Fact path="/isMailAndHomeTheSame">
+      <Description>Prototype: the isMailAndHomeTheSame radio, the one clean skip-if in the whole
+        application — the answer is its own gate, so no flow fact is needed.</Description>
+      <Writable>
+        <Boolean/>
+      </Writable>
+    </Fact>
+
+    <!-- ── Home address ───────────────────────────────────────────────────────────────────── -->
+
+    <Fact path="/homeAddressStreet">
+      <Writable>
+        <String/>
+      </Writable>
+    </Fact>
+
+    <Fact path="/homeAddressStreetLine2">
+      <Writable>
+        <String/>
+      </Writable>
+      <Placeholder>
+        <String></String>
+      </Placeholder>
+    </Fact>
+
+    <Fact path="/homeAddressCity">
+      <Writable>
+        <String/>
+      </Writable>
+    </Fact>
+
+    <Fact path="/homeAddressState">
+      <Writable>
+        <Enum optionsPath="/stateOptions"/>
+      </Writable>
+    </Fact>
+
+    <Fact path="/homeAddressZip">
+      <Writable>
+        <String/>
+        <Limit type="Match">
+          <String>^\d{5}(-\d{4})?$</String>
+        </Limit>
+      </Writable>
+    </Fact>
+
+    <Fact path="/housingIsNotStable">
+      <Description>Prototype: housingIsNotStable, written but never read.</Description>
+      <Writable>
+        <Boolean/>
+      </Writable>
+      <Placeholder>
+        <False/>
+      </Placeholder>
+    </Fact>
+
+    <!-- ── Contact and notifications ──────────────────────────────────────────────────────── -->
+
+    <Fact path="/contactPhone">
+      <Description>Prototype: applicantPhone. fact-graph has a PhoneNumber type, but no built-in
+        input binds to PhoneNumberNode, so this is a String carrying the prototype's own regex.</Description>
+      <Writable>
+        <String/>
+        <Limit type="Match">
+          <String>^\(?\d{3}\)?[-. ]?\d{3}[-. ]?\d{4}$</String>
+        </Limit>
+      </Writable>
+      <Placeholder>
+        <String></String>
+      </Placeholder>
+    </Fact>
+
+    <Fact path="/contactEmail">
+      <Writable>
+        <String/>
+      </Writable>
+      <Placeholder>
+        <String></String>
+      </Placeholder>
+    </Fact>
+
+    <Fact path="/notificationPreferences">
+      <Writable>
+        <MultiEnum optionsPath="/notificationPreferenceOptions"/>
+      </Writable>
+    </Fact>
+
+    <Fact path="/wantsTextNotifications">
+      <Description>Prototype: the notificationPreferenceText branch that led to confirm-text.html,
+        a page whose only content was a confirmation message.</Description>
+      <Derived>
+        <EnumOptionsContains>
+          <Options>
+            <Dependency path="/notificationPreferences"/>
+          </Options>
+          <Value>
+            <Enum optionsPath="/notificationPreferenceOptions">text</Enum>
+          </Value>
+        </EnumOptionsContains>
+      </Derived>
+    </Fact>
+
+    <Fact path="/smsPhone">
+      <Writable>
+        <String/>
+        <Limit type="Match">
+          <String>^\(?\d{3}\)?[-. ]?\d{3}[-. ]?\d{4}$</String>
+        </Limit>
+      </Writable>
+    </Fact>
+
+    <Fact path="/notificationTimes">
+      <Writable>
+        <MultiEnum optionsPath="/notificationTimeOptions"/>
+      </Writable>
+    </Fact>
+
+    <!-- ── Household expenses ─────────────────────────────────────────────────────────────── -->
+
+    <Fact path="/householdSavings">
+      <Writable>
+        <Dollar/>
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+
+    <Fact path="/householdRentMortgage">
+      <Writable>
+        <Dollar/>
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+
+    <Fact path="/mealShareFoodExpenses">
+      <Description>Prototype: expensesPeopleWhoShareFoodWith, shown only when householdShareMeals
+        was greater than zero (#if-shares-meals was removed otherwise).</Description>
+      <Writable>
+        <Dollar/>
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+
+    <Fact path="/medicalExpenses">
+      <Writable>
+        <Dollar/>
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+
+    <Fact path="/hasHeatingCoolingExpenses">
+      <Writable>
+        <Boolean/>
+      </Writable>
+    </Fact>
+
+    <Fact path="/hasOtherUtilities">
+      <Writable>
+        <Boolean/>
+      </Writable>
+    </Fact>
+
+    <!-- ── Submission ─────────────────────────────────────────────────────────────────────── -->
+
+    <Fact path="/agreeToTerms">
+      <Description>Prototype: gated by an alert() rather than the inline error UI every other
+        field used. Here it is an ordinary required question.</Description>
+      <Writable>
+        <Boolean/>
+      </Writable>
+    </Fact>
+
+    <Fact path="/applicantSignature">
+      <Writable>
+        <String/>
+      </Writable>
+    </Fact>
+  </Facts>
+</FactDictionaryModule>

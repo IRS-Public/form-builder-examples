@@ -1,0 +1,220 @@
+{
+  "/agreeToTerms": {
+    "$type": "BooleanWrapper",
+    "item": true
+  },
+  "/applicantSignature": {
+    "$type": "StringWrapper",
+    "item": "Priya Raman"
+  },
+  "/applyingFor": {
+    "$type": "EnumWrapper",
+    "item": {
+      "value": "myself",
+      "enumOptionsPath": "/applyingForOptions"
+    }
+  },
+  "/benefitChoices": {
+    "$type": "MultEnumWrapper",
+    "item": {
+      "values": [
+        "healthcare"
+      ],
+      "enumOptionsPath": "/benefitOptions"
+    }
+  },
+  "/contactEmail": {
+    "$type": "StringWrapper",
+    "item": "priya.raman@example.com"
+  },
+  "/contactPhone": {
+    "$type": "StringWrapper",
+    "item": "(505) 555-0119"
+  },
+  "/hasHeatingCoolingExpenses": {
+    "$type": "BooleanWrapper",
+    "item": true
+  },
+  "/hasOtherUtilities": {
+    "$type": "BooleanWrapper",
+    "item": true
+  },
+  "/householdMembers": {
+    "$type": "CollectionWrapper",
+    "item": {
+      "items": [
+        "be000004-0000-4000-a000-000000000001"
+      ]
+    }
+  },
+  "/householdMembers/#be000004-0000-4000-a000-000000000001/babiesExpected": {
+    "$type": "IntWrapper",
+    "item": 2
+  },
+  "/householdMembers/#be000004-0000-4000-a000-000000000001/commonCases": {
+    "$type": "MultEnumWrapper",
+    "item": {
+      "values": [
+        "pregnant"
+      ],
+      "enumOptionsPath": "/commonCaseOptions"
+    }
+  },
+  "/householdMembers/#be000004-0000-4000-a000-000000000001/dateOfBirth": {
+    "$type": "DayWrapper",
+    "item": {
+      "date": "1995-01-27"
+    }
+  },
+  "/householdMembers/#be000004-0000-4000-a000-000000000001/dueDate": {
+    "$type": "DayWrapper",
+    "item": {
+      "date": "2027-04-12"
+    }
+  },
+  "/householdMembers/#be000004-0000-4000-a000-000000000001/firstName": {
+    "$type": "StringWrapper",
+    "item": "Priya"
+  },
+  "/householdMembers/#be000004-0000-4000-a000-000000000001/hasSecondJob": {
+    "$type": "BooleanWrapper",
+    "item": false
+  },
+  "/householdMembers/#be000004-0000-4000-a000-000000000001/inTaxHousehold": {
+    "$type": "BooleanWrapper",
+    "item": true
+  },
+  "/householdMembers/#be000004-0000-4000-a000-000000000001/incomeTypes": {
+    "$type": "MultEnumWrapper",
+    "item": {
+      "values": [
+        "job"
+      ],
+      "enumOptionsPath": "/incomeTypeOptions"
+    }
+  },
+  "/householdMembers/#be000004-0000-4000-a000-000000000001/isApplicant": {
+    "$type": "BooleanWrapper",
+    "item": true
+  },
+  "/householdMembers/#be000004-0000-4000-a000-000000000001/isCitizen": {
+    "$type": "BooleanWrapper",
+    "item": true
+  },
+  "/householdMembers/#be000004-0000-4000-a000-000000000001/isSelf": {
+    "$type": "BooleanWrapper",
+    "item": true
+  },
+  "/householdMembers/#be000004-0000-4000-a000-000000000001/job1EmployerName": {
+    "$type": "StringWrapper",
+    "item": "Sandia Bookshop"
+  },
+  "/householdMembers/#be000004-0000-4000-a000-000000000001/job1HoursPerPayPeriod": {
+    "$type": "IntWrapper",
+    "item": 60
+  },
+  "/householdMembers/#be000004-0000-4000-a000-000000000001/job1PayFrequency": {
+    "$type": "EnumWrapper",
+    "item": {
+      "value": "everyTwoWeeks",
+      "enumOptionsPath": "/payFrequencyOptions"
+    }
+  },
+  "/householdMembers/#be000004-0000-4000-a000-000000000001/job1Wages": {
+    "$type": "DollarWrapper",
+    "item": "1450.00"
+  },
+  "/householdMembers/#be000004-0000-4000-a000-000000000001/lastName": {
+    "$type": "StringWrapper",
+    "item": "Raman"
+  },
+  "/householdMembers/#be000004-0000-4000-a000-000000000001/livesAtMailingAddress": {
+    "$type": "BooleanWrapper",
+    "item": true
+  },
+  "/householdMembers/#be000004-0000-4000-a000-000000000001/sex": {
+    "$type": "EnumWrapper",
+    "item": {
+      "value": "female",
+      "enumOptionsPath": "/sexOptions"
+    }
+  },
+  "/householdMembers/#be000004-0000-4000-a000-000000000001/sharesMeals": {
+    "$type": "BooleanWrapper",
+    "item": true
+  },
+  "/householdMembers/#be000004-0000-4000-a000-000000000001/ssn": {
+    "$type": "StringWrapper",
+    "item": "521-63-7744"
+  },
+  "/householdRentMortgage": {
+    "$type": "DollarWrapper",
+    "item": "1000.00"
+  },
+  "/householdSavings": {
+    "$type": "DollarWrapper",
+    "item": "900.00"
+  },
+  "/householdZipCode": {
+    "$type": "StringWrapper",
+    "item": "87102"
+  },
+  "/isMailAndHomeTheSame": {
+    "$type": "BooleanWrapper",
+    "item": true
+  },
+  "/mailingAddressCity": {
+    "$type": "StringWrapper",
+    "item": "Albuquerque"
+  },
+  "/mailingAddressState": {
+    "$type": "EnumWrapper",
+    "item": {
+      "value": "NM",
+      "enumOptionsPath": "/stateOptions"
+    }
+  },
+  "/mailingAddressStreet": {
+    "$type": "StringWrapper",
+    "item": "515 Central Avenue NW"
+  },
+  "/mailingAddressZip": {
+    "$type": "StringWrapper",
+    "item": "87102"
+  },
+  "/mealShareFoodExpenses": {
+    "$type": "DollarWrapper",
+    "item": "450.00"
+  },
+  "/medicalExpenses": {
+    "$type": "DollarWrapper",
+    "item": "260.00"
+  },
+  "/meta/migrationsApplied": {
+    "$type": "IntWrapper",
+    "item": 2
+  },
+  "/notificationPreferences": {
+    "$type": "MultEnumWrapper",
+    "item": {
+      "values": [
+        "text",
+        "email"
+      ],
+      "enumOptionsPath": "/notificationPreferenceOptions"
+    }
+  },
+  "/notificationTimes": {
+    "$type": "MultEnumWrapper",
+    "item": {
+      "values": [
+        "morning"
+      ],
+      "enumOptionsPath": "/notificationTimeOptions"
+    }
+  },
+  "/smsPhone": {
+    "$type": "StringWrapper",
+    "item": "(505) 555-0119"
+  }
+}

@@ -1,0 +1,148 @@
+<div th:fragment="taxpert-config" th:remove="tag">
+    <!--
+      Everything Benefits Enrollment tells taxpert about itself.
+
+      The shared workspace — the global nav, the audit panel, the tool panels — ships knowing
+      nothing about the application under it. It has no menu, no determinations and no route prefix
+      until a host calls configure(). This is that call, and it runs on every page that mounts the
+      workspace. The scaffold ships an empty default of this file; this one wins because app
+      templates resolve ahead of the library's.
+
+      WHY A THYMELEAF FRAGMENT AND NOT A .js FILE. Everything here that a person reads and that
+      belongs to the *product* — the outcome headings, the words an outcome is spoken in — is a
+      Thymeleaf message expression, resolved per locale at build time. (The nav labels are the
+      exception, and say why at `nav:` below.) website-static/js is served as static assets
+      and never passes through Thymeleaf, so a label written there would be English in the Spanish
+      build. Behaviour that cannot be a translated literal — the fact-graph port and the fact paths
+      themselves — lives in website-static/js/taxpert/benefits-enrollment-graph.js and is imported below.
+
+      th:inline="javascript" is what makes those expressions resolve inside a script element; it
+      works on a type="module" script, and Thymeleaf JS-escapes each value as it substitutes it.
+      Note that message expressions are inlined inside comments too, which is why this one spells
+      none of them out.
+
+      ORDER DOES NOT MATTER. taxpert reads its configuration when an element *renders*, not when it
+      loads, and configure() dispatches `taxpert:config-changed` so anything already on screen
+      rebuilds.
+    -->
+    <script type="module" th:inline="javascript">
+        import { configure, configureFromUrl } from /*[[|${basePath}/resources/vendor/taxpert/shared/js/config.js|]]*/ ''
+        import { benefitsEnrollmentGraph, benefitsEnrollmentDeterminations } from /*[[|${basePath}/resources/js/taxpert/benefits-enrollment-graph.js|]]*/ ''
+
+        // The build's locale, key by key. The determinations take a lookup rather than the strings
+        // themselves because an outcome chooses its key at runtime, from a fact value nobody knows
+        // here.
+        const strings = new Map([
+            ['workspace.outcomes.eligibility', [[#{workspace.outcomes.eligibility}]]],
+            ['workspace.outcomes.qualifies', [[#{workspace.outcomes.qualifies}]]],
+            ['workspace.outcomes.does-not-qualify', [[#{workspace.outcomes.does-not-qualify}]]],
+            ['workspace.outcomes.the-questions', [[#{workspace.outcomes.the-questions}]]],
+            ['workspace.outcomes.the-test', [[#{workspace.outcomes.the-test}]]],
+            ['workspace.outcomes.household', [[#{workspace.outcomes.household}]]],
+        ])
+        const t = (key) => strings.get(key) ?? key
+
+        configure({
+            // storagePrefix is what stops this app and any other Form Builder app served from the same
+            // origin sharing a fact graph, a watchlist or a panel layout. Every storage key the
+            // workspace writes is namespaced with it.
+            app: {
+                id: 'benefits-enrollment',
+                brand: [[#{layout.title}]],
+                storagePrefix: 'benefits-enrollment',
+            },
+
+            // The app switcher. `id` is what a page passes as the nav's `active` attribute and what
+            // toolsByDestination names below; `href` is a real link, so the menu navigates with no
+            // JavaScript at all. Add a destination only when the page behind it exists — a menu
+            // that offers a 404 is worse than a short menu.
+            //
+            // These labels are English literals, not #{workspace.nav.*} message expressions, and
+            // that is the one deliberate exception to this file's "everything a person reads is a
+            // message expression" rule. The language switcher is the *product's* control: picking a
+            // language asks for the questionnaire in it. Translating the workspace around it put two
+            // names on one destination in a single view — the sub-nav under the bar is taxpert's own
+            // markup and reads "Product Experience" in every locale, while the menu item pointing at
+            // it read the translated one. The workspace is one surface in one language; the product
+            // underneath it is the thing that translates. `apps.items` below follows the same rule.
+            nav: {
+                menu: [
+                    {
+                        id: 'experience-explorer',
+                        label: 'Experience Explorer',
+                        children: [
+                            { id: 'product-experience', label: 'Product Experience', href: /*[[|${basePath}/|]]*/ '' },
+                            { id: 'path-mode', label: 'Path Mode', href: /*[[|${basePath}/all-screens/?mode=path|]]*/ '' },
+                            { id: 'browse-all', label: 'Browse All', href: /*[[|${basePath}/all-screens/|]]*/ '' },
+                        ],
+                    },
+                ],
+
+                // Where each tool button in the bar applies. One generated page backs both listings,
+                // told apart by `?mode=path`: Browse All shows every screen unconditionally, so only
+                // Display applies there — nothing the other two do depends on an answer. Path Mode is
+                // a reading of one Fact Graph, so all three do.
+                toolsByDestination: [
+                    { id: 'scenario', label: 'Scenario', icon: 'tune', destinations: ['product-experience', 'path-mode'] },
+                    { id: 'display', label: 'Display', icon: 'visibility', destinations: ['product-experience', 'path-mode', 'browse-all'] },
+                    { id: 'tools', label: 'Tools', icon: 'build', destinations: ['product-experience', 'path-mode'] },
+                ],
+            },
+
+            // The applications this workspace can be switched between — the "Applications" section
+            // of Workspace settings (the nav's gear). One entry, because a generated app starts out
+            // as the only one it knows about, and the section hides itself when there is nothing to
+            // switch to.
+            //
+            // Add a sibling by appending an entry with that app's own destinations. They have to be
+            // written out: the workspace ships no notion of what 'browse-all' means as a URL, and an
+            // app served from another origin cannot be derived from a base path. Use absolute URLs
+            // for a sibling — this app's server serves only this app, so a relative path to another
+            // would 404 — and keep our own root-relative so they survive being read through
+            // Fact Explorer's dev proxy.
+            //
+            // Switching keeps the destination: Browse All here goes to Browse All there, falling
+            // back to the sibling's first destination when it has no counterpart.
+            apps: {
+                current: 'benefits-enrollment',
+                items: [
+                    {
+                        id: 'benefits-enrollment',
+                        label: [[#{layout.title}]],
+                        destinations: [
+                            { id: 'product-experience', label: 'Product Experience', href: /*[[|${basePath}/|]]*/ '' },
+                            { id: 'path-mode', label: 'Path Mode', href: /*[[|${basePath}/all-screens/?mode=path|]]*/ '' },
+                            { id: 'browse-all', label: 'Browse All', href: /*[[|${basePath}/all-screens/|]]*/ '' },
+                        ],
+                    },
+                ],
+            },
+
+            endpoints: {
+                basePath: /*[[${basePath}]]*/ '',
+                scenariosBase: /*[[|${basePath}/resources/scenarios|]]*/ '',
+                factDictionaryUrl: /*[[|${basePath}/resources/fact-dictionary.xml|]]*/ '',
+            },
+
+            tools: [
+                { id: 'inspect', label: [[#{workspace.tools.inspect}]], description: [[#{workspace.tools.inspect-description}]], templateId: 'ttp-body-inspect' },
+                { id: 'outcome-tracker', label: [[#{workspace.tools.outcome-tracker}]], description: [[#{workspace.tools.outcome-tracker-description}]], templateId: 'ttp-body-outcome-tracker' },
+                { id: 'watchlist', label: [[#{workspace.tools.watchlist}]], description: [[#{workspace.tools.watchlist-description}]], templateId: 'ttp-body-watchlist' },
+            ],
+
+            graph: benefitsEnrollmentGraph,
+            determinations: benefitsEnrollmentDeterminations(t),
+        })
+
+        // The per-deployment layer: the same configuration as data, in a file this deployment
+        // serves. It lands after the call above — it is fetched — and configure() merges, so a
+        // deployment's file wins over the build's own values while a person's Workspace-settings
+        // overrides still win over both.
+        //
+        // The shipped file is `{}`: this deployment overrides nothing. Edit it to change what the
+        // workspace tracks, offers or points at without touching a template — the change is then
+        // reviewable in git, which a localStorage override never is. Anything a person *reads*
+        // belongs above rather than in it: the file is served once and is not per-locale.
+        configureFromUrl(/*[[|${basePath}/resources/taxpert.config.json|]]*/ '')
+    </script>
+</div>

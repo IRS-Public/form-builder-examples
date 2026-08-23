@@ -1,0 +1,28 @@
+# Benefits Enrollment — the prod-like stack, in one command.
+#
+#   docker compose up --build                          # dev: hot reload (the overlay applies)
+#   docker compose -f docker-compose.yml up --build     # prod-like: ignore the overlay
+#
+# Open: http://localhost:3006/app/benefits/
+#
+# fact-graph, form-builder and taxpert are not guaranteed to sit beside this repo, so each is its own
+# named build context (`additional_contexts` below) instead of a subdirectory of a shared parent.
+# The paths are exactly what this app was generated with (fact_graph_path / form_builder_path /
+# taxpert_path in cookiecutter.json) — edit them here too if a sibling library moves.
+#
+# There is no server at runtime. The generated site is fully static, so this service is nginx over
+# the generator's ./out, and which developer surfaces exist was decided by the flags on `sbt run`
+# inside the image.
+
+services:
+  benefits-enrollment:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      additional_contexts:
+        fact_graph: ../fact-graph
+        form-builder: ../form-builder
+        taxpert: ../taxpert/packages/ui
+    ports:
+      - "3006:80"
+    restart: unless-stopped

@@ -1,0 +1,319 @@
+{
+  "/agreeToTerms": {
+    "$type": "BooleanWrapper",
+    "item": true
+  },
+  "/applicantSignature": {
+    "$type": "StringWrapper",
+    "item": "Lena Nowak"
+  },
+  "/applyingFor": {
+    "$type": "EnumWrapper",
+    "item": {
+      "value": "meAndSomeoneElse",
+      "enumOptionsPath": "/applyingForOptions"
+    }
+  },
+  "/benefitChoices": {
+    "$type": "MultEnumWrapper",
+    "item": {
+      "values": [
+        "healthcare"
+      ],
+      "enumOptionsPath": "/benefitOptions"
+    }
+  },
+  "/contactEmail": {
+    "$type": "StringWrapper",
+    "item": "l.nowak@example.com"
+  },
+  "/contactPhone": {
+    "$type": "StringWrapper",
+    "item": "(312) 555-0154"
+  },
+  "/hasHeatingCoolingExpenses": {
+    "$type": "BooleanWrapper",
+    "item": true
+  },
+  "/hasOtherUtilities": {
+    "$type": "BooleanWrapper",
+    "item": true
+  },
+  "/householdMembers": {
+    "$type": "CollectionWrapper",
+    "item": {
+      "items": [
+        "be000007-0000-4000-a000-000000000001",
+        "be000007-0000-4000-a000-000000000002"
+      ]
+    }
+  },
+  "/householdMembers/#be000007-0000-4000-a000-000000000001/commonCases": {
+    "$type": "MultEnumWrapper",
+    "item": {
+      "values": [],
+      "enumOptionsPath": "/commonCaseOptions"
+    }
+  },
+  "/householdMembers/#be000007-0000-4000-a000-000000000001/dateOfBirth": {
+    "$type": "DayWrapper",
+    "item": {
+      "date": "1992-04-16"
+    }
+  },
+  "/householdMembers/#be000007-0000-4000-a000-000000000001/firstName": {
+    "$type": "StringWrapper",
+    "item": "Lena"
+  },
+  "/householdMembers/#be000007-0000-4000-a000-000000000001/hasSecondJob": {
+    "$type": "BooleanWrapper",
+    "item": false
+  },
+  "/householdMembers/#be000007-0000-4000-a000-000000000001/inTaxHousehold": {
+    "$type": "BooleanWrapper",
+    "item": true
+  },
+  "/householdMembers/#be000007-0000-4000-a000-000000000001/incomeTypes": {
+    "$type": "MultEnumWrapper",
+    "item": {
+      "values": [
+        "job"
+      ],
+      "enumOptionsPath": "/incomeTypeOptions"
+    }
+  },
+  "/householdMembers/#be000007-0000-4000-a000-000000000001/isApplicant": {
+    "$type": "BooleanWrapper",
+    "item": true
+  },
+  "/householdMembers/#be000007-0000-4000-a000-000000000001/isCitizen": {
+    "$type": "BooleanWrapper",
+    "item": true
+  },
+  "/householdMembers/#be000007-0000-4000-a000-000000000001/isSelf": {
+    "$type": "BooleanWrapper",
+    "item": true
+  },
+  "/householdMembers/#be000007-0000-4000-a000-000000000001/job1EmployerName": {
+    "$type": "StringWrapper",
+    "item": "Wicker Park Dental"
+  },
+  "/householdMembers/#be000007-0000-4000-a000-000000000001/job1HoursPerPayPeriod": {
+    "$type": "IntWrapper",
+    "item": 70
+  },
+  "/householdMembers/#be000007-0000-4000-a000-000000000001/job1PayFrequency": {
+    "$type": "EnumWrapper",
+    "item": {
+      "value": "everyTwoWeeks",
+      "enumOptionsPath": "/payFrequencyOptions"
+    }
+  },
+  "/householdMembers/#be000007-0000-4000-a000-000000000001/job1Wages": {
+    "$type": "DollarWrapper",
+    "item": "2100.00"
+  },
+  "/householdMembers/#be000007-0000-4000-a000-000000000001/lastName": {
+    "$type": "StringWrapper",
+    "item": "Nowak"
+  },
+  "/householdMembers/#be000007-0000-4000-a000-000000000001/livesAtMailingAddress": {
+    "$type": "BooleanWrapper",
+    "item": true
+  },
+  "/householdMembers/#be000007-0000-4000-a000-000000000001/sex": {
+    "$type": "EnumWrapper",
+    "item": {
+      "value": "female",
+      "enumOptionsPath": "/sexOptions"
+    }
+  },
+  "/householdMembers/#be000007-0000-4000-a000-000000000001/sharesMeals": {
+    "$type": "BooleanWrapper",
+    "item": true
+  },
+  "/householdMembers/#be000007-0000-4000-a000-000000000001/ssn": {
+    "$type": "StringWrapper",
+    "item": "355-90-6612"
+  },
+  "/householdMembers/#be000007-0000-4000-a000-000000000002/commonCases": {
+    "$type": "MultEnumWrapper",
+    "item": {
+      "values": [],
+      "enumOptionsPath": "/commonCaseOptions"
+    }
+  },
+  "/householdMembers/#be000007-0000-4000-a000-000000000002/dateOfBirth": {
+    "$type": "DayWrapper",
+    "item": {
+      "date": "1991-10-09"
+    }
+  },
+  "/householdMembers/#be000007-0000-4000-a000-000000000002/firstName": {
+    "$type": "StringWrapper",
+    "item": "Andrzej"
+  },
+  "/householdMembers/#be000007-0000-4000-a000-000000000002/hasEligibleImmigrationStatus": {
+    "$type": "BooleanWrapper",
+    "item": true
+  },
+  "/householdMembers/#be000007-0000-4000-a000-000000000002/hasSecondJob": {
+    "$type": "BooleanWrapper",
+    "item": false
+  },
+  "/householdMembers/#be000007-0000-4000-a000-000000000002/immigrationDocument": {
+    "$type": "EnumWrapper",
+    "item": {
+      "value": "alienNumber",
+      "enumOptionsPath": "/immigrationDocumentOptions"
+    }
+  },
+  "/householdMembers/#be000007-0000-4000-a000-000000000002/immigrationDocumentNumber": {
+    "$type": "StringWrapper",
+    "item": "A123456789"
+  },
+  "/householdMembers/#be000007-0000-4000-a000-000000000002/inTaxHousehold": {
+    "$type": "BooleanWrapper",
+    "item": true
+  },
+  "/householdMembers/#be000007-0000-4000-a000-000000000002/incomeTypes": {
+    "$type": "MultEnumWrapper",
+    "item": {
+      "values": [
+        "job"
+      ],
+      "enumOptionsPath": "/incomeTypeOptions"
+    }
+  },
+  "/householdMembers/#be000007-0000-4000-a000-000000000002/isApplicant": {
+    "$type": "BooleanWrapper",
+    "item": true
+  },
+  "/householdMembers/#be000007-0000-4000-a000-000000000002/isCitizen": {
+    "$type": "BooleanWrapper",
+    "item": false
+  },
+  "/householdMembers/#be000007-0000-4000-a000-000000000002/isSelf": {
+    "$type": "BooleanWrapper",
+    "item": false
+  },
+  "/householdMembers/#be000007-0000-4000-a000-000000000002/job1EmployerName": {
+    "$type": "StringWrapper",
+    "item": "Ashland Auto Body"
+  },
+  "/householdMembers/#be000007-0000-4000-a000-000000000002/job1HoursPerPayPeriod": {
+    "$type": "IntWrapper",
+    "item": 76
+  },
+  "/householdMembers/#be000007-0000-4000-a000-000000000002/job1PayFrequency": {
+    "$type": "EnumWrapper",
+    "item": {
+      "value": "everyTwoWeeks",
+      "enumOptionsPath": "/payFrequencyOptions"
+    }
+  },
+  "/householdMembers/#be000007-0000-4000-a000-000000000002/job1Wages": {
+    "$type": "DollarWrapper",
+    "item": "1800.00"
+  },
+  "/householdMembers/#be000007-0000-4000-a000-000000000002/lastName": {
+    "$type": "StringWrapper",
+    "item": "Nowak"
+  },
+  "/householdMembers/#be000007-0000-4000-a000-000000000002/livesAtMailingAddress": {
+    "$type": "BooleanWrapper",
+    "item": true
+  },
+  "/householdMembers/#be000007-0000-4000-a000-000000000002/relationship": {
+    "$type": "EnumWrapper",
+    "item": {
+      "value": "spouse",
+      "enumOptionsPath": "/relationshipOptions"
+    }
+  },
+  "/householdMembers/#be000007-0000-4000-a000-000000000002/sex": {
+    "$type": "EnumWrapper",
+    "item": {
+      "value": "male",
+      "enumOptionsPath": "/sexOptions"
+    }
+  },
+  "/householdMembers/#be000007-0000-4000-a000-000000000002/sharesMeals": {
+    "$type": "BooleanWrapper",
+    "item": true
+  },
+  "/householdMembers/#be000007-0000-4000-a000-000000000002/ssn": {
+    "$type": "StringWrapper",
+    "item": "355-90-7724"
+  },
+  "/householdRentMortgage": {
+    "$type": "DollarWrapper",
+    "item": "1500.00"
+  },
+  "/householdSavings": {
+    "$type": "DollarWrapper",
+    "item": "2400.00"
+  },
+  "/householdZipCode": {
+    "$type": "StringWrapper",
+    "item": "60622"
+  },
+  "/isMailAndHomeTheSame": {
+    "$type": "BooleanWrapper",
+    "item": true
+  },
+  "/mailingAddressCity": {
+    "$type": "StringWrapper",
+    "item": "Chicago"
+  },
+  "/mailingAddressState": {
+    "$type": "EnumWrapper",
+    "item": {
+      "value": "IL",
+      "enumOptionsPath": "/stateOptions"
+    }
+  },
+  "/mailingAddressStreet": {
+    "$type": "StringWrapper",
+    "item": "1620 West Division Street"
+  },
+  "/mailingAddressZip": {
+    "$type": "StringWrapper",
+    "item": "60622"
+  },
+  "/mealShareFoodExpenses": {
+    "$type": "DollarWrapper",
+    "item": "620.00"
+  },
+  "/medicalExpenses": {
+    "$type": "DollarWrapper",
+    "item": "210.00"
+  },
+  "/meta/migrationsApplied": {
+    "$type": "IntWrapper",
+    "item": 2
+  },
+  "/notificationPreferences": {
+    "$type": "MultEnumWrapper",
+    "item": {
+      "values": [
+        "text",
+        "email"
+      ],
+      "enumOptionsPath": "/notificationPreferenceOptions"
+    }
+  },
+  "/notificationTimes": {
+    "$type": "MultEnumWrapper",
+    "item": {
+      "values": [
+        "morning"
+      ],
+      "enumOptionsPath": "/notificationTimeOptions"
+    }
+  },
+  "/smsPhone": {
+    "$type": "StringWrapper",
+    "item": "(312) 555-0154"
+  }
+}

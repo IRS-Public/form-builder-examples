@@ -1,0 +1,77 @@
+<?xml version="1.0"?>
+<?xml-model href="./FlowConfig.rng"?>
+<FlowConfig>
+  <!-- Replaces 00-screener/: select-benefits, quick-screener, eligible, not-eligible and
+       info-needed. The last three carried no questions — they were outcomes of the one rule
+       below — so they are alerts on this page rather than pages of their own. -->
+  <page title="See if you may qualify" route="/">
+    <section>
+      <h2>Apply for benefits</h2>
+      <p>
+        Answer a few questions to see whether you may qualify, then apply for one or both programs
+        in a single application.
+      </p>
+
+      <fg-set path="/benefitChoices">
+        <question>Which benefits would you like to apply for?</question>
+        <hint>You can apply for both in this one application.</hint>
+        <input type="multi-enum" options-path="/benefitOptions">
+          <option value="foodAssistance">Food assistance (SNAP)</option>
+          <option value="healthcare">Health coverage (Medicaid)</option>
+        </input>
+      </fg-set>
+
+      <fg-alert alert-type="warning" alert-key="no-benefit-chosen" knockout="true"
+                condition="/hasChosenABenefit" operator="isFalse">
+        <heading>Choose at least one benefit</heading>
+        <p class="usa-alert__text">Select the benefits you would like to apply for before continuing.</p>
+      </fg-alert>
+
+      <fg-set path="/householdZipCode" if-true="/hasChosenABenefit">
+        <question>What is your ZIP code?</question>
+        <hint>We use this to find the office that serves your area.</hint>
+        <input type="text"/>
+      </fg-set>
+
+      <!-- The prototype asked for income only on the SNAP path. That absence is load-bearing:
+           it is the whole reason a Medicaid-only applicant always passed the screener. -->
+      <fg-set path="/screenerHouseholdIncome" if-true="/flowShouldAskScreenerIncome">
+        <question>About how much money did your household receive in the last 30 days?</question>
+        <hint>Include wages, benefits and any other income. An estimate is fine.</hint>
+        <modal-link for="modal-what-counts-as-income">What counts as income?</modal-link>
+        <input type="dollar"/>
+      </fg-set>
+
+      <!-- not-eligible.html was not a dead end in the prototype either: it said "we encourage you
+           to continue" and offered a Continue button. knockout="false" keeps that behaviour. -->
+      <fg-alert alert-type="warning" alert-key="over-income-limit" knockout="false"
+                condition="/isOverScreenerIncomeLimit" operator="isTrue">
+        <heading>You may not qualify for food assistance</heading>
+        <p class="usa-alert__text">
+          Based on what you have told us, your household income is above the amount we screen
+          against. You can still submit an application, and the office that reviews it will make
+          the final decision.
+        </p>
+      </fg-alert>
+
+      <fg-alert alert-type="success" alert-key="may-qualify" knockout="false"
+                condition="/mayQualify" operator="isTrue">
+        <heading>You may qualify</heading>
+        <p class="usa-alert__text">
+          Next we will ask about you, the people in your household, your income and your expenses.
+          It helps to have pay stubs and immigration documents nearby.
+        </p>
+      </fg-alert>
+    </section>
+
+    <modal-dialog id="modal-what-counts-as-income">
+      <modal-heading>What counts as income?</modal-heading>
+      <modal-content>
+        <p>
+          Count money from jobs, self-employment, unemployment, disability, Social Security,
+          retirement, pensions and alimony. Do not count loans or one-off gifts.
+        </p>
+      </modal-content>
+    </modal-dialog>
+  </page>
+</FlowConfig>

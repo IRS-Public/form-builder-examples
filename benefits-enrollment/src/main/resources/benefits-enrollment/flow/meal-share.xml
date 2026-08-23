@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<?xml-model href="./FlowConfig.rng"?>
+<FlowConfig>
+  <!-- Replaces 03-basic-family/{household-members-review, household-mealshare-review,
+       household-share-meals-from-names, household-meals-only-names}.
+
+       Those four pages existed because the meal-share household is a different population from the
+       tax household, and the prototype had nowhere to record the difference: it tracked two
+       integers and then, when Medicaid was not selected, rewrote the id attributes of one page's
+       inputs at runtime so that householdMealOnlyFirstN wrote to householdMemberNFirstName.
+
+       Here it is a second, narrower pass over the same collection. -->
+  <page title="Sharing meals" route="/meal-share">
+    <section>
+      <h2>Who do you share meals with?</h2>
+      <p>
+        Food assistance looks at the people who buy and prepare food together, which is not always
+        the same as the people you file taxes with. Add anyone missing from the list.
+      </p>
+
+      <fg-collection path="/householdMembers" item-name="person" determiner="another"
+                     if-true="/flowShouldAskAboutMealSharing">
+        <fg-set path="/householdMembers/*/sharesMeals">
+          <question>Do you buy and prepare food together with this person?</question>
+          <input type="boolean">
+            <option value="true">Yes</option>
+            <option value="false">No</option>
+          </input>
+        </fg-set>
+      </fg-collection>
+    </section>
+  </page>
+</FlowConfig>

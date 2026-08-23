@@ -1,0 +1,50 @@
+# This application's own strings.
+#
+# The chrome the scaffold's templates need — components.*, errors.*, buttons.*, step-indicator.*,
+# layout.banner.*, layout.identifier.* — ships with gov.irs::form-builder. Lookup is app first, then
+# the library, then the generated flow locale, so declaring a key here overrides the library's
+# without copying the rest of it.
+#
+# Authored text from flow/*.xml is *not* written here: it is extracted to flow_en.yaml on every
+# build. Do not edit that file by hand.
+title:
+  prefix: Benefits Enrollment
+  suffix: Internal Revenue Service
+layout:
+  title: Benefits Enrollment
+
+# Section headings for the Browse All / Path Mode listing: one key per flow module, keyed by its
+# filename in flow/. Add a module to flow/index.xml, add its heading here — a missing one renders as
+# the key itself. `other` is the bucket for a page that belongs to no module at all.
+all-screens:
+  section:
+    screener: Screener
+    about-you: About you
+    household: Your household
+    meal-share: Sharing meals
+    finances: Money and expenses
+    review: Review
+    submit: Sign and submit
+    other: Other
+
+# Everything the Taxpert workspace shows. Nothing below reaches a taxpayer — the workspace is only
+# built into an --auditMode site — but it is still per-locale, because a translator working in
+# Spanish should be able to read the tool they are working in.
+workspace:
+  tools:
+    inspect: Inspect
+    inspect-description: Inspect facts, flows and text.
+    outcome-tracker: Outcome tracker
+    outcome-tracker-description: Track the outcomes this application determines.
+    watchlist: Watchlist
+    watchlist-description: Track the value of one or more facts as you work or load scenarios.
+  outcomes:
+    eligibility: Screener eligibility
+    qualifies: May qualify
+    does-not-qualify: May not qualify
+    the-questions: The questions
+    the-test: The test
+    household: Household
+    tax-household-size: People in the tax household
+    meal-share-size: People sharing meals
+    applicants: People applying

@@ -1,0 +1,8 @@
+{
+  "name": "benefits-enrollment",
+  "private": true,
+  "description": "Sibling-package dependencies for Benefits Enrollment. The app itself has no bundler; this exists so `make copy-shared-ui` has a node_modules to mirror from.",
+  "devDependencies": {
+    "taxpert": "file:../taxpert/packages/ui"
+  }
+}

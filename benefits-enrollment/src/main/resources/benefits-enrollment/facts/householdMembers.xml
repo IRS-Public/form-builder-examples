@@ -1,0 +1,493 @@
+<?xml version="1.0"?>
+<?xml-model href="./FactDictionaryModule.rng"?>
+<FactDictionaryModule>
+  <Facts>
+    <!-- The whole of the prototype's person1..person6 duplication, expressed once.
+         60 of its 121 pages were hand-indexed copies of the four screens below, plus the
+         applicant's own near-identical copy of the same battery. -->
+
+    <Fact path="/householdMembers">
+      <Name>Household members</Name>
+      <Description>Everyone named on this application, including the person filling it in. The
+        prototype kept the applicant as a separate set of singleton keys and numbered everyone else
+        householdMember1..6, capping the list with DOM removal loops.</Description>
+      <Writable>
+        <Collection/>
+      </Writable>
+    </Fact>
+
+    <!-- ── Membership ─────────────────────────────────────────────────────────────────────── -->
+
+    <Fact path="/householdMembers/*/isSelf">
+      <Name>Is this you?</Name>
+      <Description>The person filling in the application. Not an assumed first row: the
+        prototype's own applyingFor option "One or more people" means the filer may not be on the
+        application at all.</Description>
+      <Writable>
+        <Boolean/>
+      </Writable>
+    </Fact>
+
+    <Fact path="/householdMembers/*/isApplicant">
+      <Name>Applying for benefits</Name>
+      <Description>Prototype: applyForHouseholdMemberN. Distinguishes a person who is applying from
+        one who is only household context, and gates the fuller question set below.</Description>
+      <Writable>
+        <Boolean/>
+      </Writable>
+    </Fact>
+
+    <Fact path="/householdMembers/*/inTaxHousehold">
+      <Description>Counted by the prototype's householdSize.</Description>
+      <Writable>
+        <Boolean/>
+      </Writable>
+    </Fact>
+
+    <Fact path="/householdMembers/*/sharesMeals">
+      <Description>Counted by the prototype's householdShareMeals. A different population from the
+        tax household: it may include people outside it and may be a strict subset of it.</Description>
+      <Writable>
+        <Boolean/>
+      </Writable>
+    </Fact>
+
+    <!-- ── Identity ───────────────────────────────────────────────────────────────────────── -->
+
+    <Fact path="/householdMembers/*/firstName">
+      <Writable>
+        <String/>
+      </Writable>
+    </Fact>
+
+    <Fact path="/householdMembers/*/middleName">
+      <Writable>
+        <String/>
+      </Writable>
+      <Placeholder>
+        <String></String>
+      </Placeholder>
+    </Fact>
+
+    <Fact path="/householdMembers/*/lastName">
+      <Writable>
+        <String/>
+      </Writable>
+    </Fact>
+
+    <Fact path="/householdMembers/*/fullName">
+      <Description>Replaces the prototype's repeated
+        $('#print-householdMemberNameN').text(window[firstName] + " " + window[lastName]) loops.</Description>
+      <Derived>
+        <!-- No sep=" ": Paste already separates with a space, and an explicit one is silently
+             destroyed. Every attribute value is .trim()ed as the fact XML is parsed
+             (OptionConfigTrait.fromXml), which turns a space separator into no separator at all —
+             "JanePublic". The default is the only way to get one. -->
+        <Paste>
+          <Dependency path="../firstName"/>
+          <Dependency path="../lastName"/>
+        </Paste>
+      </Derived>
+    </Fact>
+
+    <Fact path="/householdMembers/*/relationship">
+      <Description>Prototype: householdMemberNRelationship. Asked of everyone except the filer.</Description>
+      <Writable>
+        <Enum optionsPath="/relationshipOptions"/>
+      </Writable>
+    </Fact>
+
+    <Fact path="/householdMembers/*/relationshipOther">
+      <Writable>
+        <String/>
+      </Writable>
+      <Placeholder>
+        <String></String>
+      </Placeholder>
+    </Fact>
+
+    <Fact path="/householdMembers/*/dateOfBirth">
+      <Description>Prototype: three separate month/day/year number inputs whose year had a
+        hard-coded max of 2016 — the prototype's own build year frozen as a ceiling. A Day is
+        validated against the real calendar instead.</Description>
+      <Writable>
+        <Day/>
+        <Limit type="Min">
+          <Day>1900-01-01</Day>
+        </Limit>
+      </Writable>
+    </Fact>
+
+    <Fact path="/householdMembers/*/sex">
+      <Writable>
+        <Enum optionsPath="/sexOptions"/>
+      </Writable>
+    </Fact>
+
+    <Fact path="/householdMembers/*/isFemale">
+      <Description>Replaces the prototype's $('.female-only').remove() DOM surgery.</Description>
+      <Derived>
+        <Equal>
+          <Left>
+            <Dependency path="../sex"/>
+          </Left>
+          <Right>
+            <Enum optionsPath="/sexOptions">female</Enum>
+          </Right>
+        </Equal>
+      </Derived>
+    </Fact>
+
+    <Fact path="/householdMembers/*/ssn">
+      <Description>Prototype: three password boxes with auto-advance, asked only of applicants.</Description>
+      <Writable>
+        <String/>
+        <Limit type="Match">
+          <String>^\d{3}-?\d{2}-?\d{4}$</String>
+        </Limit>
+      </Writable>
+    </Fact>
+
+    <!-- ── Common cases ───────────────────────────────────────────────────────────────────── -->
+
+    <Fact path="/householdMembers/*/commonCases">
+      <Description>Prototype: eight checkboxes, duplicated as commonCase* for the applicant and
+        householdMemberNCase* for everyone else. Non-applicant males were shown an abridged
+        single-radio version writing the same key — a fork that exists only because the widget and
+        the storage key were the same thing.</Description>
+      <Writable>
+        <MultiEnum optionsPath="/commonCaseOptions"/>
+      </Writable>
+    </Fact>
+
+    <Fact path="/householdMembers/*/isPregnant">
+      <Derived>
+        <EnumOptionsContains>
+          <Options>
+            <Dependency path="../commonCases"/>
+          </Options>
+          <Value>
+            <Enum optionsPath="/commonCaseOptions">pregnant</Enum>
+          </Value>
+        </EnumOptionsContains>
+      </Derived>
+    </Fact>
+
+    <Fact path="/householdMembers/*/hasInsurance">
+      <Derived>
+        <EnumOptionsContains>
+          <Options>
+            <Dependency path="../commonCases"/>
+          </Options>
+          <Value>
+            <Enum optionsPath="/commonCaseOptions">insurance</Enum>
+          </Value>
+        </EnumOptionsContains>
+      </Derived>
+    </Fact>
+
+    <!-- ── Insurance and pregnancy detail ─────────────────────────────────────────────────── -->
+
+    <Fact path="/householdMembers/*/insuranceTypes">
+      <Writable>
+        <MultiEnum optionsPath="/insuranceTypeOptions"/>
+      </Writable>
+    </Fact>
+
+    <Fact path="/householdMembers/*/dueDate">
+      <Writable>
+        <Day/>
+      </Writable>
+    </Fact>
+
+    <Fact path="/householdMembers/*/babiesExpected">
+      <Writable>
+        <Int/>
+        <Limit type="Min">
+          <Int>1</Int>
+        </Limit>
+        <Limit type="Max">
+          <Int>10</Int>
+        </Limit>
+      </Writable>
+    </Fact>
+
+    <!-- ── Address ────────────────────────────────────────────────────────────────────────── -->
+
+    <Fact path="/householdMembers/*/livesAtMailingAddress">
+      <Description>Prototype: householdMemberNSameAddress, a checkbox whose handler copied the
+        applicant's address fields into this person's inputs. Here nothing is copied — the address
+        questions are simply not asked.</Description>
+      <Writable>
+        <Boolean/>
+      </Writable>
+    </Fact>
+
+    <Fact path="/householdMembers/*/addressStreet">
+      <Writable>
+        <String/>
+      </Writable>
+    </Fact>
+
+    <Fact path="/householdMembers/*/addressStreetLine2">
+      <Writable>
+        <String/>
+      </Writable>
+      <Placeholder>
+        <String></String>
+      </Placeholder>
+    </Fact>
+
+    <Fact path="/householdMembers/*/addressCity">
+      <Writable>
+        <String/>
+      </Writable>
+    </Fact>
+
+    <Fact path="/householdMembers/*/addressState">
+      <Writable>
+        <Enum optionsPath="/stateOptions"/>
+      </Writable>
+    </Fact>
+
+    <Fact path="/householdMembers/*/addressZip">
+      <Writable>
+        <String/>
+        <Limit type="Match">
+          <String>^\d{5}(-\d{4})?$</String>
+        </Limit>
+      </Writable>
+    </Fact>
+
+    <!-- ── Income ─────────────────────────────────────────────────────────────────────────── -->
+
+    <Fact path="/householdMembers/*/incomeTypes">
+      <Writable>
+        <MultiEnum optionsPath="/incomeTypeOptions"/>
+      </Writable>
+    </Fact>
+
+    <Fact path="/householdMembers/*/hasJobIncome">
+      <Derived>
+        <EnumOptionsContains>
+          <Options>
+            <Dependency path="../incomeTypes"/>
+          </Options>
+          <Value>
+            <Enum optionsPath="/incomeTypeOptions">job</Enum>
+          </Value>
+        </EnumOptionsContains>
+      </Derived>
+    </Fact>
+
+    <Fact path="/householdMembers/*/otherIncomeAmount">
+      <Description>Prototype: one amount + frequency pair per checked income type. Collapsed to a
+        single non-job total, because nothing downstream ever read the individual amounts.</Description>
+      <Writable>
+        <Dollar/>
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+      <Placeholder>
+        <Dollar>0</Dollar>
+      </Placeholder>
+    </Fact>
+
+    <!-- ── Jobs: three fixed slots, the prototype's own hard cap ──────────────────────────── -->
+
+    <Fact path="/householdMembers/*/job1EmployerName">
+      <Writable>
+        <String/>
+      </Writable>
+    </Fact>
+
+    <Fact path="/householdMembers/*/job1PayFrequency">
+      <Writable>
+        <Enum optionsPath="/payFrequencyOptions"/>
+      </Writable>
+    </Fact>
+
+    <Fact path="/householdMembers/*/job1Wages">
+      <Writable>
+        <Dollar/>
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+
+    <Fact path="/householdMembers/*/job1HoursPerPayPeriod">
+      <Writable>
+        <Int/>
+        <Limit type="Min">
+          <Int>0</Int>
+        </Limit>
+      </Writable>
+    </Fact>
+
+    <Fact path="/householdMembers/*/hasSecondJob">
+      <Writable>
+        <Boolean/>
+      </Writable>
+      <Placeholder>
+        <False/>
+      </Placeholder>
+    </Fact>
+
+    <Fact path="/householdMembers/*/job2EmployerName">
+      <Writable>
+        <String/>
+      </Writable>
+      <Placeholder>
+        <String></String>
+      </Placeholder>
+    </Fact>
+
+    <Fact path="/householdMembers/*/job2PayFrequency">
+      <Writable>
+        <Enum optionsPath="/payFrequencyOptions"/>
+      </Writable>
+      <Placeholder>
+        <Enum optionsPath="/payFrequencyOptions">monthly</Enum>
+      </Placeholder>
+    </Fact>
+
+    <Fact path="/householdMembers/*/job2Wages">
+      <Writable>
+        <Dollar/>
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+      <Placeholder>
+        <Dollar>0</Dollar>
+      </Placeholder>
+    </Fact>
+
+    <Fact path="/householdMembers/*/job2HoursPerPayPeriod">
+      <Writable>
+        <Int/>
+        <Limit type="Min">
+          <Int>0</Int>
+        </Limit>
+      </Writable>
+      <Placeholder>
+        <Int>0</Int>
+      </Placeholder>
+    </Fact>
+
+    <Fact path="/householdMembers/*/hasThirdJob">
+      <Writable>
+        <Boolean/>
+      </Writable>
+      <Placeholder>
+        <False/>
+      </Placeholder>
+    </Fact>
+
+    <Fact path="/householdMembers/*/job3EmployerName">
+      <Writable>
+        <String/>
+      </Writable>
+      <Placeholder>
+        <String></String>
+      </Placeholder>
+    </Fact>
+
+    <Fact path="/householdMembers/*/job3PayFrequency">
+      <Writable>
+        <Enum optionsPath="/payFrequencyOptions"/>
+      </Writable>
+      <Placeholder>
+        <Enum optionsPath="/payFrequencyOptions">monthly</Enum>
+      </Placeholder>
+    </Fact>
+
+    <Fact path="/householdMembers/*/job3Wages">
+      <Writable>
+        <Dollar/>
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+      <Placeholder>
+        <Dollar>0</Dollar>
+      </Placeholder>
+    </Fact>
+
+    <Fact path="/householdMembers/*/job3HoursPerPayPeriod">
+      <Writable>
+        <Int/>
+        <Limit type="Min">
+          <Int>0</Int>
+        </Limit>
+      </Writable>
+      <Placeholder>
+        <Int>0</Int>
+      </Placeholder>
+    </Fact>
+
+    <Fact path="/householdMembers/*/totalJobWages">
+      <Description>The placeholders on slots 2 and 3 are what keep this complete when a person
+        holds one job — Add over an unanswered Dollar would otherwise be Incomplete.</Description>
+      <Derived>
+        <Add>
+          <Dependency path="../job1Wages"/>
+          <Dependency path="../job2Wages"/>
+          <Dependency path="../job3Wages"/>
+        </Add>
+      </Derived>
+    </Fact>
+
+    <Fact path="/householdMembers/*/totalIncome">
+      <Derived>
+        <Add>
+          <Dependency path="../totalJobWages"/>
+          <Dependency path="../otherIncomeAmount"/>
+        </Add>
+      </Derived>
+    </Fact>
+
+    <!-- ── Citizenship and immigration ────────────────────────────────────────────────────── -->
+
+    <Fact path="/householdMembers/*/isCitizen">
+      <Description>Prototype: a household-wide yes/no, then determine-who.html's checkbox list, then
+        an ascending else-if chain re-implemented on every follow-up page to visit each flagged
+        person exactly once. All of that was a hand-rolled iterator over this one per-person fact.</Description>
+      <Writable>
+        <Boolean/>
+      </Writable>
+    </Fact>
+
+    <Fact path="/householdMembers/*/hasEligibleImmigrationStatus">
+      <Writable>
+        <Boolean/>
+      </Writable>
+    </Fact>
+
+    <Fact path="/householdMembers/*/immigrationDocument">
+      <Writable>
+        <Enum optionsPath="/immigrationDocumentOptions"/>
+      </Writable>
+    </Fact>
+
+    <Fact path="/householdMembers/*/immigrationDocumentNumber">
+      <Description>Per person by construction. In the prototype every personN-document.html wrote
+        the same un-namespaced alienNumberNumber / sevisNumber / passportNumber keys, so each
+        person's entry overwrote the one before it.</Description>
+      <Writable>
+        <String/>
+      </Writable>
+    </Fact>
+
+    <Fact path="/householdMembers/*/otherImmigrationDocumentType">
+      <Writable>
+        <String/>
+      </Writable>
+      <Placeholder>
+        <String></String>
+      </Placeholder>
+    </Fact>
+  </Facts>
+</FactDictionaryModule>

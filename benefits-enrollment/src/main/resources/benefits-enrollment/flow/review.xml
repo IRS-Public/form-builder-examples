@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<?xml-model href="./FlowConfig.rng"?>
+<FlowConfig>
+  <!-- Replaces 07-application/review.html, authored fresh rather than ported. That page rendered
+       only the applicant's own singleton fields, had no per-member section at all, and carried
+       copy-paste defects — its citizenship radios were left with value="Female" / value="Male" and
+       a hard-coded checked attribute. It was a skeleton, not a summary.
+
+       A known gap: there is no built-in element for "repeat this markup for each collection item,
+       read-only". fg-collection is always editable. So the household is summarised in aggregate
+       here, and the per-person answers are reviewed by going back to /household. -->
+  <page title="Review your application" route="/review">
+    <section>
+      <h2>Review your application</h2>
+      <p>Check these answers before you sign. You can go back to any section to change them.</p>
+
+      <h3>Your household</h3>
+      <ul>
+        <li>People on this application: <fg-show path="/householdMemberCount"/></li>
+        <li>People you file taxes with: <fg-show path="/taxHouseholdSize"/></li>
+        <li>People you share meals with: <fg-show path="/mealShareHouseholdSize"/></li>
+        <li>People you are applying for: <fg-show path="/countApplicants"/></li>
+      </ul>
+
+      <h3>Money</h3>
+      <ul>
+        <li>Total household income: <fg-show path="/totalHouseholdIncome"/></li>
+        <li>Cash and savings: <fg-show path="/householdSavings"/></li>
+        <li>Rent or mortgage each month: <fg-show path="/householdRentMortgage"/></li>
+      </ul>
+
+      <p condition="/isOverScreenerIncomeLimit" operator="isTrue">
+        Your income is above the amount we screen against for food assistance. Your application will
+        still be reviewed.
+      </p>
+
+      <h3>Where we will contact you</h3>
+      <ul>
+        <li><fg-show path="/mailingAddressStreet"/></li>
+        <li><fg-show path="/mailingAddressCity"/>, <fg-show path="/mailingAddressState"/> <fg-show path="/mailingAddressZip"/></li>
+      </ul>
+    </section>
+  </page>
+</FlowConfig>

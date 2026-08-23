@@ -1,0 +1,780 @@
+# DO NOT EDIT, THIS IS A GENERATED FILE
+/:
+  title: See if you may qualify
+  h2-229e44: Apply for benefits
+  p-d98df2: |-
+    Answer a few questions to see whether you may qualify, then apply for one or both programs
+            in a single application.
+  /benefitChoices:
+    question: Which benefits would you like to apply for?
+    hint: You can apply for both in this one application.
+    options:
+      foodAssistance:
+        name: Food assistance (SNAP)
+      healthcare:
+        name: Health coverage (Medicaid)
+  fg-alert-3f5205:
+    heading: Choose at least one benefit
+    p-16f8b2: Select the benefits you would like to apply for before continuing.
+  /householdZipCode:
+    question: What is your ZIP code?
+    hint: We use this to find the office that serves your area.
+  /screenerHouseholdIncome:
+    question: About how much money did your household receive in the last 30 days?
+    hint: Include wages, benefits and any other income. An estimate is fine.
+    modalLink: <modal-link for="modal-what-counts-as-income">What counts as income?</modal-link>
+  fg-alert-d84ba4:
+    heading: You may not qualify for food assistance
+    p-eb1e9b: |-
+      Based on what you have told us, your household income is above the amount we screen
+                against. You can still submit an application, and the office that reviews it will make
+                the final decision.
+  fg-alert-72fa24:
+    heading: You may qualify
+    p-f49153: |-
+      Next we will ask about you, the people in your household, your income and your expenses.
+                It helps to have pay stubs and immigration documents nearby.
+  modal-what-counts-as-income:
+    heading: What counts as income?
+    p-6a938b: |-
+      Count money from jobs, self-employment, unemployment, disability, Social Security,
+                retirement, pensions and alimony. Do not count loans or one-off gifts.
+/about-you:
+  title: About you
+  h2-4f21e0: About you
+  /applyingFor:
+    question: Who are you applying for?
+    options:
+      myself:
+        name: Myself
+      meAndSomeoneElse:
+        name: Me and someone else
+      oneOrMorePeople:
+        name: On behalf of one or more other people
+  h3-43fd30: Where can we send you mail?
+  /mailingAddressStreet:
+    question: Street address
+  /mailingAddressStreetLine2:
+    question: Apartment, suite or unit
+  /mailingAddressCity:
+    question: City
+  /mailingAddressState:
+    question: State
+    options:
+      AL:
+        name: Alabama
+      AK:
+        name: Alaska
+      AZ:
+        name: Arizona
+      AR:
+        name: Arkansas
+      CA:
+        name: California
+      CO:
+        name: Colorado
+      CT:
+        name: Connecticut
+      DE:
+        name: Delaware
+      DC:
+        name: District of Columbia
+      FL:
+        name: Florida
+      GA:
+        name: Georgia
+      HI:
+        name: Hawaii
+      ID:
+        name: Idaho
+      IL:
+        name: Illinois
+      IN:
+        name: Indiana
+      IA:
+        name: Iowa
+      KS:
+        name: Kansas
+      KY:
+        name: Kentucky
+      LA:
+        name: Louisiana
+      ME:
+        name: Maine
+      MD:
+        name: Maryland
+      MA:
+        name: Massachusetts
+      MI:
+        name: Michigan
+      MN:
+        name: Minnesota
+      MS:
+        name: Mississippi
+      MO:
+        name: Missouri
+      MT:
+        name: Montana
+      NE:
+        name: Nebraska
+      NV:
+        name: Nevada
+      NH:
+        name: New Hampshire
+      NJ:
+        name: New Jersey
+      NM:
+        name: New Mexico
+      NY:
+        name: New York
+      NC:
+        name: North Carolina
+      ND:
+        name: North Dakota
+      OH:
+        name: Ohio
+      OK:
+        name: Oklahoma
+      OR:
+        name: Oregon
+      PA:
+        name: Pennsylvania
+      RI:
+        name: Rhode Island
+      SC:
+        name: South Carolina
+      SD:
+        name: South Dakota
+      TN:
+        name: Tennessee
+      TX:
+        name: Texas
+      UT:
+        name: Utah
+      VT:
+        name: Vermont
+      VA:
+        name: Virginia
+      WA:
+        name: Washington
+      WV:
+        name: West Virginia
+      WI:
+        name: Wisconsin
+      WY:
+        name: Wyoming
+  /mailingAddressZip:
+    question: ZIP code
+  /isMailAndHomeTheSame:
+    question: Is this also where you live?
+    options:
+      'true':
+        name: 'Yes'
+      'false':
+        name: 'No'
+  h3-b035a7: Where do you live?
+  /homeAddressStreet:
+    question: Home street address
+  /homeAddressStreetLine2:
+    question: Home apartment, suite or unit
+  /homeAddressCity:
+    question: Home city
+  /homeAddressState:
+    question: Home state
+    options:
+      AL:
+        name: Alabama
+      AK:
+        name: Alaska
+      AZ:
+        name: Arizona
+      AR:
+        name: Arkansas
+      CA:
+        name: California
+      CO:
+        name: Colorado
+      CT:
+        name: Connecticut
+      DE:
+        name: Delaware
+      DC:
+        name: District of Columbia
+      FL:
+        name: Florida
+      GA:
+        name: Georgia
+      HI:
+        name: Hawaii
+      ID:
+        name: Idaho
+      IL:
+        name: Illinois
+      IN:
+        name: Indiana
+      IA:
+        name: Iowa
+      KS:
+        name: Kansas
+      KY:
+        name: Kentucky
+      LA:
+        name: Louisiana
+      ME:
+        name: Maine
+      MD:
+        name: Maryland
+      MA:
+        name: Massachusetts
+      MI:
+        name: Michigan
+      MN:
+        name: Minnesota
+      MS:
+        name: Mississippi
+      MO:
+        name: Missouri
+      MT:
+        name: Montana
+      NE:
+        name: Nebraska
+      NV:
+        name: Nevada
+      NH:
+        name: New Hampshire
+      NJ:
+        name: New Jersey
+      NM:
+        name: New Mexico
+      NY:
+        name: New York
+      NC:
+        name: North Carolina
+      ND:
+        name: North Dakota
+      OH:
+        name: Ohio
+      OK:
+        name: Oklahoma
+      OR:
+        name: Oregon
+      PA:
+        name: Pennsylvania
+      RI:
+        name: Rhode Island
+      SC:
+        name: South Carolina
+      SD:
+        name: South Dakota
+      TN:
+        name: Tennessee
+      TX:
+        name: Texas
+      UT:
+        name: Utah
+      VT:
+        name: Vermont
+      VA:
+        name: Virginia
+      WA:
+        name: Washington
+      WV:
+        name: West Virginia
+      WI:
+        name: Wisconsin
+      WY:
+        name: Wyoming
+  /homeAddressZip:
+    question: Home ZIP code
+  /housingIsNotStable:
+    question: Is your housing situation unstable or temporary?
+    hint: Telling us does not affect your application. It helps the office reach you.
+    options:
+      'true':
+        name: 'Yes'
+      'false':
+        name: 'No'
+  h3-e14e49: How should we keep in touch?
+  /notificationPreferences:
+    question: How would you like us to contact you?
+    options:
+      text:
+        name: Text message
+      call:
+        name: Phone call
+      email:
+        name: Email
+      mail:
+        name: Postal mail
+  /contactPhone:
+    question: What is your phone number?
+  /contactEmail:
+    question: What is your email address?
+  /smsPhone:
+    question: Which number should we text?
+    hint: We will send a confirmation message to this number.
+  /notificationTimes:
+    question: When is it easiest to reach you?
+    options:
+      morning:
+        name: Morning
+      afternoon:
+        name: Afternoon
+      evening:
+        name: Evening
+/household:
+  title: Your household
+  h2-334023: Your household
+  p-6eba08: |-
+    Add everyone who lives with you or who you file taxes with, including yourself. We ask
+            about everyone, even people you are not applying for, because it affects what you qualify
+            for.
+  fg-alert-91d6d4:
+    heading: Only one person can be you
+    p-5edb3b: |-
+      More than one person is marked as the person filling in this application. Edit the list so
+                that only one is.
+  fg-alert-1c4fd7:
+    heading: Are you in this list?
+    p-0aadd0: |-
+      Nobody here is marked as the person filling in the application. If you are applying for
+                yourself, add yourself to the list.
+  collection/householdMembers:
+    itemName: person
+    /householdMembers/*/firstName:
+      question: First name
+    /householdMembers/*/middleName:
+      question: Middle name
+    /householdMembers/*/lastName:
+      question: Last name
+    /householdMembers/*/isSelf:
+      question: Is this you, the person filling in this application?
+      options:
+        'true':
+          name: 'Yes'
+        'false':
+          name: 'No'
+    /householdMembers/*/relationship:
+      question: How is this person related to you?
+      options:
+        spouse:
+          name: Spouse
+        child:
+          name: Child
+        stepChild:
+          name: Stepchild
+        fosterChild:
+          name: Foster child
+        parent:
+          name: Parent
+        sibling:
+          name: Brother or sister
+        grandparent:
+          name: Grandparent
+        grandchild:
+          name: Grandchild
+        otherRelative:
+          name: Other relative
+        unrelated:
+          name: Not related
+        other:
+          name: Other
+    /householdMembers/*/relationshipOther:
+      question: How are they related to you?
+    /householdMembers/*/isApplicant:
+      question: Are you applying for benefits for this person?
+      hint: Say no if they live with you but are not applying.
+      options:
+        'true':
+          name: 'Yes'
+        'false':
+          name: 'No'
+    /householdMembers/*/inTaxHousehold:
+      question: Do you file federal taxes together with this person?
+      options:
+        'true':
+          name: 'Yes'
+        'false':
+          name: 'No'
+    /householdMembers/*/dateOfBirth:
+      question: Date of birth
+    /householdMembers/*/sex:
+      question: Sex
+      options:
+        female:
+          name: Female
+        male:
+          name: Male
+    /householdMembers/*/ssn:
+      question: Social Security number
+      hint: We need this only for people who are applying for benefits.
+    /householdMembers/*/commonCases:
+      question: Do any of these apply to this person?
+      hint: Select all that apply. Select none if they do not.
+      options:
+        pregnant:
+          name: Is pregnant
+        hadBaby:
+          name: Recently had a baby
+        student:
+          name: Is a student
+        foster:
+          name: Is in foster care, or was
+        disability:
+          name: Has a disability
+        insurance:
+          name: Has health insurance
+        cashAssistance:
+          name: Gets cash assistance
+        medicalBills:
+          name: Has medical bills from the last three months
+    /householdMembers/*/dueDate:
+      question: When is the baby due?
+    /householdMembers/*/babiesExpected:
+      question: How many babies are expected?
+    /householdMembers/*/insuranceTypes:
+      question: What kind of health insurance does this person have?
+      options:
+        medicare:
+          name: Medicare
+        medicaid:
+          name: Medicaid
+        otherPublic:
+          name: Another public program
+        va:
+          name: Veterans Affairs
+        employer:
+          name: Through an employer
+        private:
+          name: Bought on their own
+        peaceCorps:
+          name: Peace Corps
+        limited:
+          name: Limited coverage only
+        unknown:
+          name: Not sure
+    /householdMembers/*/livesAtMailingAddress:
+      question: Does this person live at your mailing address?
+      options:
+        'true':
+          name: 'Yes'
+        'false':
+          name: 'No'
+    /householdMembers/*/addressStreet:
+      question: Their street address
+    /householdMembers/*/addressStreetLine2:
+      question: Their apartment, suite or unit
+    /householdMembers/*/addressCity:
+      question: Their city
+    /householdMembers/*/addressState:
+      question: Their state
+      options:
+        AL:
+          name: Alabama
+        AK:
+          name: Alaska
+        AZ:
+          name: Arizona
+        AR:
+          name: Arkansas
+        CA:
+          name: California
+        CO:
+          name: Colorado
+        CT:
+          name: Connecticut
+        DE:
+          name: Delaware
+        DC:
+          name: District of Columbia
+        FL:
+          name: Florida
+        GA:
+          name: Georgia
+        HI:
+          name: Hawaii
+        ID:
+          name: Idaho
+        IL:
+          name: Illinois
+        IN:
+          name: Indiana
+        IA:
+          name: Iowa
+        KS:
+          name: Kansas
+        KY:
+          name: Kentucky
+        LA:
+          name: Louisiana
+        ME:
+          name: Maine
+        MD:
+          name: Maryland
+        MA:
+          name: Massachusetts
+        MI:
+          name: Michigan
+        MN:
+          name: Minnesota
+        MS:
+          name: Mississippi
+        MO:
+          name: Missouri
+        MT:
+          name: Montana
+        NE:
+          name: Nebraska
+        NV:
+          name: Nevada
+        NH:
+          name: New Hampshire
+        NJ:
+          name: New Jersey
+        NM:
+          name: New Mexico
+        NY:
+          name: New York
+        NC:
+          name: North Carolina
+        ND:
+          name: North Dakota
+        OH:
+          name: Ohio
+        OK:
+          name: Oklahoma
+        OR:
+          name: Oregon
+        PA:
+          name: Pennsylvania
+        RI:
+          name: Rhode Island
+        SC:
+          name: South Carolina
+        SD:
+          name: South Dakota
+        TN:
+          name: Tennessee
+        TX:
+          name: Texas
+        UT:
+          name: Utah
+        VT:
+          name: Vermont
+        VA:
+          name: Virginia
+        WA:
+          name: Washington
+        WV:
+          name: West Virginia
+        WI:
+          name: Wisconsin
+        WY:
+          name: Wyoming
+    /householdMembers/*/addressZip:
+      question: Their ZIP code
+    /householdMembers/*/incomeTypes:
+      question: Where does this person's money come from?
+      hint: Select all that apply. Select none if they have no income.
+      options:
+        job:
+          name: A job
+        selfEmployment:
+          name: Self-employment
+        unemployment:
+          name: Unemployment
+        disability:
+          name: Disability
+        socialSecurity:
+          name: Social Security
+        retirement:
+          name: Retirement
+        pension:
+          name: A pension
+        alimony:
+          name: Alimony
+        other:
+          name: Something else
+    /householdMembers/*/otherIncomeAmount:
+      question: How much do they receive from everything other than a job, each month?
+    /householdMembers/*/job1EmployerName:
+      question: Who is their employer?
+    /householdMembers/*/job1PayFrequency:
+      question: How often are they paid?
+      options:
+        weekly:
+          name: Every week
+        everyTwoWeeks:
+          name: Every two weeks
+        twiceAMonth:
+          name: Twice a month
+        monthly:
+          name: Once a month
+    /householdMembers/*/job1Wages:
+      question: How much do they earn before deductions, each pay period?
+    /householdMembers/*/job1HoursPerPayPeriod:
+      question: How many hours do they work each pay period?
+    /householdMembers/*/hasSecondJob:
+      question: Do they have a second job?
+      options:
+        'true':
+          name: 'Yes'
+        'false':
+          name: 'No'
+    /householdMembers/*/job2EmployerName:
+      question: Who is their second employer?
+    /householdMembers/*/job2PayFrequency:
+      question: How often does the second job pay?
+      options:
+        weekly:
+          name: Every week
+        everyTwoWeeks:
+          name: Every two weeks
+        twiceAMonth:
+          name: Twice a month
+        monthly:
+          name: Once a month
+    /householdMembers/*/job2Wages:
+      question: How much does the second job pay each pay period?
+    /householdMembers/*/job2HoursPerPayPeriod:
+      question: How many hours is the second job each pay period?
+    /householdMembers/*/hasThirdJob:
+      question: Do they have a third job?
+      options:
+        'true':
+          name: 'Yes'
+        'false':
+          name: 'No'
+    /householdMembers/*/job3EmployerName:
+      question: Who is their third employer?
+    /householdMembers/*/job3PayFrequency:
+      question: How often does the third job pay?
+      options:
+        weekly:
+          name: Every week
+        everyTwoWeeks:
+          name: Every two weeks
+        twiceAMonth:
+          name: Twice a month
+        monthly:
+          name: Once a month
+    /householdMembers/*/job3Wages:
+      question: How much does the third job pay each pay period?
+    /householdMembers/*/job3HoursPerPayPeriod:
+      question: How many hours is the third job each pay period?
+    /householdMembers/*/isCitizen:
+      question: Is this person a U.S. citizen or U.S. national?
+      options:
+        'true':
+          name: 'Yes'
+        'false':
+          name: 'No'
+    /householdMembers/*/hasEligibleImmigrationStatus:
+      question: Does this person have an eligible immigration status?
+      options:
+        'true':
+          name: 'Yes'
+        'false':
+          name: 'No'
+    /householdMembers/*/immigrationDocument:
+      question: Which document can they provide?
+      options:
+        alienNumber:
+          name: Alien number
+        sevisId:
+          name: SEVIS ID
+        cardOrPassport:
+          name: Card or passport number
+        other:
+          name: Another document
+    /householdMembers/*/otherImmigrationDocumentType:
+      question: What kind of document is it?
+    /householdMembers/*/immigrationDocumentNumber:
+      question: What is the document number?
+/meal-share:
+  title: Sharing meals
+  h2-545fd4: Who do you share meals with?
+  p-d6fd45: |-
+    Food assistance looks at the people who buy and prepare food together, which is not always
+            the same as the people you file taxes with. Add anyone missing from the list.
+  collection/householdMembers:
+    itemName: person
+    /householdMembers/*/sharesMeals:
+      question: Do you buy and prepare food together with this person?
+      options:
+        'true':
+          name: 'Yes'
+        'false':
+          name: 'No'
+/finances:
+  title: Money and expenses
+  h2-826120: Money and expenses
+  p-0c2a4f: These questions are about your household as a whole, not about any one
+    person.
+  /householdSavings:
+    question: How much does your household have in cash, savings and checking?
+  /householdRentMortgage:
+    question: How much is your rent or mortgage each month?
+  /mealShareFoodExpenses:
+    question: How much does your household spend on food each month?
+    hint: Include what you spend for the people you share meals with.
+  /hasHeatingCoolingExpenses:
+    question: Does your household pay for heating or cooling?
+    options:
+      'true':
+        name: 'Yes'
+      'false':
+        name: 'No'
+  /hasOtherUtilities:
+    question: Does your household pay for other utilities?
+    hint: Electricity, gas, water, rubbish collection or phone.
+    options:
+      'true':
+        name: 'Yes'
+      'false':
+        name: 'No'
+  /medicalExpenses:
+    question: How much does your household spend on medical care each month?
+    hint: Include what is not paid back by insurance.
+/review:
+  title: Review your application
+  h2-5e1a79: Review your application
+  p-d0624d: Check these answers before you sign. You can go back to any section to
+    change them.
+  h3-334023: Your household
+  ul-0:
+    li-ff8017: 'People on this application: <fg-show path="/householdMemberCount"/>'
+    li-bcad65: 'People you file taxes with: <fg-show path="/taxHouseholdSize"/>'
+    li-eaf2c2: 'People you share meals with: <fg-show path="/mealShareHouseholdSize"/>'
+    li-17d027: 'People you are applying for: <fg-show path="/countApplicants"/>'
+  h3-a93312: Money
+  ul-1:
+    li-f5c665: 'Total household income: <fg-show path="/totalHouseholdIncome"/>'
+    li-e305a2: 'Cash and savings: <fg-show path="/householdSavings"/>'
+    li-d1a3e0: 'Rent or mortgage each month: <fg-show path="/householdRentMortgage"/>'
+  p-39e5e0: |-
+    Your income is above the amount we screen against for food assistance. Your application will
+            still be reviewed.
+  h3-e94e6d: Where we will contact you
+  ul-2:
+    li-e0f0c7: <fg-show path="/mailingAddressStreet"/>
+    li-087b99: <fg-show path="/mailingAddressCity"/>, <fg-show path="/mailingAddressState"/>
+      <fg-show path="/mailingAddressZip"/>
+/submit:
+  title: Sign and submit
+  h2-ffa4aa: Sign and submit
+  p-6eef6f: |-
+    By signing, you say that the answers you have given are true and complete to the best of
+            your knowledge.
+  /agreeToTerms:
+    question: Do you agree to these terms?
+    options:
+      'true':
+        name: Yes, I agree
+      'false':
+        name: 'No'
+  fg-alert-915113:
+    heading: You must agree to the terms
+    p-15bc42: We cannot accept an application without your agreement.
+  /applicantSignature:
+    question: Type your full name to sign

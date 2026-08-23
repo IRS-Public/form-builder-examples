@@ -1,0 +1,80 @@
+<?xml version="1.0"?>
+<?xml-model href="./FactDictionaryModule.rng"?>
+<FactDictionaryModule>
+  <Facts>
+    <!-- The prototype's only formal eligibility gate, ported verbatim. Everything downstream of
+         the screener was deferred to a caseworker: there is no FPL table, no asset test, no
+         program-specific threshold and no benefit estimate anywhere in the source. -->
+
+    <Fact path="/screenerIncomeLimit">
+      <Name>Screener income limit</Name>
+      <Description>A flat $10,000 over 30 days, not adjusted for household size or for which
+        program was selected. Kept as its own derived fact so the Inspect panel can explain the
+        threshold the same way it explains an answer.</Description>
+      <Derived>
+        <Dollar>10000</Dollar>
+      </Derived>
+    </Fact>
+
+    <Fact path="/isOverScreenerIncomeLimit">
+      <Name>Over the screener income limit</Name>
+      <Description>The prototype's rule was
+        ((householdIncome undefined AND foodAssistance=="no") OR householdIncome &lt;= 10000)
+        routing to eligible.html, else not-eligible.html. Income is only asked on the SNAP path, so
+        the Medicaid-only applicant always passed. The IsComplete guard reproduces that rather than
+        knocking out on a question that was never put.</Description>
+      <Derived>
+        <All>
+          <Dependency path="/isApplyingForFoodAssistance"/>
+          <IsComplete>
+            <Dependency path="/screenerHouseholdIncome"/>
+          </IsComplete>
+          <GreaterThan>
+            <Left>
+              <Dependency path="/screenerHouseholdIncome"/>
+            </Left>
+            <Right>
+              <Dependency path="/screenerIncomeLimit"/>
+            </Right>
+          </GreaterThan>
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowScreenerAnswered">
+      <Description>All short-circuits: because /isOverScreenerIncomeLimit guards on
+        IsComplete(/screenerHouseholdIncome), it reads false — not incomplete — while a SNAP
+        applicant has yet to answer. That is the right answer for the Medicaid-only path, where the
+        question is never put at all, but it would otherwise let the screener congratulate someone
+        before they have told us anything. The outcome alerts gate on this instead.</Description>
+      <Derived>
+        <All>
+          <Dependency path="/hasChosenABenefit"/>
+          <Any>
+            <Not>
+              <Dependency path="/isApplyingForFoodAssistance"/>
+            </Not>
+            <IsComplete>
+              <Dependency path="/screenerHouseholdIncome"/>
+            </IsComplete>
+          </Any>
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/mayQualify">
+      <Name>May qualify</Name>
+      <Description>The determination the screener reaches. The prototype's not-eligible.html was
+        not a dead end either — it said "we encourage you to continue" and offered a Continue
+        button — which is exactly why this is a warning rather than a hard knockout.</Description>
+      <Derived>
+        <All>
+          <Dependency path="/flowScreenerAnswered"/>
+          <Not>
+            <Dependency path="/isOverScreenerIncomeLimit"/>
+          </Not>
+        </All>
+      </Derived>
+    </Fact>
+  </Facts>
+</FactDictionaryModule>

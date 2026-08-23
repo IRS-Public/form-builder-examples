@@ -1,0 +1,212 @@
+{
+  "/agreeToTerms": {
+    "$type": "BooleanWrapper",
+    "item": true
+  },
+  "/applicantSignature": {
+    "$type": "StringWrapper",
+    "item": "Dana Reyes"
+  },
+  "/applyingFor": {
+    "$type": "EnumWrapper",
+    "item": {
+      "value": "myself",
+      "enumOptionsPath": "/applyingForOptions"
+    }
+  },
+  "/benefitChoices": {
+    "$type": "MultEnumWrapper",
+    "item": {
+      "values": [
+        "foodAssistance"
+      ],
+      "enumOptionsPath": "/benefitOptions"
+    }
+  },
+  "/contactEmail": {
+    "$type": "StringWrapper",
+    "item": "dana.reyes@example.com"
+  },
+  "/contactPhone": {
+    "$type": "StringWrapper",
+    "item": "(301) 555-0142"
+  },
+  "/hasHeatingCoolingExpenses": {
+    "$type": "BooleanWrapper",
+    "item": true
+  },
+  "/hasOtherUtilities": {
+    "$type": "BooleanWrapper",
+    "item": true
+  },
+  "/householdMembers": {
+    "$type": "CollectionWrapper",
+    "item": {
+      "items": [
+        "be000001-0000-4000-a000-000000000001"
+      ]
+    }
+  },
+  "/householdMembers/#be000001-0000-4000-a000-000000000001/commonCases": {
+    "$type": "MultEnumWrapper",
+    "item": {
+      "values": [],
+      "enumOptionsPath": "/commonCaseOptions"
+    }
+  },
+  "/householdMembers/#be000001-0000-4000-a000-000000000001/dateOfBirth": {
+    "$type": "DayWrapper",
+    "item": {
+      "date": "1986-03-14"
+    }
+  },
+  "/householdMembers/#be000001-0000-4000-a000-000000000001/firstName": {
+    "$type": "StringWrapper",
+    "item": "Dana"
+  },
+  "/householdMembers/#be000001-0000-4000-a000-000000000001/hasSecondJob": {
+    "$type": "BooleanWrapper",
+    "item": false
+  },
+  "/householdMembers/#be000001-0000-4000-a000-000000000001/inTaxHousehold": {
+    "$type": "BooleanWrapper",
+    "item": true
+  },
+  "/householdMembers/#be000001-0000-4000-a000-000000000001/incomeTypes": {
+    "$type": "MultEnumWrapper",
+    "item": {
+      "values": [
+        "job"
+      ],
+      "enumOptionsPath": "/incomeTypeOptions"
+    }
+  },
+  "/householdMembers/#be000001-0000-4000-a000-000000000001/isApplicant": {
+    "$type": "BooleanWrapper",
+    "item": true
+  },
+  "/householdMembers/#be000001-0000-4000-a000-000000000001/isCitizen": {
+    "$type": "BooleanWrapper",
+    "item": true
+  },
+  "/householdMembers/#be000001-0000-4000-a000-000000000001/isSelf": {
+    "$type": "BooleanWrapper",
+    "item": true
+  },
+  "/householdMembers/#be000001-0000-4000-a000-000000000001/job1EmployerName": {
+    "$type": "StringWrapper",
+    "item": "Riverside Diner"
+  },
+  "/householdMembers/#be000001-0000-4000-a000-000000000001/job1HoursPerPayPeriod": {
+    "$type": "IntWrapper",
+    "item": 70
+  },
+  "/householdMembers/#be000001-0000-4000-a000-000000000001/job1PayFrequency": {
+    "$type": "EnumWrapper",
+    "item": {
+      "value": "everyTwoWeeks",
+      "enumOptionsPath": "/payFrequencyOptions"
+    }
+  },
+  "/householdMembers/#be000001-0000-4000-a000-000000000001/job1Wages": {
+    "$type": "DollarWrapper",
+    "item": "6000.00"
+  },
+  "/householdMembers/#be000001-0000-4000-a000-000000000001/lastName": {
+    "$type": "StringWrapper",
+    "item": "Reyes"
+  },
+  "/householdMembers/#be000001-0000-4000-a000-000000000001/livesAtMailingAddress": {
+    "$type": "BooleanWrapper",
+    "item": true
+  },
+  "/householdMembers/#be000001-0000-4000-a000-000000000001/sex": {
+    "$type": "EnumWrapper",
+    "item": {
+      "value": "female",
+      "enumOptionsPath": "/sexOptions"
+    }
+  },
+  "/householdMembers/#be000001-0000-4000-a000-000000000001/sharesMeals": {
+    "$type": "BooleanWrapper",
+    "item": true
+  },
+  "/householdMembers/#be000001-0000-4000-a000-000000000001/ssn": {
+    "$type": "StringWrapper",
+    "item": "412-55-0198"
+  },
+  "/householdRentMortgage": {
+    "$type": "DollarWrapper",
+    "item": "1650.00"
+  },
+  "/householdSavings": {
+    "$type": "DollarWrapper",
+    "item": "400.00"
+  },
+  "/householdZipCode": {
+    "$type": "StringWrapper",
+    "item": "20814"
+  },
+  "/isMailAndHomeTheSame": {
+    "$type": "BooleanWrapper",
+    "item": true
+  },
+  "/mailingAddressCity": {
+    "$type": "StringWrapper",
+    "item": "Bethesda"
+  },
+  "/mailingAddressState": {
+    "$type": "EnumWrapper",
+    "item": {
+      "value": "MD",
+      "enumOptionsPath": "/stateOptions"
+    }
+  },
+  "/mailingAddressStreet": {
+    "$type": "StringWrapper",
+    "item": "8600 Rockville Pike"
+  },
+  "/mailingAddressZip": {
+    "$type": "StringWrapper",
+    "item": "20814"
+  },
+  "/mealShareFoodExpenses": {
+    "$type": "DollarWrapper",
+    "item": "500.00"
+  },
+  "/medicalExpenses": {
+    "$type": "DollarWrapper",
+    "item": "120.00"
+  },
+  "/meta/migrationsApplied": {
+    "$type": "IntWrapper",
+    "item": 2
+  },
+  "/notificationPreferences": {
+    "$type": "MultEnumWrapper",
+    "item": {
+      "values": [
+        "text",
+        "email"
+      ],
+      "enumOptionsPath": "/notificationPreferenceOptions"
+    }
+  },
+  "/notificationTimes": {
+    "$type": "MultEnumWrapper",
+    "item": {
+      "values": [
+        "morning"
+      ],
+      "enumOptionsPath": "/notificationTimeOptions"
+    }
+  },
+  "/screenerHouseholdIncome": {
+    "$type": "DollarWrapper",
+    "item": "12000.00"
+  },
+  "/smsPhone": {
+    "$type": "StringWrapper",
+    "item": "(301) 555-0142"
+  }
+}

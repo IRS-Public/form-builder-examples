@@ -1,0 +1,203 @@
+{
+  "/agreeToTerms": {
+    "$type": "BooleanWrapper",
+    "item": true
+  },
+  "/applicantSignature": {
+    "$type": "StringWrapper",
+    "item": "Alex Moreno"
+  },
+  "/applyingFor": {
+    "$type": "EnumWrapper",
+    "item": {
+      "value": "oneOrMorePeople",
+      "enumOptionsPath": "/applyingForOptions"
+    }
+  },
+  "/benefitChoices": {
+    "$type": "MultEnumWrapper",
+    "item": {
+      "values": [
+        "foodAssistance",
+        "healthcare"
+      ],
+      "enumOptionsPath": "/benefitOptions"
+    }
+  },
+  "/contactEmail": {
+    "$type": "StringWrapper",
+    "item": "helper@example.com"
+  },
+  "/contactPhone": {
+    "$type": "StringWrapper",
+    "item": "(205) 555-0188"
+  },
+  "/hasHeatingCoolingExpenses": {
+    "$type": "BooleanWrapper",
+    "item": true
+  },
+  "/hasOtherUtilities": {
+    "$type": "BooleanWrapper",
+    "item": true
+  },
+  "/householdMembers": {
+    "$type": "CollectionWrapper",
+    "item": {
+      "items": [
+        "be000006-0000-4000-a000-000000000001"
+      ]
+    }
+  },
+  "/householdMembers/#be000006-0000-4000-a000-000000000001/commonCases": {
+    "$type": "MultEnumWrapper",
+    "item": {
+      "values": [
+        "medicalBills"
+      ],
+      "enumOptionsPath": "/commonCaseOptions"
+    }
+  },
+  "/householdMembers/#be000006-0000-4000-a000-000000000001/dateOfBirth": {
+    "$type": "DayWrapper",
+    "item": {
+      "date": "1948-08-05"
+    }
+  },
+  "/householdMembers/#be000006-0000-4000-a000-000000000001/firstName": {
+    "$type": "StringWrapper",
+    "item": "Ruth"
+  },
+  "/householdMembers/#be000006-0000-4000-a000-000000000001/inTaxHousehold": {
+    "$type": "BooleanWrapper",
+    "item": true
+  },
+  "/householdMembers/#be000006-0000-4000-a000-000000000001/incomeTypes": {
+    "$type": "MultEnumWrapper",
+    "item": {
+      "values": [
+        "socialSecurity"
+      ],
+      "enumOptionsPath": "/incomeTypeOptions"
+    }
+  },
+  "/householdMembers/#be000006-0000-4000-a000-000000000001/isApplicant": {
+    "$type": "BooleanWrapper",
+    "item": true
+  },
+  "/householdMembers/#be000006-0000-4000-a000-000000000001/isCitizen": {
+    "$type": "BooleanWrapper",
+    "item": true
+  },
+  "/householdMembers/#be000006-0000-4000-a000-000000000001/isSelf": {
+    "$type": "BooleanWrapper",
+    "item": false
+  },
+  "/householdMembers/#be000006-0000-4000-a000-000000000001/lastName": {
+    "$type": "StringWrapper",
+    "item": "Callender"
+  },
+  "/householdMembers/#be000006-0000-4000-a000-000000000001/livesAtMailingAddress": {
+    "$type": "BooleanWrapper",
+    "item": true
+  },
+  "/householdMembers/#be000006-0000-4000-a000-000000000001/otherIncomeAmount": {
+    "$type": "DollarWrapper",
+    "item": "1100.00"
+  },
+  "/householdMembers/#be000006-0000-4000-a000-000000000001/relationship": {
+    "$type": "EnumWrapper",
+    "item": {
+      "value": "unrelated",
+      "enumOptionsPath": "/relationshipOptions"
+    }
+  },
+  "/householdMembers/#be000006-0000-4000-a000-000000000001/sex": {
+    "$type": "EnumWrapper",
+    "item": {
+      "value": "female",
+      "enumOptionsPath": "/sexOptions"
+    }
+  },
+  "/householdMembers/#be000006-0000-4000-a000-000000000001/sharesMeals": {
+    "$type": "BooleanWrapper",
+    "item": true
+  },
+  "/householdMembers/#be000006-0000-4000-a000-000000000001/ssn": {
+    "$type": "StringWrapper",
+    "item": "417-22-9061"
+  },
+  "/householdRentMortgage": {
+    "$type": "DollarWrapper",
+    "item": "720.00"
+  },
+  "/householdSavings": {
+    "$type": "DollarWrapper",
+    "item": "300.00"
+  },
+  "/householdZipCode": {
+    "$type": "StringWrapper",
+    "item": "35203"
+  },
+  "/isMailAndHomeTheSame": {
+    "$type": "BooleanWrapper",
+    "item": true
+  },
+  "/mailingAddressCity": {
+    "$type": "StringWrapper",
+    "item": "Birmingham"
+  },
+  "/mailingAddressState": {
+    "$type": "EnumWrapper",
+    "item": {
+      "value": "AL",
+      "enumOptionsPath": "/stateOptions"
+    }
+  },
+  "/mailingAddressStreet": {
+    "$type": "StringWrapper",
+    "item": "1901 6th Avenue North"
+  },
+  "/mailingAddressZip": {
+    "$type": "StringWrapper",
+    "item": "35203"
+  },
+  "/mealShareFoodExpenses": {
+    "$type": "DollarWrapper",
+    "item": "260.00"
+  },
+  "/medicalExpenses": {
+    "$type": "DollarWrapper",
+    "item": "640.00"
+  },
+  "/meta/migrationsApplied": {
+    "$type": "IntWrapper",
+    "item": 2
+  },
+  "/notificationPreferences": {
+    "$type": "MultEnumWrapper",
+    "item": {
+      "values": [
+        "text",
+        "email"
+      ],
+      "enumOptionsPath": "/notificationPreferenceOptions"
+    }
+  },
+  "/notificationTimes": {
+    "$type": "MultEnumWrapper",
+    "item": {
+      "values": [
+        "morning"
+      ],
+      "enumOptionsPath": "/notificationTimeOptions"
+    }
+  },
+  "/screenerHouseholdIncome": {
+    "$type": "DollarWrapper",
+    "item": "1100.00"
+  },
+  "/smsPhone": {
+    "$type": "StringWrapper",
+    "item": "(205) 555-0188"
+  }
+}

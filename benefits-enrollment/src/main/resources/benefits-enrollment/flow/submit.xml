@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<?xml-model href="./FlowConfig.rng"?>
+<FlowConfig>
+  <!-- Replaces 08-submit/{index, done}. The prototype gated the terms behind a JavaScript alert()
+       rather than the inline error UI every other field used; here it is an ordinary required
+       question, and the knockout stops navigation the same way any other knockout does. -->
+  <page title="Sign and submit" route="/submit">
+    <section>
+      <h2>Sign and submit</h2>
+      <p>
+        By signing, you say that the answers you have given are true and complete to the best of
+        your knowledge.
+      </p>
+
+      <fg-set path="/agreeToTerms">
+        <question>Do you agree to these terms?</question>
+        <input type="boolean">
+          <option value="true">Yes, I agree</option>
+          <option value="false">No</option>
+        </input>
+      </fg-set>
+
+      <fg-alert alert-type="error" alert-key="must-agree-to-terms" knockout="true"
+                condition="/agreeToTerms" operator="isFalse">
+        <heading>You must agree to the terms</heading>
+        <p class="usa-alert__text">
+          We cannot accept an application without your agreement.
+        </p>
+      </fg-alert>
+
+      <fg-set path="/applicantSignature" if-true="/agreeToTerms">
+        <question>Type your full name to sign</question>
+        <input type="text"/>
+      </fg-set>
+    </section>
+  </page>
+</FlowConfig>

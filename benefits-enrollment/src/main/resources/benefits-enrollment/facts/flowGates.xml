@@ -1,0 +1,296 @@
+<?xml version="1.0"?>
+<?xml-model href="./FactDictionaryModule.rng"?>
+<FactDictionaryModule>
+  <Facts>
+    <!-- Every branch the prototype expressed as window.location.href, as a Boolean the flow gates
+         on. Kept in one file so the routing logic reads as a unit, following credit-assistant's
+         flow-prefixed naming.
+
+         Gates must be Boolean: Condition.validateCondition throws otherwise, and only if-true /
+         if-false on an fg-set or fg-collection produce a page-level gate at all. -->
+
+    <!-- ── Screener ───────────────────────────────────────────────────────────────────────── -->
+
+    <Fact path="/flowShouldAskScreenerIncome">
+      <Description>quick-screener.html put the income field behind .snap-only, so the
+        Medicaid-only applicant was never asked it. That absence is load-bearing: it is what makes
+        /isOverScreenerIncomeLimit false for them.</Description>
+      <Derived>
+        <Dependency path="/isApplyingForFoodAssistance"/>
+      </Derived>
+    </Fact>
+
+    <!-- ── Contact ────────────────────────────────────────────────────────────────────────── -->
+
+    <Fact path="/flowShouldAskSmsPhone">
+      <Description>notification-prefs.html revealed an SMS number field when Text was ticked, then
+        routed to confirm-text.html — a page whose entire content was a confirmation message.</Description>
+      <Derived>
+        <Dependency path="/wantsTextNotifications"/>
+      </Derived>
+    </Fact>
+
+    <!-- ── Household composition ──────────────────────────────────────────────────────────── -->
+
+    <Fact path="/flowHouseholdIsJustTheApplicant">
+      <Description>Prototype, repeated in five navigation scripts:
+        applyingFor=="Myself" AND householdSize==1 AND householdShareMeals==0, which skipped
+        straight to the finances section.</Description>
+      <Derived>
+        <All>
+          <Dependency path="/isApplyingForSelfOnly"/>
+          <Equal>
+            <Left>
+              <Dependency path="/taxHouseholdSize"/>
+            </Left>
+            <Right>
+              <Int>1</Int>
+            </Right>
+          </Equal>
+          <Equal>
+            <Left>
+              <Dependency path="/mealShareHouseholdSize"/>
+            </Left>
+            <Right>
+              <Int>0</Int>
+            </Right>
+          </Equal>
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowHouseholdIsEmpty">
+      <Description>Guards the questions that only make sense once somebody has been added. The
+        IsComplete arm is what stops the gate flickering while a row is mid-edit, the idiom
+        credit-assistant uses for its own empty-collection gating.</Description>
+      <Derived>
+        <Any>
+          <Not>
+            <IsComplete>
+              <Dependency path="/householdMembers"/>
+            </IsComplete>
+          </Not>
+          <Equal>
+            <Left>
+              <Dependency path="/householdMemberCount"/>
+            </Left>
+            <Right>
+              <Int>0</Int>
+            </Right>
+          </Equal>
+        </Any>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowHasHouseholdMembers">
+      <Derived>
+        <Not>
+          <Dependency path="/flowHouseholdIsEmpty"/>
+        </Not>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowMoreThanOnePersonMarkedAsSelf">
+      <Description>Nothing in a collection stops two rows both claiming to be the filer. The
+        prototype could not have this problem because the applicant was not in the list; having put
+        everyone in one collection, the invariant needs stating.</Description>
+      <Derived>
+        <GreaterThan>
+          <Left>
+            <Dependency path="/countPeopleMarkedAsSelf"/>
+          </Left>
+          <Right>
+            <Int>1</Int>
+          </Right>
+        </GreaterThan>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowNobodyMarkedAsSelf">
+      <Description>Legitimate when applying on behalf of others, and an omission otherwise.</Description>
+      <Derived>
+        <All>
+          <Dependency path="/flowHasHouseholdMembers"/>
+          <Not>
+            <Dependency path="/isApplyingOnBehalfOfOthers"/>
+          </Not>
+          <Equal>
+            <Left>
+              <Dependency path="/countPeopleMarkedAsSelf"/>
+            </Left>
+            <Right>
+              <Int>0</Int>
+            </Right>
+          </Equal>
+        </All>
+      </Derived>
+    </Fact>
+
+    <!-- ── Meal share ─────────────────────────────────────────────────────────────────────── -->
+
+    <Fact path="/flowShouldAskAboutMealSharing">
+      <Description>household-mealshare-review.html and its two naming pages existed only for the
+        SNAP path; the Medicaid-only applicant skipped all three.</Description>
+      <Derived>
+        <All>
+          <Dependency path="/isApplyingForFoodAssistance"/>
+          <Dependency path="/flowHasHouseholdMembers"/>
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowSharesMealsWithAnyone">
+      <Derived>
+        <GreaterThan>
+          <Left>
+            <Dependency path="/mealShareHouseholdSize"/>
+          </Left>
+          <Right>
+            <Int>0</Int>
+          </Right>
+        </GreaterThan>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowShouldAskMealShareExpenses">
+      <Description>expenses.html removed #if-shares-meals when householdShareMeals was 0.</Description>
+      <Derived>
+        <All>
+          <Dependency path="/isApplyingForFoodAssistance"/>
+          <Dependency path="/flowSharesMealsWithAnyone"/>
+        </All>
+      </Derived>
+    </Fact>
+
+    <!-- ── Finances ───────────────────────────────────────────────────────────────────────── -->
+
+    <Fact path="/flowShouldAskSnapExpenses">
+      <Description>expenses.html put the utilities and medical-expense questions behind
+        .snap-only.</Description>
+      <Derived>
+        <Dependency path="/isApplyingForFoodAssistance"/>
+      </Derived>
+    </Fact>
+
+    <!-- ── Per-person gates ───────────────────────────────────────────────────────────────── -->
+
+    <Fact path="/householdMembers/*/flowIsNotSelf">
+      <Description>The filer is not asked their relationship to themselves.</Description>
+      <Derived>
+        <Not>
+          <Dependency path="../isSelf"/>
+        </Not>
+      </Derived>
+    </Fact>
+
+    <Fact path="/householdMembers/*/flowShouldAskRelationshipOther">
+      <Derived>
+        <All>
+          <Dependency path="../flowIsNotSelf"/>
+          <Equal>
+            <Left>
+              <Dependency path="../relationship"/>
+            </Left>
+            <Right>
+              <Enum optionsPath="/relationshipOptions">other</Enum>
+            </Right>
+          </Equal>
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/householdMembers/*/flowShouldAskSsn">
+      <Description>Prototype: the .applicant-only block on personN-step1.html.</Description>
+      <Derived>
+        <Dependency path="../isApplicant"/>
+      </Derived>
+    </Fact>
+
+    <Fact path="/householdMembers/*/flowShouldAskPregnancyDetail">
+      <Description>Prototype: personN-step3-pregnant.html, reached by the cascading-override
+        idiom. Pregnancy and insurance were competing destinations there because a page can only
+        navigate to one place; here they are independent gates on the same item.</Description>
+      <Derived>
+        <All>
+          <Dependency path="../isFemale"/>
+          <Dependency path="../isPregnant"/>
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/householdMembers/*/flowShouldAskInsuranceDetail">
+      <Description>Prototype: personN-step3-insurance.html.</Description>
+      <Derived>
+        <Dependency path="../hasInsurance"/>
+      </Derived>
+    </Fact>
+
+    <Fact path="/householdMembers/*/flowShouldAskOwnAddress">
+      <Derived>
+        <Not>
+          <Dependency path="../livesAtMailingAddress"/>
+        </Not>
+      </Derived>
+    </Fact>
+
+    <Fact path="/householdMembers/*/flowShouldAskJobDetails">
+      <Derived>
+        <Dependency path="../hasJobIncome"/>
+      </Derived>
+    </Fact>
+
+    <Fact path="/householdMembers/*/flowShouldAskSecondJob">
+      <Derived>
+        <All>
+          <Dependency path="../hasJobIncome"/>
+          <Dependency path="../hasSecondJob"/>
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/householdMembers/*/flowShouldAskThirdJob">
+      <Derived>
+        <All>
+          <Dependency path="../flowShouldAskSecondJob"/>
+          <Dependency path="../hasThirdJob"/>
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/householdMembers/*/flowNeedsCitizenshipFollowUp">
+      <Description>Prototype: determine-who.html flagged the non-citizens, then each follow-up page
+        re-implemented an ascending else-if chain starting at N+1 so that every flagged person was
+        visited exactly once. That whole apparatus was iteration.</Description>
+      <Derived>
+        <Not>
+          <Dependency path="../isCitizen"/>
+        </Not>
+      </Derived>
+    </Fact>
+
+    <Fact path="/householdMembers/*/flowNeedsImmigrationDocument">
+      <Derived>
+        <All>
+          <Dependency path="../flowNeedsCitizenshipFollowUp"/>
+          <Dependency path="../hasEligibleImmigrationStatus"/>
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/householdMembers/*/flowNeedsOtherDocumentType">
+      <Derived>
+        <All>
+          <Dependency path="../flowNeedsImmigrationDocument"/>
+          <Equal>
+            <Left>
+              <Dependency path="../immigrationDocument"/>
+            </Left>
+            <Right>
+              <Enum optionsPath="/immigrationDocumentOptions">other</Enum>
+            </Right>
+          </Equal>
+        </All>
+      </Derived>
+    </Fact>
+  </Facts>
+</FactDictionaryModule>

@@ -1,0 +1,188 @@
+<?xml version="1.0"?>
+<?xml-model href="./FactDictionaryModule.rng"?>
+<FactDictionaryModule>
+  <Facts>
+    <!-- Every enum's option set is itself a fact. The prototype hard-coded these as <option>
+         elements repeated across up to seven near-identical pages; here each list exists once and
+         the flow points at it by path. -->
+
+    <Fact path="/benefitOptions">
+      <Description>The programs this application covers. The prototype asked for these as two
+        independent checkboxes whose value= attributes were dead markup — storeData() wrote the
+        literal strings "yes"/"no" keyed by element id.</Description>
+      <Derived>
+        <EnumOptions>
+          <String>foodAssistance</String>
+          <String>healthcare</String>
+        </EnumOptions>
+      </Derived>
+    </Fact>
+
+    <Fact path="/applyingForOptions">
+      <Description>Prototype: the applyingFor radio on who-is-applying.html. Its
+        "for-someone-else" branch was dead code — no option carried that value — so only the three
+        real choices survive.</Description>
+      <Derived>
+        <EnumOptions>
+          <String>myself</String>
+          <String>meAndSomeoneElse</String>
+          <String>oneOrMorePeople</String>
+        </EnumOptions>
+      </Derived>
+    </Fact>
+
+    <Fact path="/sexOptions">
+      <Derived>
+        <EnumOptions>
+          <String>female</String>
+          <String>male</String>
+        </EnumOptions>
+      </Derived>
+    </Fact>
+
+    <Fact path="/relationshipOptions">
+      <Description>Prototype: the householdMemberNRelationship select, with its "Other" option
+        opening a free-text field.</Description>
+      <Derived>
+        <EnumOptions>
+          <String>spouse</String>
+          <String>child</String>
+          <String>stepChild</String>
+          <String>fosterChild</String>
+          <String>parent</String>
+          <String>sibling</String>
+          <String>grandparent</String>
+          <String>grandchild</String>
+          <String>otherRelative</String>
+          <String>unrelated</String>
+          <String>other</String>
+        </EnumOptions>
+      </Derived>
+    </Fact>
+
+    <Fact path="/commonCaseOptions">
+      <Description>Prototype: the eight commonCase* checkboxes on applicant-common-cases.html and
+        their householdMemberNCase* twins on personN-step2.html. One multi-enum replaces sixteen
+        separate storage keys.</Description>
+      <Derived>
+        <EnumOptions>
+          <String>pregnant</String>
+          <String>hadBaby</String>
+          <String>student</String>
+          <String>foster</String>
+          <String>disability</String>
+          <String>insurance</String>
+          <String>cashAssistance</String>
+          <String>medicalBills</String>
+        </EnumOptions>
+      </Derived>
+    </Fact>
+
+    <Fact path="/insuranceTypeOptions">
+      <Description>Prototype: the nine name="insurance" checkboxes on common-case-insurance.html.
+        The page also wrote a comma-joined applicantInsuranceTypes key — the only array-valued key
+        in the prototype, and exactly what a MultiEnum is.</Description>
+      <Derived>
+        <EnumOptions>
+          <String>medicare</String>
+          <String>medicaid</String>
+          <String>otherPublic</String>
+          <String>va</String>
+          <String>employer</String>
+          <String>private</String>
+          <String>peaceCorps</String>
+          <String>limited</String>
+          <String>unknown</String>
+        </EnumOptions>
+      </Derived>
+    </Fact>
+
+    <Fact path="/incomeTypeOptions">
+      <Description>Prototype: the applicant_incomeType* / householdMemberN_incomeType* checkbox
+        battery on the finances pages.</Description>
+      <Derived>
+        <EnumOptions>
+          <String>job</String>
+          <String>selfEmployment</String>
+          <String>unemployment</String>
+          <String>disability</String>
+          <String>socialSecurity</String>
+          <String>retirement</String>
+          <String>pension</String>
+          <String>alimony</String>
+          <String>other</String>
+        </EnumOptions>
+      </Derived>
+    </Fact>
+
+    <Fact path="/payFrequencyOptions">
+      <Description>Prototype: the employerPayFrequency radio on the job-details pages.</Description>
+      <Derived>
+        <EnumOptions>
+          <String>weekly</String>
+          <String>everyTwoWeeks</String>
+          <String>twiceAMonth</String>
+          <String>monthly</String>
+        </EnumOptions>
+      </Derived>
+    </Fact>
+
+    <Fact path="/notificationPreferenceOptions">
+      <Description>Prototype: notificationPreferenceText/Call/Email/Mail.</Description>
+      <Derived>
+        <EnumOptions>
+          <String>text</String>
+          <String>call</String>
+          <String>email</String>
+          <String>mail</String>
+        </EnumOptions>
+      </Derived>
+    </Fact>
+
+    <Fact path="/notificationTimeOptions">
+      <Description>Prototype: notificationTime1/2/3, which were unlabelled in storage.</Description>
+      <Derived>
+        <EnumOptions>
+          <String>morning</String>
+          <String>afternoon</String>
+          <String>evening</String>
+        </EnumOptions>
+      </Derived>
+    </Fact>
+
+    <Fact path="/immigrationDocumentOptions">
+      <Description>Prototype: the applicantImmigrationDocument / householdMemberNImmigrationDocument
+        radio on the -document.html pages.</Description>
+      <Derived>
+        <EnumOptions>
+          <String>alienNumber</String>
+          <String>sevisId</String>
+          <String>cardOrPassport</String>
+          <String>other</String>
+        </EnumOptions>
+      </Derived>
+    </Fact>
+
+    <Fact path="/stateOptions">
+      <Description>The state select that appeared on four separate address pages in the prototype,
+        each with its own copy of the option list.</Description>
+      <Derived>
+        <EnumOptions>
+          <String>AL</String><String>AK</String><String>AZ</String><String>AR</String>
+          <String>CA</String><String>CO</String><String>CT</String><String>DE</String>
+          <String>DC</String><String>FL</String><String>GA</String><String>HI</String>
+          <String>ID</String><String>IL</String><String>IN</String><String>IA</String>
+          <String>KS</String><String>KY</String><String>LA</String><String>ME</String>
+          <String>MD</String><String>MA</String><String>MI</String><String>MN</String>
+          <String>MS</String><String>MO</String><String>MT</String><String>NE</String>
+          <String>NV</String><String>NH</String><String>NJ</String><String>NM</String>
+          <String>NY</String><String>NC</String><String>ND</String><String>OH</String>
+          <String>OK</String><String>OR</String><String>PA</String><String>RI</String>
+          <String>SC</String><String>SD</String><String>TN</String><String>TX</String>
+          <String>UT</String><String>VT</String><String>VA</String><String>WA</String>
+          <String>WV</String><String>WI</String><String>WY</String>
+        </EnumOptions>
+      </Derived>
+    </Fact>
+  </Facts>
+</FactDictionaryModule>

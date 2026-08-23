@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<?xml-model href="./FlowConfig.rng"?>
+<FlowConfig>
+  <!-- The flow, in order. The prototype's 121 pages were mostly person1..person6 duplicates of
+       four screens; those collapse into the one collection loop in household.xml. -->
+  <module src="./screener.xml"/>
+  <module src="./about-you.xml"/>
+  <module src="./household.xml"/>
+  <module src="./meal-share.xml"/>
+  <module src="./finances.xml"/>
+  <module src="./review.xml"/>
+  <module src="./submit.xml"/>
+</FlowConfig>

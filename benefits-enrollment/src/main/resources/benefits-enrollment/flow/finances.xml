@@ -1,0 +1,53 @@
+<?xml version="1.0"?>
+<?xml-model href="./FlowConfig.rng"?>
+<FlowConfig>
+  <!-- Replaces 04-finances/{index, applicant-income, expenses}. The per-person income and job
+       pages are in the household collection; what is left here is genuinely per-household. -->
+  <page title="Money and expenses" route="/finances">
+    <section>
+      <h2>Money and expenses</h2>
+      <p>These questions are about your household as a whole, not about any one person.</p>
+
+      <fg-set path="/householdSavings">
+        <question>How much does your household have in cash, savings and checking?</question>
+        <input type="dollar"/>
+      </fg-set>
+
+      <fg-set path="/householdRentMortgage">
+        <question>How much is your rent or mortgage each month?</question>
+        <input type="dollar"/>
+      </fg-set>
+
+      <!-- Prototype: #if-shares-meals, removed when householdShareMeals was 0. -->
+      <fg-set path="/mealShareFoodExpenses" if-true="/flowShouldAskMealShareExpenses">
+        <question>How much does your household spend on food each month?</question>
+        <hint>Include what you spend for the people you share meals with.</hint>
+        <input type="dollar"/>
+      </fg-set>
+
+      <!-- Prototype: the .snap-only block on expenses.html. -->
+      <fg-set path="/hasHeatingCoolingExpenses" if-true="/flowShouldAskSnapExpenses">
+        <question>Does your household pay for heating or cooling?</question>
+        <input type="boolean">
+          <option value="true">Yes</option>
+          <option value="false">No</option>
+        </input>
+      </fg-set>
+
+      <fg-set path="/hasOtherUtilities" if-true="/flowShouldAskSnapExpenses">
+        <question>Does your household pay for other utilities?</question>
+        <hint>Electricity, gas, water, rubbish collection or phone.</hint>
+        <input type="boolean">
+          <option value="true">Yes</option>
+          <option value="false">No</option>
+        </input>
+      </fg-set>
+
+      <fg-set path="/medicalExpenses" if-true="/flowShouldAskSnapExpenses">
+        <question>How much does your household spend on medical care each month?</question>
+        <hint>Include what is not paid back by insurance.</hint>
+        <input type="dollar"/>
+      </fg-set>
+    </section>
+  </page>
+</FlowConfig>
