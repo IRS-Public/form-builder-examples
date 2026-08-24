@@ -1,78 +1,75 @@
-# Form Builder reference applications
+# Form Builder Examples
 
-Three working applications built on [Form Builder](https://github.com/IRS-Public/form-builder), kept
-in one repository so the library has something real to be read against. Each one is a static site:
-the build reads Flow XML and a Fact Dictionary and writes HTML, CSS and a small amount of JavaScript.
-There is no database, no session store, and no application server at runtime.
+Reference applications built on [Form Builder](https://github.com/IRS-Public/form-builder), kept
+in one repository for convenience. 
 
-**This repository is demonstration code.** Nothing here is a library, and nothing here is meant to be
-depended on. The reusable parts live in three other repositories, and these three applications are
+**This repository is demonstration code.** Nothing here is a library nor meant to be
+depended on. The reusable parts live in three other repositories, and these applications are
 what they look like in use.
 
-| | [`credit-assistant/`](credit-assistant/README.md) | [`tax-withholding-estimator/`](tax-withholding-estimator/README.md) | [`benefits-enrollment/`](benefits-enrollment/README.md) |
-|---|---|---|---|
-| What it does | Screens a taxpayer for the Earned Income Tax Credit | Estimates federal income-tax withholding | Screens a household for SNAP and Medicaid |
-| Served at | `/app/eitc` | `/app/tax-withholding-estimator` | `/app/benefits` |
-| Dev port | 3003 | 3000 | 3006 |
-| Languages | 8 | 2 (English, Spanish) | 1 (English) |
-| Scala source | `Main.scala` only | `Main.scala` plus three extension registrations | `Main.scala` only |
-| Extension points used | 3 of 5 | 5 of 5 | 2 of 5 |
-| Production build target | `make credit-assistant` | `make twe` | `make site` |
-| Read it for | The smaller introduction to the library | How far an application can customize the generated site | Collapsing a legacy 121-page prototype into one `<fg-collection>` |
-
-## Repository layout
-
-| Path | Contents |
-|---|---|
-| `credit-assistant/` | The EITC application. Its own sbt build, Makefile, docs, and resources |
-| `tax-withholding-estimator/` | The withholding application, same shape |
-| `benefits-enrollment/` | The SNAP/Medicaid application, same shape — a conversion of the 2016 [USDS benefits enrollment prototype](https://github.com/usds/benefits-enrollment-prototype) |
-| `CONTRIBUTING.md`, `LICENSE.md` | Cover all three applications |
+| | [`credit-assistant/`](credit-assistant/README.md) | [`tax-withholding-estimator/`](tax-withholding-estimator/README.md) | [`benefits-enrollment/`](benefits-enrollment/README.md)        |
+|---|---|---|----------------------------------------------------------------|
+| What it does | Screens a taxpayer for the Earned Income Tax Credit | Estimates federal income-tax withholding | Screens a household for SNAP and Medicaid                      |
+| Served at | `/app/eitc` | `/app/tax-withholding-estimator` | `/app/benefits`                                                |
+| Dev port | 3003 | 3000 | 3006                                                           |
+| Languages | 8 | 2 (English, Spanish) | 1 (English)                                                    |
+| Scala source | `Main.scala` only | `Main.scala` plus three extension registrations | `Main.scala` only                                              |
+| Extension points used | 3 of 5 | 5 of 5 | 2 of 5                                                         |
+| Production build target | `make credit-assistant` | `make twe` | `make site`                                                    |
+| Read it for | The smaller introduction to the library | How far an application can customize the generated site | A non-tax use case of the Fact Graph, Form-Builder and Taxpert |
 
 The three directories share no code and no build. Each has its own `build.sbt`, `package.json`,
 `Makefile`, and `fact-explorer.app.json`, and each can be built without the others.
 
-## The three repositories these depend on
+## Where this fits
 
-| Repository | Provides | How it arrives |
-|---|---|---|
-| [form-builder](https://github.com/IRS-Public/form-builder) | The Scala library that turns Flow XML plus a Fact Dictionary into a static site. It also ships the browser theme and the flow runtime inside its jar | sbt dependency `gov.irs::form-builder` `0.1.0-SNAPSHOT`, resolved from the local Ivy cache. `sbt publishLocal` in a checkout puts it there |
-| [fact-graph](https://github.com/IRS-Public/fact-graph) | The declarative evaluation engine, cross-compiled to the JVM and to JavaScript | Transitively on the JVM side. The browser bundle is committed under each app's `website-static/vendor/fact-graph/` and refreshed by `make copy-fg` |
-| [taxpert](https://github.com/IRS-Public/taxpert) | The optional workspace UI (global nav, audit panel, tool panels), plus Fact Explorer and the assistant backend | A `file:` npm dependency on a checkout at `taxpert/packages/ui`, mirrored into `website-static/vendor/taxpert/` by `make copy-shared-ui` |
+| Component                                                                                        | What it is                                                                                                                                                                                                                                                                                                                                          |
+|--------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [`fact-graph`](https://github.com/IRS-Public/fact-graph)                                         | `gov.irs::factgraph`, the rules engine. Cross-compiled: a JVM jar this library builds against, and a Scala.js bundle the browser runs.                                                                                                                                                                                                              |
+| `form-builder`                                                                                   | `gov.irs::form-builder`, presentation generator, including parsers, Thymeleaf engine, node templates, locales, RELAX NG schemas, theme, and flow runtime.                                                                                                                                                                                 |
+| [`taxpert`](https://github.com/IRS-Public/taxpert)                                               | The workspace UI (`taxpert` on npm, in that repo's `packages/ui`): global nav, audit panel, tool panels. Optional. An application can ship without it. That repo's `packages/fact-explorer` is a React and Vite SPA that visualizes any Form Builder app's flow and facts as a graph, reading the JSON this library emits under `--formBuilderGraph`. |
+| [`form-builder-template`](https://github.com/IRS-Public/form-builder-template)                   | A cookiecutter that generates a new Form Builder app, with optional extensions like Taxpert.                                                                                                                                                                                                                                                        |
+| [`**form-builder-examples** (here)`](https://github.com/IRS-Public/form-builder-examples) | Reference applications that leverage the three core libraries.                                                                                                                                                                                                                                                                                      |
 
-Only Form Builder is required. An application still runs with no taxpert installed, because the theme
+Only Form Builder and Fact Graph are required. An application still runs with no Taxpert installed, because the theme
 and the questionnaire runtime come from Form Builder's jar. Taxpert adds the tooling that lets you
 inspect a running application.
 
 ## Getting a build to run
 
-None of the three libraries is on a public artifact registry, so all three come from checkouts.
+None of the three libraries are on a public artifact registry (Maven, Github Packages, etc.), so all three come from 
+checkouts.
 Clone them into the root of this repository, beside the two application directories:
 
 ```bash
 git clone https://github.com/IRS-Public/fact-graph
 git clone https://github.com/IRS-Public/form-builder
-git clone https://github.com/IRS-Public/taxpert
+git clone https://github.com/IRS-Public/taxpert (optional, if you want to run taxpert)
 ```
 
-That layout is what the relative paths in each Makefile and `package.json` resolve against —
+That layout is what the relative paths in each Makefile and `package.json` resolve against:
 `../fact-graph`, `../form-builder` and `../taxpert/packages/ui`, all relative to the application
-directory. The three clones are gitignored here; each is its own repository.
+directory. The three clones are gitignored here.
 
-Then, in any application directory:
+In any application directory, run:
 
 ```bash
 make bootstrap  # once: publish the two Scala libraries, install the npm dependencies, vendor the assets
-make dev        # build and serve, watching for changes
+make dev       # build and serve, watching for changes locally
+```
+or
+```bash
+make bootstrap  
+make up       # run everything in docker
 ```
 
 `make bootstrap` runs `sbt compile fastOptJS publishLocal` in fact-graph and `sbt publishLocal` in
-form-builder, which lands both in `~/.ivy2/local` — already first in sbt's resolver chain, so
+form-builder, which lands both in `~/.ivy2/local`.  The Ivy cache is first in sbt's resolver chain, so
 neither `build.sbt` declares a resolver or credentials. It then runs `npm install`, which resolves
-`taxpert` from its checkout, and vendors the Fact Graph browser bundle and the taxpert mirror into
+`taxpert` from its checkout (if installed), and vendors the Fact Graph browser bundle and the Taxpert mirror into
 `website-static/vendor/`.
 
-A taxpert checkout kept somewhere other than the repository root can be installed from where it is,
+A Taxpert checkout kept somewhere other than the repository root can be installed from where it is,
 without editing `package.json`:
 
 ```bash
@@ -85,7 +82,7 @@ Fact Graph is optional if you are only working on templates, locales, or CSS: `m
 a message and moves on when it finds no build at `../fact-graph/js/target/`, and each application's
 committed browser bundle is used instead.
 
-The other targets you will reach for:
+Other commands
 
 ```bash
 make test       # ScalaTest plus scalafmt check
@@ -94,15 +91,15 @@ make help       # every documented target
 ```
 
 The three Makefiles are close but not identical. `make site` is the app-agnostic alias for the
-production build in all three, and it is Benefits Enrollment's only production build target — unlike
-the other two, it has no app-named alias (`make credit-assistant`, `make twe`). Credit Assistant
+production build in all three, and it is Benefits Enrollment's only production build target. Unlike
+the other two, Benefits Enrollment has no app-named alias (`make credit-assistant`, `make twe`). Credit Assistant
 additionally has `make dev-ai`, `make dev-one-question` and `make dev-author`. TWE additionally has
 `make validate-uswds`. Benefits Enrollment additionally has `make dev-one-question` and
 `make dev-author`. See each application's README for its full target list.
 
 ## Seeing inside a running application
 
-Fact Explorer, in the taxpert repository, discovers applications by scanning a directory one level
+Fact Explorer, in the Taxpert repository, discovers applications by scanning a directory one level
 deep for `fact-explorer.app.json` descriptors. One sits at the root of each application here, so
 pointing the scan at this repository finds all three:
 
@@ -115,7 +112,7 @@ FORM_BUILDER_APPS_DIR=/path/to/form-builder-examples \
 The workspace UI in the applications themselves is switched on by a build flag. `make dev` already
 passes `--auditMode` in all three. In credit-assistant, `make dev-ai` also passes
 `--aiScenarioGeneration --aiFactExplanation`, which reveal the two AI features in the audit panel.
-Neither TWE nor Benefits Enrollment wires those features up.
+Neither TWE nor Benefits Enrollment wires those features up in their default state.
 
 ## Docker
 
@@ -136,14 +133,8 @@ docker build \
 ```
 
 The same three flags build `tax-withholding-estimator` and `benefits-enrollment`. Nothing is
-authenticated and no secret is mounted: the libraries are built from the checkouts you already have.
+authenticated and no secret is mounted, as the libraries are built from the checkouts you already have.
 
-The mode flags are baked in at build time, because the generated site is static and there is no
-server at runtime to pass them to. Credit Assistant's image is built with
-`--auditMode --allScreens --scenarioMode`, TWE's with `--auditMode --allScreens`; changing either
-means rebuilding the image. Benefits Enrollment's image passes no flags at all — its `sbt run` is a
-plain production build, with the workspace, all-screens page and scenario mode left out entirely
-rather than toggled off.
 
 ## Contributing
 
@@ -160,3 +151,5 @@ This codebase is dedicated to the public domain under the [Creative Commons Zero
 > IRS does not endorse, maintain, or guarantee the accuracy, completeness, or functionality of the code in this repository. The IRS assumes no responsibility or liability for any use of the code by external parties, including individuals, developers, or organizations. This includes, but is not limited to, any tax consequences, computation errors, data loss, or other outcomes resulting from the use or modification of this code.
 >
 > Use of the code in this repository is at your own risk. This repository is not intended for production use or public consumption as a finalized product.
+> 
+> Artificial Intelligence was used in generating portions of this codebase.
