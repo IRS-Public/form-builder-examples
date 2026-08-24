@@ -11,7 +11,7 @@ Serves from `/app/benefits`.
 
 ## Where this came from
 
-This is a conversion of the [USDS benefits enrollment
+This is a conversion of a [benefits enrollment
 prototype](https://github.com/usds/benefits-enrollment-prototype), a 2016 Jekyll site of 121 static
 pages that kept all its state in `sessionStorage` and expressed all its logic as inline `<script>`
 blocks reading `window` globals and assigning `window.location.href`.
