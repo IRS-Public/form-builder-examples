@@ -23,26 +23,26 @@ near-identical HTML.
 
 Three things follow from that, and they are worth knowing before reading the flow:
 
-**The applicant is a row in the collection, not a set of singleton facts.** The prototype stored the
+**The applicant is a row in the collection, rather than a set of singleton facts.** The prototype stored the
 applicant as `applicant*` keys and everyone else as `householdMember{1..6}*`, then asked both a
-near-identical battery of questions. Credit Assistant's split — primary filer as singletons, a
-collection for everyone else — does not transfer, because here the two batteries almost entirely
+near-identical battery of questions. Credit Assistant's split (primary filer as singletons, a
+collection for everyone else) does not transfer, because here the two batteries almost entirely
 overlap. Membership is marked by `/householdMembers/*/isSelf`, which is a real question rather than
 an assumed first row: the prototype's own "On behalf of one or more people" option means the person
 filling in the form may not be on the application at all.
 
-**The two household sizes are derived, not asked.** `householdSize` and `householdShareMeals` were
+**The two household sizes are derived, rather than asked.** `householdSize` and `householdShareMeals` were
 hand-entered integers that then drove DOM removal loops. They are now `CollectionSize` over two
-`Filter` aliases in `facts/populations.xml` — the tax household and the meal-share household are
+`Filter` aliases in `facts/populations.xml`. The tax household and the meal-share household are
 genuinely different populations, and one can be a strict subset of the other.
 
 **Jobs are three fixed slots per person, matching the prototype's own cap.** A nested
 `/householdMembers/*/jobs` collection is supported by the fact graph but not yet by the browser
-runtime; see "Known issues" below.
+runtime. See "Known issues" below.
 
-The prototype's hand-indexed bugs — every `personN-step2` falling back to `person1`, `person5`
+The prototype's hand-indexed bugs (every `personN-step2` falling back to `person1`, `person5`
 testing `householdMember5FirstName` instead of `6`, all six `personN-document` pages sharing the
-un-namespaced key `alienNumberNumber` — are not fixed here. They are unrepresentable: there is no
+un-namespaced key `alienNumberNumber`) are not fixed here. They are unrepresentable: there is no
 per-person page to misroute and no shared key to overwrite.
 
 The one eligibility rule the prototype had is ported verbatim: a flat $10,000 over 30 days, not
@@ -217,18 +217,18 @@ working:
 
 | Scenario | What it demonstrates |
 |---|---|
-| Single Adult Over The Income Limit | `not-eligible.html` — a warning that still lets you continue, not a dead end |
+| Single Adult Over The Income Limit | `not-eligible.html`, a warning that still lets you continue rather than ending the flow |
 | Single Adult Under The Income Limit | the other arm of the same $10,000 rule |
 | Family Of Four Both Programs | four people in one collection, both programs selected |
 | Pregnant Applicant Health Coverage Only | a screener that never asks income, and passes because of it |
-| Roommates Who Share Meals | meal-share household of 3 over a tax household of 1 — `household-meals-only-names.html` |
+| Roommates Who Share Meals | meal-share household of 3 over a tax household of 1, exercising `household-meals-only-names.html` |
 | Applying On Behalf Of A Neighbor | nobody marked as self, and the warning correctly silent |
 | Lawful Permanent Resident With A Document | the per-person citizenship follow-up, asked of exactly one member |
 | One Earner With Three Jobs | all three job slots, the prototype's own cap |
 
-**They are generated, not hand-written, and the generator is the source.** A scenario file is the
-persister's own JSON — `{path: {$type, item}}`, with `DayWrapper`, `MultEnumWrapper` (the typo is
-the wire format) and `Dollar`'s two-decimal string — written against no schema and with nothing to
+**They are generated rather than hand-written, and the generator is the source.** A scenario file is the
+persister's own JSON, `{path: {$type, item}}`, with `DayWrapper`, `MultEnumWrapper` (the typo is
+the wire format) and `Dollar`'s two-decimal string. It is written against no schema, with nothing to
 check that the paths exist. `src/test/scala/…/Scenarios.scala` builds a real graph per persona
 instead, so a typo in a fact path fails at compile or save time rather than in someone's browser.
 
@@ -243,7 +243,7 @@ UUIDs, so an id with the wrong version or variant nibble makes every `/household
 in the file unresolvable.
 
 `ScenariosSpec` reads the committed files back through the same `InMemoryPersister(json)` the
-browser uses and asserts each one's determinations — that is what catches a scenario gone stale
+browser uses and asserts each one's determinations. That is what catches a scenario gone stale
 against a renamed fact, which nothing else in the build would notice.
 
 ## Three rules to follow
@@ -307,14 +307,14 @@ every app built on it. A second app is what catches an assumption that only hold
   Repoint them at the real repositories before CI can pass.
 - **Stop the Docker stack before building on the host.** The dev overlay mounts named volumes at
   `website-static/vendor/fact-graph` and `.../uswds-3.13.0`, and while a container holds them the
-  host cannot delete those directories — `make copy-uswds` fails with "Permission denied", taking
+  host cannot delete those directories, so `make copy-uswds` fails with "Permission denied", taking
   `make site` and `make ci` with it. The two also share `./target` through the bind mount, so two
   sbt processes would be writing the same build state. `make down`, build, then `make up`.
 
 ## Two local deviations from the generated defaults
 
 **`htmlvalidate.json` declares `form-dup-name` for checkbox groups.** A checkbox group shares one
-`name` by design — that is how a browser submits it as a set, and it is what the scaffold's
+`name` by design. That is how a browser submits it as a set, and it is what the scaffold's
 `nodes/inputs/multi-enum.html` emits: unique `id` and `value` per option, one `name` for the group,
 inside a `<fieldset>` with a `<legend>`. The rule's default `shared` list covers `radio` only. This
 application is the first to use `<input type="multi-enum">` in a flow, so the config the template
@@ -322,80 +322,82 @@ inherited from the two example apps had never needed the setting.
 
 **`facts/FactDictionaryModule.rng` allows a `<String>` placeholder.** `Placeholder.apply` in
 fact-graph only requires the default to be the same CompNode class as the source, so any writable
-type can carry one; the schema listed a subset that omitted `String`. An optional String field — a
-middle name, a second address line — has no other way to be expressed, because `FgSet` derives
+type can carry one. The schema listed a subset that omitted `String`. An optional String field, such as a
+middle name or a second address line, has no other way to be expressed, because `FgSet` derives
 `isOptional` solely from the presence of a `<Placeholder>`.
 
 ## Two library fixes this app required
 
 Neither is local to this app, and both are needed for it to work at all. Each library has two
-checkouts on this machine — `~/fact-graph` and the clone at `../fact-graph` that this app and its
-Docker build actually resolve, and likewise for `form-builder` — and the edits are present in both,
+checkouts on this machine: `~/fact-graph` and the clone at `../fact-graph` that this app and its
+Docker build actually resolve, and likewise for `form-builder`. The edits are present in both,
 as uncommitted working-tree changes. Commit them before relying on a fresh clone of either.
 
 **`JSGraph.set` could not write a String fact.** In the browser every answer arrives at
 `JSGraph.set(path, value)` as a raw form string, which picks its conversion from the fact
-definition — and its match covered Boolean, Int, Enum, Dollar and Day, falling through to
+definition. Its match covered Boolean, Int, Enum, Dollar and Day, falling through to
 `UnsupportedTypeError` for everything else. A String writable therefore reported "Sorry, something
-went wrong" for *every* value, correct ones included; all 27 `<input type="text"/>` fields in this
-flow — names, SSN, addresses, employer names, the signature — were dead. Neither example app uses a
+went wrong" for *every* value, correct ones included. All 27 `<input type="text"/>` fields in this
+flow (names, SSN, addresses, employer names, the signature) were dead. Neither example app uses a
 text input in a flow, so nothing had exercised it. The fix is one `case _: StringNode => value` in
 `fact-graph`'s `js/.../JSGraph.scala`, with `JSGraphSpec` pinning it. No factory call: a String
 writable's constraints are `<Limit>`s on the fact, and limits are already reported by the `set`
 below, exactly as `Min`/`Max` on a Dollar are.
 
 Two neighbours of that gap are worth knowing. `MultiEnumNode` is missing from the same match but
-works anyway — `fg-set.js` hands it a real `MultiEnum` object rather than a string, so Scala.js
-dispatches to the inherited `Graph.set(path, WritableType)` overload instead. And that overload
-returns a tuple, not a `SetReturnValue`, so a multi-enum write reports no error either way.
+works anyway. `fg-set.js` hands it a real `MultiEnum` object rather than a string, so Scala.js
+dispatches to the inherited `Graph.set(path, WritableType)` overload instead. That overload
+returns a tuple rather than a `SetReturnValue`, so a multi-enum write reports no error either way.
 
 **A `Match` limit violation had no message.** `fg-set.js` looks up `errors.{errorName}` and falls
-back to `errors.Default`, and there was no `errors.Match` — so a badly formatted ZIP said "Sorry,
+back to `errors.Default`, and there was no `errors.Match`, so a badly formatted ZIP said "Sorry,
 something went wrong", indistinguishable from the bug above. Added to `form-builder`'s eight locale
 files and to `templates/errors.html`. `fg-set.js` also appends the limit to the message so "Enter an
-amount more than" reads as a sentence; for `Match` that limit is a regular expression, so the append
+amount more than" reads as a sentence. For `Match`, that limit is a regular expression, so the append
 is suppressed and the message stands alone.
 
 ## Known issues
 
-These are upstream, not local. They are recorded here because each one shaped a decision above.
+These are upstream rather than local. They are recorded here because each one shaped a decision above.
 
 **Nested `fg-collection` is unsafe in the browser runtime.** The fact graph handles arbitrary
 wildcard depth (`FactDefinitionSpec` defines and resolves `/collection/*/anotherCollection/*/test`),
-but three defects in `form-builder`'s `website-static/flow-runtime/js/` make a nested collection
-silently write to the wrong path: `configureCollectionIds` uses `querySelectorAll`, which does not
-descend into `<template>` content; `makeCollectionIdPath` replaces only the first `*`, so an inner
-`fg-set` resolves against the *outer* item's id; the remove-item modal is emitted outside the
-`<template>` and is cloned with a duplicate id; and item counting uses an unscoped
-`this.querySelectorAll('fg-collection-item')` that counts across the nesting boundary. This is why
-jobs are fixed slots. If it is fixed, the flow change is one `<fg-collection>` and the fact change
+but four defects in `form-builder`'s `website-static/flow-runtime/js/` make a nested collection
+silently write to the wrong path:
+
+- `configureCollectionIds` uses `querySelectorAll`, which does not descend into `<template>` content.
+- `makeCollectionIdPath` replaces only the first `*`, so an inner `fg-set` resolves against the *outer* item's id.
+- The remove-item modal is emitted outside the `<template>` and is cloned with a duplicate id.
+- Item counting uses an unscoped `this.querySelectorAll('fg-collection-item')` that counts across the nesting boundary.
+
+This is why jobs are fixed slots. If it is fixed, the flow change is one `<fg-collection>` and the fact change
 is mechanical.
 
 **A new input type gets no client-side read or write.** `fg-set.js` keys four `switch` statements
 off `inputtype` with a `console.warn` default and no extension point, so an `InputParser` registered
 under a genuinely new name renders but never reads or writes its fact. TWE's `YearRangeDate` works
-because it re-registers under the existing name `"date"`; its `single-checkbox` does not, and looks
+because it re-registers under the existing name `"date"`. Its `single-checkbox` does not, and looks
 like a live latent bug. This application needs no custom input, so `customFlowTags` is `[]`.
 
 **In `--singleQuestionPerScreen` mode the site root has no page.** `PageSplitter` renames every
 emitted route when a source page holds more than one question, and `joinRoute("/", slug)` yields
 `/slug`, so a multi-question page at route `/` leaves nothing at the root. Credit Assistant has the
-same characteristic — six questions on its `/` page — so this is inherent to the scaffold in that
-mode rather than specific to this app. It affects `make dev-one-question` only; `make dev` and
+same characteristic (six questions on its `/` page), so this is inherent to the scaffold in that
+mode rather than specific to this app. It affects `make dev-one-question` only. `make dev` and
 `make site` are unaffected.
 
 **An authored `sep=" "` on `<Paste>` is silently destroyed.** `OptionConfigTrait.fromXml` trims
-every attribute value along with the element's text content — the text needs it, because fact XML is
+every attribute value along with the element's text content. The text needs it, because fact XML is
 indented, but the attributes were authored exactly. A space separator therefore arrives as `""`, so
 `<Paste sep=" ">` produces `JanePublic` where `<Paste>` produces `Jane Public`. The explicit
 attribute is worse than no attribute, which is the opposite of what it reads as. `/householdMembers/*/fullName`
 relies on the default and `DerivedTextSpec` pins the space.
 
 **`resolveCollectionAliasPath` throws instead of returning `None`.** `FactDictionary.apply` tries a
-direct path, then a wildcard, then a collection alias — and the alias branch casts with an unchecked
+direct path, then a wildcard, then a collection alias. The alias branch casts with an unchecked
 `asInstanceOf[CollectionItemNode]`, so a path that reaches it over an ordinary collection dies with a
 `ClassCastException` rather than falling through to `orNull`. Reaching it needs a collection id the
-wildcard step does not recognise, and that step matches only RFC-4122 v1–5 UUIDs; `crypto.randomUUID()`
+wildcard step does not recognise, and that step matches only RFC-4122 v1-5 UUIDs. `crypto.randomUUID()`
 produces v4, so the browser never gets there. A hand-written id in a test will.
 
 **A read-only per-collection-item review does not exist.** `fg-collection` is always editable, and

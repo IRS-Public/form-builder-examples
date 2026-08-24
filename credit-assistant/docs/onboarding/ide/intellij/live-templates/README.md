@@ -2,7 +2,7 @@
 
 This directory holds shared IntelliJ [Live Templates](https://www.jetbrains.com/help/idea/using-live-templates.html) for the flow XML boilerplate that comes up most often: external links, `<fg-show>` elements, and the "you and/or your spouse" conditional spans. All of them are scoped to the XML context, so they fire inside `flow/*.xml` and not in Scala or YAML.
 
-[`live-templates.xml`](./live-templates.xml) is the source of truth. Both applications in this repository carry an identical copy.
+[`live-templates.xml`](./live-templates.xml) is the source of truth. Credit Assistant and Tax Withholding Estimator each carry an identical copy of this file. Benefits Enrollment does not have one yet.
 
 ## Import templates
 
@@ -31,4 +31,4 @@ This directory holds shared IntelliJ [Live Templates](https://www.jetbrains.com/
 2. Verify that it works as intended.
 3. Select the template you created and copy it (`CMD + C`). This copies its XML configuration.
 4. Open [live-templates.xml](./live-templates.xml) and paste (`CMD + V`) it into the file.
-5. Open a pull request so everyone else gets it. If the template is not app-specific, add it to the other application's copy too.
+5. Open a pull request so everyone else gets it. If the template is not app-specific, add it to Tax Withholding Estimator's copy too.

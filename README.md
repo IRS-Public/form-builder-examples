@@ -18,7 +18,7 @@ what they look like in use.
 | Production build target | `make credit-assistant` | `make twe` | `make site`                                                    |
 | Read it for | The smaller introduction to the library | How far an application can customize the generated site | A non-tax use case of the Fact Graph, Form-Builder and Taxpert |
 
-The three directories share no code and no build. Each has its own `build.sbt`, `package.json`,
+The three directories share no code. Each has its own `build.sbt`, `package.json`,
 `Makefile`, and `fact-explorer.app.json`, and each can be built without the others.
 
 ## Where this fits
@@ -33,7 +33,7 @@ The three directories share no code and no build. Each has its own `build.sbt`, 
 
 Only Form Builder and Fact Graph are required. An application still runs with no Taxpert installed, because the theme
 and the questionnaire runtime come from Form Builder's jar. Taxpert adds the tooling that lets you
-inspect a running application.
+inspect a running application's business logic
 
 ## Getting a build to run
 

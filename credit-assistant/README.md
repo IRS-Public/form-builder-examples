@@ -84,7 +84,7 @@ make
 | `http://localhost:3003/app/eitc/all-screens/` | `--allScreens`, which `make dev` passes |
 | `http://localhost:3003/app/eitc/author/` | `--authorMode` (`make dev-author`), with its editing API on port 3004 |
 
-All three clones are needed for a build from scratch: `gov.irs::factgraph` is published to no registry, so form-builder cannot resolve without a local publish of it. What is optional is refreshing the *browser* bundle — `make copy-fg` prints a message and moves on when it finds no build at `../fact-graph/js/target/`, and the checked-in bundle under `website-static/vendor/fact-graph/` is used instead.
+All three clones are needed for a build from scratch: `gov.irs::factgraph` is published to no registry, so form-builder cannot resolve without a local publish of it. What is optional is refreshing the *browser* bundle. `make copy-fg` prints a message and moves on when it finds no build at `../fact-graph/js/target/`, and the checked-in bundle under `website-static/vendor/fact-graph/` is used instead.
 
 ### Docker
 
@@ -153,7 +153,7 @@ Override the HTTP port with `make dev PORT=4000`, and the debug port with `DEBUG
 
 ```
 build.sbt                              one dependency: gov.irs::form-builder 0.1.0-SNAPSHOT
-package.json                           devDependencies: eslint, taxpert (^0.1.0)
+package.json                           devDependencies: eslint, @eslint/js, taxpert (file:../taxpert/packages/ui)
 fact-explorer.app.json                 this app, as Fact Explorer discovers it
 code.json                              federal source-code inventory metadata
 Dockerfile, nginx.conf                 container build and static serving
@@ -323,7 +323,7 @@ Five CSV fixtures in `src/test/resources/csv/` drive table-based scenario suites
 
 - **A change to Form Builder has to be republished before this app sees it.** In a form-builder checkout, `sbt test publishLocal`, then point `build.sbt` at that version. This applies to parser changes, generator changes, node templates, chrome locales, the theme, and the flow runtime. After such a change, run `make ci` in both applications, because the second one is what catches an app-specific assumption.
 - **`defaultPort` and the dev port differ.** `Main.scala` declares 3002, but the Makefile always passes `-Dsmol.port=3003`, so `make dev` serves on 3003. `fact-explorer.app.json` records 3003 to match the Makefile.
-- **Flow, facts, and this app's locales are read from disk, not the classpath.** Author Mode patches XML on disk and re-runs the generator in process, and a classpath read would serve sbt's stale `target/` copy. The library's own templates and base locales do come off the classpath.
+- **Flow, facts, and this app's locales are read from disk rather than the classpath.** Author Mode patches XML on disk and re-runs the generator in process, and a classpath read would serve sbt's stale `target/` copy. The library's own templates and base locales do come off the classpath.
 - **`make ci-setup` runs `npm install` twice**, once in `src/main/resources/credit-assistant/` for the lint tooling and once at this directory's root for the `taxpert` dependency. A clean checkout that skips it fails inside `copy-shared-ui`.
 - **`make fact-explorer` is separate from `make dev` on purpose.** The Scala graph generator does not yet emit the `shows` and `exits` edges Fact Explorer's own generator produces, and Fact Explorer prefers an app-served graph wherever it finds one. The target's closing message still prints a `cd ../fact-explorer` path from the old monorepo layout. Fact Explorer now lives at `packages/fact-explorer` in the taxpert repository.
 - **HTML comments inside an inline `<script type="module">` are a syntax error**, and they fail silently at runtime. `make validate-templates` exists to catch that.

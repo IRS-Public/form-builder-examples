@@ -94,7 +94,7 @@ make
 
 `make` with no target runs `make dev`. The site is served at **http://localhost:3000/app/tax-withholding-estimator**, and the Browse All listing at **http://localhost:3000/app/tax-withholding-estimator/all-screens/**.
 
-All three clones are needed for a build from scratch: `gov.irs::factgraph` is published to no registry, so form-builder cannot resolve without a local publish of it. What is optional is refreshing the *browser* bundle — `make copy-fg` prints a message and moves on when it finds no build at `../fact-graph/js/target/`, and the checked-in bundle under `website-static/vendor/fact-graph/` is used instead.
+All three clones are needed for a build from scratch: `gov.irs::factgraph` is published to no registry, so form-builder cannot resolve without a local publish of it. What is optional is refreshing the *browser* bundle. `make copy-fg` prints a message and moves on when it finds no build at `../fact-graph/js/target/`, and the checked-in bundle under `website-static/vendor/fact-graph/` is used instead.
 
 ### Docker
 
@@ -161,7 +161,7 @@ Override the HTTP port with `make dev PORT=4000`, and the debug port with `DEBUG
 
 ```
 build.sbt                              gov.irs::form-builder, plus scala-csv for the UAT suite
-package.json                           one devDependency: taxpert (^0.1.0)
+package.json                           one devDependency: taxpert (file:../taxpert/packages/ui)
 fact-explorer.app.json                 this app, as Fact Explorer discovers it
 code.json                              federal source-code inventory metadata
 Dockerfile, nginx.conf                 container build and static serving
@@ -362,7 +362,7 @@ Content conventions are in [docs/design/twe-content-guidelines.md](./docs/design
 ## Gotchas
 
 - **A change to Form Builder has to be republished before this app sees it.** In a form-builder checkout, `sbt test publishLocal`, then point `build.sbt` at that version. This applies to parser changes, generator changes, node templates, chrome locales, the theme, and the flow runtime. After such a change, run `make ci` in both applications, because the second one is what catches an app-specific assumption.
-- **Flow, facts, and this app's locales are read from disk, not the classpath.** The library's own templates and base locales do come off the classpath.
+- **Flow, facts, and this app's locales are read from disk rather than the classpath.** The library's own templates and base locales do come off the classpath.
 - **`make ci-setup` runs `npm install` twice**, once in `src/main/resources/twe/` for the lint tooling and once at this directory's root for the `taxpert` dependency. A clean checkout that skips it fails inside `copy-shared-ui`.
 - **`make fact-explorer` is separate from `make dev` on purpose.** The Scala graph generator does not yet emit the `shows` and `exits` edges Fact Explorer's own generator produces, and Fact Explorer prefers an app-served graph wherever it finds one. The target's closing message still prints a `cd ../fact-explorer` path from the old monorepo layout. Fact Explorer now lives at `packages/fact-explorer` in the taxpert repository.
 - **A new flow tag needs two registrations.** `FormBuilderApp.nodeTypes` in `Main.scala` makes it render, and `customFlowTags` in `fact-explorer.app.json` makes it reach the graph. Input types need only the first, since `inputType` is a free string on `FlowElement`.
