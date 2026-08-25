@@ -5,7 +5,7 @@ Reference applications built on [Form Builder](https://github.com/IRS-Public/for
 
 If you are interested in building your own Form 
 Builder application similar to these, 
-check out [Form Builder Template](https://github.com/IRS-Public/form-builder-template)
+check out [Form Builder Template](https://github.com/IRS-Public/form-builder-template). To understand the difference between Taxpert, Form Builder and the Fact Graph, see [this doc](https://github.com/IRS-Public/taxpert/blob/main/docs/adr/taxpert-form-builder-fact-graph.md).
 
 **This repository is demonstration code.** Nothing here is a library nor meant to be
 depended on. The reusable parts live in three other repositories, and these applications are
