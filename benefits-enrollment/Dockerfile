@@ -18,11 +18,6 @@
 #   stage 2 (build)   : sbt run                                      -> static site in ./out
 #   stage 3 (runtime) : nginx serves ./out
 #
-# There is no server at runtime: the generated site is fully static and the Taxpert workspace is
-# client-side JavaScript. Which developer surfaces exist is therefore decided at stage 2 by the
-# flags on `sbt run` — changing them means rebuilding this image. This one passes none, so the
-# image is the product and nothing else.
-#
 # Each additional context keeps its own .dockerignore, not this repo's — a sibling library with a
 # heavy target/ or node_modules/ and no .dockerignore of its own transfers it into the build.
 

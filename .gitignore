@@ -1,27 +1,24 @@
-# Local env (copy from .env.example)
-.env
-
-# Generated website files
-out/
-
-# Checkouts of the three libraries the two applications build against, cloned here so that the
-# relative paths in each Makefile — ../fact-graph, ../form-builder, ../taxpert/packages/ui — resolve.
-# They are other repositories; nothing here tracks their contents.
+# Checkouts of the three libraries the example applications build against, cloned here so that the
+# relative paths in each Makefile.
 /fact-graph/
 /form-builder/
 /taxpert/
 
+
 # Generated mirrors of taxpert's packages/ui/src, written by `make copy-shared-ui` (a prerequisite
-# of every build target here) and by each Docker build's own COPY step. Kept out of git so they can
-# never drift from the taxpert source they mirror; `make check-shared-ui` fails the build if they do.
+# of every build target here). Kept out of git so they can
+# never drift from the taxpert source they mirror. `make check-shared-ui` fails the build if they do.
 credit-assistant/src/main/resources/credit-assistant/website-static/vendor/taxpert/
 tax-withholding-estimator/src/main/resources/twe/website-static/vendor/taxpert/
+benefits-enrollment/src/main/resources/benefits-enrollment/website-static/vendor/taxpert/
 
-# Scala.js sourcemaps vendored by `make copy-fg`. Generated, and they embed the absolute path of
-# whoever ran the build — never commit them.
+# Scala.js sourcemaps vendored by `make copy-fg`
 **/vendor/fact-graph/*.map
 
-# sbt / Scala
+.env
+out/
+
+
 target/
 project/target/
 .bsp/
@@ -30,15 +27,12 @@ project/target/
 .scala-build
 metals.sbt
 
-# node
 node_modules/
 
-# Jetbrains / VS Code
 .idea/
 *.iml
 .vscode/*
 !.vscode/extensions.json
 !.vscode/fg-helpers.code-snippets
 
-# macOS
 .DS_Store
