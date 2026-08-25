@@ -18,7 +18,7 @@ permissions:
 
 jobs:
   sync-to-public:
-    name: Sync to IRS-Public/${{ env.PUBLIC_REPO }} ${{ inputs.dry_run && '(dry-run)' || '' }}
+    name: Sync to IRS-Public/form-builder-examples ${{ inputs.dry_run && '(dry-run)' || '' }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout ${{ env.SOURCE_PATH }}
