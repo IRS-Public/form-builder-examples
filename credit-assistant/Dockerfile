@@ -116,4 +116,28 @@ FROM nginx:1.27-alpine AS runtime
 ARG APP_DIR
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 COPY --from=build /build/${APP_DIR}/out /usr/share/nginx/html
+
+# Where to open the app, printed once at container start. Nothing else in this image says so:
+# there is no `--serve` dev-server banner here, so without this `docker compose up`/`docker compose
+# logs` ends with an access log and no address.
+#
+# nginx's own entrypoint runs every *executable* /docker-entrypoint.d/*.sh in name order before
+# exec'ing nginx, so the 99- prefix puts this last, immediately above the first request. It must be
+# executable or the entrypoint prints "not executable, ignoring" and moves on — hence --chmod.
+#
+# APP_PORT is the HOST's published port, which the container has no way to discover: it sees only
+# its own :80. docker-compose.yml maps 3003:80 and passes the same number back in as an environment
+# override, so change the two together.
+ENV APP_PORT=3003
+COPY --chmod=0755 <<'EOF' /docker-entrypoint.d/99-print-url.sh
+#!/bin/sh
+printf '\n\033[32m\033[1m✓\033[0m \033[1mCredit Assistant (EITC)\033[0m \033[36mready\033[0m\n'
+printf '  \033[1mFlow:\033[0m        \033[36mhttp://localhost:%s/app/eitc/\033[0m\n' "$APP_PORT"
+printf '  \033[1mBrowse All:\033[0m  \033[36mhttp://localhost:%s/app/eitc/all-screens/\033[0m\n' "$APP_PORT"
+if [ ! -f /usr/share/nginx/html/app/eitc/index.html ]; then
+  printf '  \033[33m⚠ no site in the web root yet — the watcher is still generating it; refresh once it lands\033[0m\n'
+fi
+printf '\n'
+EOF
+
 EXPOSE 80

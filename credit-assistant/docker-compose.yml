@@ -26,4 +26,8 @@ services:
         taxpert: ../../taxpert/packages/ui
     ports:
       - "3003:80"
+    environment:
+      # The port the startup banner tells you to open. The container sees only its own :80, so this
+      # has to repeat the published port above — change both, or the printed address is wrong.
+      APP_PORT: "3003"
     restart: unless-stopped

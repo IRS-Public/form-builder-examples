@@ -7,6 +7,17 @@ FACT_GRAPH_DIR ?= ../fact-graph
 FORM_BUILDER_DIR ?= ../form-builder
 TAXPERT_UI ?= ../taxpert/packages/ui
 
+# The taxpert checkout's repo root, as opposed to $(TAXPERT_UI) one level down — this is what
+# run-all-docker/down/ps/logs bring up as a whole stack (Fact Explorer and friends), not just the
+# npm package each app's image builds against. A sibling checkout by default, same convention as
+# FACT_GRAPH_DIR / FORM_BUILDER_DIR above.
+TAXPERT_REPO ?= ../taxpert
+
+# Every service in taxpert's compose files sits behind a profile (see taxpert/Makefile) — a bare
+# `docker compose up` there deliberately starts nothing — so this has to be named to start anything
+# at all. Mirrors that Makefile's own PROFILES default; override the same way if you only want one.
+TAXPERT_PROFILES ?= --profile explorer --profile ai
+
 # Passed through to each application, so `make ci APPS=credit-assistant SBT_OPTS=-Xmx4g` behaves.
 .PHONY: list bootstrap libraries link-taxpert copy-shared-ui check-shared-ui run-all-local run-all-docker down ps logs site ci test format clean
 
@@ -14,9 +25,10 @@ list: ## Print the applications these targets will act on
 	@echo "applications:"
 	@for app in $(APPS); do echo "    $$app"; done
 	@echo "libraries:"
-	@echo "    fact-graph    $(FACT_GRAPH_DIR)"
-	@echo "    form-builder  $(FORM_BUILDER_DIR)"
-	@echo "    taxpert (ui)  $(TAXPERT_UI)"
+	@echo "    fact-graph      $(FACT_GRAPH_DIR)"
+	@echo "    form-builder    $(FORM_BUILDER_DIR)"
+	@echo "    taxpert (ui)    $(TAXPERT_UI)"
+	@echo "    taxpert (stack) $(TAXPERT_REPO)"
 
 libraries: ## Publish fact-graph and form-builder into the local Ivy cache, once for every app
 	@# Once here rather than once per application. Each app's own `make bootstrap` publishes them
@@ -98,7 +110,7 @@ run-all-local: ## Start every application's dev server at once, until you press 
 	echo "==> sbt takes a minute or so to serve. Ctrl-C stops all of them."; \
 	wait
 
-run-all-docker: ## Start every application's Docker stack at once, each on its own port
+run-all-docker: ## Start every application's Docker stack at once, each on its own port, plus taxpert's own stack
 	@# Every application here has the same Dockerfile shape and the same pair of compose files, so
 	@# this is the Docker counterpart of run-all-local: one `docker compose up` per application, each
 	@# publishing its own port. Detached rather than attached, because three interleaved build logs
@@ -108,28 +120,62 @@ run-all-docker: ## Start every application's Docker stack at once, each on its o
 			echo "==> $$app"; ( cd $$app && docker compose up --build -d ) || exit 1; \
 		fi; \
 	done
+	@# taxpert is not one of $(APPS) — it has no flow of its own, so the wildcard above never finds
+	@# it — and its `up` target runs attached (`docker compose up --build`, no -d), which would block
+	@# this loop rather than join it. So the compose invocation is repeated here instead, against
+	@# whichever checkout $(TAXPERT_REPO) points at (a sibling by default, same convention as
+	@# $(TAXPERT_UI) one level down). This mirrors taxpert/Makefile's own COMPOSE_FILES/PROFILES —
+	@# see docker-compose.apps.d/README.md over there for what the fragment files are.
+	@#
+	@# No per-application registration fragment is written here, unlike form-builder-template's
+	@# `make up` (scripts/register-with-taxpert.sh). This repository does not need one: every
+	@# application here is a real directory (not a symlink) directly under this repo root, and
+	@# taxpert/.env sets TAXPERT_APPS_DIR to this repo's path — so Fact Explorer's own /apps mount
+	@# already globs straight to every application's fact-explorer.app.json. Verified by hand: `curl
+	@# localhost:5180/data/apps.json` lists all three the moment the container is up, no fragment
+	@# needed. That env var is specific to this machine's taxpert checkout, though — if a fresh
+	@# taxpert clone has no such override, point it at this repo (see taxpert/apps/README.md) or add
+	@# a docker-compose.apps.d fragment per README there.
+	@if [ -f "$(TAXPERT_REPO)/docker-compose.yml" ]; then \
+		echo "==> taxpert ($(TAXPERT_REPO))"; \
+		( cd $(TAXPERT_REPO) && \
+		  compose_args="-f docker-compose.yml -f docker-compose.override.yml"; \
+		  for f in docker-compose.apps.d/*.yml; do [ -f "$$f" ] && compose_args="$$compose_args -f $$f"; done; \
+		  docker compose $$compose_args $(TAXPERT_PROFILES) up --build -d ) || exit 1; \
+	else \
+		echo "==> no taxpert checkout at $(TAXPERT_REPO) — skipping (set TAXPERT_REPO=/path/to/taxpert)"; \
+	fi
 	@$(MAKE) --no-print-directory ps
 
-down: ## Stop every application's Docker stack
+down: ## Stop every application's Docker stack, and taxpert's
 	@for app in $(APPS); do \
 		if $(MAKE) -C $$app -n down >/dev/null 2>&1; then \
 			echo "==> $$app"; ( cd $$app && docker compose down ) || exit 1; \
 		fi; \
 	done
+	@if [ -f "$(TAXPERT_REPO)/docker-compose.yml" ]; then \
+		echo "==> taxpert ($(TAXPERT_REPO))"; $(MAKE) -C $(TAXPERT_REPO) --no-print-directory down || exit 1; \
+	fi
 
-ps: ## Show every application's Docker service status
+ps: ## Show every application's Docker service status, and taxpert's
 	@for app in $(APPS); do \
 		if $(MAKE) -C $$app -n ps >/dev/null 2>&1; then \
 			echo "==> $$app"; ( cd $$app && docker compose ps ); \
 		fi; \
 	done
+	@if [ -f "$(TAXPERT_REPO)/docker-compose.yml" ]; then \
+		echo "==> taxpert ($(TAXPERT_REPO))"; $(MAKE) -C $(TAXPERT_REPO) --no-print-directory ps; \
+	fi
 
-logs: ## Tail every application's Docker logs. Narrow with APPS=
+logs: ## Tail every application's Docker logs, and taxpert's. Narrow with APPS=
 	@for app in $(APPS); do \
 		if $(MAKE) -C $$app -n logs >/dev/null 2>&1; then \
 			( cd $$app && docker compose logs -f --tail=20 ) & \
 		fi; \
 	done; \
+	if [ -f "$(TAXPERT_REPO)/docker-compose.yml" ]; then \
+		$(MAKE) -C $(TAXPERT_REPO) --no-print-directory logs & \
+	fi; \
 	wait
 
 site: ## Production build of every application
