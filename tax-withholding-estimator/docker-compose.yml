@@ -1,9 +1,9 @@
-# Benefits Enrollment: the prod-like stack, in one command.
+# Tax Withholding Estimator: the prod-like stack, in one command.
 #
 #   docker compose up --build                           # dev: hot reload (the overlay applies)
 #   docker compose -f docker-compose.yml up --build      # prod-like: ignore the overlay
 #
-# Open: http://localhost:3006/app/benefits/
+# Open: http://localhost:3000/app/tax-withholding-estimator/
 #
 # Every application in this repository has this same pair of compose files, differing only in the
 # service name, the published port and the watcher's flags. Learn one and you can run any of them.
@@ -16,7 +16,7 @@
 # the generator's ./out, and which developer surfaces exist was decided by SITE_FLAGS in the image.
 
 services:
-  benefits-enrollment:
+  tax-withholding-estimator:
     build:
       context: .
       dockerfile: Dockerfile
@@ -25,5 +25,5 @@ services:
         form-builder: ../../form-builder
         taxpert: ../../taxpert/packages/ui
     ports:
-      - "3006:80"
+      - "3000:80"
     restart: unless-stopped

@@ -18,17 +18,21 @@ four directories. Here we just use `<fg-collection>` over `/householdMembers` in
 `flow/household.xml`, which is why the flow is seven modules rather than eight directories of
 near-identical HTML.
 
-## Requirements
-JDK 21, sbt, Node 22, and `xmllint` for the XML validators (`libxml2-utils` on Debian or Ubuntu).
-
 ## Getting started
 
 ```bash
 make bootstrap    # once: publish the libraries, install deps, vendor their assets
 make dev          # http://localhost:3006/app/benefits/
 ```
-Skip the local build entirely with `make up`, which builds the libraries in Docker, generates the site,
-serves it, and leaves an `sbt ~run` watcher regenerating on every edit.
+
+Skip the local toolchain entirely with `make up`, which builds both Scala libraries in Docker,
+generates the site, serves it at the same address, and leaves an `sbt ~run` watcher regenerating on
+every edit. This is the only one of the three example applications with a compose stack.
+
+The native path needs JDK 21, sbt, Node 22, and `xmllint` for the XML validators (`libxml2-utils` on
+Debian or Ubuntu), plus the three library checkouts described in the
+[repository README](../README.md#quickstart). Full setup instructions for the whole ecosystem are in
+the [QUICKSTART.md](https://github.com/IRS-Public/taxpert/blob/main/QUICKSTART.md) in the taxpert repository.
 
 `make help` lists every target. The ones you will use:
 
@@ -49,6 +53,11 @@ serves it, and leaves an `sbt ~run` watcher regenerating on every edit.
 
 The `copy-fg`, `copy-shared-ui` and `copy-uswds` targets regenerate the vendored mirrors under
 `website-static/vendor/`. Every build target runs them first, so you rarely call one by hand.
+
+The Fact Graph browser bundle is the one mirror committed to git, as it is in the other two
+applications here. Nothing publishes it, so without a copy in the repository this application would
+have no engine in the browser until someone built fact-graph. `make copy-fg` refreshes it from a
+`../../fact-graph` checkout when one is built, and prints a message and moves on when it is not.
 
 ## Where things go
 

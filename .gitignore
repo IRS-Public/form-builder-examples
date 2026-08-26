@@ -1,16 +1,16 @@
-# Checkouts of the three libraries the example applications build against, cloned here so that the
-# relative paths in each Makefile.
-/fact-graph/
-/form-builder/
-/taxpert/
+# fact-graph/, form-builder/ and taxpert/ are deliberately NOT listed. All three live beside this
+# repository rather than inside it (see README), and a clone that lands here anyway is the failure
+# mode that cost us a day: a second form-builder republishes `gov.irs::form-builder` over the good
+# one, and a second taxpert is a second packages/ui for copy-shared-ui to mirror. Left un-ignored,
+# any of them shows up in `git status` instead of hiding.
 
-
-# Generated mirrors of taxpert's packages/ui/src, written by `make copy-shared-ui` (a prerequisite
-# of every build target here). Kept out of git so they can
-# never drift from the taxpert source they mirror. `make check-shared-ui` fails the build if they do.
-credit-assistant/src/main/resources/credit-assistant/website-static/vendor/taxpert/
-tax-withholding-estimator/src/main/resources/twe/website-static/vendor/taxpert/
-benefits-enrollment/src/main/resources/benefits-enrollment/website-static/vendor/taxpert/
+# Generated mirrors of taxpert's packages/ui/src, written by `make copy-shared-ui` (a prerequisite of
+# every build target here). Kept out of git so they can never drift from the taxpert source they
+# mirror; `make check-shared-ui` fails the build if they do.
+#
+# Matched by shape rather than named per application, so an application added to this repository is
+# covered without an edit here — the same reason the root Makefile discovers its APPS.
+**/website-static/vendor/taxpert/
 
 # Scala.js sourcemaps vendored by `make copy-fg`
 **/vendor/fact-graph/*.map

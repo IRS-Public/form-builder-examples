@@ -1,7 +1,4 @@
-# The build context is this app's own directory. fact-graph, form-builder and taxpert arrive as
-# separate named build contexts (see Dockerfile / docker-compose.yml's `additional_contexts`)
-# rather than subdirectories of this one, so this only needs to keep this app's own heavy,
-# regenerable trees out of the context.
+# Sent to the daemon as build context, so keep it to what the image actually needs.
 **/node_modules
 **/target
 **/out
@@ -10,7 +7,8 @@
 **/.bloop
 **/.metals
 
-# Generated mirrors: the image vendors these from their sources during the build, so a developer's
-# local copy must not ride along and win.
+# Generated mirrors, rebuilt inside the image from the named build contexts rather than copied in.
+# Matched by shape rather than by this application's resource directory name, so the three
+# .dockerignore files stay identical.
 **/website-static/vendor/taxpert/
 **/website-static/vendor/uswds-3.13.0/

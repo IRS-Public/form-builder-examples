@@ -10,7 +10,7 @@ FLOW_CONFIG := $(FLOW_DIR)/FlowConfig.rng
 FACTS_DIR := $(RESOURCES_DIR)/facts
 FACTS_CONFIG := $(FACTS_DIR)/FactDictionaryModule.rng
 
-FG_SOURCE_DIR := ../fact-graph/js/target/scala-3.3.6/factgraph-fastopt
+FG_SOURCE_DIR := ../../fact-graph/js/target/scala-3.3.6/factgraph-fastopt
 FG_TARGET_DIR := $(RESOURCES_DIR)/website-static/vendor/fact-graph
 
 SHARED_UI_SRC := node_modules/taxpert/src
@@ -28,9 +28,9 @@ bootstrap: ## One-time setup: publish the sibling libraries and vendor their ass
 	@# fact-graph and form-builder are resolved through the local Ivy cache, taxpert through a file:
 	@# npm dependency. All three come from local checkouts rather than a remote, and none is
 	@# guaranteed to sit beside this repo (see fact_graph_path / form_builder_path / taxpert_path in
-	@# cookiecutter.json) — a fresh clone has to build them once before it can build itself.
-	$(MAKE) -C ../fact-graph publish
-	cd ../form-builder && sbt publishLocal
+	@# cookiecutter.json). A fresh clone has to build them once before it can build itself.
+	$(MAKE) -C ../../fact-graph publish
+	cd ../../form-builder && sbt publishLocal
 	npm install
 	npm --prefix $(RESOURCES_DIR) install
 	$(MAKE) copy-fg copy-shared-ui copy-uswds
@@ -59,13 +59,15 @@ site: copy-fg copy-shared-ui copy-uswds ## Build the site for production, into .
 
 # ── Docker ────────────────────────────────────────────────────────────────────
 #
-# The same app, without a local JDK, sbt or node: `make up` builds the sibling libraries, generates
-# the site and serves it, and the dev overlay leaves a `sbt ~run` watcher regenerating it on every
-# edit. Slower to start than `make dev` and the only way in for someone who has not installed the
-# toolchain — which is most people the first time they open this repo.
+# The same application, without a local JDK, sbt or node: `make up` builds the sibling libraries,
+# generates the site and serves it, and the dev overlay leaves a `sbt ~run` watcher regenerating it
+# on every edit. Slower to start than `make dev` and the only way in for someone who has not
+# installed the toolchain, which is most people the first time they open this repository.
 #
-# These wrap docker compose rather than replacing it: the compose files are the description, and a
-# target that hid them would be one more thing to read before you could use either.
+# Every application in this repository has this same set of targets over the same pair of compose
+# files, so `make up` behaves the same wherever you run it. They wrap docker compose rather than
+# replacing it: the compose files are the description, and a target that hid them would be one more
+# thing to read before you could use either.
 
 .PHONY: up
 up: ## Build (first run) and start the whole stack, with hot reload
@@ -95,17 +97,40 @@ rebuild: ## Tear down the stack, drop its volumes, and rebuild images from scrat
 
 .PHONY: copy-fg
 copy-fg: ## Copy the compiled Fact Graph bundle from the sibling repository
-	@# Skipped rather than fatal when the sibling has not been built: this runs ahead of every
+	@# Skipped rather than fatal when the checkout has not been built: this runs ahead of every
 	@# dev server and production build, and someone working on templates or locales does not
-	@# need an sbt-built fact-graph sitting next door.
+	@# need an sbt-built fact-graph beside the repository. The committed bundle serves until
+	@# there is a newer one to copy over it.
 	@if [ -f $(FG_SOURCE_DIR)/main.mjs ]; then \
 		cp $(FG_SOURCE_DIR)/main.mjs $(FG_TARGET_DIR)/factgraph-3.1.0.js; \
 		cp $(FG_SOURCE_DIR)/main.mjs.map $(FG_TARGET_DIR); \
 		echo "==> copied the fact-graph bundle from $(FG_SOURCE_DIR)"; \
 	else \
 		echo "==> no build at $(FG_SOURCE_DIR); keeping the vendored fact-graph bundle"; \
-		echo "    (run 'cd ../fact-graph && sbt fastOptJS' to refresh it)"; \
+		echo "    (run 'cd ../../fact-graph && sbt fastOptJS' to refresh it)"; \
 	fi
+
+# ── A taxpert checkout somewhere other than ../../taxpert ────────────────────────────────────────
+#
+# package.json depends on `taxpert` at `file:../../taxpert/packages/ui`, the checkout beside this
+# repository. That is what a plain `npm install` resolves, and `make bootstrap` runs it for you.
+#
+# When your checkout lives somewhere else, install it from there without editing package.json:
+#
+#   make link-taxpert TAXPERT_UI=/path/to/taxpert/packages/ui
+#
+# `--no-save`, so the committed dependency keeps naming the conventional location and this stays a
+# local decision. SHARED_UI_SRC reads node_modules either way, so copy-shared-ui and check-shared-ui
+# work unchanged.
+TAXPERT_UI ?=
+
+.PHONY: link-taxpert
+link-taxpert: ## Install the workspace UI from a taxpert checkout elsewhere (set TAXPERT_UI=...)
+	@test -n "$(TAXPERT_UI)" || { \
+	  echo "error: set TAXPERT_UI=/path/to/taxpert/packages/ui"; exit 1; }
+	@test -d "$(TAXPERT_UI)/src" || { \
+	  echo "error: $(TAXPERT_UI) has no src/ — is that the packages/ui directory?"; exit 1; }
+	npm install --no-save "file:$(TAXPERT_UI)"
 
 .PHONY: copy-shared-ui
 copy-shared-ui: ## Regenerate the vendored taxpert mirror from node_modules

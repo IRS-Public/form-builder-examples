@@ -16,7 +16,7 @@
 
 services:
   # nginx now serves a live-regenerated volume instead of the site baked into the image.
-  benefits-enrollment:
+  credit-assistant:
     volumes:
       - app-out:/usr/share/nginx/html
 
@@ -28,7 +28,7 @@ services:
   # container and would not be reachable through a published port, so nginx above does the serving.
   # Keep the two in step. A flag added to `make dev` and not here is a surface that exists natively
   # and silently does not exist in Docker.
-  benefits-enrollment-watch:
+  credit-assistant-watch:
     build:
       context: .
       dockerfile: Dockerfile
@@ -37,14 +37,14 @@ services:
         fact_graph: ../../fact-graph
         form-builder: ../../form-builder
         taxpert: ../../taxpert/packages/ui
-    working_dir: /build/benefits-enrollment
+    working_dir: /build/credit-assistant
     environment:
       SBT_OPTS: "-Xmx2g"
     command: ["sbt", "~run --auditMode --allScreens --scenarioMode"]
     volumes:
       # This application's own source, live. sbt's watcher picks up a host edit immediately.
-      - .:/build/benefits-enrollment
-      - app-out:/build/benefits-enrollment/out
+      - .:/build/credit-assistant
+      - app-out:/build/credit-assistant/out
       # Named, so a rebuild does not re-download every dependency.
       - sbt-cache:/root/.cache/coursier
 
@@ -53,20 +53,7 @@ services:
       # tree rather than one per bundle: a per-bundle list is a copy of that package's directory
       # listing that nothing keeps in step, and a bundle missing from it is invisible until someone
       # wonders why their edits do nothing.
-      - ../../taxpert/packages/ui/src:/build/benefits-enrollment/src/main/resources/benefits-enrollment/website-static/vendor/taxpert:ro
-
-      # USWDS is built INSIDE the image by `make copy-uswds` and must not be shadowed. The bind
-      # mount of this repository, above, replaces the working directory wholesale with the host's
-      # copy, and this application gitignores its USWDS mirror, so on a fresh clone it is absent.
-      # The served site would come back unstyled.
-      #
-      # A named volume nested under a bind mount is seeded from the image on first creation, exactly
-      # as app-out is, so it arrives from the image and `make up` needs no host toolchain at all.
-      #
-      # Not a live-edit mount, because there is no source tree on the host to point at. Rebuild the
-      # image to pick up a change. The other two applications commit their USWDS and need no line
-      # here, which is the only difference between the three overlays.
-      - vendor-uswds:/build/benefits-enrollment/src/main/resources/benefits-enrollment/website-static/vendor/uswds-3.13.0
+      - ../../taxpert/packages/ui/src:/build/credit-assistant/src/main/resources/credit-assistant/website-static/vendor/taxpert:ro
 
     restart: unless-stopped
 
@@ -79,4 +66,3 @@ services:
 volumes:
   app-out:
   sbt-cache:
-  vendor-uswds:

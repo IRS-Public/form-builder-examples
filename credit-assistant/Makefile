@@ -10,7 +10,7 @@ FLOW_CONFIG := $(FLOW_DIR)/FlowConfig.rng
 FACTS_DIR := $(RESOURCES_DIR)/facts
 FACTS_CONFIG := $(FACTS_DIR)/FactDictionaryModule.rng
 
-FG_SOURCE_DIR := ../fact-graph/js/target/scala-3.3.6/factgraph-fastopt
+FG_SOURCE_DIR := ../../fact-graph/js/target/scala-3.3.6/factgraph-fastopt
 FG_TARGET_DIR := ./src/main/resources/credit-assistant/website-static/vendor/fact-graph
 
 SHARED_UI_SRC := node_modules/taxpert/src
@@ -19,10 +19,10 @@ SHARED_UI_TARGET := $(RESOURCES_DIR)/website-static/vendor/taxpert
 .PHONY: bootstrap
 bootstrap: ## One-time setup: publish the sibling libraries and vendor their assets
 	@# fact-graph and form-builder resolve through the local Ivy cache, taxpert through a file: npm
-	@# dependency. All three come from checkouts cloned into the root of this repository beside the
-	@# two apps, so a fresh clone has to build them once before it can build itself.
-	$(MAKE) -C ../fact-graph publish
-	cd ../form-builder && sbt publishLocal
+	@# dependency. All three come from checkouts cloned beside this repository rather than from a
+	@# registry, so a fresh clone has to build them once before it can build itself.
+	$(MAKE) -C ../../fact-graph publish
+	cd ../../form-builder && sbt publishLocal
 	npm install
 	npm --prefix $(RESOURCES_DIR) install
 	$(MAKE) copy-fg copy-shared-ui
@@ -60,21 +60,59 @@ site: credit-assistant ## Alias for the production build, under the name every F
 
 .PHONY: copy-fg
 copy-fg: ## Copy compiled Fact Graph from sibling repository
-	@# Skipped rather than fatal when the sibling has not been built: this now runs ahead of
+	@# Skipped rather than fatal when the checkout has not been built: this now runs ahead of
 	@# every dev server and production build, and not everyone working on templates or
-	@# locales has an sbt-built fact-graph sitting next door.
+	@# locales has an sbt-built fact-graph beside the repository. The committed bundle serves.
 	@if [ -f $(FG_SOURCE_DIR)/main.mjs ]; then \
 		cp $(FG_SOURCE_DIR)/main.mjs $(FG_TARGET_DIR)/factgraph-3.1.0.js; \
 		cp $(FG_SOURCE_DIR)/main.mjs.map $(FG_TARGET_DIR); \
 		echo "==> copied the fact-graph bundle from $(FG_SOURCE_DIR)"; \
 	else \
 		echo "==> no build at $(FG_SOURCE_DIR); keeping the vendored fact-graph bundle"; \
-		echo "    (run 'make bootstrap', or 'make -C ../fact-graph publish', to refresh it)"; \
+		echo "    (run 'make bootstrap', or 'make -C ../../fact-graph publish', to refresh it)"; \
 	fi
 
-# ── A taxpert checkout somewhere other than ../taxpert ───────────────────────────────────────────
+# ── Docker ────────────────────────────────────────────────────────────────────
 #
-# package.json depends on `taxpert` at `file:../taxpert/packages/ui` — a checkout of the taxpert
+# The same application, without a local JDK, sbt or node: `make up` builds the sibling libraries,
+# generates the site and serves it, and the dev overlay leaves a `sbt ~run` watcher regenerating it
+# on every edit. Slower to start than `make dev` and the only way in for someone who has not
+# installed the toolchain, which is most people the first time they open this repository.
+#
+# Every application in this repository has this same set of targets over the same pair of compose
+# files, so `make up` behaves the same wherever you run it. They wrap docker compose rather than
+# replacing it: the compose files are the description, and a target that hid them would be one more
+# thing to read before you could use either.
+
+.PHONY: up
+up: ## Build (first run) and start the whole stack, with hot reload
+	docker compose up --build
+
+.PHONY: down
+down: ## Stop and remove the stack
+	docker compose down
+
+.PHONY: logs
+logs: ## Tail the logs from every service
+	docker compose logs -f
+
+.PHONY: ps
+ps: ## Show service status
+	docker compose ps
+
+.PHONY: rebuild
+rebuild: ## Tear down the stack, drop its volumes, and rebuild images from scratch, ignoring the layer cache
+	@# The escape hatch for a stale sibling library: form-builder and fact-graph are resolved from
+	@# the image's own Ivy cache, not a bind mount, so editing either one needs a rebuild.
+	@# down -v first: app-out and sbt-cache persist across a plain `down`/`up`, so a stale sbt
+	@# cache or a half-regenerated out/ would otherwise survive a "from scratch" rebuild. Compose
+	@# recreates both empty on the next `up`, at which point the watcher repopulates them.
+	docker compose down -v
+	docker compose build --no-cache
+
+# ── A taxpert checkout somewhere other than ../../taxpert ───────────────────────────────────────────
+#
+# package.json depends on `taxpert` at `file:../../taxpert/packages/ui` — a checkout of the taxpert
 # repository cloned into the root of this repository, beside the two apps. That is what a plain
 # `npm install` resolves, and it is the normal path; `make bootstrap` runs it for you.
 #
@@ -153,7 +191,7 @@ clean: ## Clean all the build artifacts
 .PHONY: ci-setup
 ci-setup: ## Install validation and linting tools
 	npm --prefix $(RESOURCES_DIR) install
-	@# The workspace UI. `taxpert` is a file: dependency on ../taxpert/packages/ui, so a plain
+	@# The workspace UI. `taxpert` is a file: dependency on ../../taxpert/packages/ui, so a plain
 	@# `npm install` resolves it out of that checkout — no registry and no credentials involved.
 	@# TAXPERT_UI redirects it at a checkout kept somewhere else.
 	@if [ -n "$(TAXPERT_UI)" ]; then \

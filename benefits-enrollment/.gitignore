@@ -14,8 +14,12 @@ node_modules/
 # fails the build if the taxpert mirror drifts.
 src/main/resources/benefits-enrollment/website-static/vendor/taxpert/
 src/main/resources/benefits-enrollment/website-static/vendor/uswds-3.13.0/
-src/main/resources/benefits-enrollment/website-static/vendor/fact-graph/*
-!src/main/resources/benefits-enrollment/website-static/vendor/fact-graph/.gitkeep
+
+# The Fact Graph browser bundle is the exception: it is committed, as it is in the other two
+# applications here. Nothing publishes it, so without a copy in git this application has no engine
+# in the browser until someone builds fact-graph and runs `make copy-fg`. Its sourcemap is ignored
+# by the rule at the repository root, since it is four megabytes of debug aid rather than a runtime
+# dependency.
 
 # Metals / Bloop
 .bsp/

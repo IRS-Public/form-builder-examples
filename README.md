@@ -1,62 +1,81 @@
 # Form Builder Examples
 
-Reference applications built on [Form Builder](https://github.com/IRS-Public/form-builder), [Fact Graph]
-(https://github.com/IRS-Public/fact-graph), and [Taxpert](https://github.com/IRS-Public/taxpert). 
+Reference applications built on [Form Builder](https://github.com/IRS-Public/form-builder),
+[Fact Graph](https://github.com/IRS-Public/fact-graph), and
+[Taxpert](https://github.com/IRS-Public/taxpert).
 
-If you are interested in building your own Form 
-Builder application similar to these, 
-check out [Form Builder Template](https://github.com/IRS-Public/form-builder-template). To understand the difference between Taxpert, Form Builder and the Fact Graph, see [this doc](https://github.com/IRS-Public/taxpert/blob/main/docs/adr/taxpert-form-builder-fact-graph.md).
+If you are interested in building your own Form Builder application similar to these, check out
+[Form Builder Template](https://github.com/IRS-Public/form-builder-template). To understand the
+difference between Taxpert, Form Builder and the Fact Graph, see
+[this doc](https://github.com/IRS-Public/taxpert/blob/main/docs/adr/taxpert-form-builder-fact-graph.md).
 
-**This repository is demonstration code.** Nothing here is a library nor meant to be
-depended on. The reusable parts live in three other repositories, and these applications are
-what they look like in use. 
-in one repository for convenience. 
+**This repository is demonstration code.** Nothing here is a library, and nothing here is meant to be
+depended on. The reusable parts live in three other repositories, and these applications are what
+they look like in use, collected here for convenience.
 
 ## Where this fits
 
-| Component                                                                                   | What it is                                                                                                                                                                                                                                                                                                                                          |
-|---------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| [`fact-graph`](https://github.com/IRS-Public/fact-graph)                                    | `gov.irs::factgraph`, the rules engine. Cross-compiled: a JVM jar this library builds against, and a Scala.js bundle the browser runs.                                                                                                                                                                                                              |
-| `form-builder`                                                                              | `gov.irs::form-builder`, presentation generator, including parsers, Thymeleaf engine, node templates, locales, RELAX NG schemas, theme, and flow runtime.                                                                                                                                                                                 |
-| [`taxpert`](https://github.com/IRS-Public/taxpert)                                          | The workspace UI (`taxpert` on npm, in that repo's `packages/ui`): global nav, audit panel, tool panels. Optional. An application can ship without it. That repo's `packages/fact-explorer` is a React and Vite SPA that visualizes any Form Builder app's flow and facts as a graph, reading the JSON this library emits under `--formBuilderGraph`. |
-| [`form-builder-template`](https://github.com/IRS-Public/form-builder-template)              | A cookiecutter that generates a new Form Builder app, with optional extensions like Taxpert.                                                                                                                                                                                                                                                        |
-| [`form-builder-examples`](https://github.com/IRS-Public/form-builder-examples) | Reference applications that leverage the three core libraries.                                                                                                                                                                                                                                                                                      |
+| Component                                                                    | What it is                                                                                                                                                                                                                                                                                                                                          |
+|------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [`fact-graph`](https://github.com/IRS-Public/fact-graph)                     | `gov.irs::factgraph`, the rules engine. Cross-compiled: a JVM jar this library builds against, and a Scala.js bundle the browser runs.                                                                                                                                                                                                              |
+| [`form-builder`](https://github.com/IRS-Public/form-builder)                 | `gov.irs::form-builder`, presentation generator, including parsers, Thymeleaf engine, node templates, locales, RELAX NG schemas, theme, and flow runtime.                                                                                                                                                                                 |
+| [`taxpert`](https://github.com/IRS-Public/taxpert)                           | The workspace UI (`taxpert` on npm, in that repo's `packages/ui`): global nav, audit panel, tool panels. Optional. An application can ship without it. That repo's `packages/fact-explorer` is a React and Vite SPA that visualizes any Form Builder app's flow and facts as a graph, reading the JSON this library emits under `--formBuilderGraph`. |
+| [`form-builder-template`](https://github.com/IRS-Public/form-builder-template) | A cookiecutter that generates a new Form Builder app, with optional extensions like Taxpert.                                                                                                                                                                                                                                                        |
+| `form-builder-examples` | Reference applications that leverage the three core libraries.                                                                                                                                                                                                                                                                                      |
 
 Only Form Builder and Fact Graph are required. An application still runs without Taxpert, because the theme
 and the questionnaire runtime come from Form Builder's jar. Taxpert adds the tooling that lets you
 inspect a running application's business logic.
 
-That layout is what the relative paths in each Makefile and `package.json` resolve against:
-`../fact-graph`, `../form-builder` and `../taxpert/packages/ui`, all relative to the application
-directory. The three clones are gitignored here.
-
 ## Quickstart
-
-None of the three core libraries (Fact Graph, Form Builder, Taxpert) are on a public artifact registry (Maven, Github 
-Packages, etc.), so all three come from checkouts. Clone them into the root of this repository, beside the application directories:
-
 ```bash
+cd ..
 git clone https://github.com/IRS-Public/fact-graph
 git clone https://github.com/IRS-Public/form-builder
-git clone https://github.com/IRS-Public/taxpert (optional, if you want to run taxpert)
+git clone https://github.com/IRS-Public/taxpert          
 ```
-`cd` to an application you are interested in and run `make up` (to run everything in Docker) or `make bootstrap` + 
-`make dev`.
 
-`make bootstrap` runs `sbt compile fastOptJS publishLocal` in fact-graph and `sbt publishLocal` in
-form-builder, which lands both in `~/.ivy2/local`.  The Ivy cache is first in sbt's resolver chain, so
-neither `build.sbt` declares a resolver or credentials. It then runs `npm install`, which resolves
-`taxpert` from its checkout (if installed), and vendors the Fact Graph browser bundle and the Taxpert mirror into
-`website-static/vendor/`.
-
-A Taxpert checkout kept somewhere other than the repository root can be installed from where it is,
-without editing `package.json`:
+Then `cd` to an application and start it:
 
 ```bash
-make link-taxpert TAXPERT_UI=/path/to/taxpert/packages/ui
+cd credit-assistant
+make bootstrap    # once: publish the libraries, install npm deps, vendor the assets
+make dev          # http://localhost:3003/app/eitc/
 ```
 
-`make ci-setup` accepts the same variable, and installs only what the build and the validators need.
+`make up` in any application does the same thing without a local toolchain: it builds both Scala
+libraries inside the image, generates the site, serves it through nginx, and leaves an `sbt ~run`
+watcher regenerating it as you edit.
+
+All three applications share one Docker layout: the same `Dockerfile`, the same pair of compose
+files, and the same `up` / `down` / `logs` / `ps` / `rebuild` targets. The Dockerfiles differ only
+in a four-line `ARG` block naming the application's directory, its resource directory, its generator
+flags and whether it vendors USWDS from npm, so `diff` between any two shows those lines and nothing
+else.
+
+`make run-all-local` starts one `make dev` per application and prints each one's address before the sbt
+logs begin. Every application fixes its own port and URL prefix, so the three run side by side with
+nothing to coordinate. Output is prefixed with the application name, and Ctrl-C stops all of them.
+
+`make run-all-docker` is the Docker counterpart of `make run-all-local`, and reaches the same three addresses. Give the 
+watchers a minute after that: nginx serves the site baked into the image straight
+away, and the `sbt ~run` container replaces it with a live-regenerating one shortly after.
+
+| Application | Address |
+|---|---|
+| credit-assistant | `http://localhost:3003/app/eitc/` |
+| tax-withholding-estimator | `http://localhost:3000/app/tax-withholding-estimator/` |
+| benefits-enrollment | `http://localhost:3006/app/benefits/` |
+
+Use `make run-all-docker APPS="credit-assistant benefits-enrollment"` to start a subset.
+
+`make bootstrap` publishes the libraries once for all three applications rather than once per
+application, then runs each application's `npm install` and regenerates its vendored mirrors. Every
+other target is the per-application one, run in turn. `make link-taxpert TAXPERT_UI=...` works from
+here as well as from an application directory, for a Taxpert checkout kept somewhere other than
+beside this repository. The
+[QUICKSTART.md](https://github.com/IRS-Public/taxpert/blob/main/QUICKSTART.md#the-native-path) has
+what each of those does.
 
 
 
@@ -68,6 +87,8 @@ make link-taxpert TAXPERT_UI=/path/to/taxpert/packages/ui
 | Languages | 8 | 2 (English, Spanish)                                                | 1 (English)                                                    |
 | Extension points used | 3 of 5 | 5 of 5                                                              | 2 of 5                                                         |
 | Production build target | `make credit-assistant` | `make twe`                                                          | `make site`                                                    |
+| Fact Explorer id | `credit-assistant` | `twe`                                                               | `benefits-enrollment`                                          |
+| Docker | `make up` | `make up`                                                           | `make up`                                                      |
 
 The three directories share no code. Each has its own `build.sbt`, `package.json`,
 `Makefile`, and `fact-explorer.app.json`, and each can be built without the others. See each application's README for its full target list.
@@ -83,6 +104,9 @@ cd /path/to/taxpert
 FORM_BUILDER_APPS_DIR=/path/to/form-builder-examples \
   npm run build-registry --workspace packages/fact-explorer
 ```
+
+Running it from there, in Docker or natively, is covered in the
+[QUICKSTART.md](https://github.com/IRS-Public/taxpert/blob/main/QUICKSTART.md#how-fact-explorer-finds-an-application).
 
 The workspace UI in the applications themselves is switched on by a build flag. `make dev` already
 passes `--auditMode` in all three. In credit-assistant, `make dev-ai` also passes
