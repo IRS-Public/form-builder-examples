@@ -1,0 +1,87 @@
+{
+    "name": "form-builder-examples",
+    "version": "0.1.0",
+    "organization": "Internal Revenue Service",
+    "description": "Reference applications built on Form Builder, Fact Graph, and Taxpert.",
+    "longDescription": "This repository is demonstration code. Nothing here is a library, and nothing here is meant to be depended on: the reusable parts live in the fact-graph, form-builder, and taxpert repositories, and these applications are what those libraries look like in use, collected in one place for convenience. It holds three reference applications, Credit Assistant (the Earned Income Tax Credit assistant), the Tax Withholding Estimator, and Benefits Enrollment, each consisting of the thin remainder a Form Builder application actually owns: its flow, its fact dictionary, its locales, its brand styles, and a short entry point. Together they exercise every extension point the scaffold offers, including custom node types, custom input types, and template overrides, which is what keeps the libraries honest about being general.",
+    "status": "Development",
+    "permissions": {
+        "licenses": [
+            {
+                "name": "CC0-1.0",
+                "URL": "https://github.com/IRS-Public/form-builder-examples/blob/main/LICENSE.md"
+            }
+        ],
+        "usageType": [
+            "openSource"
+        ],
+        "exemptionText": ""
+    },
+    "repositoryHost": [
+        "github.com/IRS-Public"
+    ],
+    "repositoryURL": "https://github.com/IRS-Public/form-builder-examples",
+    "repositoryVisibility": "public",
+    "homepageURL": "https://github.com/IRS-Public/form-builder-examples",
+    "disclaimerURL": "https://github.com/IRS-Public/form-builder-examples?tab=readme-ov-file#legal-disclaimer-public-repository-access",
+    "vcs": "git",
+    "platforms": [
+        "web"
+    ],
+    "categories": [
+        "other"
+    ],
+    "softwareType": [
+        "standalone/web"
+    ],
+    "languages": [
+        "Scala",
+        "HTML",
+        "CSS",
+        "JavaScript",
+        "Shell",
+        "Makefile"
+    ],
+    "sbom": "https://github.com/IRS-Public/form-builder-examples/network/dependencies",
+    "relatedCode": [
+        "https://github.com/IRS-Public/fact-graph",
+        "https://github.com/IRS-Public/form-builder",
+        "https://github.com/IRS-Public/taxpert",
+        "https://github.com/IRS-Public/form-builder-template",
+        "https://github.com/IRS-Public/tax-withholding-estimator",
+        "https://github.com/IRS-Public/eitc-assistant"
+    ],
+    "reusedCode": [
+        "https://github.com/IRS-Public/fact-graph",
+        "https://github.com/IRS-Public/form-builder",
+        "https://github.com/IRS-Public/taxpert",
+        "https://github.com/IRS-Public/form-builder-template",
+        "https://github.com/IRS-Public/tax-withholding-estimator",
+        "https://github.com/IRS-Public/eitc-assistant"
+    ],
+    "tags": [
+        "Open Source",
+        "IRS",
+        "Tax",
+        "Fact Graph",
+        "Form Builder",
+        "EITC",
+        "Tax Withholding"
+    ],
+    "feedbackMechanism": "https://github.com/IRS-Public/form-builder-examples/issues",
+    "AIUseCaseID": "0",
+    "repositoryType": "sample",
+    "userInput": true,
+    "group": "IRS/IT",
+    "userType": [
+        "government",
+        "developers",
+        "taxpayers"
+    ],
+    "maturityModelTier": 2,
+    "date": {
+        "created": "2026-05-25T15:55:48Z",
+        "lastModified": "2026-08-27T13:12:22Z",
+        "metadataLastUpdated": "2026-08-27T18:11:45Z"
+    }
+}
