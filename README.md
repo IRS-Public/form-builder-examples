@@ -29,13 +29,22 @@ inspect a running application's business logic.
 
 ## Quickstart
 ```bash
-cd ..
+cd ~
 git clone https://github.com/IRS-Public/fact-graph
 git clone https://github.com/IRS-Public/form-builder
 git clone https://github.com/IRS-Public/taxpert          
 ```
 
-Then `cd` to an application and start it:
+`make run-all-local` starts one `make dev` per application and prints each one's address before the sbt
+logs begin. Every application fixes its own port and URL prefix, so the three run side by side with
+nothing to coordinate. Output is prefixed with the application name, and Ctrl-C stops all of them.
+
+`make run-all-docker` is the Docker counterpart of `make run-all-local`, and reaches the same three addresses. Give the 
+watchers a minute after that: nginx serves the site baked into the image straight
+away, and the `sbt ~run` container replaces it with a live-regenerating one shortly after.
+
+
+If you only want to run one application, `cd` to an application and start it:
 
 ```bash
 cd credit-assistant
@@ -53,13 +62,6 @@ in all three. What differs is a four-line `ARG` block naming the application's d
 resource directory, its generator flags and whether it vendors USWDS from npm, plus the port and the
 startup banner, so `diff` between any two shows only those.
 
-`make run-all-local` starts one `make dev` per application and prints each one's address before the sbt
-logs begin. Every application fixes its own port and URL prefix, so the three run side by side with
-nothing to coordinate. Output is prefixed with the application name, and Ctrl-C stops all of them.
-
-`make run-all-docker` is the Docker counterpart of `make run-all-local`, and reaches the same three addresses. Give the 
-watchers a minute after that: nginx serves the site baked into the image straight
-away, and the `sbt ~run` container replaces it with a live-regenerating one shortly after.
 
 | Application | Address |
 |---|---|
