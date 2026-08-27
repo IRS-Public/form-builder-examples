@@ -10,7 +10,7 @@ make              # http://localhost:3003/app/eitc
 
 `make bootstrap` expects the three library checkouts described in the
 [repository README](../README.md#quickstart). Full setup instructions for the whole ecosystem, in
-Docker or natively, are in the [QUICKSTART.md](https://github.com/IRS-Public/taxpert/blob/main/QUICKSTART.md) in the taxpert repository.
+Docker or natively, are in the [QUICKSTART.md](https://github.com/IRS-Public/taxpert/blob/main/docs/QUICKSTART.md) in the taxpert repository.
 
 `make` with no target runs `make dev`. That serves the site at **http://localhost:3003/app/eitc** with `--auditMode --allScreens --scenarioMode`, so two extra destinations exist alongside the flow:
 

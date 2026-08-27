@@ -48,10 +48,10 @@ libraries inside the image, generates the site, serves it through nginx, and lea
 watcher regenerating it as you edit.
 
 All three applications share one Docker layout: the same `Dockerfile`, the same pair of compose
-files, and the same `up` / `down` / `logs` / `ps` / `rebuild` targets. The Dockerfiles differ only
-in a four-line `ARG` block naming the application's directory, its resource directory, its generator
-flags and whether it vendors USWDS from npm, so `diff` between any two shows those lines and nothing
-else.
+files, and the same `up` / `down` / `logs` / `ps` / `rebuild` targets. The build logic is identical
+in all three. What differs is a four-line `ARG` block naming the application's directory, its
+resource directory, its generator flags and whether it vendors USWDS from npm, plus the port and the
+startup banner, so `diff` between any two shows only those.
 
 `make run-all-local` starts one `make dev` per application and prints each one's address before the sbt
 logs begin. Every application fixes its own port and URL prefix, so the three run side by side with
@@ -74,7 +74,7 @@ application, then runs each application's `npm install` and regenerates its vend
 other target is the per-application one, run in turn. `make link-taxpert TAXPERT_UI=...` works from
 here as well as from an application directory, for a Taxpert checkout kept somewhere other than
 beside this repository. The
-[QUICKSTART.md](https://github.com/IRS-Public/taxpert/blob/main/QUICKSTART.md#the-native-path) has
+[QUICKSTART.md](https://github.com/IRS-Public/taxpert/blob/main/docs/QUICKSTART.md#the-native-path) has
 what each of those does.
 
 
@@ -106,7 +106,7 @@ FORM_BUILDER_APPS_DIR=/path/to/form-builder-examples \
 ```
 
 Running it from there, in Docker or natively, is covered in the
-[QUICKSTART.md](https://github.com/IRS-Public/taxpert/blob/main/QUICKSTART.md#how-fact-explorer-finds-an-application).
+[QUICKSTART.md](https://github.com/IRS-Public/taxpert/blob/main/docs/QUICKSTART.md#how-fact-explorer-finds-an-application).
 
 The workspace UI in the applications themselves is switched on by a build flag. `make dev` already
 passes `--auditMode` in all three. In credit-assistant, `make dev-ai` also passes

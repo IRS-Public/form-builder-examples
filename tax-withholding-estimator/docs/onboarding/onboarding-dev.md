@@ -217,5 +217,5 @@ It can be toggled by running `enableAuditMode()` and `disableAuditMode()` in the
 The Fact Graph is used in two places: as a declared Scala dependency in `build.sbt`, and as a
 vendored JavaScript file that gets sent to the client. Propagating a change to it means `make
 publish` in the Fact Graph repository and `make copy-fg` here, which are covered along with every
-other cross-repository propagation in the [QUICKSTART.md](https://github.com/IRS-Public/taxpert/blob/main/QUICKSTART.md#after-editing-fact-graph).
+other cross-repository propagation in the [QUICKSTART.md](https://github.com/IRS-Public/taxpert/blob/main/docs/QUICKSTART.md#after-editing-fact-graph).
 

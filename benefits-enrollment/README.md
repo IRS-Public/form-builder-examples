@@ -32,7 +32,7 @@ every edit. This is the only one of the three example applications with a compos
 The native path needs JDK 21, sbt, Node 22, and `xmllint` for the XML validators (`libxml2-utils` on
 Debian or Ubuntu), plus the three library checkouts described in the
 [repository README](../README.md#quickstart). Full setup instructions for the whole ecosystem are in
-the [QUICKSTART.md](https://github.com/IRS-Public/taxpert/blob/main/QUICKSTART.md) in the taxpert repository.
+the [QUICKSTART.md](https://github.com/IRS-Public/taxpert/blob/main/docs/QUICKSTART.md) in the taxpert repository.
 
 `make help` lists every target. The ones you will use:
 

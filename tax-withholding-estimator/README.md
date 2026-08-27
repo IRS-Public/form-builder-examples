@@ -10,7 +10,7 @@ make              # http://localhost:3000/app/tax-withholding-estimator
 
 `make bootstrap` expects the three library checkouts described in the
 [repository README](../README.md#quickstart). Full setup instructions for the whole ecosystem, in
-Docker or natively, are in the [QUICKSTART.md](https://github.com/IRS-Public/taxpert/blob/main/QUICKSTART.md) in the taxpert repository.
+Docker or natively, are in the [QUICKSTART.md](https://github.com/IRS-Public/taxpert/blob/main/docs/QUICKSTART.md) in the taxpert repository.
 
 `make` with no target runs `make dev`. The site is served at **http://localhost:3000/app/tax-withholding-estimator**, and the Browse All listing at **http://localhost:3000/app/tax-withholding-estimator/all-screens/**.
 
