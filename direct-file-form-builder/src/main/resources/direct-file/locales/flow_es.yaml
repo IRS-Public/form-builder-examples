@@ -1,0 +1,51 @@
+# The Spanish half of the flow's authored text.
+#
+# The key set is owned by flow_en.yaml, which is GENERATED from the flow XML on every build — the
+# hashed suffixes are content hashes, so editing a paragraph in the flow retires its key and mints
+# a new one. Translate here; never edit flow_en.yaml.
+#
+# Markup inside a value is deliberate and must survive translation: <fg-show> prints a fact, and
+# <modal-link for="…"> has to keep its `for` pointing at the same modal id.
+/:
+  title: Acerca de usted
+  h2-4f21e0: Acerca de usted
+  p-2f6020: Conteste un par de preguntas y le diremos si califica.
+  /chosenTaxYear:
+    question: ¿Sobre cuál año tributario pregunta?
+    modalLink: <modal-link for="modal-which-year">¿Cuál año debo usar?</modal-link>
+    options:
+      '2025':
+        name: '2025'
+      '2024':
+        name: '2024'
+  /isEligible:
+    question: ¿Vivió en los Estados Unidos más de la mitad del <fg-show path="/taxYear"/>?
+    hint: Cuente cualquier parte de un día en que estuvo presente.
+    options:
+      'true':
+        name: Sí
+      'false':
+        name: 'No'
+  fg-alert-61e36b:
+    heading: Usted no califica
+    p-ecc433: Para reclamar este crédito, debió haber vivido en los Estados Unidos más
+      de la mitad del año.
+  /income:
+    question: ¿Cuál fue su ingreso total en el <fg-show path="/taxYear"/>?
+  modal-which-year:
+    heading: ¿Cuál año debo usar?
+    p-b31c3d: Use el año por el cual presenta la declaración, no el año en que la presenta.
+/results:
+  title: Resultados
+  h2-954d80: Su resultado
+  p-bfba88: Según lo que nos indicó, usted califica para este crédito por el <fg-show path="/taxYear"/>.
+  fg-alert-4c3c37:
+    heading: Su ingreso supera el límite
+    p-68a020: |-
+      Un ingreso de <fg-show path="/income"/> supera el límite de <fg-show path="/incomeLimit"/> para
+                el <fg-show path="/taxYear"/>, así que no puede reclamar este crédito.
+  h3-cce78d: Próximos pasos
+  p-6f4398: |-
+    Reemplace esta página con lo que su herramienta deba decir realmente. El
+            <a class="usa-link" target="_blank" href="https://www.irs.gov/">sitio web del IRS<span class="usa-sr-only"> (se abre en una pestaña nueva)</span></a>
+            es un marcador de posición razonable mientras tanto.

@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<?xml-model href="./FlowConfig.rng"?>
+<FlowConfig>
+  <page title="Probe results" route="/probe-results">
+    <section>
+      <h2>What the dictionary derived</h2>
+
+      <!-- Derived facts, three modules deep from the three answers above. If these render, the
+           copied dictionary is not just parsing — it is evaluating. -->
+      <p condition="/isMarried" operator="isTrue">
+        You told us you were married, so <fg-show path="/maritalStatus"/> is what the return will say.
+      </p>
+      <p condition="/isMarried" operator="isFalse">
+        Your marital status is <fg-show path="/maritalStatus"/>.
+      </p>
+
+      <p>Student loan interest paid: <fg-show path="/studentLoanInterestAmount"/>.</p>
+    </section>
+  </page>
+</FlowConfig>

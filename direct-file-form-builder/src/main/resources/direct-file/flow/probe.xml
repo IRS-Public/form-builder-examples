@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<?xml-model href="./FlowConfig.rng"?>
+<FlowConfig>
+  <!-- A probe, and NOT Direct File's `you-and-your-family/about-you`, which is 36 screens across
+       11 pages. Nothing here reflects Direct File's own wording, ordering or page structure: the
+       three questions are hand-written, and the facts they bind deliberately reach across three
+       different dictionary modules (filers, income, studentLoanAdjustment) to prove the copy
+       resolves as a whole rather than to model a section.
+
+       What this page exists to prove, and does:
+         - the 36 copied fact modules load and 3,030 facts resolve      (a bad path fails the build)
+         - <br/> survives the parser's leaf-node round trip             (161 uses in the real content)
+         - <fg-apply source=> renders                                   (73 uses in the real flow)
+
+       The transpiler replaces this file and probe-results.xml wholesale. See codemod/README.md. -->
+  <page title="Dictionary probe" route="/">
+    <section>
+      <h2>Dictionary probe</h2>
+      <p>Not the Direct File flow. Three hand-written questions against the real Direct File fact
+        dictionary, for tax year <fg-show path="/taxYear"/>.</p>
+
+      <fg-set path="/maritalStatus">
+        <question>What was your marital status on December 31?</question>
+        <input type="enum" options-path="/maritalStatusOptions">
+          <option value="single">Single</option>
+          <option value="married">Married</option>
+          <option value="divorced">Divorced</option>
+          <option value="widowed">Widowed</option>
+        </input>
+      </fg-set>
+
+      <fg-set path="/receivedDigitalAssets" if-true="/isMarried">
+        <question>Did you receive any digital assets as payment, a reward, or an award?</question>
+        <hint>Digital assets include convertible virtual currency,<br/>stablecoins and NFTs.</hint>
+        <input type="boolean">
+          <option value="true">Yes</option>
+          <option value="false">No</option>
+        </input>
+      </fg-set>
+
+      <!-- The library's new fg-apply source= — copying one fact into another, which the port needs
+           73 times. Both are Boolean, in signing.xml. -->
+      <fg-apply path="/spouseFiledLastYear" source="/filedLastYear"/>
+
+      <fg-set path="/studentLoanInterestAmount">
+        <question>How much student loan interest did you pay?</question>
+        <input type="dollar"/>
+      </fg-set>
+    </section>
+  </page>
+</FlowConfig>

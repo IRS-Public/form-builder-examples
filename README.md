@@ -36,10 +36,10 @@ git clone https://github.com/IRS-Public/taxpert
 ```
 
 `make run-all-local` starts one `make dev` per application and prints each one's address before the sbt
-logs begin. Every application fixes its own port and URL prefix, so the three run side by side with
+logs begin. Every application fixes its own port and URL prefix, so the four run side by side with
 nothing to coordinate. Output is prefixed with the application name, and Ctrl-C stops all of them.
 
-`make run-all-docker` is the Docker counterpart of `make run-all-local`, and reaches the same three addresses. Give the 
+`make run-all-docker` is the Docker counterpart of `make run-all-local`, and reaches the same four addresses. Give the 
 watchers a minute after that: nginx serves the site baked into the image straight
 away, and the `sbt ~run` container replaces it with a live-regenerating one shortly after.
 
@@ -56,9 +56,9 @@ make dev          # http://localhost:3003/app/eitc/
 libraries inside the image, generates the site, serves it through nginx, and leaves an `sbt ~run`
 watcher regenerating it as you edit.
 
-All three applications share one Docker layout: the same `Dockerfile`, the same pair of compose
+All four applications share one Docker layout: the same `Dockerfile`, the same pair of compose
 files, and the same `up` / `down` / `logs` / `ps` / `rebuild` targets. The build logic is identical
-in all three. What differs is a four-line `ARG` block naming the application's directory, its
+in all four. What differs is a four-line `ARG` block naming the application's directory, its
 resource directory, its generator flags and whether it vendors USWDS from npm, plus the port and the
 startup banner, so `diff` between any two shows only those.
 
@@ -68,10 +68,11 @@ startup banner, so `diff` between any two shows only those.
 | credit-assistant | `http://localhost:3003/app/eitc/` |
 | tax-withholding-estimator | `http://localhost:3000/app/tax-withholding-estimator/` |
 | benefits-enrollment | `http://localhost:3006/app/benefits/` |
+| direct-file-form-builder | `http://localhost:3008/app/direct-file/` |
 
 Use `make run-all-docker APPS="credit-assistant benefits-enrollment"` to start a subset.
 
-`make bootstrap` publishes the libraries once for all three applications rather than once per
+`make bootstrap` publishes the libraries once for all four applications rather than once per
 application, then runs each application's `npm install` and regenerates its vendored mirrors. Every
 other target is the per-application one, run in turn. `make link-taxpert TAXPERT_UI=...` works from
 here as well as from an application directory, for a Taxpert checkout kept somewhere other than
@@ -81,25 +82,25 @@ what each of those does.
 
 
 
-| | [`credit-assistant/`](credit-assistant/README.md) | [`tax-withholding-estimator/`](tax-withholding-estimator/README.md) | [`benefits-enrollment/`](benefits-enrollment/README.md)        |
-|---|---|---------------------------------------------------------------------|----------------------------------------------------------------|
-| What it does | Screens a taxpayer for the Earned Income Tax Credit | Estimates federal income-tax withholdings                           | Screens a household for SNAP and Medicaid                      |
-| Served at | `/app/eitc` | `/app/tax-withholding-estimator`                                    | `/app/benefits`                                                |
-| Dev port | 3003 | 3000                                                                | 3006                                                           |
-| Languages | 8 | 2 (English, Spanish)                                                | 1 (English)                                                    |
-| Extension points used | 3 of 5 | 5 of 5                                                              | 2 of 5                                                         |
-| Production build target | `make credit-assistant` | `make twe`                                                          | `make site`                                                    |
-| Fact Explorer id | `credit-assistant` | `twe`                                                               | `benefits-enrollment`                                          |
-| Docker | `make up` | `make up`                                                           | `make up`                                                      |
+| | [`credit-assistant/`](credit-assistant/README.md) | [`tax-withholding-estimator/`](tax-withholding-estimator/README.md) | [`benefits-enrollment/`](benefits-enrollment/README.md) | [`direct-file-form-builder/`](direct-file-form-builder/README.md) |
+|---|---|---|---|---|
+| What it does | Screens a taxpayer for the Earned Income Tax Credit | Estimates federal income-tax withholdings | Screens a household for SNAP and Medicaid | Ports IRS Direct File's return questionnaire (no submission) |
+| Served at | `/app/eitc` | `/app/tax-withholding-estimator` | `/app/benefits` | `/app/direct-file` |
+| Dev port | 3003 | 3000 | 3006 | 3008 |
+| Languages | 8 | 2 (English, Spanish) | 1 (English) | 1 (English) |
+| Extension points used | 3 of 5 | 5 of 5 | 2 of 5 | 2 of 5 |
+| Production build target | `make credit-assistant` | `make twe` | `make site` | `make site` |
+| Fact Explorer id | `credit-assistant` | `twe` | `benefits-enrollment` | `direct-file` |
+| Docker | `make up` | `make up` | `make up` | `make up` |
 
-The three directories share no code. Each has its own `build.sbt`, `package.json`,
+The four directories share no code. Each has its own `build.sbt`, `package.json`,
 `Makefile`, and `fact-explorer.app.json`, and each can be built without the others. See each application's README for its full target list.
 
 ## Inspecting a running application
 
 Fact Explorer, in the Taxpert repository, discovers applications by scanning a directory one level
 deep for `fact-explorer.app.json` descriptors. One sits at the root of each application here, so
-pointing the scan at this repository finds all three:
+pointing the scan at this repository finds all four:
 
 ```bash
 cd /path/to/taxpert
@@ -111,9 +112,9 @@ Running it from there, in Docker or natively, is covered in the
 [QUICKSTART.md](https://github.com/IRS-Public/taxpert/blob/main/docs/QUICKSTART.md#how-fact-explorer-finds-an-application).
 
 The workspace UI in the applications themselves is switched on by a build flag. `make dev` already
-passes `--auditMode` in all three. In credit-assistant, `make dev-ai` also passes
+passes `--auditMode` in all four. In credit-assistant, `make dev-ai` also passes
 `--aiScenarioGeneration --aiFactExplanation`, which reveal the two AI chat features.
-Neither TWE nor Benefits Enrollment wires those features up in their default state.
+None of the other three wires those features up in their default state.
 
 
 ## Contributing

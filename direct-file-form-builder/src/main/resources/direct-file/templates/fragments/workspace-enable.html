@@ -1,0 +1,13 @@
+<!--/*
+  Switch the workspace on at page load.
+
+  Rendered at the end of <body> by the scaffold's page.html and all-screens.html, inside their
+  --auditMode gate. Here rather than in the library because `enable()` comes out of taxpert, and the
+  scaffold names no path inside taxpert — see fragments/workspace-head.html.
+*/-->
+<th:block th:fragment="workspace-enable">
+    <script type="module" th:inline="javascript">
+        import { enable } from /*[[|${basePath}/resources/vendor/taxpert/audit-panel/js/taxpert-audit-panel.js|]]*/ ''
+        enable()
+    </script>
+</th:block>

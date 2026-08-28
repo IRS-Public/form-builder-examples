@@ -1,0 +1,36 @@
+# DO NOT EDIT, THIS IS A GENERATED FILE
+/:
+  title: Dictionary probe
+  h2-f9beac: Dictionary probe
+  p-cd7654: |-
+    Not the Direct File flow. Three hand-written questions against the real Direct File fact
+            dictionary, for tax year <fg-show path="/taxYear"/>.
+  /maritalStatus:
+    question: What was your marital status on December 31?
+    options:
+      single:
+        name: Single
+      married:
+        name: Married
+      divorced:
+        name: Divorced
+      widowed:
+        name: Widowed
+  /receivedDigitalAssets:
+    question: Did you receive any digital assets as payment, a reward, or an award?
+    hint: Digital assets include convertible virtual currency,<br/>stablecoins and
+      NFTs.
+    options:
+      'true':
+        name: 'Yes'
+      'false':
+        name: 'No'
+  /studentLoanInterestAmount:
+    question: How much student loan interest did you pay?
+/probe-results:
+  title: Probe results
+  h2-517959: What the dictionary derived
+  p-342527: You told us you were married, so <fg-show path="/maritalStatus"/> is what
+    the return will say.
+  p-ca06a5: Your marital status is <fg-show path="/maritalStatus"/>.
+  p-a282f1: 'Student loan interest paid: <fg-show path="/studentLoanInterestAmount"/>.'

@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<?xml-model href="./FlowConfig.rng"?>
+<FlowConfig>
+  <!-- The flow, in order. Each module contributes its pages; each page becomes one directory with
+       an index.html, in every locale. Routes must be unique across the whole flow. -->
+  <!-- A probe, not the port. Replaced wholesale by the transpiler's output — one module
+       per Direct File subcategory, 25 of them. See codemod/README.md. -->
+  <module src="./probe.xml"/>
+  <module src="./probe-results.xml"/>
+</FlowConfig>

@@ -1,0 +1,36 @@
+# Generated website
+out/
+
+# sbt
+target/
+project/target/
+project/project/
+
+# node
+node_modules/
+
+# Generated mirrors. Each has exactly one writer — a `make copy-*` target that runs ahead of every
+# build — and none of them is a source. Edit the package, not the mirror; `make check-shared-ui`
+# fails the build if the taxpert mirror drifts.
+src/main/resources/direct-file/website-static/vendor/taxpert/
+src/main/resources/direct-file/website-static/vendor/uswds-3.13.0/
+
+# The Fact Graph browser bundle is the exception: it is committed, as it is in the other three
+# applications here. Nothing publishes it, so without a copy in git this application has no engine
+# in the browser until someone builds fact-graph and runs `make copy-fg`. Its sourcemap is ignored
+# by the rule at the repository root, since it is four megabytes of debug aid rather than a runtime
+# dependency.
+
+# Metals / Bloop
+.bsp/
+.bloop/
+.metals/
+.scala-build/
+metals.sbt
+
+# JetBrains
+.idea/
+*.iml
+
+# macOS
+.DS_Store

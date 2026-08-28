@@ -1,0 +1,28 @@
+/* U.S. Web Design System (vendored from npm by `make copy-uswds`) */
+@import "../vendor/uswds-3.13.0/styles/uswds.min.css";
+
+/* The Form Builder theme: design tokens, page layout, and the styling for every element the scaffold
+   generates. Anything this app genuinely styles differently goes *below* this import and wins by
+   ordinary cascade order — do not fork a theme file to change one value.
+
+   The scaffold extracts this out of its own jar when it generates the site, so unlike the imports
+   around it there is no `make` target to keep it in sync. */
+@import "../vendor/form-builder/theme/styles/theme.css";
+
+/* Shared UI components (vendored from taxpert) */
+@import "../vendor/taxpert/global-nav/styles/global-nav.css";
+/* The workspace tool panels. Loaded here rather than behind the toggled
+   <link id="audit-panel-styles"> because every selector in it is scoped to the bundle's own custom
+   elements and .ttd-/.ttp-/.ttm- classes — it cannot reach the product page the way the audit
+   panel's layout rules can. */
+@import "../vendor/taxpert/tool-panels/styles/tool-panels.css";
+
+/* This app's own. Add your brand overrides here. */
+@import "components/brand.css";
+
+/* Utilities — generated from this app's own flow conditions, so not part of the theme. */
+@import "utilities/display-conditions.css";
+
+@view-transition {
+  navigation: auto;
+}

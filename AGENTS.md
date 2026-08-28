@@ -1,9 +1,9 @@
 # AGENTS.md: form-builder-examples
 
-Three reference applications built on the Form Builder, Fact Graph, and Taxpert libraries. Nothing
+Four reference applications built on the Form Builder, Fact Graph, and Taxpert libraries. Nothing
 here is a library, and nothing here is meant to be depended on. Each application is the thin
 remainder that a library cannot supply: its Flow XML, its Fact Dictionary, its locales, its brand
-CSS, and a `Main.scala` of about 40 lines. The three share no code.
+CSS, and a `Main.scala` of about 40 lines. The four share no code.
 
 [README.md](README.md) is the orientation for the repository, and each application has its own
 README with its full target list. Setup and run instructions live in one place for the whole
@@ -19,23 +19,23 @@ repository, so do not add them here.
 | [form-builder](https://github.com/IRS-Public/form-builder) | `gov.irs::form-builder`, the scaffold. Parsers, generators, node templates, chrome locales, the theme, the flow runtime, Author Mode. |
 | [taxpert](https://github.com/IRS-Public/taxpert) | The optional workspace UI and its companion services. |
 | [form-builder-template](https://github.com/IRS-Public/form-builder-template) | Cookiecutter that generates a new application. |
-| **form-builder-examples** (here) | The reference applications: Credit Assistant (EITC), the Tax Withholding Estimator, and Benefits Enrollment. |
+| **form-builder-examples** (here) | The reference applications: Credit Assistant (EITC), the Tax Withholding Estimator, Benefits Enrollment, and the Direct File port. |
 
 Only Form Builder and Fact Graph are required. An application still runs without Taxpert, because
 the theme and the flow runtime ship inside the form-builder jar.
 
-## The three applications
+## The four applications
 
-| | `credit-assistant/` | `tax-withholding-estimator/` | `benefits-enrollment/` |
-|---|---|---|---|
-| What it does | Screens a taxpayer for the Earned Income Tax Credit | Estimates federal income-tax withholdings | Screens a household for SNAP and Medicaid |
-| Served at | `/app/eitc` | `/app/tax-withholding-estimator` | `/app/benefits` |
-| Dev port | 3003 | 3000 | 3006 |
-| Resource directory | `credit-assistant` | `twe` | `benefits-enrollment` |
-| Languages | 8 | 2 | 1 |
-| Extension points used | 3 of 5 | 5 of 5 | 2 of 5 |
-| Production build | `make credit-assistant` | `make twe` | `make site` |
-| Fact Explorer id | `credit-assistant` | `twe` | `benefits-enrollment` |
+| | `credit-assistant/` | `tax-withholding-estimator/` | `benefits-enrollment/` | `direct-file-form-builder/` |
+|---|---|---|---|---|
+| What it does | Screens a taxpayer for the Earned Income Tax Credit | Estimates federal income-tax withholdings | Screens a household for SNAP and Medicaid | Ports IRS Direct File's return questionnaire |
+| Served at | `/app/eitc` | `/app/tax-withholding-estimator` | `/app/benefits` | `/app/direct-file` |
+| Dev port | 3003 | 3000 | 3006 | 3008 |
+| Resource directory | `credit-assistant` | `twe` | `benefits-enrollment` | `direct-file` |
+| Languages | 8 | 2 | 1 | 1 |
+| Extension points used | 3 of 5 | 5 of 5 | 2 of 5 | 2 of 5 |
+| Production build | `make credit-assistant` | `make twe` | `make site` | `make site` |
+| Fact Explorer id | `credit-assistant` | `twe` | `benefits-enrollment` | `direct-file` |
 
 The resource directory is `app_id`, and it is independent of the repository directory and the URL
 segment. Credit Assistant is the case where all three differ.
@@ -60,8 +60,8 @@ library. The five extension seams are listed in
 
 Adding an application's name, URL segment, or storage prefix to a library is the signal that the
 value belongs in that application's `FormBuilderApp` in `Main.scala` instead. In the other
-direction, a fix made in one application here that the other two would also want is usually a
-library change that all three should then inherit.
+direction, a fix made in one application here that the other three would also want is usually a
+library change that all four should then inherit.
 
 ## Layout
 
@@ -78,7 +78,7 @@ Each application owns its own `build.sbt`, `Makefile`, `package.json`, `fact-exp
 | `<app>/src/main/resources/<app_id>/templates/` | Node template overrides and the workspace mount fragments |
 | `<app>/src/main/resources/<app_id>/website-static/` | Brand CSS, application JavaScript, images, and the vendored mirrors |
 | `<app>/docs/` | Application documentation. TWE carries the ADRs the whole ecosystem descends from |
-| `form-builder-apps.json` | Sets Fact Explorer's default application and the order the three appear in. The descriptor Fact Explorer's registry build globs is each application's own `fact-explorer.app.json` |
+| `form-builder-apps.json` | Sets Fact Explorer's default application and the order the four appear in. The descriptor Fact Explorer's registry build globs is each application's own `fact-explorer.app.json` |
 
 ## Commands
 
@@ -96,15 +96,15 @@ act on that one.
 | `make test`, `make site`, `make format`, `make clean` | Per application, in turn |
 | `make link-taxpert TAXPERT_UI=...` | Install the workspace package from a taxpert checkout kept elsewhere |
 
-`make bootstrap` publishes the libraries once for all three rather than once each. Both library
+`make bootstrap` publishes the libraries once for all four rather than once each. Both library
 paths default to a sibling checkout. Neither library is on a remote registry, so `publishLocal` from
 a checkout is the only way either reaches an application here.
 
 Inside an application, `make dev` passes `--auditMode` and the flags that application needs. The
 extra dev targets are not uniform. Credit Assistant has `make dev-ai`, which additionally passes
 `--aiScenarioGeneration --aiFactExplanation` to reveal the two AI chat features, and neither of the
-others wires those up. Credit Assistant and Benefits Enrollment have `make dev-author`, and TWE does
-not. Check the application's own Makefile rather than assuming a target exists in all three.
+others wires those up. Credit Assistant, Benefits Enrollment and Direct File have `make dev-author`, and TWE does
+not. Check the application's own Makefile rather than assuming a target exists in all four.
 
 ## Gotchas
 
@@ -118,9 +118,10 @@ not. Check the application's own Makefile rather than assuming a target exists i
   `make copy-shared-ui`. An application's own `website-static/` is for application-specific
   behavior only.
 - **A change to `form-builder` reaches nothing until it is republished.** Run `sbt test
-  publishLocal` there, then `make ci` in **every** application here. The second and third
-  applications are what catch an assumption that only holds for the first.
-- **All three commit their `factgraph-3.1.0.js`.** `make copy-fg` prints a message and moves on when
+  publishLocal` there, then `make ci` in **every** application here. The applications after the
+  first are what catch an assumption that only holds for the first — and Direct File, which brings a
+  fact dictionary and a flow it did not author, catches the most.
+- **All four commit their `factgraph-3.1.0.js`.** `make copy-fg` prints a message and moves on when
   it finds no Fact Graph build, so a fresh clone has a working engine in the browser with no
   fact-graph checkout. The Scala side is the part that still needs one.
 - **Scala.js output is not byte-reproducible.** `factgraph-3.1.0.js` can change after a
@@ -132,7 +133,7 @@ not. Check the application's own Makefile rather than assuming a target exists i
 - **Each application owns its own RELAX NG schemas**, copied from form-builder's seeds. An
   application that registers a custom node type has to widen its own grammar, which is why TWE's
   `FlowConfig.rng` and Credit Assistant's differ. Keep `make validate-xml` passing against them.
-- **The Dockerfiles are the same build logic three times.** What differs is a four-line `ARG` block,
-  the port, and the startup banner. A build change should land in all three or in none.
+- **The Dockerfiles are the same build logic four times.** What differs is a four-line `ARG` block,
+  the port, and the startup banner. A build change should land in all four or in none.
 - **The dev server serves a directory of static HTML.** There is no hot module reload. `sbt ~run`
   regenerates the site on an edit, and the browser still has to be refreshed.
