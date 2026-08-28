@@ -212,31 +212,48 @@ urls: ## Print every address this stack serves, and where Author Mode is
 		echo ""; \
 		echo "    Fact Explorer, assistant: no taxpert checkout at $(TAXPERT_REPO) — not started"; \
 	fi
-	@# Author Mode is missing from the addresses above on purpose, and this says so rather than leaving
-	@# someone to conclude it broke. No compose file passes --authorMode, so the generator never writes
-	@# the {basePath}/author/ page into the volume nginx serves, and the editing API behind it
-	@# (-Dsmol.author.port) is published by nothing. It is a native `make dev-author`, one application
-	@# at a time: every app that has the target hardcodes the same API port, so a second one racing it
-	@# only reports that the port is taken.
+	@# Author Mode. The address is the *application's* — it is a page on the site, at the base path
+	@# above with /author/ on the end — plus an editing API on its own port, which is worth printing
+	@# because it is what a "port already in use" message names.
 	@#
-	@# That port is also why the address printed is the *application's* — Author Mode is a page on the
-	@# site, not a second server. The API port is worth printing anyway, since it is what a "port
-	@# already in use" message on a second `dev-author` will name.
-	@first=1; \
+	@# Both halves are derived from the application's dev overlay rather than asserted here, so this
+	@# cannot drift the way a sentence saying "no compose file passes --authorMode" did the moment one
+	@# did. --authorMode in the watcher's command is what makes the generator write the page into the
+	@# volume nginx serves; -Dsmol.author.port in the same service's SBT_OPTS is the port the API binds,
+	@# the port published to the host, and the port <meta name="form-builder:author-port"> tells the
+	@# page to call. They cannot disagree — generators/AuthorMode reads the bound port back out of
+	@# AuthoringServer — so reading one of them is enough.
+	@#
+	@# An application whose overlay passes neither gets its native `make dev-author` line instead,
+	@# since the page a stack address would point at was never generated. Those hardcode their API
+	@# port, so they are one at a time; the containerized ones are not, which is why the overlays give
+	@# them a port each.
+	@first=1; native=""; \
 	for app in $(APPS); do \
-		apiport=$$(sed -n 's/.*-Dsmol\.author\.port=\([0-9][0-9]*\).*/\1/p' $$app/Makefile | head -1); \
-		[ -n "$$apiport" ] || continue; \
-		devport=$$(sed -n 's/^PORT ?= *//p' $$app/Makefile); \
+		overlay=$$app/docker-compose.override.yml; \
 		path=$$(sed -n 's/.*"basePath" *: *"\([^"]*\)".*/\1/p' $$app/fact-explorer.app.json 2>/dev/null | head -1); \
-		if [ $$first -eq 1 ]; then \
-			echo ""; \
-			echo "    Author Mode — not in this stack (no compose file passes --authorMode)."; \
-			echo "    Run one natively instead; they share an API port, so only one at a time:"; \
-			first=0; \
+		if grep -q -- '--authorMode' $$overlay 2>/dev/null; then \
+			port=$$(sed -n 's/^ *- *"\([0-9][0-9]*\):80".*/\1/p' $$app/docker-compose.yml | head -1); \
+			apiport=$$(sed -n 's/.*-Dsmol\.author\.port=\([0-9][0-9]*\).*/\1/p' $$overlay | head -1); \
+			if [ $$first -eq 1 ]; then echo ""; echo "    Author Mode"; first=0; fi; \
+			printf "      %-26s http://localhost:%s%s/author/  (API :%s)\n" \
+				"$$app" "$$port" "$$path" "$$apiport"; \
+		elif sed -n 's/.*-Dsmol\.author\.port=\([0-9][0-9]*\).*/\1/p' $$app/Makefile | head -1 | grep -q .; then \
+			native="$$native $$app"; \
 		fi; \
-		printf "      %-40s http://localhost:%s%s/author/  (API :%s)\n" \
-			"make -C $$app dev-author" "$$devport" "$$path" "$$apiport"; \
-	done
+	done; \
+	if [ -n "$$native" ]; then \
+		echo ""; \
+		echo "    Author Mode, not in this stack — these applications' overlays do not pass --authorMode."; \
+		echo "    Run one natively; they hardcode one API port between them, so one at a time:"; \
+		for app in $$native; do \
+			devport=$$(sed -n 's/^PORT ?= *//p' $$app/Makefile); \
+			apiport=$$(sed -n 's/.*-Dsmol\.author\.port=\([0-9][0-9]*\).*/\1/p' $$app/Makefile | head -1); \
+			path=$$(sed -n 's/.*"basePath" *: *"\([^"]*\)".*/\1/p' $$app/fact-explorer.app.json 2>/dev/null | head -1); \
+			printf "      %-40s http://localhost:%s%s/author/  (API :%s)\n" \
+				"make -C $$app dev-author" "$$devport" "$$path" "$$apiport"; \
+		done; \
+	fi
 	@echo ""
 
 down: ## Stop every application's Docker stack, and taxpert's
