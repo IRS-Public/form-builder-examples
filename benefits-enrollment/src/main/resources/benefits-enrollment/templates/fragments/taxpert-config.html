@@ -42,6 +42,12 @@
         ])
         const t = (key) => strings.get(key) ?? key
 
+        // Whether this site was generated with --authorMode, and so whether /author/ exists to be
+        // linked. The scaffold puts the build flags in the Thymeleaf context (generators/Website,
+        // AllScreens and AuthorMode all set `flags`), and the null guard is for a build that passed
+        // no flags at all rather than for the flag being off.
+        const authorMode = /*[[${flags.authorMode != null and flags.authorMode}]]*/ false
+
         configure({
             // storagePrefix is what stops this app and any other Form Builder app served from the same
             // origin sharing a fact graph, a watchlist or a panel layout. Every storage key the
@@ -76,6 +82,27 @@
                             { id: 'browse-all', label: 'Browse All', href: /*[[|${basePath}/all-screens/|]]*/ '' },
                         ],
                     },
+                    // The app id is part of the URL: Fact Explorer holds every application beside
+                    // it and finds this one through ../benefits-enrollment/fact-explorer.app.json,
+                    // so a bare /fact-explorer would land on whichever one is default rather than
+                    // this one.
+                    //
+                    // A `//` comment, not an HTML one. `<!-- … -->` is legal in a classic script and
+                    // a *syntax error* in a module — "HTML comments are not allowed in modules" —
+                    // which takes down this whole file, and with it configure(): the nav renders
+                    // with no menu and no tool buttons appear.
+                    { id: 'fact-explorer', label: 'Fact Explorer', href: 'http://localhost:5180/fact-explorer/benefits-enrollment' },
+                    // Offered only on a build that generated the page, which is what `authorMode`
+                    // above resolves. Not a `ff: 'author-mode'` runtime gate like credit-assistant's:
+                    // that spelling needs the flag declared in `featureFlags` and a
+                    // <taxpert-audit-panel> carrying its build-time default, and this app has
+                    // neither — an undeclared flag never gets its body class, so the entry would be
+                    // hidden for good. The build flag is the honest gate anyway: without
+                    // --authorMode the page does not exist, and this file's rule is to add a
+                    // destination only when the page behind it does.
+                    ...(authorMode
+                        ? [{ id: 'authoring-suite', label: 'Authoring Suite', href: /*[[|${basePath}/author/|]]*/ '' }]
+                        : []),
                 ],
 
                 // Where each tool button in the bar applies. One generated page backs both listings,
@@ -90,19 +117,25 @@
             },
 
             // The applications this workspace can be switched between — the "Applications" section
-            // of Workspace settings (the nav's gear). One entry, because a generated app starts out
-            // as the only one it knows about, and the section hides itself when there is nothing to
-            // switch to.
+            // of Workspace settings (the nav's gear). A generated app starts out as the only one it
+            // knows about, and the section hides itself when there is nothing to switch to
+            // (hasAppChoice() is items.length > 1); the two siblings in this repository are listed
+            // here, which is what makes the gear offer anything at all.
             //
-            // Add a sibling by appending an entry with that app's own destinations. They have to be
-            // written out: the workspace ships no notion of what 'browse-all' means as a URL, and an
-            // app served from another origin cannot be derived from a base path. Use absolute URLs
-            // for a sibling — this app's server serves only this app, so a relative path to another
-            // would 404 — and keep our own root-relative so they survive being read through
-            // Fact Explorer's dev proxy.
+            // Every sibling's destinations are written out: the workspace ships no notion of what
+            // 'browse-all' means as a URL, and an app served from another origin cannot be derived
+            // from a base path. Use absolute URLs for a sibling — this app's server serves only this
+            // app, so a relative path to another would 404 — and keep our own root-relative so they
+            // survive being read through Fact Explorer's dev proxy.
+            //
+            // Fact Explorer builds the same list from every fact-explorer.app.json it discovers, so
+            // it never drifts. This one is written by hand and does, which is the price of an app not
+            // having to fetch a registry from another origin to know its own menu. Adding an app to
+            // this repository means adding it here, and in the other two apps' copies of this block.
             //
             // Switching keeps the destination: Browse All here goes to Browse All there, falling
-            // back to the sibling's first destination when it has no counterpart.
+            // back to the sibling's first destination when it has no counterpart — which is what
+            // Tax Withholding Estimator's missing Authoring Suite entry relies on.
             apps: {
                 current: 'benefits-enrollment',
                 items: [
@@ -113,6 +146,31 @@
                             { id: 'product-experience', label: 'Product Experience', href: /*[[|${basePath}/|]]*/ '' },
                             { id: 'path-mode', label: 'Path Mode', href: /*[[|${basePath}/all-screens/?mode=path|]]*/ '' },
                             { id: 'browse-all', label: 'Browse All', href: /*[[|${basePath}/all-screens/|]]*/ '' },
+                            { id: 'fact-explorer', label: 'Fact Explorer', href: 'http://localhost:5180/fact-explorer/benefits-enrollment' },
+                            ...(authorMode
+                                ? [{ id: 'authoring-suite', label: 'Authoring Suite', href: /*[[|${basePath}/author/|]]*/ '' }]
+                                : []),
+                        ],
+                    },
+                    {
+                        id: 'credit-assistant',
+                        label: 'EITC Assistant',
+                        destinations: [
+                            { id: 'product-experience', label: 'Product Experience', href: 'http://localhost:3003/app/eitc/' },
+                            { id: 'path-mode', label: 'Path Mode', href: 'http://localhost:3003/app/eitc/all-screens/?mode=path' },
+                            { id: 'browse-all', label: 'Browse All', href: 'http://localhost:3003/app/eitc/all-screens/' },
+                            { id: 'fact-explorer', label: 'Fact Explorer', href: 'http://localhost:5180/fact-explorer/credit-assistant' },
+                            { id: 'authoring-suite', label: 'Authoring Suite', href: 'http://localhost:3003/app/eitc/author/' },
+                        ],
+                    },
+                    {
+                        id: 'twe',
+                        label: 'Tax Withholding Estimator',
+                        destinations: [
+                            { id: 'product-experience', label: 'Product Experience', href: 'http://localhost:3000/app/tax-withholding-estimator/' },
+                            { id: 'path-mode', label: 'Path Mode', href: 'http://localhost:3000/app/tax-withholding-estimator/all-screens/?mode=path' },
+                            { id: 'browse-all', label: 'Browse All', href: 'http://localhost:3000/app/tax-withholding-estimator/all-screens/' },
+                            { id: 'fact-explorer', label: 'Fact Explorer', href: 'http://localhost:5180/fact-explorer/twe' },
                         ],
                     },
                 ],

@@ -127,10 +127,12 @@
             // writing `nav.menu` above, for one more application.
             //
             // Our own entries are root-relative so they keep working when this site is read through
-            // Fact Explorer's dev proxy; the sibling's are absolute because nginx here serves
-            // only this application, so a relative path to it would 404. This app has no Authoring
-            // Suite, so it offers none — and switching *from* the sibling's authoring suite lands on
-            // this app's first destination rather than a URL it does not serve.
+            // Fact Explorer's dev proxy; the siblings' are absolute because nginx here serves
+            // only this application, so a relative path to one of them would 404. This app has no
+            // Authoring Suite of its own (fact-explorer.app.json declares authorMode: false), so it
+            // offers none — and switching *from* a sibling's authoring suite lands on this app's
+            // first destination rather than a URL it does not serve. The siblings do have one, and
+            // it is listed for each, so switching *between* them keeps you there.
             apps: {
                 current: 'twe',
                 items: [
@@ -152,6 +154,18 @@
                             { id: 'path-mode', label: 'Path Mode', href: 'http://localhost:3003/app/eitc/all-screens/?mode=path' },
                             { id: 'browse-all', label: 'Browse All Screens', href: 'http://localhost:3003/app/eitc/all-screens/' },
                             { id: 'fact-explorer', label: 'Fact Explorer', href: 'http://localhost:5180/fact-explorer/credit-assistant' },
+                            { id: 'authoring-suite', label: 'Authoring Suite', href: 'http://localhost:3003/app/eitc/author/' },
+                        ],
+                    },
+                    {
+                        id: 'benefits-enrollment',
+                        label: 'Benefits Enrollment',
+                        destinations: [
+                            { id: 'product-experience', label: 'Product Experience', href: 'http://localhost:3006/app/benefits/' },
+                            { id: 'path-mode', label: 'Path Mode', href: 'http://localhost:3006/app/benefits/all-screens/?mode=path' },
+                            { id: 'browse-all', label: 'Browse All Screens', href: 'http://localhost:3006/app/benefits/all-screens/' },
+                            { id: 'fact-explorer', label: 'Fact Explorer', href: 'http://localhost:5180/fact-explorer/benefits-enrollment' },
+                            { id: 'authoring-suite', label: 'Authoring Suite', href: 'http://localhost:3006/app/benefits/author/' },
                         ],
                     },
                 ],
