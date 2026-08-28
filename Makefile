@@ -18,8 +18,15 @@ TAXPERT_REPO ?= ../taxpert
 # at all. Mirrors that Makefile's own PROFILES default; override the same way if you only want one.
 TAXPERT_PROFILES ?= --profile explorer --profile ai
 
+# The ports taxpert's own compose files publish, mirroring $(TAXPERT_REPO)/docker-compose.yml.
+# Only `urls` reads these, and only to print an address — setting one here moves nothing, so they
+# are here to be *corrected* if that file changes, not to configure it.
+FACT_EXPLORER_PORT ?= 5180
+ASSISTANT_PORT ?= 8000
+CHROMA_PORT ?= 8001
+
 # Passed through to each application, so `make ci APPS=credit-assistant SBT_OPTS=-Xmx4g` behaves.
-.PHONY: list bootstrap libraries link-taxpert copy-shared-ui check-shared-ui run-all-local run-all-docker down ps logs site ci test format clean
+.PHONY: list bootstrap libraries link-taxpert copy-shared-ui check-shared-ui run-all-local run-all-docker urls down ps logs site ci test format clean
 
 list: ## Print the applications these targets will act on
 	@echo "applications:"
@@ -146,6 +153,108 @@ run-all-docker: ## Start every application's Docker stack at once, each on its o
 		echo "==> no taxpert checkout at $(TAXPERT_REPO) — skipping (set TAXPERT_REPO=/path/to/taxpert)"; \
 	fi
 	@$(MAKE) --no-print-directory ps
+	@$(MAKE) --no-print-directory urls
+
+urls: ## Print every address this stack serves, and where Author Mode is
+	@# The last thing run-all-docker prints, and worth running alone once that banner is gone up the
+	@# scrollback. `ps` above says what is *running*; this says where to point a browser, which is the
+	@# question someone has on their first `make run-all-docker` and cannot answer from a service list.
+	@#
+	@# Every line is derived, so an application added to this repository shows up here untouched:
+	@#
+	@#   the port      from the app's docker-compose.yml, which is what this stack actually binds. NOT
+	@#                 PORT in its Makefile — that is the native dev server's, and the two are free to
+	@#                 differ even though today all three happen to agree.
+	@#   basePath, id  from its fact-explorer.app.json, the file that already exists to mirror Main.scala.
+	@#   which views   from that file's `capabilities` — the same gate Fact Explorer prunes its own menu
+	@#                 with. An application generated without --allScreens has no Browse All page, and a
+	@#                 printed link to one would 404.
+	@echo ""
+	@echo "==> Open these"
+	@echo ""
+	@echo "    Applications"
+	@for app in $(APPS); do \
+		[ -f $$app/docker-compose.yml ] || continue; \
+		port=$$(sed -n 's/^ *- *"\([0-9][0-9]*\):80".*/\1/p' $$app/docker-compose.yml | head -1); \
+		json=$$app/fact-explorer.app.json; \
+		path=$$(sed -n 's/.*"basePath" *: *"\([^"]*\)".*/\1/p' $$json 2>/dev/null | head -1); \
+		[ -n "$$path" ] || path=$$(grep -rh basePath $$app/src/main/scala 2>/dev/null \
+			| sed -n 's/.*"\([^"]*\)".*/\1/p' | head -1); \
+		echo "      $$app"; \
+		printf "        %-22s http://localhost:%s%s/\n" "Product Experience" "$$port" "$$path"; \
+		if grep -q '"allScreens" *: *true' $$json 2>/dev/null; then \
+			printf "        %-22s http://localhost:%s%s/all-screens/\n" "Browse All" "$$port" "$$path"; \
+			printf "        %-22s http://localhost:%s%s/all-screens/?mode=path\n" "Path Mode" "$$port" "$$path"; \
+		fi; \
+	done
+	@# The taxpert half. Gated on the same checkout test run-all-docker starts it behind, and then on
+	@# TAXPERT_PROFILES: a profile left out of that variable is a service that was never started, and
+	@# an address for it would send someone to a connection refused.
+	@if [ -f "$(TAXPERT_REPO)/docker-compose.yml" ]; then \
+		case "$(TAXPERT_PROFILES)" in *explorer*) \
+			echo ""; \
+			echo "    Fact Explorer"; \
+			printf "      %-26s http://localhost:%s/\n" "every application" "$(FACT_EXPLORER_PORT)"; \
+			for app in $(APPS); do \
+				id=$$(sed -n 's/^  "id" *: *"\([^"]*\)".*/\1/p' $$app/fact-explorer.app.json 2>/dev/null | head -1); \
+				[ -n "$$id" ] || continue; \
+				printf "      %-26s http://localhost:%s/fact-explorer/%s\n" "$$app" "$(FACT_EXPLORER_PORT)" "$$id"; \
+			done ;; \
+		esac; \
+		case "$(TAXPERT_PROFILES)" in *ai*) \
+			echo ""; \
+			echo "    Assistant (what the audit panel's chat talks to)"; \
+			printf "      %-26s http://localhost:%s/docs\n" "API reference" "$(ASSISTANT_PORT)"; \
+			printf "      %-26s http://localhost:%s/health\n" "health" "$(ASSISTANT_PORT)"; \
+			printf "      %-26s http://localhost:%s/\n" "ChromaDB" "$(CHROMA_PORT)" ;; \
+		esac; \
+	else \
+		echo ""; \
+		echo "    Fact Explorer, assistant: no taxpert checkout at $(TAXPERT_REPO) — not started"; \
+	fi
+	@# Author Mode. The address is the *application's* — it is a page on the site, at the base path
+	@# above with /author/ on the end — plus an editing API on its own port, which is worth printing
+	@# because it is what a "port already in use" message names.
+	@#
+	@# Both halves are derived from the application's dev overlay rather than asserted here, so this
+	@# cannot drift the way a sentence saying "no compose file passes --authorMode" did the moment one
+	@# did. --authorMode in the watcher's command is what makes the generator write the page into the
+	@# volume nginx serves; -Dsmol.author.port in the same service's SBT_OPTS is the port the API binds,
+	@# the port published to the host, and the port <meta name="form-builder:author-port"> tells the
+	@# page to call. They cannot disagree — generators/AuthorMode reads the bound port back out of
+	@# AuthoringServer — so reading one of them is enough.
+	@#
+	@# An application whose overlay passes neither gets its native `make dev-author` line instead,
+	@# since the page a stack address would point at was never generated. Those hardcode their API
+	@# port, so they are one at a time; the containerized ones are not, which is why the overlays give
+	@# them a port each.
+	@first=1; native=""; \
+	for app in $(APPS); do \
+		overlay=$$app/docker-compose.override.yml; \
+		path=$$(sed -n 's/.*"basePath" *: *"\([^"]*\)".*/\1/p' $$app/fact-explorer.app.json 2>/dev/null | head -1); \
+		if grep -q -- '--authorMode' $$overlay 2>/dev/null; then \
+			port=$$(sed -n 's/^ *- *"\([0-9][0-9]*\):80".*/\1/p' $$app/docker-compose.yml | head -1); \
+			apiport=$$(sed -n 's/.*-Dsmol\.author\.port=\([0-9][0-9]*\).*/\1/p' $$overlay | head -1); \
+			if [ $$first -eq 1 ]; then echo ""; echo "    Author Mode"; first=0; fi; \
+			printf "      %-26s http://localhost:%s%s/author/  (API :%s)\n" \
+				"$$app" "$$port" "$$path" "$$apiport"; \
+		elif sed -n 's/.*-Dsmol\.author\.port=\([0-9][0-9]*\).*/\1/p' $$app/Makefile | head -1 | grep -q .; then \
+			native="$$native $$app"; \
+		fi; \
+	done; \
+	if [ -n "$$native" ]; then \
+		echo ""; \
+		echo "    Author Mode, not in this stack — these applications' overlays do not pass --authorMode."; \
+		echo "    Run one natively; they hardcode one API port between them, so one at a time:"; \
+		for app in $$native; do \
+			devport=$$(sed -n 's/^PORT ?= *//p' $$app/Makefile); \
+			apiport=$$(sed -n 's/.*-Dsmol\.author\.port=\([0-9][0-9]*\).*/\1/p' $$app/Makefile | head -1); \
+			path=$$(sed -n 's/.*"basePath" *: *"\([^"]*\)".*/\1/p' $$app/fact-explorer.app.json 2>/dev/null | head -1); \
+			printf "      %-40s http://localhost:%s%s/author/  (API :%s)\n" \
+				"make -C $$app dev-author" "$$devport" "$$path" "$$apiport"; \
+		done; \
+	fi
+	@echo ""
 
 down: ## Stop every application's Docker stack, and taxpert's
 	@for app in $(APPS); do \

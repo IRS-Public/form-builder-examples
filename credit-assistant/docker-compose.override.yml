@@ -24,10 +24,17 @@ services:
   # Ivy cache and the vendored assets already in place, so the first `~run` here is seconds rather
   # than minutes.
   #
-  # The flags mirror `make dev` minus --serve: the in-process server binds localhost inside the
-  # container and would not be reachable through a published port, so nginx above does the serving.
-  # Keep the two in step. A flag added to `make dev` and not here is a surface that exists natively
-  # and silently does not exist in Docker.
+  # The flags mirror `make dev-author` minus --serve: the in-process site server binds localhost
+  # inside the container and would not be reachable through a published port, so nginx above does
+  # the serving. Keep the two in step. A flag added to `make dev-author` and not here is a surface
+  # that exists natively and silently does not exist in Docker.
+  #
+  # --authorMode is on HERE and not in the image's SITE_FLAGS, and the asymmetry is the point. Author
+  # Mode is a static shell that edits the source XML through a live API; the prod-like image is nginx
+  # over a baked ./out with neither a source tree nor a running JVM, so generating the shell there
+  # would ship a page that can never connect. This overlay has both. `docker compose -f
+  # docker-compose.yml up` therefore has no Authoring Suite at all — its nav entry is gated on the
+  # same build flag, so the menu is honest about it rather than offering a 404.
   credit-assistant-watch:
     build:
       context: .
@@ -39,8 +46,23 @@ services:
         taxpert: ../../taxpert/packages/ui
     working_dir: /build/credit-assistant
     environment:
-      SBT_OPTS: "-Xmx2g"
-    command: ["sbt", "~run --auditMode --allScreens --scenarioMode"]
+      # -Dsmol.port is NOT about serving — no --serve flag is passed, nginx does that. It is read a
+      # second time by AuthoringServer.appOrigin, which is the origin the Author Mode API reflects
+      # in Access-Control-Allow-Origin. Without it that falls back to Main.scala's
+      # `defaultPort = 3002`, and every fetch from the page nginx serves on :3003 is blocked by CORS.
+      #
+      # -Dsmol.author.host=0.0.0.0 because the API binds loopback by default — it patches source XML
+      # on disk, so it is not something to expose — and loopback inside a container is unreachable
+      # from the published port below. The port mapping keeps it bound to the host's loopback, which
+      # is the trade FormBuilder.run's own comment describes.
+      SBT_OPTS: "-Xmx2g -Dsmol.port=3003 -Dsmol.author.host=0.0.0.0 -Dsmol.author.port=3004"
+    command: ["sbt", "~run --auditMode --allScreens --scenarioMode --authorMode"]
+    # The Author Mode editing API, same port `make dev-author` uses natively. It belongs to the
+    # watcher and not to nginx: the API needs the source tree (bind-mounted below) and regenerates
+    # into the out volume in-process. benefits-enrollment's is on 3007 rather than a second 3004,
+    # since `make run-all-docker` in the parent runs both at once.
+    ports:
+      - "127.0.0.1:3004:3004"
     volumes:
       # This application's own source, live. sbt's watcher picks up a host edit immediately.
       - .:/build/credit-assistant

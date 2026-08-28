@@ -24,10 +24,17 @@ services:
   # Ivy cache and the vendored assets already in place, so the first `~run` here is seconds rather
   # than minutes.
   #
-  # The flags mirror `make dev` minus --serve: the in-process server binds localhost inside the
-  # container and would not be reachable through a published port, so nginx above does the serving.
-  # Keep the two in step. A flag added to `make dev` and not here is a surface that exists natively
-  # and silently does not exist in Docker.
+  # The flags mirror `make dev-author` minus --serve: the in-process site server binds localhost
+  # inside the container and would not be reachable through a published port, so nginx above does
+  # the serving. Keep the two in step. A flag added to `make dev-author` and not here is a surface
+  # that exists natively and silently does not exist in Docker.
+  #
+  # --authorMode is on HERE and not in the image's SITE_FLAGS, and the asymmetry is the point. Author
+  # Mode is a static shell that edits the source XML through a live API; the prod-like image is nginx
+  # over a baked ./out with neither a source tree nor a running JVM, so generating the shell there
+  # would ship a page that can never connect. This overlay has both. `docker compose -f
+  # docker-compose.yml up` therefore has no Authoring Suite at all — its nav entry is gated on the
+  # same build flag, so the menu is honest about it rather than offering a 404.
   benefits-enrollment-watch:
     build:
       context: .
@@ -39,8 +46,25 @@ services:
         taxpert: ../../taxpert/packages/ui
     working_dir: /build/benefits-enrollment
     environment:
-      SBT_OPTS: "-Xmx2g"
-    command: ["sbt", "~run --auditMode --allScreens --scenarioMode"]
+      # -Dsmol.port is NOT about serving — no --serve flag is passed, nginx does that. It is read a
+      # second time by AuthoringServer.appOrigin, which is the origin the Author Mode API reflects in
+      # Access-Control-Allow-Origin; it has to be the port the browser actually loaded the page from.
+      #
+      # -Dsmol.author.host=0.0.0.0 because the API binds loopback by default — it patches source XML
+      # on disk, so it is not something to expose — and loopback inside a container is unreachable
+      # from the published port below. The port mapping keeps it bound to the host's loopback.
+      #
+      # 3007, not the 3004 `make dev-author` uses natively: `make run-all-docker` in the parent
+      # repository brings this app up alongside credit-assistant, and two authoring APIs cannot both
+      # hold 3004. Nothing else needs telling — generators/AuthorMode reads the bound port back out
+      # of AuthoringServer and renders it as <meta name="form-builder:author-port">, which is where
+      # author-mode.js learns which port to call.
+      SBT_OPTS: "-Xmx2g -Dsmol.port=3006 -Dsmol.author.host=0.0.0.0 -Dsmol.author.port=3007"
+    command: ["sbt", "~run --auditMode --allScreens --scenarioMode --authorMode"]
+    # The Author Mode editing API. It belongs to the watcher and not to nginx: the API needs the
+    # source tree (bind-mounted below) and regenerates into the out volume in-process.
+    ports:
+      - "127.0.0.1:3007:3007"
     volumes:
       # This application's own source, live. sbt's watcher picks up a host edit immediately.
       - .:/build/benefits-enrollment
