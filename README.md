@@ -34,25 +34,50 @@ git clone https://github.com/IRS-Public/fact-graph
 git clone https://github.com/IRS-Public/form-builder
 git clone https://github.com/IRS-Public/taxpert          
 ```
+### Docker (recommended)
+`make run-all-docker` is the single command to run everything in Docker. It will take a few minutes to pull all the 
+images and spin things up. Taxpert's docker stack will be initialized automatically as well.
 
-`make run-all-local` starts one `make dev` per application and prints each one's address before the sbt
-logs begin. Every application fixes its own port and URL prefix, so the four run side by side with
+### Locally (with only Taxpert's Experience Explorer)
+
+`make bootstrap` publishes the libraries once for all four applications rather than once per
+application, then runs each application's `npm install` and regenerates its vendored mirrors. Every
+other target is the per-application one, run in turn. `make link-taxpert TAXPERT_UI=...` works from
+here as well as from an application directory, for a Taxpert checkout kept somewhere other than
+beside this repository. The
+[QUICKSTART.md](https://github.com/IRS-Public/taxpert/blob/main/docs/QUICKSTART.md#the-native-path) has
+what each of those does.
+
+```bash
+make bootstrap
+make run-all-local # once: publish the libraries, install npm deps, vendor the assets
+```
+`make run-all-local` initiates a `make dev` per application and prints each one's address before the sbt logs begin. Every application fixes its own port and URL prefix, so the four run side by side with
 nothing to coordinate. Output is prefixed with the application name, and Ctrl-C stops all of them.
 
-`make run-all-docker` is the Docker counterpart of `make run-all-local`, and reaches the same four addresses. Give the 
-watchers a minute after that: nginx serves the site baked into the image straight
-away, and the `sbt ~run` container replaces it with a live-regenerating one shortly after.
+Running locally without the Taxpert Docker stack will allow you to view Experience Explorer only. Fact Explorer, 
+Author Mode, and AI services will not be available.  
 
+### Locally (with all of Taxpert)
+```bash
+cd path/to/taxpert
+make up
+cd path/to/form-builder-examples
+make bootstrap
+make run-all-local
+```
+
+#### One application only
 
 If you only want to run one application, `cd` to an application and start it:
 
 ```bash
 cd credit-assistant
-make bootstrap    # once: publish the libraries, install npm deps, vendor the assets
+make bootstrap    
 make dev          # http://localhost:3003/app/eitc/
 ```
 
-`make up` in any application does the same thing without a local toolchain: it builds both Scala
+`make up` in any application does the same thing in Docker, without a local toolchain. It builds both Scala
 libraries inside the image, generates the site, serves it through nginx, and leaves an `sbt ~run`
 watcher regenerating it as you edit.
 
@@ -71,15 +96,6 @@ startup banner, so `diff` between any two shows only those.
 | direct-file-form-builder | `http://localhost:3008/app/direct-file/` |
 
 Use `make run-all-docker APPS="credit-assistant benefits-enrollment"` to start a subset.
-
-`make bootstrap` publishes the libraries once for all four applications rather than once per
-application, then runs each application's `npm install` and regenerates its vendored mirrors. Every
-other target is the per-application one, run in turn. `make link-taxpert TAXPERT_UI=...` works from
-here as well as from an application directory, for a Taxpert checkout kept somewhere other than
-beside this repository. The
-[QUICKSTART.md](https://github.com/IRS-Public/taxpert/blob/main/docs/QUICKSTART.md#the-native-path) has
-what each of those does.
-
 
 
 | | [`credit-assistant/`](credit-assistant/README.md) | [`tax-withholding-estimator/`](tax-withholding-estimator/README.md) | [`benefits-enrollment/`](benefits-enrollment/README.md) | [`direct-file-form-builder/`](direct-file-form-builder/README.md) |
