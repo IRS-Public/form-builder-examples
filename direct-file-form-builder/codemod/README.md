@@ -1,18 +1,40 @@
 # The transpiler
 
-The Flow XML in `src/main/resources/direct-file/flow/` is **generated**. Corrections go into the
-transpiler, never into the emitted XML, so the port stays reproducible against an upstream that is
-still moving.
+The Flow XML in `src/main/resources/direct-file/flow/`, and `facts/flowGates.xml` beside it, are
+**generated**. Corrections go into the transpiler, never into the emitted XML, so the port stays
+reproducible against an upstream that is still moving.
 
-The transpiler runs **inside `direct-file/df-client/df-client-app`**, under `vite-node`, because it
-needs to import that app's own modules — its flow, its locale helpers, its content shapes. That is
-an established pattern there; eight of its npm scripts already work that way. This directory holds
-the contract, not the code.
+    make transpile          # regenerate the flow and its gate facts
+    make transpile-verify   # check the page order against Direct File's 175 scenario snapshots
+
+## Where it lives, and why that took a second try
+
+All of it lives here, in this application. **The Direct File checkout is read-only**: nothing below
+writes to it, and nothing of the transpiler lives inside it.
+
+That is not free, because stage 1 has to import Direct File's own modules — its flow, its locale
+helpers, its content shapes — and those are TSX resolved by that application's Vite config. The way
+through is `vite-node --root <df-client-app>`: Vite's root is the Direct File checkout, so
+`extract.ts` imports `/src/flow/flow.js` and gets the real thing, while the file doing the importing
+sits over here. `make transpile` sets that up; `DF_CLIENT_APP` says where the checkout is.
+
+Everything after stage 1 reads the JSON rather than the React app, so it runs under plain `node`,
+which strips the types. That split is worth keeping for its own sake: the interesting stages are
+testable without a DOM and reviewable as a diff.
+
+## What is worth committing
+
+`manifest.json` — yes. It is the record of what was mapped and what was dropped, and its diff is how
+you notice that an upstream change silently removed twenty screens.
+
+`flow-config.json` — 2 MB, and a judgement call. Committing it lets stages 2–5 run without a Direct
+File checkout and makes an upstream sync show up as a reviewable diff of the input rather than only
+of the output. Regenerating it is one command, so the argument against is only its size.
 
 ## Stage 1 — the flow, as JSON
 
-    cd direct-file/df-client/df-client-app
-    npm run to-form-builder:extract -- /tmp/flow-config.json
+    make transpile   # or, alone:
+    npx --prefix $DF_CLIENT_APP vite-node --root $DF_CLIENT_APP codemod/extract.ts codemod/flow-config.json
 
 `createFlowConfig(flowNodes)` is Direct File's own compiler. It walks the JSX in `flow.tsx` once and
 returns a plain object graph with **every ancestor `<Gate>` already flattened onto each screen** as
@@ -68,7 +90,7 @@ SubSubcategory or the collection loop changes: the finest cut that never reorder
 coarsest that never puts two unrelated headings on one page. 727 screens become **218 pages** — 170
 under a SubSubcategory, 48 under none, 29 of them from the 14 split SubSubcategories.
 
-`extract.ts` refuses to write output unless all four hold:
+`codemod/extract.ts` refuses to write output unless all four hold:
 
 | Assertion | Catches |
 |---|---|
@@ -88,8 +110,8 @@ screen route; otherwise the run's first screen names it, screen routes being glo
 ### Verified against the scenarios, not just against the compiler
 
 Those four assertions prove the extraction is faithful to `createFlowConfig`. They do not prove that
-`flow.screens` is the order a taxpayer actually walks. `npm run to-form-builder:verify-order` is the
-external evidence, over the 175 recorded traversals in `flow-snapshots/`:
+`flow.screens` is the order a taxpayer actually walks. `make transpile-verify` is the external
+evidence, over the 175 recorded traversals in `flow-snapshots/`:
 
     scenarios          175
     navigation steps   25733
@@ -105,14 +127,17 @@ questions are subtly out of order.
 
 ## Stage 2 — structure
 
+    make transpile   # or, alone:
+    node codemod/emit.ts codemod/flow-config.json src/main/resources/direct-file
+
 | Direct File | Becomes |
 |---|---|
-| `Category` (5) | nothing structural; carried as `group-by` and as the Browse All grouping |
+| `Category` (5) | nothing structural; Browse All groups by module, which is finer |
 | `Subcategory` (25) | one flow module file, its pages in run order |
-| run (218) | one `<page route="…" group-by="…">` |
-| `Screen` (727) | one `<div condition="/flowGateNNN" operator="isTrue">`, in run order inside its page |
-| `CollectionLoop` (19) | one `<fg-collection>` page; its inner SubSubcategories collapse into it |
-| `isKnockout` screen (102) | `<fg-alert knockout="true" if-true="/flowGateNNN">` |
+| run (217) | one `<page route="…">` |
+| `Screen` (713) | one `<div class="df-screen" condition="/flowGateXXXXXXXX" operator="isTrue">`, in run order inside its page |
+| `CollectionLoop` (19) | an `<fg-collection>` wrapping the screen divs of each of its pages |
+| `isKnockout` screen (102) | `class="df-screen df-knockout"`, awaiting stage 4's `<fg-alert knockout="true">` |
 
 The screen-as-conditional-div is the load-bearing choice: the flow runtime's
 `showOrHideAllElements` deletes the facts of any `fg-set` it hides, which reproduces Direct File's
@@ -120,35 +145,85 @@ skip-and-clear semantics exactly. It also means page order and in-page order are
 thing — the `<div>`s sit in the page in run order, so a screen the conditions reveal appears exactly
 where Direct File would have navigated to it.
 
+`group-by` is **not** used, contrary to an earlier draft of this file: it selects a splitting
+strategy for single-question-per-screen mode (`h3` against per-question) and carries no grouping
+into Browse All. Browse All groups by flow module, so the 25 subcategories are its sections.
+
+### What 727 and 218 became
+
+| | |
+|---|---|
+| screens emitted | 713 of 727 |
+| pages emitted | 217 of 218 |
+| modules | 25 |
+
+The 14 missing screens and the one missing page are the constant-folded ones below, listed
+individually in `manifest.json` — 13 data-import screens whose condition is `data-import` with no
+operator (so `isTrue`, so false here), and `create-new-self-select-pin`, whose condition is
+`isEssarSigningPath`. The page `your-taxes/other-preferences/create-self-select-pin` had nothing
+else on it. Nothing else is dropped, and a screen that vanishes for any other reason is a bug.
+
+### Still placeholders after this stage
+
+Every screen renders its route as an `<h2>` and its component list as a `<p>`; page titles are the
+humanized route segment. Stage 4 replaces both. `manifest.json`'s `deferred` block names each one
+and the stage that owes it, so nothing here is quietly permanent.
+
+The one that is a design question rather than a to-do: **a collection loop is one navigation in
+Direct File and one page per run here.** Direct File walks a loop item across many screens;
+`<fg-collection>` renders every item inline on one page. Each loop page therefore carries its own
+`<fg-collection>`, which resolves the `/*/` paths correctly and shows the add/remove control more
+than once. Settling that is stage 7's, not stage 2's.
+
 ## Stage 3 — conditions, as synthesized gate facts
 
 Form Builder allows one condition per element and has seven operators. Direct File has eight, and
 after gate flattening most screens carry an ANDed *list*. Rather than extend the condition parser,
 the transpiler emits one derived fact per distinct condition set into `facts/flowGates.xml`, and the
-flow references `if-true="/flowGateNNN"`. Every operator expands to `All`/`Any`/`Not`/`IsComplete`
-over `Dependency`, all four of which are in fact-graph's `defaultFactories`. The result is total —
-never `Incomplete` — which is what `if-true` needs.
+flow references `condition="/flowGateXXXXXXXX"`. Every operator expands to `All`/`Any`/`Not`/
+`IsComplete` over `Dependency`, all four of which are in fact-graph's `defaultFactories`.
+
+**518 gates**, 330 at the root and 188 on a collection item; 57 are shared by more than one screen.
+They are named by an 8-hex-digit hash of the normalized condition set — not a serial number, so an
+unrelated change upstream does not renumber every gate below it — and identical sets collapse to
+one fact.
 
 `Condition.ts`'s `PathCondition.evaluate` is the specification:
 
-| Direct File | Expansion | Uses |
-|---|---|---|
-| bare string, or `{condition}` with no operator | `<All><IsComplete/><Dependency/></All>` | 2,210 |
-| `isTrue` | same | 11 |
-| `isFalse` | `<All><IsComplete/><Not><Dependency/></Not></All>` | 342 |
-| `isTrueOrIncomplete` | `<Any><Not><IsComplete/></Not><Dependency/></Any>` | 158 |
-| `isFalseOrIncomplete` | `<Any><Not><IsComplete/></Not><Not><Dependency/></Not></Any>` | 65 |
-| `isComplete` | `<IsComplete/>` | 13 |
-| `isIncomplete` | `<Not><IsComplete/></Not>` | 7 |
+| Direct File | Expansion |
+|---|---|
+| bare string, or `{condition}` with no operator | `<All><IsComplete/><Dependency/></All>` |
+| `isTrue` | same |
+| `isFalse` | `<All><IsComplete/><Not><Dependency/></Not></All>` |
+| `isTrueOrIncomplete` | `<Any><Not><IsComplete/></Not><Dependency/></Any>` |
+| `isFalseOrIncomplete` | `<Any><Not><IsComplete/></Not><Not><Dependency/></Not></Any>` |
+| `isComplete` | `<IsComplete/>` |
+| `isIncomplete` | `<Not><IsComplete/></Not>` |
 
 `isTrueAndComplete` and `isFalseAndComplete` appear nowhere in the flattened screen conditions, so
 neither needs an expansion.
+
+**Every gate is total — Complete(true) or Complete(false), never Incomplete.** That is not a
+property of the operators but of the order inside them: `AllOperator` short-circuits on the first
+`Complete(false)`, so putting `<IsComplete>` first means the Incomplete dependency behind it is
+never reduced. `AnyOperator` short-circuits on `Complete(true)` the same way, which is what makes
+the two `…OrIncomplete` rows total. Totality is required rather than tidy — `checkCondition` reads
+an Incomplete fact as false and would silently skip the screen.
 
 **One approximation, stated.** Direct File's `isTrue` is `hasValue && !!get`, while
 `isTrueAndComplete` is `complete && !!get`; the Fact Graph offers `IsComplete` and no `HasValue`, so
 both map onto `complete`. The two differ only for a fact that has a value but is not complete — a
 placeholder, or a derived fact with an incomplete dependency. Any parity failure that traces back
 here is real and belongs in this table, not in a workaround.
+
+### Conditions on facts that are not Boolean
+
+`!!get` is JavaScript truthiness, so a Direct File condition may name a fact of any type. The Fact
+Graph has no coercion — `<All>` rejects a non-Boolean child outright — so each one needs its
+comparison written out. There is exactly one, `/claimedDependentsCount`, which expands to
+`<GreaterThan>` against `<Int>0</Int>`; it is a `<Count>` and cannot be negative, so `> 0` and
+`!= 0` agree. A new one upstream fails the Scala build with *"all children of `<All>` must be
+BooleanNodes"*, which is what points back at the table in `gates.ts`.
 
 ### The conditions that are not facts
 
@@ -162,11 +237,32 @@ condition at all.
 
 ### Scope
 
-A gate whose paths all sit under one collection is defined at `/theCollection/*/flowGateNNN` rather
-than at the root; absolute dependencies resolve fine from inside a collection item, so a
-mixed-scope gate lives at the collection scope. Gates are named by a hash of the normalized
-condition set — `rawConditionToString` gives a canonical string per condition — so identical sets
-collapse to one fact and regeneration is stable.
+A gate is defined wherever its paths live: at `/theCollection/*/flowGateXXXXXXXX` when they carry
+that collection's wildcard, at the root otherwise. Inside a collection-scoped gate the collection's
+own paths are written relative (`../isImported`) and everything else stays absolute, which is what
+lets one gate mix the two. `configureCollectionIds` rewrites `condition` along with `path` when it
+clones a collection item, so the `<div>`'s `condition="/formW2s/*/flowGate7d13d8a7"` becomes
+`/formW2s/#id/flowGate7d13d8a7` for that item — the same substitution the questions get.
+
+Two facts about the data make this simple, and both are checked rather than assumed:
+
+- **No screen's conditions span two collections.** A gate therefore has one scope or none.
+- **Outside a loop, the only wildcard is `/filers/*`, and the screen's `collectionContext` is always
+  `/primaryFiler` or `/secondaryFiler`** — 33 screens. Those are `<Find>` facts returning one filer,
+  so the path is rewritten to `/primaryFiler/hasIpPin` and the gate sits at the root. The dictionary
+  already reads through that alias in 106 places.
+
+Either assumption breaking throws by name and route rather than producing a mis-scoped gate.
+
+### The check that turns a stack trace into a sentence
+
+A gate naming a fact the dictionary does not declare fails deep inside the Fact Graph's
+initialisation, several frames from anything that says which flow condition caused it. So the
+emitter reads every `<Fact path>` the application declares and refuses to write a gate that names
+something else, reporting the path, the gate and the screen it came from. Its first run found four
+— all a false alarm from reading only double-quoted `path="…"` attributes when `signing.xml` writes
+some of its facts with single quotes, which is the kind of thing this check exists to make cheap to
+find.
 
 ## Stage 4 — content
 
@@ -179,9 +275,11 @@ locale-parity tests run on, so a key this cannot find is a key upstream would al
 
 ## Stage 5 — a coverage manifest, not a silent pass
 
-Every stage records the component types it met, how each was mapped, and every one that fell
-through. An unmapped type fails the run unless it is on the out-of-scope allowlist. This is what
-keeps iteration honest: an unhandled construct must never quietly vanish from 727 screens.
+`codemod/manifest.json` is regenerated with every emit. It records the counts, every screen and page
+dropped and why, every content component type met with the number of screens carrying it, and a
+`deferred` block naming each construct stage 2 records rather than expresses and the stage that owes
+it. An unhandled construct must never quietly vanish from 727 screens.
 
-The 51 types, and where each stands, live in `component-coverage.md` beside this file once stage 4
-lands.
+Today it is a report. Once stage 4 lands it gains teeth: an unmapped component type fails the run
+unless it is on the out-of-scope allowlist, and the 51 types with their dispositions move into
+`component-coverage.md` beside this file.

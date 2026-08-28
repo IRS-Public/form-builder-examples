@@ -1,0 +1,6 @@
+{
+  "//": "Scoped to this directory so `node codemod/emit.ts` reads the transpiler as ES modules. The application itself has no package.json and needs none: it is a Form Builder app with no npm build step.",
+  "name": "direct-file-transpiler",
+  "private": true,
+  "type": "module"
+}

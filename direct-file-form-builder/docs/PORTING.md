@@ -28,8 +28,12 @@ A probe flow bound to real fact paths — `/maritalStatus`, `/receivedDigitalAss
 `/studentLoanInterestAmount`, with `/isMarried` and `/taxYear` derived — built green, and the
 generated `out/app/direct-file/resources/fact-dictionary.xml` carries all 3,030 facts to the
 browser. The check has teeth: pointing one `fg-set` at a path that does not exist fails the build
-with `InvalidFormConfig: /thisFactDoesNotExist not found in the fact dictionary`, which is the
-safety net the codemod will lean on for 704 screens.
+with `InvalidFormConfig: /thisFactDoesNotExist not found in the fact dictionary`.
+
+The probe is gone — the transpiler's output replaced it, as its header said it would — and the
+safety net it demonstrated now covers the real thing: 713 screens across 217 pages, and 518
+synthesized gate facts whose every dependency is checked against this dictionary before the XML is
+written.
 
 ## Deviations from upstream
 
@@ -64,8 +68,18 @@ engine ignored it before and ignores it now.
 ## The flow is generated
 
 The Flow XML under `src/main/resources/direct-file/flow/` is transpiler output and is never
-hand-edited. See [../codemod/README.md](../codemod/README.md) for the contract, the stage list, and
-the condition-operator table the gate facts are built from.
+hand-edited, and so is `facts/flowGates.xml` — 518 synthesized Boolean facts, one per distinct set
+of screen conditions. See [../codemod/README.md](../codemod/README.md) for the contract, the stage
+list, and the condition-operator table the gate facts are built from.
+
+25 modules, 217 pages, 713 screens. `flow/index.xml` lists the modules in flow order; each module is
+one Direct File subcategory and each page is a contiguous run of its declaration order.
+
+`locales/flow_es.yaml` is empty on purpose until stage 4. Its key set is owned by the generated
+`flow_en.yaml`, so every key in it today would be a translation of a placeholder. Direct File ships
+its own `es` locale beside the `en` one its content components name, and stage 4 emits both files
+from it; until then the resolver falls back to English and the `/es/` pages render the English
+placeholders.
 
 ## Library changes this port needed
 
@@ -93,3 +107,25 @@ seed grammar, no application here having used one before.
 - **`facts/*.xml` merge in sorted filename order, last `<Fact path>` wins.** Direct File ships a
   `flow.xml` in its `tax/` directory; it is a *fact* module about flow state, and it belongs in
   `facts/`, not in `flow/`.
+
+## One build.sbt line the other applications do not have
+
+`Compile / unmanagedResources / excludeFilter` prunes `node_modules` as well as `flow_en.yaml`.
+
+`src/main/resources/direct-file/node_modules` is lint tooling — eslint, html-validate, and the USWDS
+distribution `make copy-uswds` lifts out of it. None of it belongs on the classpath, and all ~16,000
+files of it were being copied into `target/classes` and then jarred. Past roughly that size the copy
+and the packaging step disagree about what is there, and the build dies with a
+`FileNotFoundException` naming some file deep inside a dependency — intermittently, so a retry often
+appears to fix it. Roughly one `make ci` in two failed here before the exclusion, which makes a
+transpiler you re-run constantly unworkable.
+
+**This is not a problem the port introduced.** Every application in this repository keeps a
+`node_modules` under `src/main/resources`; benefits-enrollment, whose tree is the same size, flakes
+the same way and did so before this application existed. credit-assistant's is a third smaller and
+does not. The fix belongs in the cookiecutter and in the other three, and has deliberately not been
+made there from here — that is a change to somebody else's application and wants its own commit.
+
+Both clauses of the filter are load-bearing. sbt applies `excludeFilter` to each file rather than
+using it to prune the directory, so matching the directory's own name alone excludes one entry and
+keeps all 15,831 underneath it.

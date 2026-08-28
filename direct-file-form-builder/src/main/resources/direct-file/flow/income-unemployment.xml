@@ -20,11 +20,11 @@
           <h2>add-1099-g</h2>
           <p>Heading ×2, Boolean, SaveAndOrContinueButton</p>
         </div>
-        <div class="df-screen" condition="/form1099Gs/*/flowGate632c9b38" operator="isTrue">
+        <div class="df-screen" condition="/form1099Gs/*/flowGate1d90573a" operator="isTrue">
           <h2>1099-g-add-whose</h2>
           <p>TaxReturnAlert, Heading, CollectionItemReference, GenericString, SaveAndOrContinueButton</p>
         </div>
-        <div class="df-screen" condition="/form1099Gs/*/flowGated9013bde" operator="isTrue">
+        <div class="df-screen" condition="/form1099Gs/*/flowGatef050ef4e" operator="isTrue">
           <h2>1099-g-payer</h2>
           <p>Heading, InfoDisplay, LimitingString, SaveAndOrContinueButton</p>
         </div>
@@ -35,19 +35,19 @@
   <page title="1099 g amount" route="/income/unemployment/1099-g-amount">
     <section>
       <fg-collection path="/form1099Gs" item-name="form1099Gs" determiner="another">
-        <div class="df-screen" condition="/form1099Gs/*/flowGated9013bde" operator="isTrue">
+        <div class="df-screen" condition="/form1099Gs/*/flowGatef050ef4e" operator="isTrue">
           <h2>1099-g-amount</h2>
           <p>Heading, Hint, Dollar, SaveAndOrContinueButton</p>
         </div>
-        <div class="df-screen" condition="/form1099Gs/*/flowGated9013bde" operator="isTrue">
+        <div class="df-screen" condition="/form1099Gs/*/flowGatef050ef4e" operator="isTrue">
           <h2>1099-g-repay-options</h2>
           <p>Heading ×2, InfoDisplay, Boolean, SaveAndOrContinueButton</p>
         </div>
-        <div class="df-screen" condition="/form1099Gs/*/flowGatef4a4187c" operator="isTrue">
+        <div class="df-screen" condition="/form1099Gs/*/flowGate54628ef0" operator="isTrue">
           <h2>1099-g-repay-amount</h2>
           <p>Heading, Dollar ×2, SaveAndOrContinueButton</p>
         </div>
-        <div class="df-screen df-knockout" condition="/form1099Gs/*/flowGate89200bf6" operator="isTrue">
+        <div class="df-screen df-knockout" condition="/form1099Gs/*/flowGate7c8f373c" operator="isTrue">
           <h2>1099-g-repay-knockout</h2>
           <p>IconDisplay, Heading ×2, InfoDisplay ×2, DFAlert, KnockoutButton</p>
         </div>
@@ -58,7 +58,7 @@
   <page title="Federal income tax withheld" route="/income/unemployment/federal-income-tax-withheld">
     <section>
       <fg-collection path="/form1099Gs" item-name="form1099Gs" determiner="another">
-        <div class="df-screen" condition="/form1099Gs/*/flowGated9013bde" operator="isTrue">
+        <div class="df-screen" condition="/form1099Gs/*/flowGatef050ef4e" operator="isTrue">
           <h2>1099-g-withholding</h2>
           <p>Heading, InfoDisplay, Dollar, SaveAndOrContinueButton</p>
         </div>
@@ -69,7 +69,7 @@
   <page title="Payer tin" route="/income/unemployment/payer-tin">
     <section>
       <fg-collection path="/form1099Gs" item-name="form1099Gs" determiner="another">
-        <div class="df-screen" condition="/form1099Gs/*/flowGate4b1a02b2" operator="isTrue">
+        <div class="df-screen" condition="/form1099Gs/*/flowGate2ee81957" operator="isTrue">
           <h2>1099-g-payer-tin</h2>
           <p>Heading, InfoDisplay, Ein, SaveAndOrContinueButton</p>
         </div>
@@ -80,11 +80,11 @@
   <page title="State tax information" route="/income/unemployment/state-tax-information">
     <section>
       <fg-collection path="/form1099Gs" item-name="form1099Gs" determiner="another">
-        <div class="df-screen" condition="/form1099Gs/*/flowGated9013bde" operator="isTrue">
+        <div class="df-screen" condition="/form1099Gs/*/flowGatef050ef4e" operator="isTrue">
           <h2>1099-g-state-info</h2>
           <p>Heading, InfoDisplay, Enum, GenericString, Dollar, SaveAndOrContinueButton</p>
         </div>
-        <div class="df-screen df-knockout" condition="/form1099Gs/*/flowGate33b74d67" operator="isTrue">
+        <div class="df-screen df-knockout" condition="/form1099Gs/*/flowGate42685fcc" operator="isTrue">
           <h2>1099-g-other-state-ko</h2>
           <p>IconDisplay, Heading, InfoDisplay, DFAlert, KnockoutButton</p>
         </div>
@@ -95,11 +95,11 @@
   <page title="No 1099 g add whose" route="/income/unemployment/no-1099-g-add-whose">
     <section>
       <fg-collection path="/form1099Gs" item-name="form1099Gs" determiner="another">
-        <div class="df-screen" condition="/form1099Gs/*/flowGate054223be" operator="isTrue">
+        <div class="df-screen" condition="/form1099Gs/*/flowGate57c474fc" operator="isTrue">
           <h2>no-1099-g-add-whose</h2>
           <p>Heading, CollectionItemReference, GenericString, SaveAndOrContinueButton</p>
         </div>
-        <div class="df-screen" condition="/form1099Gs/*/flowGate8f18d6d7" operator="isTrue">
+        <div class="df-screen" condition="/form1099Gs/*/flowGate57fc2e70" operator="isTrue">
           <h2>no-1099-g-payer-name</h2>
           <p>Heading, InfoDisplay, LimitingString, SaveAndOrContinueButton</p>
         </div>
@@ -110,19 +110,19 @@
   <page title="No 1099 g amount" route="/income/unemployment/no-1099-g-amount">
     <section>
       <fg-collection path="/form1099Gs" item-name="form1099Gs" determiner="another">
-        <div class="df-screen" condition="/form1099Gs/*/flowGate8f18d6d7" operator="isTrue">
+        <div class="df-screen" condition="/form1099Gs/*/flowGate57fc2e70" operator="isTrue">
           <h2>no-1099-g-amount</h2>
           <p>Heading, Dollar, SaveAndOrContinueButton</p>
         </div>
-        <div class="df-screen" condition="/form1099Gs/*/flowGate8f18d6d7" operator="isTrue">
+        <div class="df-screen" condition="/form1099Gs/*/flowGate57fc2e70" operator="isTrue">
           <h2>no-1099-g-repay-options</h2>
           <p>Heading ×2, InfoDisplay, Boolean, SaveAndOrContinueButton</p>
         </div>
-        <div class="df-screen" condition="/form1099Gs/*/flowGate0d09a898" operator="isTrue">
+        <div class="df-screen" condition="/form1099Gs/*/flowGate33814930" operator="isTrue">
           <h2>no-1099-g-repay-amount</h2>
           <p>Heading, Dollar ×2, SaveAndOrContinueButton</p>
         </div>
-        <div class="df-screen df-knockout" condition="/form1099Gs/*/flowGate75df60e0" operator="isTrue">
+        <div class="df-screen df-knockout" condition="/form1099Gs/*/flowGateb9405d8d" operator="isTrue">
           <h2>no-1099-g-repay-knockout</h2>
           <p>IconDisplay, Heading ×2, InfoDisplay ×2, DFAlert, KnockoutButton</p>
         </div>

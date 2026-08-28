@@ -36,7 +36,7 @@
           <h2>1099-r-recipient-address-choice</h2>
           <p>Heading, DFModal, Enum, SaveAndOrContinueButton</p>
         </div>
-        <div class="df-screen" condition="/form1099Rs/*/flowGateb911482c" operator="isTrue">
+        <div class="df-screen" condition="/form1099Rs/*/flowGate1d4f5261" operator="isTrue">
           <h2>1099-r-add-recipient-address</h2>
           <p>Heading, InfoDisplay, DFModal, Address, SaveAndOrContinueButton</p>
         </div>
@@ -154,43 +154,43 @@
           <h2>1099-r-box-7-pretax-to-posttax-knockout</h2>
           <p>IconDisplay, Heading, InfoDisplay, DFAlert, KnockoutButton</p>
         </div>
-        <div class="df-screen" condition="/form1099Rs/*/flowGatedf504fcd" operator="isTrue">
+        <div class="df-screen" condition="/form1099Rs/*/flowGate1312bbc1" operator="isTrue">
           <h2>1099-r-box-7-early-distribution-question</h2>
           <p>Heading ×2, DFModal, Boolean ×2, SaveAndOrContinueButton</p>
         </div>
-        <div class="df-screen df-knockout" condition="/form1099Rs/*/flowGate8c8fb197" operator="isTrue">
+        <div class="df-screen df-knockout" condition="/form1099Rs/*/flowGateb95adae4" operator="isTrue">
           <h2>1099-r-box-7-early-distribution-knockout</h2>
           <p>IconDisplay, Heading, InfoDisplay, DFAlert, KnockoutButton</p>
         </div>
-        <div class="df-screen" condition="/form1099Rs/*/flowGate87a90794" operator="isTrue">
+        <div class="df-screen" condition="/form1099Rs/*/flowGate8be350c7" operator="isTrue">
           <h2>1099-r-box-7-indirect-rollover</h2>
           <p>Heading ×2, InfoDisplay, DFModal, Boolean ×2, SaveAndOrContinueButton</p>
         </div>
-        <div class="df-screen df-knockout" condition="/form1099Rs/*/flowGate2f16effd" operator="isTrue">
+        <div class="df-screen df-knockout" condition="/form1099Rs/*/flowGated6401b1b" operator="isTrue">
           <h2>1099-r-box-7-indirect-rollover-knockout</h2>
           <p>IconDisplay, Heading, InfoDisplay, DFAlert, KnockoutButton</p>
         </div>
-        <div class="df-screen" condition="/form1099Rs/*/flowGate87a90794" operator="isTrue">
+        <div class="df-screen" condition="/form1099Rs/*/flowGate8be350c7" operator="isTrue">
           <h2>1099-r-military-plan</h2>
           <p>Heading, InfoDisplay, DFModal, Boolean, SaveAndOrContinueButton</p>
         </div>
-        <div class="df-screen" condition="/form1099Rs/*/flowGate87a90794" operator="isTrue">
+        <div class="df-screen" condition="/form1099Rs/*/flowGate8be350c7" operator="isTrue">
           <h2>1099-r-disaster</h2>
           <p>Heading, DFModal, Boolean ×2, SaveAndOrContinueButton</p>
         </div>
-        <div class="df-screen df-knockout" condition="/form1099Rs/*/flowGate40a8f74a" operator="isTrue">
+        <div class="df-screen df-knockout" condition="/form1099Rs/*/flowGatebe178e8e" operator="isTrue">
           <h2>1099-r-disaster-knockout</h2>
           <p>IconDisplay, Heading, InfoDisplay, DFAlert, KnockoutButton</p>
         </div>
-        <div class="df-screen" condition="/form1099Rs/*/flowGate12a322d5" operator="isTrue">
+        <div class="df-screen" condition="/form1099Rs/*/flowGateabfda7f5" operator="isTrue">
           <h2>1099-r-pso</h2>
           <p>Heading ×3, DFModal, Boolean ×2, SaveAndOrContinueButton</p>
         </div>
-        <div class="df-screen" condition="/form1099Rs/*/flowGated0f60b0a" operator="isTrue">
+        <div class="df-screen" condition="/form1099Rs/*/flowGate6754c4cf" operator="isTrue">
           <h2>1099-r-pso-election</h2>
           <p>Heading ×3, InfoDisplay, Boolean, SaveAndOrContinueButton</p>
         </div>
-        <div class="df-screen df-knockout" condition="/form1099Rs/*/flowGate38785a12" operator="isTrue">
+        <div class="df-screen df-knockout" condition="/form1099Rs/*/flowGatef93378d8" operator="isTrue">
           <h2>1099-r-pso-knockout</h2>
           <p>IconDisplay, Heading, InfoDisplay, DFAlert, KnockoutButton</p>
         </div>
@@ -299,7 +299,7 @@
           <h2>1099-r-add-box-14</h2>
           <p>Heading, TaxReturnAlert, InfoDisplay, DFModal, Dollar, SaveAndOrContinueButton</p>
         </div>
-        <div class="df-screen" condition="/form1099Rs/*/flowGate96814df5" operator="isTrue">
+        <div class="df-screen" condition="/form1099Rs/*/flowGated50ebb62" operator="isTrue">
           <h2>1099-r-check-state-value</h2>
           <p>Heading, InfoDisplay, SaveAndOrContinueButton</p>
         </div>
@@ -315,7 +315,7 @@
           <h2>1099-r-add-boxes-16-19</h2>
           <p>Heading, TaxReturnAlert, InfoDisplay, DFModal, Dollar ×3, LimitingString, SaveAndOrContinueButton</p>
         </div>
-        <div class="df-screen" condition="/form1099Rs/*/flowGatecbea0434" operator="isTrue">
+        <div class="df-screen" condition="/form1099Rs/*/flowGate60c9776d" operator="isTrue">
           <h2>1099-r-state-local-tax-error</h2>
           <p>IconDisplay, Heading, DFAlert, KnockoutButton</p>
         </div>

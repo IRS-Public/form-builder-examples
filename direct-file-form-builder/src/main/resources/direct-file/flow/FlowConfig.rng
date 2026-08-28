@@ -43,7 +43,12 @@
           </optional>
           <zeroOrMore>
             <element name="section">
-              <ref name="FlowConfigModuleContent"/>
+              <choice>
+                <oneOrMore>
+                  <ref name="df-screen-module"/>
+                </oneOrMore>
+                <ref name="FlowConfigModuleContent"/>
+              </choice>
             </element>
           </zeroOrMore>
           <!-- Everything a page may carry after its sections, in any order: the modals its content
@@ -73,6 +78,33 @@
         </element>
       </choice>
     </oneOrMore>
+  </define>
+
+  <!-- One Direct File screen, carrying that screen's conditions as a synthesized gate fact.
+       Direct File navigates a screen at a time and re-tests the next screen's conditions at each
+       step; here the screens of one run sit on one page in declaration order and the runtime shows
+       or hides each. `showOrHideAllElements` deletes the facts inside anything it hides, which is
+       the same skip-and-clear the navigation gave. See codemod/README.md. -->
+  <define name="df-screen-module">
+    <element name="div">
+      <attribute name="class">
+        <text/>
+      </attribute>
+      <optional>
+        <group>
+          <attribute name="condition">
+            <data type="anyURI"/>
+          </attribute>
+          <attribute name="operator">
+            <choice>
+              <value>isTrue</value>
+              <value>isFalse</value>
+            </choice>
+          </attribute>
+        </group>
+      </optional>
+      <ref name="FlowConfigModuleContent"/>
+    </element>
   </define>
 
   <define name="fg-set-module">
@@ -250,21 +282,18 @@
           </attribute>
         </choice>
       </optional>
-      <interleave>
-        <oneOrMore>
+      <!-- A choice rather than an interleave: a generated loop page carries screen divs, and a div
+           is also one of the HtmlBlockContent shapes, which an interleave cannot tell apart. -->
+      <zeroOrMore>
+        <choice>
           <ref name="fg-set-module"></ref>
-        </oneOrMore>
-        <zeroOrMore>
+          <ref name="df-screen-module"/>
           <ref name="fg-section-gate-module"/>
-        </zeroOrMore>
-        <!-- An alert scoped to one collection item — a knockout on the child being added, say. -->
-        <zeroOrMore>
+          <!-- An alert scoped to one collection item — a knockout on the child being added, say. -->
           <ref name="fg-alert-module"/>
-        </zeroOrMore>
-        <zeroOrMore>
           <ref name="HtmlBlockContent"/>
-        </zeroOrMore>
-      </interleave>
+        </choice>
+      </zeroOrMore>
     </element>
   </define>
 

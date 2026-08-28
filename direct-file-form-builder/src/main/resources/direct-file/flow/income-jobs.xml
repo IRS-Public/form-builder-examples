@@ -16,15 +16,15 @@
   <page title="Jobs data import ko" route="/income/jobs/jobs-data-import-ko">
     <section>
       <fg-collection path="/formW2s" item-name="formW2s" determiner="another">
-        <div class="df-screen df-knockout" condition="/formW2s/*/flowGate804f4ca1" operator="isTrue">
+        <div class="df-screen df-knockout" condition="/formW2s/*/flowGate7d13d8a7" operator="isTrue">
           <h2>jobs-data-import-ko</h2>
           <p>IconDisplay, Heading, InfoDisplay ×2, DFAccordion ×8, DFAlert, KnockoutButton, SaveAndOrContinueButton ×2</p>
         </div>
-        <div class="df-screen" condition="/formW2s/*/flowGate65709ae1" operator="isTrue">
+        <div class="df-screen" condition="/formW2s/*/flowGateea28562e" operator="isTrue">
           <h2>jobs-data-import-breather</h2>
           <p>Heading, InfoDisplay, SaveAndOrContinueButton</p>
         </div>
-        <div class="df-screen" condition="/formW2s/*/flowGatedb875193" operator="isTrue">
+        <div class="df-screen" condition="/formW2s/*/flowGated9666cca" operator="isTrue">
           <h2>jobs-data-import-refer-W2</h2>
           <p>Heading, InfoDisplay, DFModal, SaveAndOrContinueButton</p>
         </div>
@@ -35,15 +35,15 @@
   <page title="W 2 basic info" route="/income/jobs/w-2-basic-info">
     <section>
       <fg-collection path="/formW2s" item-name="formW2s" determiner="another">
-        <div class="df-screen" condition="/formW2s/*/flowGate777d26ae" operator="isTrue">
+        <div class="df-screen" condition="/formW2s/*/flowGateaadd02b6" operator="isTrue">
           <h2>w2-add-whose-w2</h2>
           <p>TaxReturnAlert, Heading, CollectionItemReference, GenericString, SaveAndOrContinueButton</p>
         </div>
-        <div class="df-screen" condition="/formW2s/*/flowGate6f81e6c3" operator="isTrue">
+        <div class="df-screen" condition="/formW2s/*/flowGatea4e191a4" operator="isTrue">
           <h2>w2-add-box-a</h2>
           <p>TaxReturnAlert, Heading, DFModal ×3, Tin ×2, SaveAndOrContinueButton</p>
         </div>
-        <div class="df-screen" condition="/formW2s/*/flowGate2a1e4e64" operator="isTrue">
+        <div class="df-screen" condition="/formW2s/*/flowGate88306618" operator="isTrue">
           <h2>w2-add-step2-has-itin</h2>
           <p>TaxReturnAlert, Heading, DFModal ×2, Tin, SaveAndOrContinueButton</p>
         </div>
@@ -51,11 +51,11 @@
           <h2>w2-add-box-e</h2>
           <p>Heading, DFModal ×3, LimitingString ×7, SaveAndOrContinueButton</p>
         </div>
-        <div class="df-screen" condition="/formW2s/*/flowGate47969f42" operator="isTrue">
+        <div class="df-screen" condition="/formW2s/*/flowGate8106a690" operator="isTrue">
           <h2>w2-add-box-f-choice</h2>
           <p>Heading, Boolean, DFModal, SaveAndOrContinueButton</p>
         </div>
-        <div class="df-screen" condition="/formW2s/*/flowGate8388a4cb" operator="isTrue">
+        <div class="df-screen" condition="/formW2s/*/flowGate8fb0b0e8" operator="isTrue">
           <h2>w2-add-box-f-different-address</h2>
           <p>Heading, InfoDisplay, DFModal, Address, SaveAndOrContinueButton</p>
         </div>
@@ -123,11 +123,11 @@
           <h2>w2-has-box-12</h2>
           <p>Heading, ContextHeading, DFModal, Boolean, FactSelect, SaveAndOrContinueButton</p>
         </div>
-        <div class="df-screen" condition="/formW2s/*/flowGateebfb952d" operator="isTrue">
+        <div class="df-screen" condition="/formW2s/*/flowGateaaa7d977" operator="isTrue">
           <h2>w2-add-box-12</h2>
           <p>ContextHeading, Heading, InfoDisplay, DFModal, FactSelect, SaveAndOrContinueButton</p>
         </div>
-        <div class="df-screen" condition="/formW2s/*/flowGated1e8c2ec" operator="isTrue">
+        <div class="df-screen" condition="/formW2s/*/flowGate520ea21e" operator="isTrue">
           <h2>w2-governmental-457b</h2>
           <p>ContextHeading, Heading, DFModal, Boolean, SaveAndOrContinueButton</p>
         </div>
@@ -153,7 +153,7 @@
   <page title="Box 13 codes" route="/income/jobs/box-13-codes">
     <section>
       <fg-collection path="/formW2s" item-name="formW2s" determiner="another">
-        <div class="df-screen" condition="/formW2s/*/flowGateefe3bb9a" operator="isTrue">
+        <div class="df-screen" condition="/formW2s/*/flowGatef7212230" operator="isTrue">
           <h2>w2-add-box-13-options</h2>
           <p>Heading, InfoDisplay, DFModal, Boolean ×3, SaveAndOrContinueButton</p>
         </div>
@@ -176,15 +176,15 @@
           <h2>w2-has-box-14</h2>
           <p>ContextHeading, Heading, DFModal, Boolean, FactSelect, SaveAndOrContinueButton</p>
         </div>
-        <div class="df-screen" condition="/formW2s/*/flowGateefc170de" operator="isTrue">
+        <div class="df-screen" condition="/formW2s/*/flowGate53bfd4eb" operator="isTrue">
           <h2>w2-add-box-14</h2>
           <p>ContextHeading, Heading, InfoDisplay, DFModal, Boolean, SaveAndOrContinueButton</p>
         </div>
-        <div class="df-screen df-knockout" condition="/formW2s/*/flowGatecb3fb01e" operator="isTrue">
+        <div class="df-screen df-knockout" condition="/formW2s/*/flowGate3a006084" operator="isTrue">
           <h2>rrta-codes-ko</h2>
           <p>IconDisplay, Heading, DFAlert, KnockoutButton</p>
         </div>
-        <div class="df-screen" condition="/formW2s/*/flowGate18395785" operator="isTrue">
+        <div class="df-screen" condition="/formW2s/*/flowGate10e479ea" operator="isTrue">
           <h2>w2-add-box-14-ny</h2>
           <p>ContextHeading, Heading, InfoDisplay, DFModal ×2, FactSelect ×3, SaveAndOrContinueButton</p>
         </div>
@@ -192,11 +192,11 @@
           <h2>w2-box-14-rrta-ny-ko</h2>
           <p>IconDisplay, Heading, InfoDisplay, DFAlert, KnockoutButton</p>
         </div>
-        <div class="df-screen" condition="/formW2s/*/flowGate6c72834e" operator="isTrue">
+        <div class="df-screen" condition="/formW2s/*/flowGateac54d797" operator="isTrue">
           <h2>w2-box-14-md-union-dues</h2>
           <p>Heading, DFModal, Boolean, SaveAndOrContinueButton</p>
         </div>
-        <div class="df-screen" condition="/formW2s/*/flowGate17781f46" operator="isTrue">
+        <div class="df-screen" condition="/formW2s/*/flowGatef0c11eb5" operator="isTrue">
           <h2>w2-box-14-md-union-dues-amount</h2>
           <p>Heading, DFModal, Dollar, SaveAndOrContinueButton</p>
         </div>
@@ -211,11 +211,11 @@
           <h2>w2-add-boxes-15-20</h2>
           <p>ContextHeading, Heading, TaxReturnAlert ×3, InfoDisplay, DFModal, Enum, LimitingString ×2, Dollar ×4, SaveAndOrContinueButton</p>
         </div>
-        <div class="df-screen" condition="/formW2s/*/flowGatea4b064ea" operator="isTrue">
+        <div class="df-screen" condition="/formW2s/*/flowGate03ed9fb7" operator="isTrue">
           <h2>w2-missing-state-income</h2>
           <p>ContextHeading, Heading, DFAlert, DFModal, SaveAndOrContinueButton</p>
         </div>
-        <div class="df-screen" condition="/formW2s/*/flowGate0cfc9cca" operator="isTrue">
+        <div class="df-screen" condition="/formW2s/*/flowGate9bac8278" operator="isTrue">
           <h2>w2-part-year-yonkers</h2>
           <p>Heading, InfoDisplay, Boolean, SaveAndOrContinueButton</p>
         </div>
@@ -241,7 +241,7 @@
   <page title="Corrected or non standard w2" route="/income/jobs/corrected-or-non-standard-w2">
     <section>
       <fg-collection path="/formW2s" item-name="formW2s" determiner="another">
-        <div class="df-screen" condition="/formW2s/*/flowGate33dcaa00" operator="isTrue">
+        <div class="df-screen" condition="/formW2s/*/flowGate2b168cd8" operator="isTrue">
           <h2>w2-nonstandard-corrected</h2>
           <p>Heading, InfoDisplay, Enum, SaveAndOrContinueButton</p>
         </div>

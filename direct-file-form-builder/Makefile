@@ -290,3 +290,24 @@ fact-explorer: ## Build with the Form Builder Graph and print this app's Fact Ex
 	@echo "    regenerate its registry, then open:"
 	@echo "    cd /path/to/taxpert/packages/fact-explorer && npm run build-registry && npm run dev"
 	@echo "    http://localhost:5180/fact-explorer/direct-file"
+
+# --- The transpiler ------------------------------------------------------------------------------
+# The Flow XML and facts/flowGates.xml in this application are generated from IRS Direct File's
+# `df-client-app`. See codemod/README.md. DF_CLIENT_APP is a checkout of
+# https://github.com/IRS-Public/direct-file, which is read-only here — nothing below writes to it.
+
+DF_CLIENT_APP ?= ../../direct-file/direct-file/df-client/df-client-app
+
+.PHONY: transpile
+transpile: ## Regenerate the flow and its gate facts from Direct File
+	@# Stage 1 runs under vite-node with the Direct File checkout as the Vite root, which is what
+	@# makes codemod/extract.ts's `/src/flow/...` imports resolve without a file living over there.
+	@# Everything after it reads the JSON, and runs under plain node.
+	npx --prefix $(DF_CLIENT_APP) vite-node --root $(DF_CLIENT_APP) \
+		codemod/extract.ts codemod/flow-config.json
+	node codemod/emit.ts codemod/flow-config.json $(RESOURCES_DIR)
+
+.PHONY: transpile-verify
+transpile-verify: ## Check the extracted page order against Direct File's 175 scenario snapshots
+	npx --prefix $(DF_CLIENT_APP) vite-node --root $(DF_CLIENT_APP) \
+		codemod/verify-order.ts $(DF_CLIENT_APP)

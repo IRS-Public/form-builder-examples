@@ -60,7 +60,7 @@
   <page title="Rrb whose" route="/income/social-security/rrb-whose">
     <section>
       <fg-collection path="/socialSecurityReports" item-name="socialSecurityReports" determiner="another">
-        <div class="df-screen" condition="/socialSecurityReports/*/flowGate2f4e6aad" operator="isTrue">
+        <div class="df-screen" condition="/socialSecurityReports/*/flowGate17f74843" operator="isTrue">
           <h2>rrb-whose</h2>
           <p>Heading, CollectionItemReference, GenericString, SaveAndOrContinueButton</p>
         </div>
@@ -71,7 +71,7 @@
   <page title="Rrb 1099 box 5" route="/income/social-security/rrb-1099-box-5">
     <section>
       <fg-collection path="/socialSecurityReports" item-name="socialSecurityReports" determiner="another">
-        <div class="df-screen" condition="/socialSecurityReports/*/flowGate1d26b285" operator="isTrue">
+        <div class="df-screen" condition="/socialSecurityReports/*/flowGated7a08eb8" operator="isTrue">
           <h2>rrb-1099-box-5</h2>
           <p>Heading, InfoDisplay, Dollar, SaveAndOrContinueButton</p>
         </div>
@@ -82,7 +82,7 @@
   <page title="Rrb 1099 box 10" route="/income/social-security/rrb-1099-box-10">
     <section>
       <fg-collection path="/socialSecurityReports" item-name="socialSecurityReports" determiner="another">
-        <div class="df-screen" condition="/socialSecurityReports/*/flowGate1d26b285" operator="isTrue">
+        <div class="df-screen" condition="/socialSecurityReports/*/flowGated7a08eb8" operator="isTrue">
           <h2>rrb-1099-box-10</h2>
           <p>Heading, InfoDisplay, Dollar, SaveAndOrContinueButton</p>
         </div>

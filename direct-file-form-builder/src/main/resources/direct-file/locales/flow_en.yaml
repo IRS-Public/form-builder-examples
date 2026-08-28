@@ -1,36 +1,1995 @@
 # DO NOT EDIT, THIS IS A GENERATED FILE
-/:
-  title: Dictionary probe
-  h2-f9beac: Dictionary probe
-  p-cd7654: |-
-    Not the Direct File flow. Three hand-written questions against the real Direct File fact
-            dictionary, for tax year <fg-show path="/taxYear"/>.
-  /maritalStatus:
-    question: What was your marital status on December 31?
-    options:
-      single:
-        name: Single
-      married:
-        name: Married
-      divorced:
-        name: Divorced
-      widowed:
-        name: Widowed
-  /receivedDigitalAssets:
-    question: Did you receive any digital assets as payment, a reward, or an award?
-    hint: Digital assets include convertible virtual currency,<br/>stablecoins and
-      NFTs.
-    options:
-      'true':
-        name: 'Yes'
-      'false':
-        name: 'No'
-  /studentLoanInterestAmount:
-    question: How much student loan interest did you pay?
-/probe-results:
-  title: Probe results
-  h2-517959: What the dictionary derived
-  p-342527: You told us you were married, so <fg-show path="/maritalStatus"/> is what
-    the return will say.
-  p-ca06a5: Your marital status is <fg-show path="/maritalStatus"/>.
-  p-a282f1: 'Student loan interest paid: <fg-show path="/studentLoanInterestAmount"/>.'
+/you-and-your-family/about-you/about-you-intro:
+  title: About you intro
+  h2-2c93dc: about-you-intro
+  p-7a4109: ContextHeading, Heading, IntroContent ×2, SaveAndOrContinueButton
+/you-and-your-family/about-you/your-basic-information:
+  title: Your basic information
+  h2-a19781: about-you-basic-info
+  p-51dcb1: MefAlert ×2, Heading, IntroContent, DFModal, LimitingString ×3, Enum,
+    GenericString, DatePicker, SaveAndOrContinueButton
+  h2-ddc673: age-ko
+  p-153d61: IconDisplay, Heading, DFAlert, KnockoutButton
+/you-and-your-family/about-you/your-contact-information:
+  title: Your contact information
+  h2-434e15: about-you-contact-info
+  p-76b361: Heading, DFModal, Subheading, Address, PhoneNumber, GenericString, SaveAndOrContinueButton
+/you-and-your-family/about-you/about-you-breather:
+  title: About you breather
+  h2-ddad6f: about-you-breather
+  p-4cc580: Heading, Subheading, SaveAndOrContinueButton
+/you-and-your-family/about-you/your-occupation:
+  title: Your occupation
+  h2-5f08d4: about-you-occupation
+  p-a87731: Heading, InfoDisplay, DFModal, LimitingString, SaveAndOrContinueButton
+/you-and-your-family/about-you/citizenship-or-residency:
+  title: Citizenship or residency
+  h2-eba24e: about-you-citizenship
+  p-15663d: Heading, DFModal, Boolean, SaveAndOrContinueButton
+  h2-496c90: about-you-citizen-by-end-ty
+  p-7bd683: Heading, DFModal, InfoDisplay, Boolean, SaveAndOrContinueButton
+  h2-743433: about-you-residency
+  p-664971: Heading, DFModal ×2, InfoDisplay, Boolean, SaveAndOrContinueButton
+  h2-238816: about-you-national
+  h2-613759: about-you-citizen-resident-ko
+  p-e488e4: IconDisplay, Heading, InfoDisplay, DFAlert, KnockoutButton
+/you-and-your-family/about-you/state-residency-and-income:
+  title: State residency and income
+  h2-55be4d: about-you-state-residency-scope
+  p-b41acb: Heading, Enum, SaveAndOrContinueButton
+  h2-8b97ec: about-you-state-income-form
+  p-33a45d: Heading, DFModal, Enum, SaveAndOrContinueButton
+  h2-82750c: about-you-state-income-1099-misc-pfd
+  p-c602e1: Heading, InfoDisplay, Boolean, SaveAndOrContinueButton
+  h2-bf9167: state-breather-nj
+  p-8ece95: Heading, InfoDisplay, DFAlert, SaveAndOrContinueButton
+  h2-1882bb: about-you-state-income-scope-ko
+  p-674901: IconDisplay, Heading ×2, DFAlert, KnockoutButton
+  h2-b75296: about-you-breather-1099-misc-pfd
+  p-b7ed39: Heading, InfoDisplay ×3, SaveAndOrContinueButton
+/you-and-your-family/about-you/your-tax-identification:
+  title: Your tax identification
+  h2-1c96f0: about-you-tin
+  p-56b99c: Heading, TaxReturnAlert, MefAlert ×2, InfoDisplay, DFModal, Tin, SaveAndOrContinueButton
+  h2-c699e4: about-you-ssn-valid-for-work
+  p-24df44: Heading, DFModal ×2, Enum, SaveAndOrContinueButton
+  h2-9248d9: about-you-ssn-federal-benefits
+  p-328647: Heading, Boolean, SaveAndOrContinueButton
+/you-and-your-family/about-you/your-identity-protection:
+  title: Your identity protection
+  h2-e260b6: about-you-ip-pin-choice
+  p-b7aa20: MefAlert ×2, Heading, DFModal, InfoDisplay, Boolean, SaveAndOrContinueButton
+  h2-cd43da: about-you-ip-pin-ready
+  p-15f27a: TaxReturnAlert, MefAlert ×2, Heading, HelpLink, Boolean, SaveAndOrContinueButton
+  h2-03928c: about-you-ip-pin-not-ready
+  p-ec3ee1: Heading, DFAlert, SaveAndOrContinueButton
+  h2-3b10fe: about-you-ip-pin-input
+  p-8a04e8: MefAlert ×2, Heading, IpPin, SaveAndOrContinueButton
+/you-and-your-family/about-you/your-life-circumstances:
+  title: Your life circumstances
+  h2-ceb15b: about-you-blind
+  p-ecc805: Heading, DFModal ×2, Boolean, SaveAndOrContinueButton
+  h2-3bbddf: about-you-self-care
+  p-965216: Heading, InfoDisplay, DFModal ×2, Boolean, SaveAndOrContinueButton
+  h2-37a6b6: about-you-student
+  p-15663d: Heading, DFModal, Boolean, SaveAndOrContinueButton
+/you-and-your-family/about-you/your-dependency-status:
+  title: Your dependency status
+  h2-034100: about-you-could-be-claimed
+  p-7bd683: Heading, DFModal, InfoDisplay, Boolean, SaveAndOrContinueButton
+  h2-07f339: about-you-claimer-filing-requirement
+  p-dfc901: Heading, InfoDisplay, DFModal, Boolean, SaveAndOrContinueButton
+  h2-9e6bd5: about-you-claimer-filing
+  p-c602e1: Heading, InfoDisplay, Boolean, SaveAndOrContinueButton
+  h2-3d5de5: about-you-claimers-return
+  h2-46091b: about-you-will-be-claimed
+  p-64faee: Heading, InfoDisplay, Boolean, DFAlert ×2, SaveAndOrContinueButton
+/you-and-your-family/spouse/spouse-intro:
+  title: Spouse intro
+  h2-e9d045: spouse-intro
+  p-84fd77: ContextHeading, Heading, IntroContent, DFModal, SaveAndOrContinueButton
+/you-and-your-family/spouse/your-marital-status:
+  title: Your marital status
+  h2-04f53a: spouse-marital-status
+  p-fcb944: DFAlert, Heading, InfoDisplay, DFModal, Enum, SaveAndOrContinueButton
+  h2-c1a5bc: registered-domestic-partner
+  p-dfc901: Heading, InfoDisplay, DFModal, Boolean, SaveAndOrContinueButton
+  h2-280c8c: registered-domestic-partner-ko
+  p-e488e4: IconDisplay, Heading, InfoDisplay, DFAlert, KnockoutButton
+  h2-51172a: spouse-year-of-death
+  p-20e8a0: DFAlert, Heading, InfoDisplay, Enum, SaveAndOrContinueButton
+  h2-2ab997: spouse-widowed-entitled-mfj
+/you-and-your-family/spouse/lived-together-or-apart:
+  title: Lived together or apart
+  h2-e847fd: spouse-live-together
+  p-c602e1: Heading, InfoDisplay, Boolean, SaveAndOrContinueButton
+  h2-6ba575: spouse-live-together-duration
+  p-e56a6f: Heading, InfoDisplay, Enum, SaveAndOrContinueButton
+  h2-f705b0: spouse-apart-last-6-mo
+  h2-c50bdf: spouse-living-apart-sep-agreement-last-day
+  p-328647: Heading, Boolean, SaveAndOrContinueButton
+/you-and-your-family/spouse/spouse-citizenship-or-residency:
+  title: Spouse citizenship or residency
+  h2-ae2eb6: spouse-citizenship
+  p-15663d: Heading, DFModal, Boolean, SaveAndOrContinueButton
+  h2-cc6e63: spouse-citizen-by-end-ty
+  p-7bd683: Heading, DFModal, InfoDisplay, Boolean, SaveAndOrContinueButton
+  h2-7c95eb: spouse-residency
+  p-664971: Heading, DFModal ×2, InfoDisplay, Boolean, SaveAndOrContinueButton
+  h2-778c24: spouse-national
+/you-and-your-family/spouse/filing-status:
+  title: Filing status
+  h2-b944e0: filing-status-choice-a
+  p-1d1e19: IconDisplay, Heading, InfoDisplay, DFModal ×2, Enum, SaveAndOrContinueButton
+  h2-b91f8a: filing-status-choice-b
+  p-fc71fc: IconDisplay, Heading, InfoDisplay, DFAlert, Enum, SaveAndOrContinueButton
+/you-and-your-family/spouse/community-property-ko-go-back:
+  title: Community property ko go back
+  h2-7676bb: community-property-ko-go-back
+  p-e488e4: IconDisplay, Heading, InfoDisplay, DFAlert, KnockoutButton
+  h2-03012f: add-spouse-a
+  p-bef350: ContextHeading, Heading, InfoDisplay, SaveAndOrContinueButton
+/you-and-your-family/spouse/spouse-state-residency-and-income:
+  title: Spouse state residency and income
+  h2-24698c: spouse-state-residency-scope
+  p-e56a6f: Heading, InfoDisplay, Enum, SaveAndOrContinueButton
+  h2-ca1b42: spouse-state-income-form
+  p-33a45d: Heading, DFModal, Enum, SaveAndOrContinueButton
+  h2-df3d11: spouse-pfd-income
+  p-c602e1: Heading, InfoDisplay, Boolean, SaveAndOrContinueButton
+  h2-320443: spouse-state-income-scope-ko
+  p-674901: IconDisplay, Heading ×2, DFAlert, KnockoutButton
+/you-and-your-family/spouse/spouse-you-state-scope-confirm:
+  title: Spouse you state scope confirm
+  h2-dabaa7: spouse-you-state-scope-confirm
+  p-39ae48: Heading, SaveAndOrContinueButton
+  h2-a617ed: spouse-mfj-intro
+  p-33b0cf: Heading, InfoDisplay, SaveAndOrContinueButton
+/you-and-your-family/spouse/spouse-mfj-basic-info:
+  title: Spouse mfj basic info
+  h2-05585f: spouse-mfj-basic-info
+  p-1b3b8c: MefAlert ×2, Heading, InfoDisplay, DFModal ×3, LimitingString ×4, Enum,
+    DatePicker ×2, GenericString, SaveAndOrContinueButton
+  h2-cdf021: spouse-age-ko
+  p-153d61: IconDisplay, Heading, DFAlert, KnockoutButton
+/you-and-your-family/spouse/spouse-mfj-tax-id:
+  title: Spouse mfj tax id
+  h2-c0a47a: spouse-mfj-tax-id
+  p-df46b2: Heading, TaxReturnAlert, MefAlert, InfoDisplay, DFModal, Tin, SaveAndOrContinueButton
+  h2-aa2cce: spouse-mfj-ssn-valid-for-work
+  p-24df44: Heading, DFModal ×2, Enum, SaveAndOrContinueButton
+/you-and-your-family/spouse/spouse-ssn-federal-benefits:
+  title: Spouse ssn federal benefits
+  h2-c9fe0c: spouse-mfj-ssn-federal-benefits
+  p-328647: Heading, Boolean, SaveAndOrContinueButton
+/you-and-your-family/spouse/spouse-ip-pin:
+  title: Spouse ip pin
+  h2-4bf358: spouse-mfj-ip-pin-choice
+  p-b7aa20: MefAlert ×2, Heading, DFModal, InfoDisplay, Boolean, SaveAndOrContinueButton
+  h2-196f1a: spouse-mfj-ip-pin-ready
+  p-15f27a: TaxReturnAlert, MefAlert ×2, Heading, HelpLink, Boolean, SaveAndOrContinueButton
+  h2-367a26: spouse-mfj-ip-pin-not-ready
+  p-ec3ee1: Heading, DFAlert, SaveAndOrContinueButton
+  h2-c8ea78: spouse-mfj-ip-pin-input
+  p-8a04e8: MefAlert ×2, Heading, IpPin, SaveAndOrContinueButton
+/you-and-your-family/spouse/spouse-life-circumstances:
+  title: Spouse life circumstances
+  h2-498ed5: spouse-mfj-blind
+  p-965216: Heading, InfoDisplay, DFModal ×2, Boolean, SaveAndOrContinueButton
+  h2-0911d4: spouse-mfj-self-care
+  p-15663d: Heading, DFModal, Boolean, SaveAndOrContinueButton
+  h2-5e9b11: spouse-mfj-ft-student
+/you-and-your-family/spouse/taxpayer-dependency-status:
+  title: Taxpayer dependency status
+  h2-c2fd72: spouse-mfj-could-be-claimed
+  p-7bd683: Heading, DFModal, InfoDisplay, Boolean, SaveAndOrContinueButton
+  h2-d8c6a2: spouse-mfj-spouse-filing-requirement
+  p-d7d784: Heading, HelpLink, Boolean, SaveAndOrContinueButton
+  h2-a8bab7: spouse-mfj-dep-tp-intro
+  p-c54fea: Heading, InfoDisplay ×2, DFModal, SaveAndOrContinueButton
+  h2-c08b7d: spouse-mfj-refund-only
+  p-a28a2c: TaxReturnAlert, Heading, InfoDisplay, DFModal, Boolean, SaveAndOrContinueButton
+  h2-fd917a: spouse-mfj-will-be-claimed
+  p-c602e1: Heading, InfoDisplay, Boolean, SaveAndOrContinueButton
+  h2-82b6b5: mfjd-breather
+  p-a3b9c1: Heading, DFModal, SaveAndOrContinueButton
+  h2-27e490: mfjd-marketplace-plan
+  p-ed0f06: Heading, InfoDisplay, DFModal ×3, Boolean, SaveAndOrContinueButton
+  h2-7e41f2: mfjd-aptc-paid
+  p-15663d: Heading, DFModal, Boolean, SaveAndOrContinueButton
+  h2-03a481: mfjd-ok-1
+  p-39ae48: Heading, SaveAndOrContinueButton
+  h2-4ef86a: mfjd-enrollees
+  p-e690e1: Heading, DFModal, MultiEnum, SaveAndOrContinueButton
+  h2-87fee3: mfjd-other-tax-family
+  p-664971: Heading, DFModal ×2, InfoDisplay, Boolean, SaveAndOrContinueButton
+  h2-2f27fe: mfjd-switch-not-dependent-tp
+  p-594fc5: Heading, InfoDisplay ×4, SaveAndOrContinueButton
+  h2-b9a170: mfjd-ok-2
+  h2-f44573: mfjd-ok-form-not-required
+  h2-b439c2: mfj-dependent-choice-a
+  p-c16367: IconDisplay, Heading, InfoDisplay, SaveAndOrContinueButton
+  h2-86e17f: mfj-dependent-choice-b
+  p-14a555: IconDisplay, Heading, InfoDisplay ×2, DFAlert, SaveAndOrContinueButton
+/you-and-your-family/spouse/add-spouse-b:
+  title: Add spouse b
+  h2-74ee55: add-spouse-b
+  p-bef350: ContextHeading, Heading, InfoDisplay, SaveAndOrContinueButton
+  h2-8d4f17: mfs-spouse-data-intro
+  p-33b0cf: Heading, InfoDisplay, SaveAndOrContinueButton
+/you-and-your-family/spouse/spouse-separate-return:
+  title: Spouse separate return
+  h2-7fa66c: mfs-spouse-filing-a-return-living
+  p-a4732e: Heading, Boolean ×2, SaveAndOrContinueButton
+  h2-7bc5fb: mfs-spouse-filing-a-return-widowed
+  h2-20900c: mfs-spouse-itemizing
+  p-dfc901: Heading, InfoDisplay, DFModal, Boolean, SaveAndOrContinueButton
+  h2-c20994: mfs-spouse-itemizing-ko
+  p-924706: IconDisplay, Heading, InfoDisplay, DFModal, DFAlert, KnockoutButton
+/you-and-your-family/spouse/mfs-spouse-name:
+  title: Mfs spouse name
+  h2-fbc257: mfs-spouse-name
+  p-b487aa: Heading, LimitingString ×4, SaveAndOrContinueButton
+/you-and-your-family/spouse/mfs-spouse-nr-tin:
+  title: Mfs spouse nr tin
+  h2-edca7c: mfs-spouse-nr-tin
+  p-dfc901: Heading, InfoDisplay, DFModal, Boolean, SaveAndOrContinueButton
+  h2-fd0e49: mfs-breather-spouse-nr-tin
+  p-23dd21: Heading, InfoDisplay, DFModal ×2, DFAlert, SaveAndOrContinueButton
+  h2-c15f07: mfs-spouse-tax-id
+  p-3d8ea4: Heading, TaxReturnAlert, InfoDisplay, DFModal, Tin, SaveAndOrContinueButton
+/you-and-your-family/spouse/spouse-taxpayer-dependency-status:
+  title: Spouse taxpayer dependency status
+  h2-10f740: mfs-spouse-gross-income
+  p-d7151d: Heading, InfoDisplay, HelpLink, Boolean, SaveAndOrContinueButton
+  h2-410217: mfs-spouse-could-be-claimed
+  p-7bd683: Heading, DFModal, InfoDisplay, Boolean, SaveAndOrContinueButton
+/you-and-your-family/spouse/spouse-age-vision:
+  title: Spouse age vision
+  h2-8a9ed2: mfs-spouse-age
+  p-9a7478: Heading, InfoDisplay ×2, DFModal, Boolean, SaveAndOrContinueButton
+  h2-354f4b: mfs-spouse-blind
+  p-965216: Heading, InfoDisplay, DFModal ×2, Boolean, SaveAndOrContinueButton
+/you-and-your-family/dependents/family-hh-intro-dep-tps:
+  title: Family hh intro dep tps
+  h2-1316ce: family-hh-intro-dep-tps
+  p-6cda7d: Heading, IntroContent ×2, DFModal, InternalLink, SaveAndOrContinueButton
+  h2-93f4ac: family-hh-intro-non-dep-tps
+  p-84fd77: ContextHeading, Heading, IntroContent, DFModal, SaveAndOrContinueButton
+  h2-f7a7e7: family-hh-intro-2
+  p-a3b9c1: Heading, DFModal, SaveAndOrContinueButton
+  h2-768669: add-person
+  p-a728da: MefAlert ×2, Heading, DFModal ×2, CollectionItemManager
+/you-and-your-family/dependents/basic-info:
+  title: Basic info
+  collection/familyAndHousehold:
+    itemName: familyAndHousehold
+    h2-4c2500: add-person-basic-info
+    p-35beb8: MefAlert ×5, Heading, InfoDisplay, DFModal, LimitingString ×3, Enum,
+      GenericString, DatePicker, Boolean, SaveAndOrContinueButton
+/you-and-your-family/dependents/relationship:
+  title: Relationship
+  collection/familyAndHousehold:
+    itemName: familyAndHousehold
+    h2-aa285a: add-person-relationship-category
+    p-d1aa9f: Heading ×2, InfoDisplay, DFModal ×2, Enum, SaveAndOrContinueButton
+    h2-f4d7ff: add-person-relationship-type-child
+    p-5f8367: Heading ×2, InfoDisplay, DFModal, Enum, SaveAndOrContinueButton
+    h2-ebea9a: add-person-relationship-type-sibling
+    h2-74f7c8: add-person-relationship-type-parent
+    h2-e9c1b7: add-person-relationship-type-in-law
+    p-e56a6f: Heading, InfoDisplay, Enum, SaveAndOrContinueButton
+/you-and-your-family/dependents/life-circumstances:
+  title: Life circumstances
+  collection/familyAndHousehold:
+    itemName: familyAndHousehold
+    h2-13bf09: add-person-student
+    p-15663d: Heading, DFModal, Boolean, SaveAndOrContinueButton
+    h2-d3bc51: add-person-disability
+    p-7bd683: Heading, DFModal, InfoDisplay, Boolean, SaveAndOrContinueButton
+    h2-68635a: add-person-self-care
+/you-and-your-family/dependents/add-person-lived-with-you:
+  title: Add person lived with you
+  collection/familyAndHousehold:
+    itemName: familyAndHousehold
+    h2-25f852: add-person-lived-with-you
+    p-e9e041: Heading, InfoDisplay, DFModal, Enum, SaveAndOrContinueButton
+/you-and-your-family/dependents/parents-guardians:
+  title: Parents guardians
+  collection/familyAndHousehold:
+    itemName: familyAndHousehold
+    h2-e2058c: add-person-another-parent-in-picture
+    p-a25a86: Heading ×2, InfoDisplay, Boolean, SaveAndOrContinueButton
+    h2-546990: add-person-other-parent-written-declaration
+    p-e53a28: Heading ×2, InfoDisplay, DFModal, Enum ×2, SaveAndOrContinueButton
+    h2-b9deb4: add-person-written-declaration-signed
+    p-594fc5: Heading, InfoDisplay ×4, SaveAndOrContinueButton
+    h2-0fac69: add-person-not-in-custody
+    p-dfc901: Heading, InfoDisplay, DFModal, Boolean, SaveAndOrContinueButton
+    h2-d185fc: add-person-special-rule-residency
+    h2-627e4d: add-person-special-rule-nights-together
+    p-33a45d: Heading, DFModal, Enum, SaveAndOrContinueButton
+    h2-0a5698: add-person-special-rule-agi-tiebreaker
+    p-15663d: Heading, DFModal, Boolean, SaveAndOrContinueButton
+    h2-568906: add-person-special-rule-living-marital-status
+    p-e56a6f: Heading, InfoDisplay, Enum, SaveAndOrContinueButton
+    h2-89c28e: add-person-special-rule-support
+    p-c602e1: Heading, InfoDisplay, Boolean, SaveAndOrContinueButton
+    h2-0a52d3: add-person-special-rule-applies-custodial
+    p-33b0cf: Heading, InfoDisplay, SaveAndOrContinueButton
+    h2-04a1c1: add-person-special-rule-applies-non-custodial
+    p-e488e4: IconDisplay, Heading, InfoDisplay, DFAlert, KnockoutButton
+    h2-f3dbbf: add-person-special-rule-conflicting-information
+    p-bc2c75: IconDisplay, Heading, InfoDisplay ×2, DFAlert, KnockoutButton
+    h2-fdd2e3: add-person-special-rule-does-not-apply
+    h2-cd4cfa: add-person-not-in-custody-other-rel
+    h2-1bb525: add-person-parents-living
+    h2-2ddfee: add-person-any-parents-written-declaration
+    h2-378c59: add-person-special-rule-question
+    h2-75700f: add-person-special-rule-using-child
+    p-965216: Heading, InfoDisplay, DFModal ×2, Boolean, SaveAndOrContinueButton
+    h2-063670: add-person-special-rule-agi-test
+    p-d20749: Heading ×2, DFModal ×2, Boolean ×2, SaveAndOrContinueButton
+    h2-d4dfd1: add-person-special-rule-other-eligible-tp-outcome
+    p-ff9451: Heading, InfoDisplay ×2, SaveAndOrContinueButton
+/you-and-your-family/dependents/add-person-lived-with-you-in-us:
+  title: Add person lived with you in us
+  collection/familyAndHousehold:
+    itemName: familyAndHousehold
+    h2-fbb8a7: add-person-lived-with-you-in-us
+    p-e9e041: Heading, InfoDisplay, DFModal, Enum, SaveAndOrContinueButton
+    h2-cc94ff: add-person-keeping-up-home
+    p-d39622: Heading ×2, DFModal, Boolean ×2, SaveAndOrContinueButton
+    h2-f2d209: add-person-keeping-up-parents-home
+    p-9c3c39: Heading ×2, InfoDisplay ×2, DFModal, Boolean ×2, SaveAndOrContinueButton
+/you-and-your-family/dependents/tax-id:
+  title: Tax id
+  collection/familyAndHousehold:
+    itemName: familyAndHousehold
+    h2-8d7547: add-person-tin
+    p-21ee51: Heading, InfoDisplay, DFModal ×2, Enum, SaveAndOrContinueButton
+    h2-f6a2c5: add-personhoh-qp-no-tin
+    p-e488e4: IconDisplay, Heading, InfoDisplay, DFAlert, KnockoutButton
+    h2-e2753c: add-person-born-died-no-tin
+    p-924706: IconDisplay, Heading, InfoDisplay, DFModal, DFAlert, KnockoutButton
+    h2-62761f: add-person-ssn-valid-for-work
+    p-24df44: Heading, DFModal ×2, Enum, SaveAndOrContinueButton
+    h2-47aabc: add-person-ssn-federal-benefits
+    p-328647: Heading, Boolean, SaveAndOrContinueButton
+    h2-992f81: add-person-acknowledge-tin
+    p-01cc2e: Heading, InfoDisplay, Tin, SaveAndOrContinueButton
+/you-and-your-family/dependents/support:
+  title: Support
+  collection/familyAndHousehold:
+    itemName: familyAndHousehold
+    h2-08d4dc: add-person-qc-support
+    p-c602e1: Heading, InfoDisplay, Boolean, SaveAndOrContinueButton
+    h2-94b055: add-person-qr-support
+    p-20b4b9: Heading ×2, InfoDisplay, DFModal, Boolean ×2, SaveAndOrContinueButton
+    h2-b4c076: add-person-qr-gross-income
+    p-dfc901: Heading, InfoDisplay, DFModal, Boolean, SaveAndOrContinueButton
+/you-and-your-family/dependents/marital-status:
+  title: Marital status
+  collection/familyAndHousehold:
+    itemName: familyAndHousehold
+    h2-e3972e: add-person-married
+    p-328647: Heading, Boolean, SaveAndOrContinueButton
+    h2-55eb61: add-person-joint-return
+    h2-abc94a: add-person-filing-requirement
+    p-15663d: Heading, DFModal, Boolean, SaveAndOrContinueButton
+    h2-3f25ab: add-person-filing-for-refund-only
+    p-c602e1: Heading, InfoDisplay, Boolean, SaveAndOrContinueButton
+/you-and-your-family/dependents/citizenship:
+  title: Citizenship
+  collection/familyAndHousehold:
+    itemName: familyAndHousehold
+    h2-92ed2f: add-person-us-citizen
+    p-7bd683: Heading, DFModal, InfoDisplay, Boolean, SaveAndOrContinueButton
+    h2-b72f90: add-person-resident-alien
+    p-15663d: Heading, DFModal, Boolean, SaveAndOrContinueButton
+    h2-bf8de7: add-person-us-national
+    h2-6e0e87: add-person-resident-mexico-canada
+    p-328647: Heading, Boolean, SaveAndOrContinueButton
+/you-and-your-family/dependents/qc-of-another:
+  title: Qc of another
+  collection/familyAndHousehold:
+    itemName: familyAndHousehold
+    h2-645463: add-person-qc-of-another
+    p-f46fb0: Heading ×2, DFModal, Boolean, SaveAndOrContinueButton
+    h2-ca92e6: add-person-qc-of-another-claimer-filing-requirement
+    p-dfc901: Heading, InfoDisplay, DFModal, Boolean, SaveAndOrContinueButton
+    h2-44c76f: add-person-qc-of-another-claimer-filing
+    p-c602e1: Heading, InfoDisplay, Boolean, SaveAndOrContinueButton
+    h2-ad6d98: add-person-qc-of-another-claimers-return
+    h2-d20f29: add-personhoh-qp-no-tin-end
+    p-e488e4: IconDisplay, Heading, InfoDisplay, DFAlert, KnockoutButton
+    h2-a6ee0d: add-person-qc-of-another-summary
+    p-b7ed39: Heading, InfoDisplay ×3, SaveAndOrContinueButton
+/you-and-your-family/dependents/qualified-qc-of-multiple-tps:
+  title: Qualified qc of multiple tps
+  collection/familyAndHousehold:
+    itemName: familyAndHousehold
+    h2-b082d2: qualified-qc-of-multiple-tps
+    p-97c1c1: IconDisplay, Heading, DFModal, InfoDisplay, SaveAndOrContinueButton
+    h2-e6e69c: qualified-qc-of-multiple-tps-choice
+    p-ec79f3: Heading, DFAlert, FactResultAssertion, Boolean, FactAssertion, SaveAndOrContinueButton
+    h2-aebc5e: qualified-dependent
+    p-19d3bb: Heading, DFModal, InfoDisplay ×4, ConditionalList ×3, SaveAndOrContinueButton
+    h2-50fff6: qualified-dependent-choice
+    p-54113c: Heading, InfoDisplay, DFModal, FactResultAssertion, Boolean, FactAssertion,
+      SaveAndOrContinueButton
+    h2-fe1e58: qualified-dependent-not-claimed
+    p-33b0cf: Heading, InfoDisplay, SaveAndOrContinueButton
+    h2-fe33d7: qualified-dependent-tin-input
+    p-d34c18: Heading, TaxReturnAlert ×4, MefAlert ×5, Tin, SaveAndOrContinueButton
+    h2-9361c6: qualified-dependent-ip-pin-choice
+    p-15663d: Heading, DFModal, Boolean, SaveAndOrContinueButton
+    h2-58cb2e: qualified-dependent-ip-pin-ready
+    p-f6c898: TaxReturnAlert, Heading, HelpLink, Boolean, SaveAndOrContinueButton
+    h2-cb8943: qualified-dependent-ip-pin-not-ready
+    p-fdecf0: Heading, HelpLink, DFAlert, DFModal, SaveAndOrContinueButton
+    h2-9e120c: qualified-dependent-ip-pin-input
+    p-bb5d70: MefAlert, Heading, IpPin, SaveAndOrContinueButton
+    h2-4eb14d: qualified-dependent-confirmation
+    h2-16384e: potential-qp
+    p-7d248a: Heading, DFModal, ConditionalList, InfoDisplay, ConditionalAccordion,
+      SaveAndOrContinueButton
+    h2-3afbe2: confirmed-qp
+    p-e8edef: Heading, DFModal, ConditionalList ×2, InfoDisplay, SaveAndOrContinueButton
+    h2-2d79df: hoh-qp-input-tin
+    p-a98697: Heading, Tin, SaveAndOrContinueButton
+/you-and-your-family/dependents/dependents-qualifying-child-info-unclaimed:
+  title: Dependents qualifying child info unclaimed
+  collection/familyAndHousehold:
+    itemName: familyAndHousehold
+    h2-e685f5: dependents-eitc-enter-tin
+    p-f80d8b: TaxReturnAlert ×3, Heading, Tin, SaveAndOrContinueButton
+    h2-5b1562: dependents-eitc-ip-pin-choice
+    p-7bd683: Heading, DFModal, InfoDisplay, Boolean, SaveAndOrContinueButton
+    h2-a87de7: dependents-eitc-ip-pin-ready
+    p-f6c898: TaxReturnAlert, Heading, HelpLink, Boolean, SaveAndOrContinueButton
+    h2-e716ef: dependents-eitc-ip-pin-not-ready
+    p-fdecf0: Heading, HelpLink, DFAlert, DFModal, SaveAndOrContinueButton
+    h2-9dc043: dependents-eitc-ip-pin-input
+    p-68ca0c: Heading, IpPin, SaveAndOrContinueButton
+/you-and-your-family/dependents/not-qualified:
+  title: Not qualified
+  collection/familyAndHousehold:
+    itemName: familyAndHousehold
+    h2-5bd1db: not-qualified
+    p-7ac437: Heading, InfoDisplay, ConditionalAccordion, SaveAndOrContinueButton
+/you-and-your-family/dependents/exit-person-section:
+  title: Exit person section
+  h2-ca564e: exit-person-section
+  p-33b0cf: Heading, InfoDisplay, SaveAndOrContinueButton
+/you-and-your-family/filing-status/filing-status:
+  title: Filing status
+  h2-b1f577: filing-status-intro
+  p-c10b5b: ContextHeading, Heading, IntroContent, SaveAndOrContinueButton
+  h2-67282e: filing-status-assertion-single-only
+  p-bb263d: IconDisplay, Heading, InfoDisplay ×3, DFAccordion, DFModal, SaveAndOrContinueButton
+  h2-8867fc: filing-status-assertion-mfs-only
+  p-f1ab9a: IconDisplay, Heading, InfoDisplay ×2, DFAccordion, DFModal, SaveAndOrContinueButton
+  h2-4abc0d: filing-status-assertion-hoh-best
+  p-dc8afa: IconDisplay, Heading, InfoDisplay ×2, ConditionalList, DFAlert, SaveAndOrContinueButton,
+    InternalLink
+  h2-195cf4: filing-status-assertion-qss-best
+  p-35112f: IconDisplay, Heading, InfoDisplay ×3, DFAlert, SaveAndOrContinueButton,
+    InternalLink
+  h2-b19a48: filing-status-assertion-mfj-best
+  h2-93bfc7: filing-status-manual-choice-first-time
+  p-05c3f0: IconDisplay, Heading ×2, InfoDisplay ×3, ConditionalList, DFModal, SaveAndOrContinueButton,
+    InternalLink
+  h2-47cf1f: filing-status-override
+  p-ae25a2: Heading, InfoDisplay, DFAlert ×3, Enum, SaveAndOrContinueButton ×2
+  h2-61bd2c: filing-status-manual-choice
+  p-65e8ac: DFAlert, IconDisplay, Heading, InfoDisplay ×8, ConditionalList ×2, DFModal,
+    SaveAndOrContinueButton, InternalLink
+  h2-7676bb: community-property-ko-go-back
+  p-e488e4: IconDisplay, Heading, InfoDisplay, DFAlert, KnockoutButton
+  h2-b80737: filing-status-no-choice
+  p-356461: IconDisplay, Heading, InfoDisplay ×7, ConditionalList ×2, DFModal, SaveAndOrContinueButton
+  h2-63a6f5: filing-status-error-autocorrect
+  p-0fa762: TaxReturnAlert, Heading, InfoDisplay ×7, ConditionalList ×2, SaveAndOrContinueButton
+  h2-e46452: filing-status-error-manual-fix
+  p-1845a6: TaxReturnAlert, Heading, InfoDisplay, DFAlert, Enum, SaveAndOrContinueButton
+  h2-de7764: more-spouse-info-a
+  p-2b81b7: Heading, InternalLink
+  h2-21567f: more-spouse-info-b
+  h2-265b84: incomplete-family-information
+  h2-7dec24: hoh-qp-name
+  p-fdbeb6: TaxReturnAlert, Heading, InfoDisplay, SaveAndOrContinueButton
+  h2-736f52: hoh-qp-selection
+  p-2ce706: TaxReturnAlert, Heading, InfoDisplay ×2, CollectionItemReference, SaveAndOrContinueButton
+  h2-5806c3: hoh-qp-no-tin
+  h2-9d88d5: more-hoh-qp-info-dialog
+  p-03c137: Heading, CollectionDataViewInternalLink
+/income/income-sources/income-sources-intro:
+  title: Income sources intro
+  h2-95afb0: income-sources-intro
+  p-d4a4fd: ContextHeading, Heading ×2, InfoDisplay ×2, SaveAndOrContinueButton
+  h2-c71c65: income-supported-intro
+  p-ff9451: Heading, InfoDisplay ×2, SaveAndOrContinueButton
+/income/income-sources/reportable-income:
+  title: Reportable income
+  h2-741a10: income-not-supported-intro
+  p-e73da0: Heading, InfoDisplay ×3, DFModal, DFAlert, SaveAndOrContinueButton
+  h2-d47d2f: income-supported-options
+  p-46fd93: Heading ×2, InfoDisplay, Boolean ×2, SaveAndOrContinueButton
+  h2-e0249e: income-sources-supported-knockout
+  p-153d61: IconDisplay, Heading, DFAlert, KnockoutButton
+  h2-8090c4: income-sources-breather
+  p-ff9451: Heading, InfoDisplay ×2, SaveAndOrContinueButton
+/income/income-sources/foreign-accounts-and-foreign-trusts:
+  title: Foreign accounts and foreign trusts
+  h2-c6edf5: foreign-accounts
+  p-0c67d5: Heading ×2, DFModal ×2, Boolean, SaveAndOrContinueButton
+  h2-dbf357: foreign-trusts-grantor
+  p-4356ef: Heading ×2, InfoDisplay ×2, DFModal, Boolean, SaveAndOrContinueButton
+  h2-301674: foreign-trusts-transactions
+  h2-500814: foreign-accounts-trusts-knockout
+  p-153d61: IconDisplay, Heading, DFAlert, KnockoutButton
+/income/income-sources/digital-assets:
+  title: Digital assets
+  h2-42ec3e: digital-assets-received
+  p-f46fb0: Heading ×2, DFModal, Boolean, SaveAndOrContinueButton
+  h2-fa6755: digital-assets-disposed
+  h2-a95379: digital-assets-knockout
+  p-153d61: IconDisplay, Heading, DFAlert, KnockoutButton
+/income/income-sources/iras:
+  title: Iras
+  h2-11a548: ira-contributions
+  p-4356ef: Heading ×2, InfoDisplay ×2, DFModal, Boolean, SaveAndOrContinueButton
+  h2-187bea: ira-contributions-ko
+  p-153d61: IconDisplay, Heading, DFAlert, KnockoutButton
+/income/jobs/jobs-loop-intro:
+  title: Jobs loop intro
+  h2-ff1f49: jobs-loop-intro
+  p-1a6830: ContextHeading, Heading ×3, DFModal ×4, DFAlert, CollectionItemManager
+/income/jobs/jobs-data-import-ko:
+  title: Jobs data import ko
+  collection/formW2s:
+    itemName: formW2s
+    h2-1f7b7c: jobs-data-import-ko
+    p-8b18b4: IconDisplay, Heading, InfoDisplay ×2, DFAccordion ×8, DFAlert, KnockoutButton,
+      SaveAndOrContinueButton ×2
+    h2-72143d: jobs-data-import-breather
+    p-33b0cf: Heading, InfoDisplay, SaveAndOrContinueButton
+    h2-28542d: jobs-data-import-refer-W2
+    p-4684db: Heading, InfoDisplay, DFModal, SaveAndOrContinueButton
+/income/jobs/w-2-basic-info:
+  title: W 2 basic info
+  collection/formW2s:
+    itemName: formW2s
+    h2-a1475e: w2-add-whose-w2
+    p-4e3780: TaxReturnAlert, Heading, CollectionItemReference, GenericString, SaveAndOrContinueButton
+    h2-04e748: w2-add-box-a
+    p-8f569d: TaxReturnAlert, Heading, DFModal ×3, Tin ×2, SaveAndOrContinueButton
+    h2-4b4f54: w2-add-step2-has-itin
+    p-5de5c7: TaxReturnAlert, Heading, DFModal ×2, Tin, SaveAndOrContinueButton
+    h2-bc089b: w2-add-box-e
+    p-57334a: Heading, DFModal ×3, LimitingString ×7, SaveAndOrContinueButton
+    h2-4eaff3: w2-add-box-f-choice
+    p-2c5e88: Heading, Boolean, DFModal, SaveAndOrContinueButton
+    h2-aeec5b: w2-add-box-f-different-address
+    p-482ec4: Heading, InfoDisplay, DFModal, Address, SaveAndOrContinueButton
+/income/jobs/employer-info:
+  title: Employer info
+  collection/formW2s:
+    itemName: formW2s
+    h2-8c9395: w2-add-box-bc
+    p-fa253e: MefAlert, ContextHeading, Heading, Ein, InfoDisplay ×2, LimitingString
+      ×2, Address, DFModal, SaveAndOrContinueButton
+/income/jobs/wages-and-taxes-withheld:
+  title: Wages and taxes withheld
+  collection/formW2s:
+    itemName: formW2s
+    h2-2b6ee3: w2-add-boxes-1-8
+    p-2acdb5: Heading, InfoDisplay, DFModal, Dollar ×8, SaveAndOrContinueButton
+    h2-d92105: social-security-wages-limit-ko
+    p-a893b9: IconDisplay, Heading ×2, InfoDisplay ×2, DFAlert, KnockoutButton
+    h2-965c44: medicare-wages-ko
+    h2-fdcfab: medicare-wages-ko-credit
+    p-e488e4: IconDisplay, Heading, InfoDisplay, DFAlert, KnockoutButton
+    h2-b33388: w2-allocated-tips-ko
+    p-bc2c75: IconDisplay, Heading, InfoDisplay ×2, DFAlert, KnockoutButton
+/income/jobs/benefits-received:
+  title: Benefits received
+  collection/formW2s:
+    itemName: formW2s
+    h2-a661fc: w2-add-boxes-10-11
+    p-4300be: Heading, InfoDisplay, Dollar ×2, SaveAndOrContinueButton
+    h2-62df60: w2-nonqualified-plan-ko
+    p-153d61: IconDisplay, Heading, DFAlert, KnockoutButton
+/income/jobs/box-12-codes:
+  title: Box 12 codes
+  collection/formW2s:
+    itemName: formW2s
+    h2-dfd38a: w2-has-box-12
+    p-7965bd: Heading, ContextHeading, DFModal, Boolean, FactSelect, SaveAndOrContinueButton
+    h2-869ef2: w2-add-box-12
+    p-ca9761: ContextHeading, Heading, InfoDisplay, DFModal, FactSelect, SaveAndOrContinueButton
+    h2-6066e9: w2-governmental-457b
+    p-27b202: ContextHeading, Heading, DFModal, Boolean, SaveAndOrContinueButton
+/income/jobs/w2-box-12-ko:
+  title: W2 box 12 ko
+  collection/formW2s:
+    itemName: formW2s
+    h2-838886: w2-box-12-ko
+    p-153d61: IconDisplay, Heading, DFAlert, KnockoutButton
+    h2-176d65: w2-box-12-dependent-ko
+    p-6b53f7: IconDisplay, Heading, InfoDisplay ×3, DFAlert, KnockoutButton
+/income/jobs/box-13-codes:
+  title: Box 13 codes
+  collection/formW2s:
+    itemName: formW2s
+    h2-f42f19: w2-add-box-13-options
+    p-51d0a3: Heading, InfoDisplay, DFModal, Boolean ×3, SaveAndOrContinueButton
+    h2-13af0b: w2-box-13-statutory-ko
+    p-153d61: IconDisplay, Heading, DFAlert, KnockoutButton
+    h2-180a75: w2-box-13-sick-pay-ko
+/income/jobs/box-14-codes:
+  title: Box 14 codes
+  collection/formW2s:
+    itemName: formW2s
+    h2-4c7757: w2-has-box-14
+    p-442523: ContextHeading, Heading, DFModal, Boolean, FactSelect, SaveAndOrContinueButton
+    h2-34d5f3: w2-add-box-14
+    p-40c698: ContextHeading, Heading, InfoDisplay, DFModal, Boolean, SaveAndOrContinueButton
+    h2-8bd669: rrta-codes-ko
+    p-153d61: IconDisplay, Heading, DFAlert, KnockoutButton
+    h2-33d3a4: w2-add-box-14-ny
+    p-9b7364: ContextHeading, Heading, InfoDisplay, DFModal ×2, FactSelect ×3, SaveAndOrContinueButton
+    h2-33218a: w2-box-14-rrta-ny-ko
+    p-e488e4: IconDisplay, Heading, InfoDisplay, DFAlert, KnockoutButton
+    h2-d11841: w2-box-14-md-union-dues
+    p-15663d: Heading, DFModal, Boolean, SaveAndOrContinueButton
+    h2-c6d2fb: w2-box-14-md-union-dues-amount
+    p-0a74ae: Heading, DFModal, Dollar, SaveAndOrContinueButton
+/income/jobs/state-and-local-tax-info:
+  title: State and local tax info
+  collection/formW2s:
+    itemName: formW2s
+    h2-9ecc01: w2-add-boxes-15-20
+    p-b4cb0d: ContextHeading, Heading, TaxReturnAlert ×3, InfoDisplay, DFModal, Enum,
+      LimitingString ×2, Dollar ×4, SaveAndOrContinueButton
+    h2-4b1258: w2-missing-state-income
+    p-56ab86: ContextHeading, Heading, DFAlert, DFModal, SaveAndOrContinueButton
+    h2-a4f29d: w2-part-year-yonkers
+    p-c602e1: Heading, InfoDisplay, Boolean, SaveAndOrContinueButton
+    h2-783e85: w2-part-year-yonkers-ko
+    p-e488e4: IconDisplay, Heading, InfoDisplay, DFAlert, KnockoutButton
+/income/jobs/w2-other-state-ko:
+  title: W2 other state ko
+  collection/formW2s:
+    itemName: formW2s
+    h2-2c9171: w2-other-state-ko
+    p-e488e4: IconDisplay, Heading, InfoDisplay, DFAlert, KnockoutButton
+/income/jobs/corrected-or-non-standard-w2:
+  title: Corrected or non standard w2
+  collection/formW2s:
+    itemName: formW2s
+    h2-948933: w2-nonstandard-corrected
+    p-e56a6f: Heading, InfoDisplay, Enum, SaveAndOrContinueButton
+/income/unemployment/unemployment-loop-intro:
+  title: Unemployment loop intro
+  h2-63afdd: unemployment-loop-intro
+  p-e9c114: ContextHeading, Heading ×3, DFModal ×3, DFAlert, CollectionItemManager
+/income/unemployment/add-1099-g:
+  title: Add 1099 g
+  collection/form1099Gs:
+    itemName: form1099Gs
+    h2-b8d5fe: add-1099-g
+    p-bc7297: Heading ×2, Boolean, SaveAndOrContinueButton
+    h2-c4e29d: 1099-g-add-whose
+    p-4e3780: TaxReturnAlert, Heading, CollectionItemReference, GenericString, SaveAndOrContinueButton
+    h2-8a131a: 1099-g-payer
+    p-cf2590: Heading, InfoDisplay, LimitingString, SaveAndOrContinueButton
+/income/unemployment/1099-g-amount:
+  title: 1099 g amount
+  collection/form1099Gs:
+    itemName: form1099Gs
+    h2-c48350: 1099-g-amount
+    p-a36d76: Heading, Hint, Dollar, SaveAndOrContinueButton
+    h2-4ca47e: 1099-g-repay-options
+    p-a25a86: Heading ×2, InfoDisplay, Boolean, SaveAndOrContinueButton
+    h2-f50872: 1099-g-repay-amount
+    p-3ab42b: Heading, Dollar ×2, SaveAndOrContinueButton
+    h2-e11233: 1099-g-repay-knockout
+    p-a893b9: IconDisplay, Heading ×2, InfoDisplay ×2, DFAlert, KnockoutButton
+/income/unemployment/federal-income-tax-withheld:
+  title: Federal income tax withheld
+  collection/form1099Gs:
+    itemName: form1099Gs
+    h2-a49247: 1099-g-withholding
+    p-8f6a55: Heading, InfoDisplay, Dollar, SaveAndOrContinueButton
+/income/unemployment/payer-tin:
+  title: Payer tin
+  collection/form1099Gs:
+    itemName: form1099Gs
+    h2-56e75a: 1099-g-payer-tin
+    p-2789eb: Heading, InfoDisplay, Ein, SaveAndOrContinueButton
+/income/unemployment/state-tax-information:
+  title: State tax information
+  collection/form1099Gs:
+    itemName: form1099Gs
+    h2-0baf2e: 1099-g-state-info
+    p-2a9401: Heading, InfoDisplay, Enum, GenericString, Dollar, SaveAndOrContinueButton
+    h2-de88f2: 1099-g-other-state-ko
+    p-e488e4: IconDisplay, Heading, InfoDisplay, DFAlert, KnockoutButton
+/income/unemployment/no-1099-g-add-whose:
+  title: No 1099 g add whose
+  collection/form1099Gs:
+    itemName: form1099Gs
+    h2-87dfa8: no-1099-g-add-whose
+    p-1b4668: Heading, CollectionItemReference, GenericString, SaveAndOrContinueButton
+    h2-98b5c3: no-1099-g-payer-name
+    p-cf2590: Heading, InfoDisplay, LimitingString, SaveAndOrContinueButton
+/income/unemployment/no-1099-g-amount:
+  title: No 1099 g amount
+  collection/form1099Gs:
+    itemName: form1099Gs
+    h2-b26c8c: no-1099-g-amount
+    p-6c13cf: Heading, Dollar, SaveAndOrContinueButton
+    h2-19e18d: no-1099-g-repay-options
+    p-a25a86: Heading ×2, InfoDisplay, Boolean, SaveAndOrContinueButton
+    h2-3e3d71: no-1099-g-repay-amount
+    p-3ab42b: Heading, Dollar ×2, SaveAndOrContinueButton
+    h2-7efa6e: no-1099-g-repay-knockout
+    p-a893b9: IconDisplay, Heading ×2, InfoDisplay ×2, DFAlert, KnockoutButton
+/income/interest/int-income-loop-intro-data-import:
+  title: Int income loop intro data import
+  h2-278926: int-income-loop-intro
+  p-1dfe21: Heading ×3, ContextHeading, IntroContent, ConditionalList, DFAlert, DFModal
+    ×2, CollectionItemManager
+/income/interest/data-import-int-ko:
+  title: Data import int ko
+  collection/interestReports:
+    itemName: interestReports
+    h2-fd486a: data-import-int-ko
+    p-c7ae8b: Heading, InfoDisplay ×2, DFAccordion ×9, DFAlert, KnockoutButton, SaveAndOrContinueButton
+      ×2
+    h2-8e1adc: data-import-breather-int-income
+    p-33b0cf: Heading, InfoDisplay, SaveAndOrContinueButton
+    h2-0fb0c9: data-import-refer-int-income
+    p-4684db: Heading, InfoDisplay, DFModal, SaveAndOrContinueButton
+/income/interest/add-int-income:
+  title: Add int income
+  collection/interestReports:
+    itemName: interestReports
+    h2-daa595: add-int-income
+    p-f46fb0: Heading ×2, DFModal, Boolean, SaveAndOrContinueButton
+    h2-3f9e41: 1099-int-add-whose
+    p-c42a26: Heading, TaxReturnAlert, InfoDisplay, CollectionItemReference, GenericString,
+      SaveAndOrContinueButton
+    h2-609b3a: 1099-int-add-payer-name
+    p-69d40b: Heading, InfoDisplay, LimitingString ×2, SaveAndOrContinueButton
+    h2-81b8d5: add-int-facta
+    p-328647: Heading, Boolean, SaveAndOrContinueButton
+    h2-175dc9: 1099-int-facta-knockout
+    p-153d61: IconDisplay, Heading, DFAlert, KnockoutButton
+/income/interest/1099-int-add-box-1:
+  title: 1099 int add box 1
+  collection/interestReports:
+    itemName: interestReports
+    h2-06f976: 1099-int-add-box-1
+    p-8f6a55: Heading, InfoDisplay, Dollar, SaveAndOrContinueButton
+    h2-06e350: 1099-int-add-box-2
+    h2-1145ca: 1099-int-box-2-knockout
+    p-153d61: IconDisplay, Heading, DFAlert, KnockoutButton
+    h2-adf61a: 1099-int-add-box-3
+    p-d83725: Heading, InfoDisplay, DFModal, Dollar ×2, SaveAndOrContinueButton
+/income/interest/int-income-tax-withheld:
+  title: Int income tax withheld
+  collection/interestReports:
+    itemName: interestReports
+    h2-4c36ca: 1099-int-add-box-4
+    p-d94127: Heading, InfoDisplay, Dollar, DFModal, SaveAndOrContinueButton
+/income/interest/payer-tin:
+  title: Payer tin
+  collection/interestReports:
+    itemName: interestReports
+    h2-9e42e0: 1099-int-add-payer-tin
+    p-6bc879: Heading, Ein, SaveAndOrContinueButton
+/income/interest/foreign-tax-paid:
+  title: Foreign tax paid
+  collection/interestReports:
+    itemName: interestReports
+    h2-64534d: 1099-int-add-box-6
+    p-d94127: Heading, InfoDisplay, Dollar, DFModal, SaveAndOrContinueButton
+    h2-c02399: 1099-int-box-6-knockout
+    p-153d61: IconDisplay, Heading, DFAlert, KnockoutButton
+/income/interest/int-income-tax-exempt:
+  title: Int income tax exempt
+  collection/interestReports:
+    itemName: interestReports
+    h2-2f4645: 1099-int-add-box-8
+    p-8f6a55: Heading, InfoDisplay, Dollar, SaveAndOrContinueButton
+    h2-6706f5: 1099-int-box-8-ko
+    p-153d61: IconDisplay, Heading, DFAlert, KnockoutButton
+/income/interest/int-income-bonds:
+  title: Int income bonds
+  collection/interestReports:
+    itemName: interestReports
+    h2-d5d3d6: 1099-int-add-boxes-9-14
+    p-fd79fc: Heading, InfoDisplay, Dollar ×5, GenericString, SaveAndOrContinueButton
+    h2-3db8cd: 1099-int-boxes-9-13-knockout
+    p-153d61: IconDisplay, Heading, DFAlert, KnockoutButton
+/income/interest/int-income-state-info:
+  title: Int income state info
+  collection/interestReports:
+    itemName: interestReports
+    h2-988123: 1099-int-add-boxes-15-17
+    p-8a0754: ContextHeading, Heading, InfoDisplay, Enum, GenericString, Dollar, SaveAndOrContinueButton
+    h2-3d12d3: 1099-int-box-17-ko
+    p-153d61: IconDisplay, Heading, DFAlert, KnockoutButton
+    h2-70d35a: 1099-int-other-state-knockout
+    p-e488e4: IconDisplay, Heading, InfoDisplay, DFAlert, KnockoutButton
+/income/interest/no-1099-int-add-whose:
+  title: No 1099 int add whose
+  collection/interestReports:
+    itemName: interestReports
+    h2-83108f: no-1099-int-add-whose
+    p-62bcb2: Heading, InfoDisplay, CollectionItemReference, GenericString, SaveAndOrContinueButton
+    h2-18c69b: no-1099-int-add-payer-name
+    p-69d40b: Heading, InfoDisplay, LimitingString ×2, SaveAndOrContinueButton
+/income/interest/no-1099-int-taxable-int:
+  title: No 1099 int taxable int
+  collection/interestReports:
+    itemName: interestReports
+    h2-81167c: no-1099-int-taxable-int
+    p-0a74ae: Heading, DFModal, Dollar, SaveAndOrContinueButton
+/income/alaska-pfd/pfd-loop-intro:
+  title: Pfd loop intro
+  h2-5b7c2e: pfd-loop-intro
+  p-9e341b: ContextHeading, Heading ×3, InfoDisplay, DFModal ×4, DFAlert, CollectionItemManager
+/income/alaska-pfd/pfd-basic-info:
+  title: Pfd basic info
+  collection/form1099Miscs:
+    itemName: form1099Miscs
+    h2-c87408: pfd-add-whose-1099
+    p-e5fb98: TaxReturnAlert, Heading, DFModal, CollectionItemReference, GenericString,
+      SaveAndOrContinueButton
+    h2-962a8d: pfd-add-box-3
+    p-8f6a55: Heading, InfoDisplay, Dollar, SaveAndOrContinueButton
+    h2-a77f91: pfd-add-box-4
+    p-163883: Heading, InfoDisplay ×2, Dollar, DFModal, SaveAndOrContinueButton
+/income/dependent-care/dep-care-intro:
+  title: Dep care intro
+  h2-0cbc2f: dep-care-intro
+  p-33382b: Heading, InfoDisplay ×5, DFModal, SaveAndOrContinueButton
+/income/dependent-care/dep-care-benefits:
+  title: Dep care benefits
+  h2-254fef: household-employee-check-benefits
+  p-c3a832: Heading ×2, DFModal, InfoDisplay, Boolean, SaveAndOrContinueButton
+  h2-9f10b2: household-employee-ko-benefits
+  p-bc2c75: IconDisplay, Heading, InfoDisplay ×2, DFAlert, KnockoutButton
+  h2-196279: add-dep-care-carry-forward-prior-year-a
+  p-17476a: Heading ×2, InfoDisplay ×2, Boolean, SaveAndOrContinueButton
+  h2-e762bf: add-dep-care-carry-forward-prior-year-b
+  p-d595be: Heading ×2, Dollar, SaveAndOrContinueButton
+  h2-f8d0a8: add-dep-care-carry-forward-next-year-a
+  p-f46fb0: Heading ×2, DFModal, Boolean, SaveAndOrContinueButton
+  h2-792dc3: add-dep-care-carry-forward-next-year-b
+  p-bb07a1: Heading ×2, DFModal, Dollar, SaveAndOrContinueButton
+  h2-d459d5: dep-care-mfj-dep-taxpayers
+  p-20eb87: Heading, InfoDisplay, InternalLink, SaveAndOrContinueButton
+/income/dependent-care/dep-care-expenses:
+  title: Dep care expenses
+  h2-35b8c6: add-dep-care-max-exclusion-tp1
+  p-a01808: TaxReturnAlert, Heading ×5, InfoDisplay, Dollar, SaveAndOrContinueButton
+  h2-b6f28a: add-dep-care-max-exclusion-tp2
+  p-cffc57: TaxReturnAlert, Heading, InfoDisplay, Dollar, SaveAndOrContinueButton
+  h2-6aec9c: zero-qp-zero-qe
+  p-65fffe: Heading, InfoDisplay ×2, InternalLink, SaveAndOrContinueButton
+  h2-9a483e: add-dep-care-expenses
+  p-faa5fa: Heading ×2, InfoDisplay ×5, ConditionalList ×2, DFModal, Dollar, SaveAndOrContinueButton
+/income/dependent-care/dep-care-combat-pay:
+  title: Dep care combat pay
+  h2-74a7e0: dep-care-combat-pay
+  p-948bfa: Heading ×3, DFAlert, SaveAndOrContinueAndSetFactButton ×2, InternalLink
+  h2-991c50: dep-care-combat-pay-change
+  p-908c18: Heading ×3, DFAlert, Enum, SaveAndOrContinueButton
+  h2-508b34: earned-income-rule-breather-benefits
+  p-59ba1e: ContextHeading, Heading, InfoDisplay ×6, DFModal, SaveAndOrContinueButton
+  h2-560fd8: earned-income-rule-tp1-benefits
+  p-4a4f30: ContextHeading, Heading ×3, DFModal, Boolean, SaveAndOrContinueButton
+  h2-dc3fc6: earned-income-rule-tp2-benefits
+  h2-64015e: earned-income-rule-ko-benefits
+  p-924706: IconDisplay, Heading, InfoDisplay, DFModal, DFAlert, KnockoutButton
+  h2-ad2c12: earned-income-rule-result-benefits
+  p-ac7a04: ContextHeading, Heading ×2, DFModal, SaveAndOrContinueButton
+  h2-128f81: mfs-earned-income
+  p-dfc901: Heading, InfoDisplay, DFModal, Boolean, SaveAndOrContinueButton
+  h2-c6e57d: mfs-earned-income-enter
+  p-69a6df: Heading, InfoDisplay, DFModal, Dollar, SaveAndOrContinueButton
+/income/dependent-care/dep-care-exclusion-outcomes:
+  title: Dep care exclusion outcomes
+  h2-7c3d6d: dep-care-exclusion-outcome
+  p-e0d23e: Heading ×3, DFModal, InfoDisplay, SaveAndOrContinueButton
+/income/dependent-care/care-providers:
+  title: Care providers
+  h2-fa3408: provider-collection-hub
+  p-c4e9af: ContextHeading, TaxReturnAlert, Heading ×3, InfoDisplay ×4, ConditionalList,
+    CollectionItemManager
+/income/dependent-care/care-providers-info:
+  title: Care providers info
+  collection/cdccCareProviders:
+    itemName: cdccCareProviders
+    h2-c01342: provider-bus-or-indiv
+    p-5a270a: ContextHeading, Heading, InfoDisplay, Boolean, SaveAndOrContinueButton
+    h2-80f04f: provider-employer
+    p-d50625: ContextHeading, Heading ×2, InfoDisplay ×2, Boolean, SaveAndOrContinueButton
+    h2-3764f5: provider-employer-check-multiple
+    p-e3eac8: ContextHeading, Heading, InfoDisplay, ConditionalList, Boolean, SaveAndOrContinueButton
+    h2-f049b6: provider-employer-selection
+    p-32db05: ContextHeading, Heading, CollectionItemReference, SaveAndOrContinueButton
+    h2-9adaae: provider-employer-check-single
+    p-8e54c2: ContextHeading, Heading, Boolean, SaveAndOrContinueButton
+    h2-fae968: provider-employer-add-new
+    p-47ad77: ContextHeading, Heading ×2, ConditionalList, InternalLink ×3
+    h2-47f7d9: provider-name
+    p-8eeb73: ContextHeading, Heading, Hint, LimitingString ×3, SaveAndOrContinueButton
+    h2-bd09d8: provider-address
+    p-c3500a: ContextHeading, Heading, Hint, Address, SaveAndOrContinueButton
+    h2-7aef4b: provider-tax-exempt
+/income/dependent-care/care-providers-tax-id:
+  title: Care providers tax id
+  collection/cdccCareProviders:
+    itemName: cdccCareProviders
+    h2-2eea47: tin-ein-check
+    p-88d0f4: ContextHeading, Heading ×2, DFModal ×2, Boolean, SaveAndOrContinueButton
+    h2-0c1def: tin-missing-reason
+    p-acc072: ContextHeading, Heading ×2, MultiEnum ×2, SaveAndOrContinueButton
+    h2-e17e24: provider-due-diligence
+    p-322bf6: ContextHeading, Heading ×2, ConditionalList, SaveAndOrContinueButton
+    h2-1f7694: provider-ein
+    p-7c128c: ContextHeading, Heading, InfoDisplay, Ein, SaveAndOrContinueButton
+    h2-889c91: provider-tin
+    p-4e4279: ContextHeading, Heading, InfoDisplay, Tin, SaveAndOrContinueButton
+/income/dependent-care/care-providers-amount-paid:
+  title: Care providers amount paid
+  collection/cdccCareProviders:
+    itemName: cdccCareProviders
+    h2-87a154: provider-qp-expenses
+    p-54f36d: ContextHeading, Heading ×2, InfoDisplay ×4, Dollar, SaveAndOrContinueButton
+/income/hsa/hsa-intro:
+  title: Hsa intro
+  h2-b31256: hsa-intro
+  p-6690a8: Heading, DFModal ×3, InfoDisplay ×2, DFAlert, SaveAndOrContinueButton
+  h2-a44528: hsa-already-reported-w2-contributions
+  p-dac4ca: Heading, InfoDisplay ×6, DFModal ×2, SaveAndOrContinueButton
+/income/hsa/hsa-y-n:
+  title: Hsa y n
+  h2-34d5b0: hsa-y-n
+  p-8148c9: Heading ×4, Boolean, SaveAndOrContinueButton
+  h2-22b6f4: hsa-activity-primary-y-n
+  p-dfc901: Heading, InfoDisplay, DFModal, Boolean, SaveAndOrContinueButton
+  h2-4be421: hsa-activity-secondary-y-n
+  h2-27645c: hsa-add-account-type
+  p-9f9444: Heading ×2, InfoDisplay, DFModal ×2, Boolean ×2, SaveAndOrContinueButton
+  h2-79bdd5: hsa-excess-contributions-previous-year
+  p-a25a86: Heading ×2, InfoDisplay, Boolean, SaveAndOrContinueButton
+  h2-031380: hsa-excess-contributions-y-n
+  p-1c9ccb: Heading ×2, InfoDisplay, DFModal, Boolean, SaveAndOrContinueButton
+  h2-976fb0: hsa-ko-excess-contributions
+  p-e488e4: IconDisplay, Heading, InfoDisplay, DFAlert, KnockoutButton
+  h2-c2dcb6: hsa-ko-8853-needed
+/income/hsa/coverage-and-contributions:
+  title: Coverage and contributions
+  collection/filersWithHsa:
+    itemName: filersWithHsa
+    h2-39efd3: hsa-breather-about-you
+    p-b7ed39: Heading, InfoDisplay ×3, SaveAndOrContinueButton
+    h2-d676a1: hsa-contributions-additional-y-n-primary
+    p-ecc805: Heading, DFModal ×2, Boolean, SaveAndOrContinueButton
+    h2-9477a2: hsa-contributions-additional-y-n-secondary
+    h2-c51475: hsa-contributions-additional-summary-none-allowed-ko
+    p-466e68: IconDisplay, Heading ×2, DFModal ×2, InfoDisplay, DFAlert, KnockoutButton
+    h2-a6e1ac: hsa-coverage-breather
+    p-34a062: Heading ×2, DFModal ×2, SaveAndOrContinueButton
+    h2-2672e4: hsa-coverage-medicare-status
+    p-63b245: Heading ×2, DFModal, Enum ×2, SaveAndOrContinueButton
+    h2-1bb6ac: hsa-coverage-status
+    p-b33381: Heading ×2, DFModal, Enum, SaveAndOrContinueButton
+    h2-4dc123: hsa-coverage-add-type
+    p-5f8367: Heading ×2, InfoDisplay, DFModal, Enum, SaveAndOrContinueButton
+    h2-75529c: hsa-coverage-other-y-n
+    h2-e18313: hsa-coverage-married-not-mfj-line-6-check
+    p-15663d: Heading, DFModal, Boolean, SaveAndOrContinueButton
+    h2-a78aa0: hsa-coverage-married-not-mfj-line-6-ko
+    p-e488e4: IconDisplay, Heading, InfoDisplay, DFAlert, KnockoutButton
+    h2-075ffb: hsa-coverage-ko
+    h2-864c7f: hsa-contributions-summary-none-allowed-ko
+    h2-8ec614: hsa-coverage-marital-change
+    h2-14d1be: hsa-coverage-line-6
+    p-f46fb0: Heading ×2, DFModal, Boolean, SaveAndOrContinueButton
+    h2-b1c810: hsa-coverage-line-6-ko
+    h2-097be4: hsa-contributions-breather
+    p-c54fea: Heading, InfoDisplay ×2, DFModal, SaveAndOrContinueButton
+    h2-15ef13: hsa-contributions-add-contributions-made-ty
+    p-c92133: Heading ×2, DFModal ×2, Dollar, SaveAndOrContinueButton
+    h2-6db7b1: hsa-contributions-add-contributions-made-ty+1
+    p-f6f62f: Heading ×2, InfoDisplay ×3, DFModal, Dollar, SaveAndOrContinueButton
+    h2-6d99ec: hsa-contributions-qualified-funding-distribution
+    p-a25a86: Heading ×2, InfoDisplay, Boolean, SaveAndOrContinueButton
+    h2-395563: hsa-ko-qualified-hsa-funding-distribution
+    h2-fc20a8: hsa-contributions-summary-excess-KO
+    p-8330b3: IconDisplay, Heading, DFModal ×2, SummaryTable ×4, InfoDisplay, DFAlert,
+      KnockoutButton
+/income/hsa/hsa-testing-period-check:
+  title: Hsa testing period check
+  h2-7a2ecd: hsa-testing-period-contribution-check
+  p-449813: Heading ×3, Boolean ×3, SaveAndOrContinueButton
+  h2-818bf2: hsa-testing-period-additional-income
+  p-83fce5: Heading ×3, DFModal ×3, Boolean, SaveAndOrContinueButton
+  h2-9b345b: hsa-testing-period-income-ko
+  p-e488e4: IconDisplay, Heading, InfoDisplay, DFAlert, KnockoutButton
+/income/hsa/hsa-contributions-summary-under:
+  title: Hsa contributions summary under
+  h2-f29608: hsa-contributions-summary-under
+  p-6fac96: Heading, DFModal ×2, SummaryTable ×2, InfoDisplay, SaveAndOrContinueButton
+/income/hsa/distributions:
+  title: Distributions
+  h2-0270c8: hsa-distributions-loop
+  p-6bb286: Heading ×3, InfoDisplay ×2, DFModal ×3, DFAlert, CollectionItemManager
+/income/hsa/distribution-info:
+  title: Distribution info
+  collection/hsaDistributions:
+    itemName: hsaDistributions
+    h2-e6a653: hsa-whose-distribution
+    p-2d65ab: TaxReturnAlert ×2, Heading, CollectionItemReference, GenericString,
+      SaveAndOrContinueButton
+    h2-5923ce: hsa-add-trustee-name
+    p-cf2590: Heading, InfoDisplay, LimitingString, SaveAndOrContinueButton
+    h2-4ac9d4: hsa-distributions-add-box1
+    p-6c13cf: Heading, Dollar, SaveAndOrContinueButton
+    h2-4ae1b9: hsa-distributions-rollovers
+    p-c602e1: Heading, InfoDisplay, Boolean, SaveAndOrContinueButton
+    h2-494f14: hsa-distributions-rollovers-amount
+    p-71abb1: TaxReturnAlert, Heading, Dollar, SaveAndOrContinueButton
+    h2-1a2ad5: hsa-distributions-excess-withdrawn
+    p-dfc901: Heading, InfoDisplay, DFModal, Boolean, SaveAndOrContinueButton
+    h2-3e1a63: hsa-distributions-excess-withdrawn-amount
+    p-48396a: Heading, TaxReturnAlert, Dollar, SaveAndOrContinueButton
+    h2-52bfe1: hsa-distributions-add-box2
+    p-8f6a55: Heading, InfoDisplay, Dollar, SaveAndOrContinueButton
+    h2-a39e3b: hsa-distributions-box2-ko
+    p-e488e4: IconDisplay, Heading, InfoDisplay, DFAlert, KnockoutButton
+    h2-c757d5: hsa-distributions-add-box3
+    p-b41acb: Heading, Enum, SaveAndOrContinueButton
+    h2-fa8722: hsa-distributions-box3-ko
+    h2-51ee05: hsa-distributions-add-box4
+    p-69a6df: Heading, InfoDisplay, DFModal, Dollar, SaveAndOrContinueButton
+    h2-c9b077: hsa-ko-fmv
+    h2-8ecc46: hsa-distributions-add-medical-expenses
+    p-cceef7: Heading, DFModal ×2, Dollar, SaveAndOrContinueButton
+    h2-359ec0: hsa-ko-unqualified-distributions
+/income/retirement-launch/1099-r-info:
+  title: 1099 r info
+  h2-e6e4b0: 1099-r-launch
+  p-4341a8: ContextHeading, Heading ×3, DFModal ×4, DFAlert, SaveAndOrContinueButton
+  h2-e85044: 1099-r-form-add
+  p-bc7297: Heading ×2, Boolean, SaveAndOrContinueButton
+  h2-46cbba: 1099-r-add-form-ko
+  p-e0fb5a: IconDisplay, Heading, DFModal, DFAlert, KnockoutButton
+/income/retirement/1099-r-loop-intro:
+  title: 1099 r loop intro
+  h2-7dccd4: 1099-r-loop-intro
+  p-1a6830: ContextHeading, Heading ×3, DFModal ×4, DFAlert, CollectionItemManager
+/income/retirement/1099-r-information:
+  title: 1099 r information
+  collection/form1099Rs:
+    itemName: form1099Rs
+    h2-075394: 1099-r-nonstandard
+    p-e56a6f: Heading, InfoDisplay, Enum, SaveAndOrContinueButton
+    h2-77a46b: 1099-r-add-whose-1099-r
+    p-de1f24: Heading, TaxReturnAlert, CollectionItemReference, GenericString, SaveAndOrContinueButton
+    h2-ef475e: 1099-r-add-recipient-name
+    p-b4e20e: Heading, DFModal ×4, LimitingString ×7, SaveAndOrContinueButton
+    h2-a338b1: 1099-r-add-recipient-tin
+    p-eb27d9: Heading ×2, Tin ×2, DFModal, SaveAndOrContinueButton
+    h2-42209b: 1099-r-recipient-address-choice
+    p-33a45d: Heading, DFModal, Enum, SaveAndOrContinueButton
+    h2-7b068b: 1099-r-add-recipient-address
+    p-482ec4: Heading, InfoDisplay, DFModal, Address, SaveAndOrContinueButton
+/income/retirement/1099-r-payer-information:
+  title: 1099 r payer information
+  collection/form1099Rs:
+    itemName: form1099Rs
+    h2-9450b5: 1099-r-add-payer-info
+    p-2c5a26: Heading, InfoDisplay, LimitingString ×2, Address, PhoneNumber, Ein,
+      SaveAndOrContinueButton
+/income/retirement/1099-r-box-distribution:
+  title: 1099 r box distribution
+  collection/form1099Rs:
+    itemName: form1099Rs
+    h2-5a488a: 1099-r-add-box-1
+    p-dfea7d: Heading, TaxReturnAlert, DFModal, Dollar, SaveAndOrContinueButton
+    h2-56505b: 1099-r-add-box-2a
+    p-f077ac: Heading, InfoDisplay, DFModal ×2, Dollar, SaveAndOrContinueButton
+    h2-28c041: 1099-r-add-box-2b
+    p-a0e332: Heading, InfoDisplay, Boolean ×2, SaveAndOrContinueButton
+    h2-382006: 1099-r-box-2b-ko-1
+    p-e488e4: IconDisplay, Heading, InfoDisplay, DFAlert, KnockoutButton
+    h2-8a65e0: 1099-r-box-2b-ko-2
+    h2-743d95: 1099-r-box-2b-ko-3
+    h2-613879: 1099-r-add-box-3
+    p-8f6a55: Heading, InfoDisplay, Dollar, SaveAndOrContinueButton
+    h2-559eac: 1099-r-box-3-ko
+/income/retirement/1099-r-box-federal-income-tax:
+  title: 1099 r box federal income tax
+  collection/form1099Rs:
+    itemName: form1099Rs
+    h2-f8285d: 1099-r-add-box-4
+    p-8f6a55: Heading, InfoDisplay, Dollar, SaveAndOrContinueButton
+/income/retirement/1099-r-box-contributions:
+  title: 1099 r box contributions
+  collection/form1099Rs:
+    itemName: form1099Rs
+    h2-6ce301: 1099-r-add-box-5
+    p-8f6a55: Heading, InfoDisplay, Dollar, SaveAndOrContinueButton
+/income/retirement/1099-r-box-net-appreciation:
+  title: 1099 r box net appreciation
+  collection/form1099Rs:
+    itemName: form1099Rs
+    h2-8bd2c2: 1099-r-add-box-6
+    p-69a6df: Heading, InfoDisplay, DFModal, Dollar, SaveAndOrContinueButton
+    h2-5c909d: 1099-r-box-6-ko
+    p-e488e4: IconDisplay, Heading, InfoDisplay, DFAlert, KnockoutButton
+/income/retirement/1099-r-box-distribution-codes:
+  title: 1099 r box distribution codes
+  collection/form1099Rs:
+    itemName: form1099Rs
+    h2-9f20bc: retirement-add-box-7-checkbox
+    p-15663d: Heading, DFModal, Boolean, SaveAndOrContinueButton
+    h2-84e329: 1099-r-box-7-checkbox-knockout
+    p-bc2c75: IconDisplay, Heading, InfoDisplay ×2, DFAlert, KnockoutButton
+    h2-8dd2f2: 1099-r-add-box-7-codes
+    p-a87731: Heading, InfoDisplay, DFModal, LimitingString, SaveAndOrContinueButton
+    h2-2e2544: 1099-r-box-7-code-knockout
+    p-e488e4: IconDisplay, Heading, InfoDisplay, DFAlert, KnockoutButton
+    h2-fbc526: 1099-r-box-7-pretax-to-posttax-knockout
+    h2-13d15c: 1099-r-box-7-early-distribution-question
+    p-d39622: Heading ×2, DFModal, Boolean ×2, SaveAndOrContinueButton
+    h2-e52443: 1099-r-box-7-early-distribution-knockout
+    h2-103c9e: 1099-r-box-7-indirect-rollover
+    p-20b4b9: Heading ×2, InfoDisplay, DFModal, Boolean ×2, SaveAndOrContinueButton
+    h2-d43c2a: 1099-r-box-7-indirect-rollover-knockout
+    h2-26bce1: 1099-r-military-plan
+    p-dfc901: Heading, InfoDisplay, DFModal, Boolean, SaveAndOrContinueButton
+    h2-e4ae23: 1099-r-disaster
+    p-9ccdd7: Heading, DFModal, Boolean ×2, SaveAndOrContinueButton
+    h2-f68c36: 1099-r-disaster-knockout
+    h2-d2097b: 1099-r-pso
+    p-1e4f1c: Heading ×3, DFModal, Boolean ×2, SaveAndOrContinueButton
+    h2-e018dc: 1099-r-pso-election
+    p-066a8d: Heading ×3, InfoDisplay, Boolean, SaveAndOrContinueButton
+    h2-aadd07: 1099-r-pso-knockout
+/income/retirement/1099-r-box-other:
+  title: 1099 r box other
+  collection/form1099Rs:
+    itemName: form1099Rs
+    h2-a726ee: 1099-r-add-box-8
+    p-90dd66: Heading, InfoDisplay, Dollar, LimitingString, SaveAndOrContinueButton
+    h2-e5af26: 1099-r-box-8-value-knockout
+    p-e488e4: IconDisplay, Heading, InfoDisplay, DFAlert, KnockoutButton
+    h2-12a314: 1099-r-box-8-percentage-knockout
+/income/retirement/1099-r-box-total-distribution:
+  title: 1099 r box total distribution
+  collection/form1099Rs:
+    itemName: form1099Rs
+    h2-e9ee8a: 1099-r-add-box-9a
+    p-cf2590: Heading, InfoDisplay, LimitingString, SaveAndOrContinueButton
+    h2-bba963: 1099-r-box-9a-percentage-knockout
+    p-e488e4: IconDisplay, Heading, InfoDisplay, DFAlert, KnockoutButton
+    h2-dca7b5: 1099-r-add-box-9b
+    p-8f6a55: Heading, InfoDisplay, Dollar, SaveAndOrContinueButton
+/income/retirement/1099-r-box-irr-allocable:
+  title: 1099 r box irr allocable
+  collection/form1099Rs:
+    itemName: form1099Rs
+    h2-134f3b: 1099-r-add-box-10
+    p-69a6df: Heading, InfoDisplay, DFModal, Dollar, SaveAndOrContinueButton
+    h2-1e0909: 1099-r-box-10-knockout
+    p-e488e4: IconDisplay, Heading, InfoDisplay, DFAlert, KnockoutButton
+/income/retirement/1099-r-box-roth-contributions:
+  title: 1099 r box roth contributions
+  collection/form1099Rs:
+    itemName: form1099Rs
+    h2-55192c: 1099-r-add-box-11
+    p-cf2590: Heading, InfoDisplay, LimitingString, SaveAndOrContinueButton
+/income/retirement/1099-r-box-facta:
+  title: 1099 r box facta
+  collection/form1099Rs:
+    itemName: form1099Rs
+    h2-822574: 1099-r-add-box-12
+    p-328647: Heading, Boolean, SaveAndOrContinueButton
+    h2-398024: 1099-r-box-12-knockout
+    p-e488e4: IconDisplay, Heading, InfoDisplay, DFAlert, KnockoutButton
+/income/retirement/1099-r-box-13-date-of-payment:
+  title: 1099 r box 13 date of payment
+  collection/form1099Rs:
+    itemName: form1099Rs
+    h2-b37730: 1099-r-add-box-13
+    p-d46626: Heading, InfoDisplay, DatePicker, SaveAndOrContinueButton
+    h2-819117: 1099-r-box-13-ko
+    p-e488e4: IconDisplay, Heading, InfoDisplay, DFAlert, KnockoutButton
+/income/retirement/1099-r-box-state-and-local:
+  title: 1099 r box state and local
+  collection/form1099Rs:
+    itemName: form1099Rs
+    h2-2bb6e1: 1099-r-add-box-14
+    p-492b60: Heading, TaxReturnAlert, InfoDisplay, DFModal, Dollar, SaveAndOrContinueButton
+    h2-00d471: 1099-r-check-state-value
+    p-33b0cf: Heading, InfoDisplay, SaveAndOrContinueButton
+    h2-df7888: 1099-r-add-box-15
+    p-2203ff: Heading, InfoDisplay, DFModal, Enum, LimitingString, SaveAndOrContinueButton
+    h2-5668ca: 1099-r-box-15-ko
+    p-e488e4: IconDisplay, Heading, InfoDisplay, DFAlert, KnockoutButton
+    h2-324984: 1099-r-add-boxes-16-19
+    p-29f7b5: Heading, TaxReturnAlert, InfoDisplay, DFModal, Dollar ×3, LimitingString,
+      SaveAndOrContinueButton
+    h2-affdbb: 1099-r-state-local-tax-error
+    p-153d61: IconDisplay, Heading, DFAlert, KnockoutButton
+/income/retirement/1099-r-account-number:
+  title: 1099 r account number
+  collection/form1099Rs:
+    itemName: form1099Rs
+    h2-454893: 1099-r-add-account-number
+    p-cf2590: Heading, InfoDisplay, LimitingString, SaveAndOrContinueButton
+/income/social-security/social-security-loop-intro:
+  title: Social security loop intro
+  h2-5b2cee: social-security-loop-intro
+  p-661903: ContextHeading, Heading ×3, DFModal ×4, DFAlert, CollectionItemManager,
+    InfoDisplay
+/income/social-security/ssa-whose:
+  title: Ssa whose
+  collection/socialSecurityReports:
+    itemName: socialSecurityReports
+    h2-75a001: ssa-whose
+    p-4e3780: TaxReturnAlert, Heading, CollectionItemReference, GenericString, SaveAndOrContinueButton
+/income/social-security/ssa-1099-box-5:
+  title: Ssa 1099 box 5
+  collection/socialSecurityReports:
+    itemName: socialSecurityReports
+    h2-9fb965: ssa-1099-box-5
+    p-8f6a55: Heading, InfoDisplay, Dollar, SaveAndOrContinueButton
+/income/social-security/social-security-summary-negative-ko-in-flow:
+  title: Social security summary negative ko in flow
+  collection/socialSecurityReports:
+    itemName: socialSecurityReports
+    h2-052131: social-security-summary-negative-ko-in-flow
+    p-bc2c75: IconDisplay, Heading, InfoDisplay ×2, DFAlert, KnockoutButton
+/income/social-security/ssa-1099-box-6:
+  title: Ssa 1099 box 6
+  collection/socialSecurityReports:
+    itemName: socialSecurityReports
+    h2-0cd6f3: ssa-1099-box-6
+    p-8f6a55: Heading, InfoDisplay, Dollar, SaveAndOrContinueButton
+/income/social-security/rrb-whose:
+  title: Rrb whose
+  collection/socialSecurityReports:
+    itemName: socialSecurityReports
+    h2-27687f: rrb-whose
+    p-1b4668: Heading, CollectionItemReference, GenericString, SaveAndOrContinueButton
+/income/social-security/rrb-1099-box-5:
+  title: Rrb 1099 box 5
+  collection/socialSecurityReports:
+    itemName: socialSecurityReports
+    h2-3eea9d: rrb-1099-box-5
+    p-8f6a55: Heading, InfoDisplay, Dollar, SaveAndOrContinueButton
+/income/social-security/rrb-1099-box-10:
+  title: Rrb 1099 box 10
+  collection/socialSecurityReports:
+    itemName: socialSecurityReports
+    h2-965ca4: rrb-1099-box-10
+    p-8f6a55: Heading, InfoDisplay, Dollar, SaveAndOrContinueButton
+/income/social-security/social-security-summary-negative-ko:
+  title: Social security summary negative ko
+  h2-317aa2: social-security-summary-negative-ko
+  p-bc2c75: IconDisplay, Heading, InfoDisplay ×2, DFAlert, KnockoutButton
+/income/total-income-summary/total-income-summary:
+  title: Total income summary
+  h2-7af0e9: total-income-summary
+  p-764bbc: Heading, SummaryTable, InfoDisplay, SaveAndOrContinueButton
+  h2-174985: total-income-summary-none-reported
+  p-8ece95: Heading, InfoDisplay, DFAlert, SaveAndOrContinueButton
+/credits-and-deductions/deductions/deductions-intro-mfj-dependents:
+  title: Deductions intro mfj dependents
+  h2-e1ad7a: deductions-intro-mfj-dependents
+  p-8891c2: ContextHeading, Heading, DFModal ×2, SaveAndOrContinueButton
+  h2-e6e926: deductions-intro
+  p-1f3c1f: ContextHeading, Heading ×2, DFModal ×2, SaveAndOrContinueButton
+/credits-and-deductions/deductions/hsa-deduction:
+  title: Hsa deduction
+  h2-a22312: hsa-deduction-intro-qualified
+  p-0df2ec: ContextHeading, Heading, InfoDisplay ×4, SummaryTable, SaveAndOrContinueButton
+  h2-64b819: hsa-deduction-intro-not-qualified
+  p-04da05: ContextHeading, Heading ×2, InfoDisplay ×3, SaveAndOrContinueButton
+/credits-and-deductions/deductions/educator-expenses-deduction:
+  title: Educator expenses deduction
+  h2-de24c6: eligible-educator
+  p-04e326: ContextHeading, Heading ×2, DFModal ×2, Enum, SaveAndOrContinueButton
+  h2-4efee9: secondary-educator-expenses
+  p-39075c: ContextHeading, Heading, DFModal, Dollar, SaveAndOrContinueButton
+  h2-1e906e: primary-educator-expenses
+/credits-and-deductions/deductions/educator-expenses-summary:
+  title: Educator expenses summary
+  h2-8cd067: educator-expenses-summary
+  p-d4fc20: ContextHeading, Heading, ConditionalList, InfoDisplay, SaveAndOrContinueButton
+/credits-and-deductions/deductions/student-loan-int-deduction:
+  title: Student loan int deduction
+  h2-c77a5a: paid-student-loan-interest
+  p-bb8b97: ContextHeading, Heading ×2, DFModal ×2, Boolean ×2, SaveAndOrContinueButton
+  h2-37c0c0: student-loans-qualify
+  p-7fa937: ContextHeading, Heading ×2, ConditionalList, Boolean, SaveAndOrContinueButton
+  h2-593cea: student-loan-interest-amount
+  p-9baf83: ContextHeading, Heading ×2, InfoDisplay, DFModal, Dollar, SaveAndOrContinueButton
+  h2-2ff286: student-loan-interest-summary
+  p-d4fc20: ContextHeading, Heading, ConditionalList, InfoDisplay, SaveAndOrContinueButton
+/credits-and-deductions/deductions/student-loan-interest-not-qualified:
+  title: Student loan interest not qualified
+  h2-eb2bc1: student-loan-interest-not-qualified
+  p-1f6b50: ContextHeading, Heading ×5, InfoDisplay, DFModal ×2, SaveAndOrContinueButton
+/credits-and-deductions/deductions/standard-deduction:
+  title: Standard deduction
+  h2-8381d8: standard-deduction-intro
+  p-d70b4e: IconDisplay, ContextHeading, Heading, InfoDisplay, ConditionalList, FactAssertion,
+    SaveAndOrContinueButton
+/credits-and-deductions/deductions/taxable-income:
+  title: Taxable income
+  h2-c375f5: taxable-income-summary
+  p-7885b6: Heading, SummaryTable ×2, InfoDisplay, FactAssertion, SaveAndOrContinueButton
+  h2-a8b611: net-investment-mfs-ko
+  p-e488e4: IconDisplay, Heading, InfoDisplay, DFAlert, KnockoutButton
+  h2-5774de: net-investment-mfj-qss-ko
+  h2-863fd8: net-investment-single-hoh-ko
+/credits-and-deductions/credits/credits-intro-potential-credits:
+  title: Credits intro potential credits
+  h2-03de96: credits-intro-potential-credits
+  p-7b752f: ContextHeading, Heading, DFModal, SaveAndOrContinueButton
+  h2-cd69ea: ptc-intro
+  p-6361c4: ContextHeading, Heading, InfoDisplay ×3, SaveAndOrContinueButton
+  h2-d732cc: marketplace-breather
+  p-d38f18: ContextHeading, Heading, DFModal ×4, SaveAndOrContinueButton
+  h2-3e3ec7: 1095-import-info
+  p-d1d95c: Heading, DFModal ×5, DFAlert ×2, SaveAndOrContinueButton
+  h2-b4f4e1: 1095-import-info-no-form
+  p-e6a62b: Heading, InfoDisplay ×8, SaveAndOrContinueButton
+/credits-and-deductions/credits/ptc-eligibility:
+  title: Ptc eligibility
+  h2-892191: dep-tp-self-enrollment
+  p-995dee: ContextHeading, Heading ×2, InfoDisplay ×3, DFModal ×2, Boolean, SaveAndOrContinueButton
+  h2-a9a371: dep-tp-enrolled-someone-else
+  p-04c619: ContextHeading, Heading, InfoDisplay, DFModal ×3, Boolean, SaveAndOrContinueButton
+  h2-14cda7: dep-tp-enrollee-not-part-of-tax-family
+  p-3399a4: ContextHeading, Heading, DFModal ×2, InfoDisplay, Boolean, SaveAndOrContinueButton
+  h2-5ea769: dep-tp-ko
+  p-6b53f7: IconDisplay, Heading, InfoDisplay ×3, DFAlert, KnockoutButton
+  h2-5443a7: dep-tp-ptc-keep-going
+  p-bba26c: ContextHeading, Heading, InfoDisplay ×4, SaveAndOrContinueButton
+  h2-a47dea: qualified-marketplace-plan
+  p-8590d2: MefAlert, ContextHeading, Heading ×8, InfoDisplay ×2, DFModal ×4, DFAlert
+    ×2, Boolean, SaveAndOrContinueButton
+  h2-d4294c: qsehra-ko
+  h2-e54dc4: dependents-filing-requirement
+  p-5a270a: ContextHeading, Heading, InfoDisplay, Boolean, SaveAndOrContinueButton
+  h2-6bab4a: dependents-filing-req-ko
+  p-e488e4: IconDisplay, Heading, InfoDisplay, DFAlert, KnockoutButton
+  h2-3933e4: 1095-a-check
+  p-7b90ff: ContextHeading, Heading ×8, DFAlert ×2, InfoDisplay ×4, DFModal ×5, SaveAndOrContinueButton
+  h2-e3d3f4: multiple-forms-check
+  p-5cc0bc: ContextHeading, Heading, DFAlert ×2, InfoDisplay, DFModal ×6, Boolean,
+    SaveAndOrContinueButton
+  h2-3b71ad: multiple-forms-ko
+  h2-6322aa: enrollment-family
+  p-a0a3ba: ContextHeading, Heading ×4, InfoDisplay, Boolean, SaveAndOrContinueButton
+  h2-1a45f7: enrollee-not-part-of-tax-family
+  h2-4b4f61: enrolled-with-other-family
+  h2-94d56f: allocations-ko
+  h2-89868e: immigration-status-check
+  p-40c698: ContextHeading, Heading, InfoDisplay, DFModal, Boolean, SaveAndOrContinueButton
+  h2-b55860: immigration-status-ko
+  h2-b5bbae: aptc-paid
+  p-88508b: MefAlert, ContextHeading, Heading ×2, InfoDisplay ×2, DFModal, Boolean,
+    SaveAndOrContinueButton
+  h2-f5edc4: employer-plan-eligibility
+  p-3a34ee: ContextHeading, Heading, DFModal ×3, Boolean, SaveAndOrContinueButton
+  h2-3ec088: employer-plan-ko
+/credits-and-deductions/credits/unique-circumstances:
+  title: Unique circumstances
+  h2-cffb8d: mfs-exception-check
+  p-450937: ContextHeading, Heading, DFModal ×2, DFAlert, Boolean, SaveAndOrContinueButton
+  h2-86c031: mfs-exception-past-use
+  p-5a270a: ContextHeading, Heading, InfoDisplay, Boolean, SaveAndOrContinueButton
+  h2-f354d3: below-100-medicaid
+  p-137c5b: ContextHeading, Heading ×4, DFModal, Boolean, SaveAndOrContinueButton
+  h2-232d9e: not-applicable-taxpayer-aptc
+  p-bef350: ContextHeading, Heading, InfoDisplay, SaveAndOrContinueButton
+/credits-and-deductions/credits/1095-a:
+  title: 1095 a
+  h2-9a490c: 1095-collection-hub
+  p-56e920: ContextHeading, TaxReturnAlert ×2, Heading, InfoDisplay ×4, DFModal ×3,
+    CollectionItemManager
+/credits-and-deductions/credits/policy-details:
+  title: Policy details
+  collection/1095As:
+    itemName: 1095As
+    h2-29de20: policy-number
+    p-d91382: ContextHeading, Heading, InfoDisplay, LimitingString, SaveAndOrContinueButton
+    h2-97629c: marketplace-state
+    p-cd403b: ContextHeading, Heading, InfoDisplay, Enum, SaveAndOrContinueButton
+    h2-34ec27: policy-dates
+    p-c67923: ContextHeading, TaxReturnAlert, Heading, InfoDisplay, DatePicker ×2,
+      Boolean, SaveAndOrContinueButton
+    h2-64ff18: policy-dates-exception
+    p-5a270a: ContextHeading, Heading, InfoDisplay, Boolean, SaveAndOrContinueButton
+    h2-4fe9d3: coverage-months-yn
+    p-d9394d: ContextHeading, Heading, InfoDisplay ×2, DFModal, Boolean, SaveAndOrContinueButton
+    h2-a486dc: zero-coverage-months
+    p-bef350: ContextHeading, Heading, InfoDisplay, SaveAndOrContinueButton
+    h2-5be042: enrollee-coverage-months
+    p-c09621: ContextHeading, Heading, DFModal, InfoDisplay, MultiEnum, GenericString,
+      SaveAndOrContinueButton
+    h2-1e3ed9: coverage-months
+    p-d4fc20: ContextHeading, Heading, ConditionalList, InfoDisplay, SaveAndOrContinueButton
+/credits-and-deductions/credits/premiums-and-aptc:
+  title: Premiums and aptc
+  collection/1095As:
+    itemName: 1095As
+    h2-097d06: annual-monthly
+    p-5a270a: ContextHeading, Heading, InfoDisplay, Boolean, SaveAndOrContinueButton
+    h2-8bb2f7: annual-premium
+    p-3d9eb9: ContextHeading, Heading, Dollar, SaveAndOrContinueButton
+    h2-bd3dd5: monthly-premium
+    p-e1ac06: ContextHeading, Heading, InfoDisplay, Dollar ×12, SaveAndOrContinueButton
+    h2-3b9cc4: change-circumstances
+    p-40c698: ContextHeading, Heading, InfoDisplay, DFModal, Boolean, SaveAndOrContinueButton
+    h2-226ce5: annual-slcsp
+    p-486728: ContextHeading, Heading, DFModal ×2, Dollar, SaveAndOrContinueButton
+    h2-3ad1b8: look-up-slcsp
+    p-900864: ContextHeading, Heading, InfoDisplay ×2, DFModal ×2, SaveAndOrContinueButton
+    h2-f1ad96: monthly-slcsp
+    p-8add3e: ContextHeading, Heading, InfoDisplay ×2, DFModal ×2, Dollar ×24, SaveAndOrContinueButton
+    h2-239628: monthly-aptc
+    p-9c817e: ContextHeading, Heading, Dollar ×12, SaveAndOrContinueButton
+    h2-8c1911: annual-aptc
+    h2-f9a618: collected-1095
+    p-079be8: ContextHeading, Heading, SaveAndOrContinueButton
+/credits-and-deductions/credits/alt-calc-marriage:
+  title: Alt calc marriage
+  h2-f0cf38: alt-calc-mfj-excess-aptc
+  p-40c698: ContextHeading, Heading, InfoDisplay, DFModal, Boolean, SaveAndOrContinueButton
+  h2-6e34af: alt-calc-ko
+  p-e488e4: IconDisplay, Heading, InfoDisplay, DFAlert, KnockoutButton
+/credits-and-deductions/credits/ptc-outcomes-not-qualified:
+  title: Ptc outcomes not qualified
+  h2-6dbc03: dep-tp-8962-not-needed
+  p-bba26c: ContextHeading, Heading, InfoDisplay ×4, SaveAndOrContinueButton
+  h2-b71912: ptc-not-qualified-no-aptc
+  p-507132: ContextHeading, Heading, InfoDisplay, ConditionalList, SaveAndOrContinueButton
+  h2-b06a05: ptc-not-qualified-aptc
+  p-d7d34f: ContextHeading, Heading, InfoDisplay ×3, ConditionalList, SummaryTable,
+    DFModal, SaveAndOrContinueButton
+/credits-and-deductions/credits/ptc-outcomes-qualified:
+  title: Ptc outcomes qualified
+  h2-09dcda: ptc-no-aptc
+  p-bef350: ContextHeading, Heading, InfoDisplay, SaveAndOrContinueButton
+  h2-c5fcee: ptc-no-aptc-zero-credit
+  h2-6a2937: ptc-equals-aptc
+  h2-67387c: net-ptc
+  p-2aa155: ContextHeading, Heading, InfoDisplay ×2, SummaryTable, SaveAndOrContinueButton
+  h2-26bf51: excess-aptc
+  h2-0355d5: excess-aptc-repay-limitation
+/credits-and-deductions/credits/cdcc-intro:
+  title: Cdcc intro
+  h2-141fb5: cdcc-intro
+  p-079be8: ContextHeading, Heading, SaveAndOrContinueButton
+  h2-59a0f7: cdcc-gating
+  p-d50625: ContextHeading, Heading ×2, InfoDisplay ×2, Boolean, SaveAndOrContinueButton
+/credits-and-deductions/credits/cdcc-worksheet-a:
+  title: Cdcc worksheet a
+  h2-debfa2: worksheet-a-check-1
+  p-a24fc9: ContextHeading, Heading ×2, InfoDisplay, Boolean, SaveAndOrContinueButton
+  h2-bf6eb4: worksheet-a-check-2
+  h2-a157c7: worksheet-a-check-3
+  p-5a270a: ContextHeading, Heading, InfoDisplay, Boolean, SaveAndOrContinueButton
+  h2-920d9e: worksheet-a-not-required
+  p-079be8: ContextHeading, Heading, SaveAndOrContinueButton
+  h2-1980dc: worksheet-a-ko
+  p-5d9ba9: IconDisplay, Heading, InfoDisplay ×7, DFAlert, KnockoutButton
+/credits-and-deductions/credits/cdcc-combat-pay:
+  title: Cdcc combat pay
+  h2-261576: cdcc-combat-pay
+  p-d4d086: ContextHeading, Heading ×3, DFAlert, SaveAndOrContinueAndSetFactButton
+    ×2, InternalLink
+  h2-cacb4d: cdcc-combat-pay-change
+  p-123834: ContextHeading, Heading ×3, DFAlert, Enum, SaveAndOrContinueButton
+/credits-and-deductions/credits/taxable-benefits-distribution-ko:
+  title: Taxable benefits distribution ko
+  h2-939930: taxable-benefits-distribution-ko
+  p-e488e4: IconDisplay, Heading, InfoDisplay, DFAlert, KnockoutButton
+  h2-8de055: cdcc-identify-qp
+  p-52e82c: ContextHeading, Heading ×2, ConditionalList, InfoDisplay, SaveAndOrContinueButton
+/credits-and-deductions/credits/qualifying-person-info-qp:
+  title: Qualifying person info qp
+  collection/cdccQualifyingPeople:
+    itemName: cdccQualifyingPeople
+    h2-b830cc: cdcc-qualified-expenses-qp
+    p-27b202: ContextHeading, Heading, DFModal, Boolean, SaveAndOrContinueButton
+    h2-38266f: cdcc-qualified-provider-qp
+    p-e3eac8: ContextHeading, Heading, InfoDisplay, ConditionalList, Boolean, SaveAndOrContinueButton
+    h2-0c5569: cdcc-qp-expenses-qp
+    p-857ea7: ContextHeading, Heading, DFModal, InfoDisplay, ConditionalList, Dollar,
+      SaveAndOrContinueButton
+    h2-958a08: cdcc-qp-transition-a-qp
+    p-079be8: ContextHeading, Heading, SaveAndOrContinueButton
+    h2-34813c: cdcc-qp-transition-b-qp
+    p-bef350: ContextHeading, Heading, InfoDisplay, SaveAndOrContinueButton
+/credits-and-deductions/credits/qualifying-person-info-qfiler:
+  title: Qualifying person info qfiler
+  collection/cdccQualifyingFilers:
+    itemName: cdccQualifyingFilers
+    h2-578a65: cdcc-qualified-expenses-qfiler
+    p-27b202: ContextHeading, Heading, DFModal, Boolean, SaveAndOrContinueButton
+    h2-8585ce: cdcc-qualified-provider-qfiler
+    p-e3eac8: ContextHeading, Heading, InfoDisplay, ConditionalList, Boolean, SaveAndOrContinueButton
+    h2-8b6ea1: cdcc-qp-expenses-qfiler
+    p-857ea7: ContextHeading, Heading, DFModal, InfoDisplay, ConditionalList, Dollar,
+      SaveAndOrContinueButton
+    h2-ead55e: cdcc-qp-transition-a-qfiler
+    p-079be8: ContextHeading, Heading, SaveAndOrContinueButton
+    h2-43a047: cdcc-qp-transition-b-qfiler
+    p-bef350: ContextHeading, Heading, InfoDisplay, SaveAndOrContinueButton
+/credits-and-deductions/credits/cdcc-special-income-rule:
+  title: Cdcc special income rule
+  h2-7aacfe: earned-income-rule-breather-credits
+  p-91d166: ContextHeading, Heading, InfoDisplay ×3, DFModal, SaveAndOrContinueButton
+  h2-6d55ba: earned-income-rule-tp1-credits
+  p-4a4f30: ContextHeading, Heading ×3, DFModal, Boolean, SaveAndOrContinueButton
+  h2-31a6de: earned-income-rule-tp2-credits
+  h2-99d25e: earned-income-rule-ko-credits
+  p-924706: IconDisplay, Heading, InfoDisplay, DFModal, DFAlert, KnockoutButton
+  h2-0f1539: earned-income-rule-result-credits
+  p-7b752f: ContextHeading, Heading, DFModal, SaveAndOrContinueButton
+/credits-and-deductions/credits/cdcc-qualified-yes:
+  title: Cdcc qualified yes
+  h2-6c6ccd: cdcc-qualified
+  p-52e82c: ContextHeading, Heading ×2, ConditionalList, InfoDisplay, SaveAndOrContinueButton
+/credits-and-deductions/credits/cdcc-qualified-no:
+  title: Cdcc qualified no
+  h2-f8b3a4: cdcc-not-qualified
+  p-f47f3f: ContextHeading, Heading, ConditionalList, SaveAndOrContinueButton
+/credits-and-deductions/credits/care-providers:
+  title: Care providers
+  h2-fa3408: provider-collection-hub
+  p-c4e9af: ContextHeading, TaxReturnAlert, Heading ×3, InfoDisplay ×4, ConditionalList,
+    CollectionItemManager
+/credits-and-deductions/credits/care-providers-info:
+  title: Care providers info
+  collection/cdccCareProviders:
+    itemName: cdccCareProviders
+    h2-c01342: provider-bus-or-indiv
+    p-5a270a: ContextHeading, Heading, InfoDisplay, Boolean, SaveAndOrContinueButton
+    h2-80f04f: provider-employer
+    p-d50625: ContextHeading, Heading ×2, InfoDisplay ×2, Boolean, SaveAndOrContinueButton
+    h2-3764f5: provider-employer-check-multiple
+    p-e3eac8: ContextHeading, Heading, InfoDisplay, ConditionalList, Boolean, SaveAndOrContinueButton
+    h2-f049b6: provider-employer-selection
+    p-32db05: ContextHeading, Heading, CollectionItemReference, SaveAndOrContinueButton
+    h2-9adaae: provider-employer-check-single
+    p-8e54c2: ContextHeading, Heading, Boolean, SaveAndOrContinueButton
+    h2-fae968: provider-employer-add-new
+    p-47ad77: ContextHeading, Heading ×2, ConditionalList, InternalLink ×3
+    h2-47f7d9: provider-name
+    p-8eeb73: ContextHeading, Heading, Hint, LimitingString ×3, SaveAndOrContinueButton
+    h2-bd09d8: provider-address
+    p-c3500a: ContextHeading, Heading, Hint, Address, SaveAndOrContinueButton
+    h2-7aef4b: provider-tax-exempt
+/credits-and-deductions/credits/care-providers-tax-id:
+  title: Care providers tax id
+  collection/cdccCareProviders:
+    itemName: cdccCareProviders
+    h2-2eea47: tin-ein-check
+    p-88d0f4: ContextHeading, Heading ×2, DFModal ×2, Boolean, SaveAndOrContinueButton
+    h2-0c1def: tin-missing-reason
+    p-acc072: ContextHeading, Heading ×2, MultiEnum ×2, SaveAndOrContinueButton
+    h2-e17e24: provider-due-diligence
+    p-322bf6: ContextHeading, Heading ×2, ConditionalList, SaveAndOrContinueButton
+    h2-1f7694: provider-ein
+    p-7c128c: ContextHeading, Heading, InfoDisplay, Ein, SaveAndOrContinueButton
+    h2-889c91: provider-tin
+    p-4e4279: ContextHeading, Heading, InfoDisplay, Tin, SaveAndOrContinueButton
+/credits-and-deductions/credits/care-providers-amount-paid:
+  title: Care providers amount paid
+  collection/cdccCareProviders:
+    itemName: cdccCareProviders
+    h2-87a154: provider-qp-expenses
+    p-54f36d: ContextHeading, Heading ×2, InfoDisplay ×4, Dollar, SaveAndOrContinueButton
+/credits-and-deductions/credits/cdcc-nondependent-qp-tin-pin:
+  title: Cdcc nondependent qp tin pin
+  h2-c13986: cdcc-nondependent-qps
+  p-52e82c: ContextHeading, Heading ×2, ConditionalList, InfoDisplay, SaveAndOrContinueButton
+/credits-and-deductions/credits/cdcc-nondep-qp-info:
+  title: Cdcc nondep qp info
+  collection/cdccNonDependentQualifyingPeopleAssignedTins:
+    itemName: cdccNonDependentQualifyingPeopleAssignedTins
+    h2-90d08e: cdcc-nondep-qp-enter-tin
+    p-d3cd3f: ContextHeading, Heading, Tin, SaveAndOrContinueButton
+    h2-d9f199: cdcc-nondep-qp-ip-pin-choice
+    p-62f0af: ContextHeading, Heading, DFModal, InfoDisplay, Boolean, SaveAndOrContinueButton
+    h2-82532a: cdcc-nondep-qp-ip-pin-ready
+    p-5a270a: ContextHeading, Heading, InfoDisplay, Boolean, SaveAndOrContinueButton
+    h2-c184b2: cdcc-nondep-qp-ip-pin-delay
+    p-66ef3b: ContextHeading, Heading, HelpLink, DFAlert, DFModal, SaveAndOrContinueButton
+    h2-01fafd: cdcc-nondep-qp-ip-pin-input
+    p-02e8ca: ContextHeading, Heading, IpPin, SaveAndOrContinueButton
+    h2-e350ed: cdcc-nondep-qp-confirmation
+    p-98f1ed: ContextHeading, Heading, InternalLink, SaveAndOrContinueButton
+/credits-and-deductions/credits/edc-breather:
+  title: Edc breather
+  h2-f927ee: edc-breather
+  p-079be8: ContextHeading, Heading, SaveAndOrContinueButton
+/credits-and-deductions/credits/disability:
+  title: Disability
+  collection/filersMaybeEligibleForDisability:
+    itemName: filersMaybeEligibleForDisability
+    h2-f62ccc: edc-disability-intro-screen
+    p-133fb5: ContextHeading, Heading ×2, SaveAndOrContinueButton
+    h2-86c6e5: edc-permanent-total-disability
+    p-b89cc6: ContextHeading, Heading ×2, DFModal, Boolean, SaveAndOrContinueButton
+    h2-1c75be: edc-mandatory-retirement-age
+    p-8d5482: ContextHeading, Heading ×2, InfoDisplay, DFModal, Boolean, SaveAndOrContinueButton
+    h2-1518e0: edc-mandatory-retirement-age-reached
+    p-7030b3: ContextHeading, Heading ×2, Boolean, SaveAndOrContinueButton
+    h2-93a7ed: edc-disability-income
+    p-464bab: ContextHeading, Heading ×2, InfoDisplay ×4, DFModal, Boolean, SaveAndOrContinueButton
+    h2-33bc2e: edc-disability-income-amount
+    p-f096e2: ContextHeading, Heading ×2, DFModal ×2, Dollar, SaveAndOrContinueButton
+/credits-and-deductions/credits/qualified-for-edc:
+  title: Qualified for edc
+  h2-93d5e7: edc-nontaxable-payments
+  p-655ee9: ContextHeading ×2, Heading ×2, InfoDisplay, DFModal, Boolean, SaveAndOrContinueButton
+  h2-8c54ad: edc-add-nontaxable-payment
+  p-a2f081: ContextHeading, Heading ×2, DFModal, Dollar, SaveAndOrContinueButton
+/credits-and-deductions/credits/edc-not-qualified-outcome:
+  title: Edc not qualified outcome
+  h2-fb52a0: edc-not-qualified
+  p-507132: ContextHeading, Heading, InfoDisplay, ConditionalList, SaveAndOrContinueButton
+/credits-and-deductions/credits/edc-qualified-outcome:
+  title: Edc qualified outcome
+  h2-d71045: edc-qualified
+  p-399e05: ContextHeading, Heading ×2, InfoDisplay ×4, SaveAndOrContinueButton
+/credits-and-deductions/credits/edc-physician-statement:
+  title: Edc physician statement
+  collection/filersQualifiedForEdcThroughDisability:
+    itemName: filersQualifiedForEdcThroughDisability
+    h2-8edeba: edc-physician-statement-previous-with-line-b
+    p-88d0f4: ContextHeading, Heading ×2, DFModal ×2, Boolean, SaveAndOrContinueButton
+    h2-a262df: edc-physician-statement-1983
+    p-7030b3: ContextHeading, Heading ×2, Boolean, SaveAndOrContinueButton
+    h2-7332d5: edc-physician-statement-self-certify
+    p-95593b: ContextHeading, Heading, DFModal ×2, Boolean, SaveAndOrContinueButton
+    h2-9eabae: edc-physician-statement-needed
+    p-d4a4fd: ContextHeading, Heading ×2, InfoDisplay ×2, SaveAndOrContinueButton
+    h2-cb7635: edc-physician-statement-not-needed
+    p-c59476: ContextHeading, Heading ×2, InfoDisplay, SaveAndOrContinueButton
+/credits-and-deductions/credits/savers-credit-breather:
+  title: Savers credit breather
+  h2-15b1dc: savers-credit-breather
+  p-759529: ContextHeading, Heading ×3, DFModal, DFAlert, SaveAndOrContinueButton
+  h2-fcfe4c: savers-self-reported-distribution
+  p-b89cc6: ContextHeading, Heading ×2, DFModal, Boolean, SaveAndOrContinueButton
+  h2-65e1ca: savers-current-year-distributions
+  h2-d45b07: savers-self-reported-deferrals-and-contributions
+  p-e61b05: ContextHeading, Heading ×3, DFModal, Boolean ×3, SaveAndOrContinueButton
+  h2-bab8f3: savers-zero-credit
+  p-11a807: ContextHeading, Heading ×4, InfoDisplay, SaveAndOrContinueButton
+/credits-and-deductions/credits/savers-qualified-outcomes:
+  title: Savers qualified outcomes
+  h2-7fcadd: savers-eligible
+  p-0fe082: ContextHeading, Heading ×4, ConditionalAccordion ×2, InfoDisplay, SaveAndOrContinueButton
+/credits-and-deductions/credits/savers-self-reported-distributions-ko:
+  title: Savers self reported distributions ko
+  h2-f90e61: savers-self-reported-distributions-ko
+  p-bc2c75: IconDisplay, Heading, InfoDisplay ×2, DFAlert, KnockoutButton
+  h2-e66c3b: savers-current-year-distributions-ko
+  h2-268390: savers-self-reported-contributions-ko
+/credits-and-deductions/credits/nr-credit-limit-reached:
+  title: Nr credit limit reached
+  h2-3a9cea: nr-credit-limit-reached
+  p-419cd1: Heading, InfoDisplay, ConditionalList, DFModal, SaveAndOrContinueButton
+/credits-and-deductions/credits/ctc-odc:
+  title: Ctc odc
+  h2-bf991b: ctc-intro
+  p-079be8: ContextHeading, Heading, SaveAndOrContinueButton
+  h2-dec712: ctc-improper-claims
+  p-6f0b35: ContextHeading, Heading ×2, InfoDisplay ×2, DFModal, Boolean ×2, SaveAndOrContinueButton
+  h2-be56d9: ctc-improper-claims-taken-again-since-disallowal
+  p-c24573: ContextHeading, Heading ×2, InfoDisplay ×2, Boolean ×2, SaveAndOrContinueButton
+  h2-83b548: ctc-improper-claims-notice
+  p-5d3945: ContextHeading, Heading ×2, InfoDisplay, DFModal, Enum ×2, SaveAndOrContinueButton
+  h2-823932: ctc-improper-claims-waiting-period
+  p-7030b3: ContextHeading, Heading ×2, Boolean, SaveAndOrContinueButton
+/credits-and-deductions/credits/ctc-odc-outcome-no:
+  title: Ctc odc outcome no
+  h2-800f94: ctc-not-qualified
+  p-ff9451: Heading, InfoDisplay ×2, SaveAndOrContinueButton
+/credits-and-deductions/credits/ctc-only-outcome-yes:
+  title: Ctc only outcome yes
+  h2-11b4ec: ctc-qualified
+  p-52e82c: ContextHeading, Heading ×2, ConditionalList, InfoDisplay, SaveAndOrContinueButton
+/credits-and-deductions/credits/odc-section:
+  title: Odc section
+  h2-45f88b: odc-improper-claims
+  p-6f0b35: ContextHeading, Heading ×2, InfoDisplay ×2, DFModal, Boolean ×2, SaveAndOrContinueButton
+  h2-89a684: odc-improper-claims-taken-again-since-disallowal
+  p-c24573: ContextHeading, Heading ×2, InfoDisplay ×2, Boolean ×2, SaveAndOrContinueButton
+  h2-8c0d75: odc-improper-claims-notice
+  p-5d3945: ContextHeading, Heading ×2, InfoDisplay, DFModal, Enum ×2, SaveAndOrContinueButton
+  h2-991fe9: odc-improper-claims-waiting-period
+  p-7030b3: ContextHeading, Heading ×2, Boolean, SaveAndOrContinueButton
+/credits-and-deductions/credits/odc-outcome-no:
+  title: Odc outcome no
+  h2-db3362: odc-not-qualified
+  p-4f970d: IconDisplay, Heading, InfoDisplay ×2, SaveAndOrContinueButton
+/credits-and-deductions/credits/odc-outcome-yes:
+  title: Odc outcome yes
+  h2-02b437: odc-qualified
+  p-b6d3d8: ContextHeading, Heading ×4, ConditionalList, InfoDisplay, SaveAndOrContinueButton
+/credits-and-deductions/credits/qualifying-child:
+  title: Qualifying child
+  h2-54da3a: eitc-breather
+  p-079be8: ContextHeading, Heading, SaveAndOrContinueButton
+  h2-3ed8d8: eitc-taxpayer-qc-of-another
+  p-b89cc6: ContextHeading, Heading ×2, DFModal, Boolean, SaveAndOrContinueButton
+  h2-09c67c: eitc-qc-of-another-claimer-filing-requirement
+  h2-dbb762: eitc-qc-of-another-claimer-filing
+  p-5a270a: ContextHeading, Heading, InfoDisplay, Boolean, SaveAndOrContinueButton
+  h2-b2094f: eitc-qc-of-another-claimers-return
+/credits-and-deductions/credits/eitc-qc-of-another-summary:
+  title: Eitc qc of another summary
+  h2-dffdf2: eitc-qc-of-another-summary
+  p-dea46f: IconDisplay, ContextHeading, Heading, InfoDisplay, SaveAndOrContinueButton
+/credits-and-deductions/credits/eitc-reduced-disallowed:
+  title: Eitc reduced disallowed
+  h2-fc7cf2: eitc-improper-claims
+  p-687ccd: ContextHeading, Heading ×2, InfoDisplay, DFModal, Boolean ×2, SaveAndOrContinueButton
+  h2-cef71b: eitc-improper-claims-no-qc
+  p-7030b3: ContextHeading, Heading ×2, Boolean, SaveAndOrContinueButton
+  h2-aae520: eitc-improper-claims-taken-again-since-disallowal
+  p-a87b59: ContextHeading, Heading ×2, InfoDisplay, Boolean ×2, SaveAndOrContinueButton
+  h2-512d9f: eitc-improper-claims-notice
+  p-3acabd: ContextHeading, Heading ×2, DFModal, Enum ×2, SaveAndOrContinueButton
+  h2-14c624: eitc-improper-claims-waiting-period
+/credits-and-deductions/credits/eitc-not-qualified-outcome:
+  title: Eitc not qualified outcome
+  h2-a357a7: eitc-not-qualified
+  p-507132: ContextHeading, Heading, InfoDisplay, ConditionalList, SaveAndOrContinueButton
+/credits-and-deductions/credits/eitc-qualified-outcomes:
+  title: Eitc qualified outcomes
+  h2-ff43b1: eitc-qualified
+  p-d86cd3: ContextHeading, Heading, InfoDisplay ×3, ConditionalList, SaveAndOrContinueButton
+/credits-and-deductions/credits/eitc-8862-date-of-death:
+  title: Eitc 8862 date of death
+  collection/deceasedEitcEligibleQcCollection:
+    itemName: deceasedEitcEligibleQcCollection
+    h2-97b3ba: eitc-8862-date-of-death
+    p-bb2995: ContextHeading, Heading, DFModal, DatePicker, SaveAndOrContinueButton
+/credits-and-deductions/credits/eitc-additional-information-for-nd:
+  title: Eitc additional information for nd
+  h2-b1e807: eitc-additional-information-for-nd
+  p-ac7a04: ContextHeading, Heading ×2, DFModal, SaveAndOrContinueButton
+/credits-and-deductions/credits/eitc-enter-tin:
+  title: Eitc enter tin
+  collection/unclaimedEITCQcsWithTINsCollection:
+    itemName: unclaimedEITCQcsWithTINsCollection
+    h2-4c041d: eitc-enter-tin
+    p-d363e9: MefAlert, ContextHeading, Heading, Tin, SaveAndOrContinueButton
+    h2-af7cae: eitc-ip-pin-choice
+    p-62f0af: ContextHeading, Heading, DFModal, InfoDisplay, Boolean, SaveAndOrContinueButton
+    h2-bba4dd: eitc-ip-pin-ready
+    p-f5f3b2: TaxReturnAlert, ContextHeading, Heading, InfoDisplay, Boolean, SaveAndOrContinueButton
+/credits-and-deductions/credits/eitc-ip-pin-not-ready:
+  title: Eitc ip pin not ready
+  collection/unclaimedEITCQcsWithTINsCollection:
+    itemName: unclaimedEITCQcsWithTINsCollection
+    h2-8e5eb8: eitc-ip-pin-not-ready
+    p-66ef3b: ContextHeading, Heading, HelpLink, DFAlert, DFModal, SaveAndOrContinueButton
+/credits-and-deductions/credits/eitc-ip-pin-input:
+  title: Eitc ip pin input
+  collection/unclaimedEITCQcsWithTINsCollection:
+    itemName: unclaimedEITCQcsWithTINsCollection
+    h2-c9af5e: eitc-ip-pin-input
+    p-02e8ca: ContextHeading, Heading, IpPin, SaveAndOrContinueButton
+/credits-and-deductions/credits/eitc-qc-confirmation:
+  title: Eitc qc confirmation
+  collection/unclaimedEITCQcsWithTINsCollection:
+    itemName: unclaimedEITCQcsWithTINsCollection
+    h2-dcce9b: eitc-qc-confirmation
+    p-079be8: ContextHeading, Heading, SaveAndOrContinueButton
+/credits-and-deductions/credits/eitc-combat-pay-earned-income:
+  title: Eitc combat pay earned income
+  h2-e33748: eitc-primary-filer-combat-pay-recommendation
+  p-aff411: ContextHeading, Heading, DFAlert ×2, SaveAndOrContinueAndSetFactButton
+    ×2, InternalLink ×2
+  h2-0695d4: eitc-mfj-spouse-combat-pay-recommendation
+  h2-bea29a: eitc-both-filers-combat-pay-recommendation
+  p-b75999: ContextHeading, Heading, DFAlert ×4, SaveAndOrContinueAndSetFactButton
+    ×4, InternalLink ×4
+  h2-38cede: eitc-combat-pay-change
+  p-aa345b: ContextHeading, Heading ×3, DFAlert ×8, Enum, SaveAndOrContinueButton
+/credits-and-deductions/credits/summary-of-credits:
+  title: Summary of credits
+  h2-039cd8: credit-summary-qualified
+  p-b193d0: Heading, SummaryTable ×2, ConditionalAccordion, Dollar ×17, SaveAndOrContinueButton
+  h2-44b0b7: credit-summary-not-qualified
+  p-7d217c: Heading, DFModal, ConditionalAccordion, DFAccordion, InfoDisplay, HelpLink,
+    Dollar ×8, SaveAndOrContinueButton
+  h2-088493: credits-intro-no-credits
+  p-016f22: IconDisplay, ContextHeading, Heading, DFModal, ConditionalAccordion, DFAccordion,
+    InfoDisplay, HelpLink, SaveAndOrContinueButton
+/credits-and-deductions/credits/remove-family-hh:
+  title: Remove family hh
+  h2-31faf5: remove-family-hh
+  p-fc32fc: ContextHeading, Heading, InfoDisplay, ConditionalList, InternalLink, SaveAndOrContinueButton
+/your-taxes/estimated-taxes-paid/est-tax-payments-intro:
+  title: Est tax payments intro
+  h2-5e8db2: est-tax-payments-intro
+  p-507132: ContextHeading, Heading, InfoDisplay, ConditionalList, SaveAndOrContinueButton
+/your-taxes/estimated-taxes-paid/est-tax-payments:
+  title: Est tax payments
+  h2-905208: est-tax-payments-y-n
+  p-0c67d5: Heading ×2, DFModal ×2, Boolean, SaveAndOrContinueButton
+  h2-069302: no-payments-hsa-distributions-ko
+  p-bc2c75: IconDisplay, Heading, InfoDisplay ×2, DFAlert, KnockoutButton
+  h2-d6409e: no-payments-ko
+  p-b94ed2: IconDisplay, Heading, InfoDisplay ×2, DFAlert ×2, KnockoutButton
+  h2-46d6c9: est-tax-payments-name-change
+  p-bc7297: Heading ×2, Boolean, SaveAndOrContinueButton
+  h2-723b53: est-tax-payments-name-change-ko
+  h2-59b712: est-tax-payments-divorced
+  p-b41acb: Heading, Enum, SaveAndOrContinueButton
+/your-taxes/estimated-taxes-paid/former-spouse-info:
+  title: Former spouse info
+  h2-0c2d32: est-tax-payments-divorced-tax-id-primary-filer
+  p-01cc2e: Heading, InfoDisplay, Tin, SaveAndOrContinueButton
+  h2-0c1eab: est-tax-payments-divorced-tax-id-secondary-filer
+/your-taxes/estimated-taxes-paid/amount-paid:
+  title: Amount paid
+  h2-07b404: est-tax-payments-amount
+  p-d4d6e4: Heading ×2, DFModal ×5, Dollar, SaveAndOrContinueButton
+/your-taxes/amount/tax-amount-intro:
+  title: Tax amount intro
+  h2-2c7491: tax-amount-intro
+  p-a79429: ContextHeading, Heading, TaxReturnAlert, InfoDisplay, SaveAndOrContinueButton
+  h2-61cf88: tax-amount-number
+  p-b04336: Heading ×2, BigContent ×2, DFModal ×5, SaveAndOrContinueButton
+  h2-c0bde7: tax-amount-explanation
+  p-0b5f36: Heading, SummaryTable ×6, InfoDisplay ×3, SaveAndOrContinueButton
+/your-taxes/payment-method/refund-intro:
+  title: Refund intro
+  h2-95bb65: refund-intro
+  p-ec8c93: ContextHeading, Heading, InfoDisplay, DFModal, SaveAndOrContinueButton
+/your-taxes/payment-method/refund-method:
+  title: Refund method
+  h2-03d1bf: refund-method-choice
+  p-328647: Heading, Boolean, SaveAndOrContinueButton
+/your-taxes/payment-method/refund-mailing-address:
+  title: Refund mailing address
+  h2-226c0c: refund-mailing-address
+  p-871336: Heading, InfoDisplay, Address, SaveAndOrContinueButton
+/your-taxes/payment-method/refund-direct-deposit:
+  title: Refund direct deposit
+  h2-e0429f: refund-direct-deposit
+  p-510051: DFModal ×2, Heading, BankAccount, SaveAndOrContinueButton
+/your-taxes/payment-method/refund-outro:
+  title: Refund outro
+  h2-a7341f: refund-outro
+  p-722f0a: Heading, InfoDisplay, DFAlert ×2, IconList ×2, SaveAndOrContinueButton
+  h2-6deb20: payment-intro
+  p-bef350: ContextHeading, Heading, InfoDisplay, SaveAndOrContinueButton
+/your-taxes/payment-method/payment-method:
+  title: Payment method
+  h2-0b78f3: payment-method-choice-autocorrect
+  p-fdbeb6: TaxReturnAlert, Heading, InfoDisplay, SaveAndOrContinueButton
+  h2-09d1fd: payment-paper-path-assertion
+  p-b46432: DFAlert ×3, Heading, InfoDisplay, SaveAndOrContinueButton
+  h2-f6c8ca: payment-method-choice
+  p-b691a7: Heading, InfoDisplay, Boolean, DFModal, SaveAndOrContinueButton
+/your-taxes/payment-method/payment-direct-debit:
+  title: Payment direct debit
+  h2-3a559c: payment-direct-debit
+  p-c044fb: TaxReturnAlert ×5, Heading, BankAccount, DFModal, DatePicker ×2, SaveAndOrContinueButton
+/your-taxes/payment-method/payment-another-way:
+  title: Payment another way
+  h2-aeb126: payment-another-way
+  p-33b0cf: Heading, InfoDisplay, SaveAndOrContinueButton
+  h2-b1186c: payment-outro
+  p-1c5baf: Heading, InfoDisplay ×2, DFAlert, IconList ×2, SaveAndOrContinueButton
+/your-taxes/other-preferences/other-preferences-intro:
+  title: Other preferences intro
+  h2-b39247: other-preferences-intro
+  p-594fc5: Heading, InfoDisplay ×4, SaveAndOrContinueButton
+/your-taxes/other-preferences/third-party-designee:
+  title: Third party designee
+  h2-dd0fd9: third-party-designee-choice
+  p-15663d: Heading, DFModal, Boolean, SaveAndOrContinueButton
+  h2-d628ce: third-party-designee-input
+  p-83e4ab: Heading, LimitingString, PhoneNumber, SaveAndOrContinueButton
+  h2-88ba7b: third-party-designee-pin
+  p-d3d1c9: Heading, InfoDisplay, Pin, SaveAndOrContinueButton
+/your-taxes/other-preferences/irs-communication:
+  title: Irs communication
+  h2-3cd09b: comms-different-language-choice
+  p-9a7478: Heading, InfoDisplay ×2, DFModal, Boolean, SaveAndOrContinueButton
+  h2-9cdc24: comms-different-language-input
+  p-b41acb: Heading, Enum, SaveAndOrContinueButton
+  h2-b1263a: comms-different-format-choice
+  p-21c72a: Heading, InfoDisplay ×2, Boolean, SaveAndOrContinueButton
+  h2-d0bfc8: comms-different-format-input
+  p-e56a6f: Heading, InfoDisplay, Enum, SaveAndOrContinueButton
+/your-taxes/other-preferences/presidential-fund:
+  title: Presidential fund
+  h2-75e3a9: presidential-fund
+  p-5f8367: Heading ×2, InfoDisplay, DFModal, Enum, SaveAndOrContinueButton
+/complete/review/review:
+  title: Review
+  h2-1c6766: review
+  p-eed53a: Heading, InfoDisplay, Subheading ×2, DownloadPDFButton, SectionReview,
+    SaveAndOrContinueAndSetFactButton
+/complete/sign-and-submit/sign-return-intro:
+  title: Sign return intro
+  h2-dd4fae: sign-return-intro
+  p-fed70e: ContextHeading, Heading ×2, InfoDisplay ×2, DFModal, SaveAndOrContinueButton
+/complete/sign-and-submit/your-digital-signature:
+  title: Your digital signature
+  h2-7c4686: sign-return-filed-last-year
+  p-328647: Heading, Boolean, SaveAndOrContinueButton
+  h2-a4362d: sign-return-identity
+  p-70d88e: Heading, MefAlert, InfoDisplay, DFModal, Enum, SaveAndOrContinueButton
+  h2-d1da35: sign-paper-file-explain
+  p-ec3ee1: Heading, DFAlert, SaveAndOrContinueButton
+  h2-d12e69: sign-return-enter-self-select-pin
+  p-4100ee: Heading, MefAlert, DFModal, Pin, SaveAndOrContinueButton
+  h2-d97a9f: sign-return-agi
+  p-10dfce: Heading, MefAlert, InfoDisplay ×2, DFModal, Dollar, SaveAndOrContinueButton
+  h2-cfa385: sign-return-create-new-self-select-pin
+  p-4bdfed: Heading, Pin, DatePicker, SaveAndOrContinueButton
+/complete/sign-and-submit/sign-return-spouse-intro:
+  title: Sign return spouse intro
+  h2-19c368: sign-return-spouse-intro
+  p-23982b: Heading, DFModal, InfoDisplay, SaveAndOrContinueButton
+/complete/sign-and-submit/spouse-digital-signature:
+  title: Spouse digital signature
+  h2-5b9e81: sign-return-spouse-filed-last-year
+  p-328647: Heading, Boolean, SaveAndOrContinueButton
+  h2-c21c73: sign-return-spouse-identity
+  p-09bbb1: Heading, InfoDisplay, DFModal, MefAlert, Enum, SaveAndOrContinueButton
+  h2-dc1ac0: sign-paper-file-spouse-explain
+  p-ec3ee1: Heading, DFAlert, SaveAndOrContinueButton
+  h2-90ce6e: sign-return-spouse-enter-self-select-pin
+  p-4100ee: Heading, MefAlert, DFModal, Pin, SaveAndOrContinueButton
+  h2-ea1b93: sign-return-spouse-agi
+  p-f92462: Heading, MefAlert, InfoDisplay, DFModal, Dollar, SaveAndOrContinueButton
+  h2-94bf6f: sign-return-spouse-create-self-select-pin
+  p-5b6aa6: Heading, Pin, DatePicker, InfoDisplay, InternalLink, SaveAndOrContinueButton
+/complete/print-and-mail/sign-paper-file:
+  title: Sign paper file
+  h2-b8fa9a: sign-paper-file
+  p-5057e9: TaxReturnAlert, Heading, InfoDisplay ×7, StateInfoCard ×3, ExitButton
+  h2-6e7346: sign-spouse-paper-file
+  h2-103c83: sign-paper-file-ip-pin
+  p-dc9670: DFAlert, Heading, InfoDisplay ×7, StateInfoCard ×3, ExitButton
+/complete/submit/sign-return-mfj-submit:
+  title: Sign return mfj submit
+  h2-3c4633: sign-return-mfj-submit
+  p-0e20a8: Heading, InfoDisplay ×3, Subheading ×5, BigContent ×2, ConditionalList
+    ×4, CertifyCheckbox ×2, DFAlert, SubmitButton
+  h2-02a147: sign-return-submit
+  p-e3f981: Heading, InfoDisplay ×5, Subheading ×4, BigContent ×2, ConditionalList
+    ×2, CertifyCheckbox ×2, SubmitButton
+  h2-37e1be: sign-return-done
+  p-09361e: IconDisplay, Heading ×2, StateTaxReminderAlertWrapper, InfoDisplay ×7,
+    InternalLink, DFModal, DownloadPDFButton
