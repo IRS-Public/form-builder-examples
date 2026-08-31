@@ -5,7 +5,7 @@
 Every content component type Direct File's flow declares, and what this port does with it.
 Written from the same pass that emits the flow, over 727 screens and 4346 content declarations.
 
-An unmapped type is not a row here — `ComponentMapper.blocks` throws on it, naming the type and the screen, and the emit fails. So this file is a list of decisions, and every one of them is in `codemod/components.ts`.
+An unmapped type never becomes a row here. `ComponentMapper.blocks` throws on it, naming the type and the screen, and the emit fails. So this file is a list of decisions, and every one of them is in `codemod/components.ts`.
 
 | Group | Types |
 |---|---:|
@@ -34,13 +34,13 @@ Each becomes flow markup. Where a type has more than one row, its props decide: 
 |  | 1 | skipped where displayOnlyOn is data-view |
 | `DatePicker` | 10 | `<fg-set>` with `<input type="date">` |
 |  | 2 | skipped where displayOnlyOn is data-view |
-|  | 1 | read-only: a `<p>` with `<fg-show>`, not a question |
+|  | 1 | read-only display: a `<p>` with `<fg-show>` |
 | `DFAccordion` | 27 | `<fg-detail>` |
 | `DFAlert` | 181 | `<fg-alert>` |
 | `DFModal` | 471 | `<modal-link>` plus a hoisted `<modal-dialog>` |
 | `Dollar` | 120 | `<fg-set>` with `<input type="dollar">` |
 |  | 26 | skipped where displayOnlyOn is data-view |
-|  | 12 | read-only: a `<p>` with `<fg-show>`, not a question |
+|  | 12 | read-only display: a `<p>` with `<fg-show>` |
 | `Ein` | 6 | `<fg-set>` with `<input type="ein">` |
 | `Enum` | 61 | `<fg-set>` with `<input type="enum">` |
 | `FactAssertion` | 4 | skipped where displayOnlyOn is data-view |
@@ -49,7 +49,7 @@ Each becomes flow markup. Where a type has more than one row, its props decide: 
 |  | 2 | skipped where displayOnlyOn is data-view |
 | `GenericString` | 14 | skipped where displayOnlyOn is data-view |
 |  | 4 | `<fg-set>` with `<input type="text">` |
-|  | 2 | read-only: a `<p>` with `<fg-show>`, not a question |
+|  | 2 | read-only display: a `<p>` with `<fg-show>` |
 | `Heading` | 956 | the screen's `<h2>`, and the page title when the screen opens one |
 | `HelpLink` | 12 | the key's content: a body tree, a sentence, or a modal launcher |
 | `Hint` | 5 | `<p class="usa-hint">` |
@@ -59,9 +59,9 @@ Each becomes flow markup. Where a type has more than one row, its props decide: 
 | `InternalLink` | 31 | `<p>` with a link to the named flow route |
 | `IntroContent` | 15 | the key's content: a body tree, a sentence, or a modal launcher |
 | `IpPin` | 6 | `<fg-set>` with `<input type="ip-pin">` |
-|  | 1 | read-only: a `<p>` with `<fg-show>`, not a question |
+|  | 1 | read-only display: a `<p>` with `<fg-show>` |
 | `LimitingString` | 44 | `<fg-set>` with `<input type="text">` |
-|  | 12 | read-only: a `<p>` with `<fg-show>`, not a question |
+|  | 12 | read-only display: a `<p>` with `<fg-show>` |
 |  | 4 | skipped where displayOnlyOn is data-view |
 | `MultiEnum` | 6 | `<fg-set>` with `<input type="multi-enum">` |
 | `PhoneNumber` | 4 | `<fg-set>` with `<input type="phone-number">` |
@@ -69,7 +69,7 @@ Each becomes flow markup. Where a type has more than one row, its props decide: 
 | `Subheading` | 14 | `<h3>` |
 | `SummaryTable` | 22 | `<table>` of label/value rows |
 | `Tin` | 12 | `<fg-set>` with `<input type="tin">` |
-|  | 5 | read-only: a `<p>` with `<fg-show>`, not a question |
+|  | 5 | read-only display: a `<p>` with `<fg-show>` |
 |  | 1 | skipped where displayOnlyOn is data-view |
 
 ## Drawn by something else
@@ -96,7 +96,7 @@ The port is questionnaire-only: no authentication, no MeF submission, no PDF, no
 | `ExitButton` | 3 | out of scope: the Direct File dashboard |
 | `MefAlert` | 44 | out of scope: MeF rejection codes |
 | `SaveAndOrContinueAndSetFactButton` | 14 | out of scope: submission |
-| `SectionReview` | 1 | out of scope: the Checklist and DataView; the topic page is the review surface |
+| `SectionReview` | 1 | out of scope: the Checklist and DataView. The topic page is the review surface. |
 | `StateInfoCard` | 9 | out of scope: the state-tax handoff |
 | `StateTaxReminderAlertWrapper` | 1 | out of scope: the state-tax handoff |
 | `SubmitButton` | 2 | out of scope: submission |
@@ -104,26 +104,26 @@ The port is questionnaire-only: no authentication, no MeF submission, no PDF, no
 
 ## Real gaps
 
-Expressible in Direct File and not in this flow. Each is a thing to fix, not a thing to explain.
+Expressible in Direct File and not in this flow. Each one is a thing to fix.
 
 _None._
 
 ## Inline constructs with no shape in the IR
 
-Markup met inside an authored string that the inline IR has no node for. Each one would be dropped to its text, so the words would survive and the markup would not — a link stopping being a link, a nested list stopping being a list. Counted rather than silenced, because the number is the argument for adding a node.
+Markup met inside an authored string that the inline representation has no node for. Each one would be dropped to its text, so the words would survive and the markup would not. A link would stop being a link, and a nested list would stop being a list. Counted rather than silenced, because the number is the argument for adding a node.
 
 _None._
 
 ## Markup dropped on purpose
 
-The other half of the same walk, and the distinction is the point: these are decisions rather than gaps, so each carries its reason instead of a claim on someone's time.
+The other half of the same walk. These are decisions rather than gaps, so each row carries the reason it was dropped.
 
 | Construct | Occurrences | Why |
 |---|---:|---|
 | `<customerSupportLink>` | 11 | upstream binds no component and no url to this tag either, so it renders as plain text in Direct File too. Not a difference from upstream. |
-| `<InternalLink>` | 10 | every remaining one points at a `/data-view/…` route. This port has no DataView — the topic page is its review surface — so there is nowhere to link to. The words stay, the link goes. |
-| `<InlinePDFButton>` | 3 | out of scope: PDF. The sentence survives; the download button does not. |
+| `<InternalLink>` | 10 | every remaining one points at a `/data-view/…` route. This port has no DataView, since the topic page is its review surface, so there is nowhere to link to. The words survive without the link. |
+| `<InlinePDFButton>` | 3 | out of scope: PDF. The sentence around it survives, without the download button. |
 | markup in a collection item label | 2 | the label is a template the browser evaluates once per collection item, so it reaches the page as an attribute rather than as markup. One of the nine wraps itself in a `<p>`. |
-| `<span>` | 1 | carries no semantics — "the Form `<span>`W-2`</span>`" reads the same without it. On a data-import screen, which is out of scope in any case. |
+| `<span>` | 1 | carries no semantics. "the Form `<span>`W-2`</span>`" reads the same without it, and it appears on a data-import screen, which is out of scope in any case. |
 
-Option labels flattened to plain text: **0**. Only a `select` can need this — an HTML `<option>` holds text and nothing else. `enum` and `multi-enum` keep their markup: FgSet stores an option's inner XML as its translation value and their templates render it with `th:utext`, so "in <fg-show path="/taxYear"/>" and a bold box number both survive.
+Option labels flattened to plain text: **0**. Only a `select` can need this, because an HTML `<option>` holds text and nothing else. `enum` and `multi-enum` keep their markup: FgSet stores an option's inner XML as its translation value and their templates render it with `th:utext`, so "in <fg-show path="/taxYear"/>" and a bold box number both survive.

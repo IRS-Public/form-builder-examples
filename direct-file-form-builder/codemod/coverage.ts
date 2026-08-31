@@ -46,7 +46,7 @@ const GROUPS: Group[] = [
   {
     category: `not-expressible`,
     heading: `Real gaps`,
-    blurb: `Expressible in Direct File and not in this flow. Each is a thing to fix, not a thing to explain.`,
+    blurb: `Expressible in Direct File and not in this flow. Each one is a thing to fix.`,
   },
 ];
 
@@ -113,27 +113,27 @@ export function renderCoverage(report: ContentReport, screenCount: number): stri
     `Every content component type Direct File's flow declares, and what this port does with it.\n` +
     `Written from the same pass that emits the flow, over ${screenCount} screens and ` +
     `${total} content declarations.\n\n` +
-    `An unmapped type is not a row here — \`ComponentMapper.blocks\` throws on it, naming the type ` +
-    `and the screen, and the emit fails. So this file is a list of decisions, and every one of them ` +
-    `is in \`codemod/components.ts\`.\n\n` +
+    `An unmapped type never becomes a row here. \`ComponentMapper.blocks\` throws on it, naming the ` +
+    `type and the screen, and the emit fails. So this file is a list of decisions, and every one of ` +
+    `them is in \`codemod/components.ts\`.\n\n` +
     `${summary}\n\n` +
     GROUPS.map(
       (g) => `## ${g.heading}\n\n${g.blurb}\n\n${table(components, g.category)}`
     ).join(`\n`) +
     `\n## Inline constructs with no shape in the IR\n\n` +
-    `Markup met inside an authored string that the inline IR has no node for. Each one would be ` +
-    `dropped to its text, so the words would survive and the markup would not — a link stopping ` +
-    `being a link, a nested list stopping being a list. Counted rather than silenced, because the ` +
-    `number is the argument for adding a node.\n\n` +
+    `Markup met inside an authored string that the inline representation has no node for. Each one ` +
+    `would be dropped to its text, so the words would survive and the markup would not. A link would ` +
+    `stop being a link, and a nested list would stop being a list. Counted rather than silenced, ` +
+    `because the number is the argument for adding a node.\n\n` +
     `${unhandledTable}\n` +
     `## Markup dropped on purpose\n\n` +
-    `The other half of the same walk, and the distinction is the point: these are decisions rather ` +
-    `than gaps, so each carries its reason instead of a claim on someone's time.\n\n` +
+    `The other half of the same walk. These are decisions rather than gaps, so each row carries the ` +
+    `reason it was dropped.\n\n` +
     `${droppedTable}\n` +
     `Option labels flattened to plain text: **${report.flattenedOptionLabels}**. Only a \`select\` ` +
-    `can need this — an HTML \`<option>\` holds text and nothing else. \`enum\` and \`multi-enum\` ` +
-    `keep their markup: FgSet stores an option's inner XML as its translation value and their ` +
-    `templates render it with \`th:utext\`, so "in <fg-show path=\"/taxYear\"/>" and a bold box ` +
-    `number both survive.\n`
+    `can need this, because an HTML \`<option>\` holds text and nothing else. \`enum\` and ` +
+    `\`multi-enum\` keep their markup: FgSet stores an option's inner XML as its translation value ` +
+    `and their templates render it with \`th:utext\`, so "in <fg-show path=\"/taxYear\"/>" and a ` +
+    `bold box number both survive.\n`
   );
 }

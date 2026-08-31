@@ -55,7 +55,7 @@ const OUT_OF_SCOPE: Record<string, string> = {
   StateTaxesButton: `out of scope: the state-tax handoff`,
   MefAlert: `out of scope: MeF rejection codes`,
   TaxReturnAlert: `out of scope: MeF submission validation`,
-  SectionReview: `out of scope: the Checklist and DataView; the topic page is the review surface`,
+  SectionReview: `out of scope: the Checklist and DataView. The topic page is the review surface.`,
   CollectionDataViewInternalLink: `out of scope: the DataView`,
   CertifyCheckbox: `out of scope: the e-signature path`,
 };
@@ -238,10 +238,10 @@ export class ComponentMapper {
     const path = props.path as string;
     const type = INPUT_TYPES[name];
 
-    // A read-only control is a display of an answer given elsewhere, not a question. `<fg-set>` has
+    // A read-only control displays an answer given elsewhere rather than asking for one. `<fg-set>` has
     // no such mode, and `<fg-show>` is exactly this: the label, then the value.
     if (props.readOnly === true) {
-      this.record(name, `read-only: a <p> with <fg-show>, not a question`);
+      this.record(name, `read-only display: a <p> with <fg-show>`);
       const label = this.fieldLabel(path);
       return [{ k: `p`, t: [...(label.length > 0 ? [{ k: `strong` as const, c: label }, { k: `text` as const, v: ` ` }] : []), { k: `fact`, path }] }];
     }

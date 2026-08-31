@@ -166,8 +166,9 @@
             <value>text</value>
             <value>date</value>
             <value>int</value>
-            <!-- Widened for this application: the seven types registered in Main.scala's
-                 `inputTypes`. They take no child elements, exactly like the built-in scalars above,
+            <!-- Widened for this application: seven of the eight types registered in Main.scala's
+                 `inputTypes`. The eighth, collection-item-reference, is declared separately below
+                 because it carries an attribute. These take no child elements, like the built-ins above,
                  because everything that varies is in the parser and the template rather than in the
                  flow. Listing them here is what makes `<input type="tinn">` a validation failure
                  instead of an "Unexpected input type" thrown halfway through the build. -->
@@ -183,7 +184,7 @@
       </element>
       <!-- The eighth registered type, and the only one that takes an attribute of its own. Which
            collection it lists is read out of the fact dictionary by inputs/CollectionItemReference.scala
-           rather than written here; `item-label` cannot be, because it is authored prose — Direct
+           rather than written here. `item-label` cannot be, because it is authored prose: Direct
            File's `fields.{path}.item`, a run of fact references evaluated once per item. -->
       <element name="input">
         <attribute name="type">

@@ -55,15 +55,15 @@ import { modalId, plainText } from './render.ts';
  */
 export const DROPPED_WITH_REASON: Record<string, string> = {
   '<InternalLink>':
-    `every remaining one points at a \`/data-view/…\` route. This port has no DataView — the topic ` +
-    `page is its review surface — so there is nowhere to link to. The words stay, the link goes.`,
+    `every remaining one points at a \`/data-view/…\` route. This port has no DataView, since the ` +
+    `topic page is its review surface, so there is nowhere to link to. The words survive without the link.`,
   '<customerSupportLink>':
     `upstream binds no component and no url to this tag either, so it renders as plain text in ` +
     `Direct File too. Not a difference from upstream.`,
-  '<InlinePDFButton>': `out of scope: PDF. The sentence survives; the download button does not.`,
+  '<InlinePDFButton>': `out of scope: PDF. The sentence around it survives, without the download button.`,
   '<span>':
-    `carries no semantics — "the Form <span>W-2</span>" reads the same without it. On a data-import ` +
-    `screen, which is out of scope in any case.`,
+    `carries no semantics. "the Form <span>W-2</span>" reads the same without it, and it appears on ` +
+    `a data-import screen, which is out of scope in any case.`,
   'markup in a collection item label':
     `the label is a template the browser evaluates once per collection item, so it reaches the page ` +
     `as an attribute rather than as markup. One of the nine wraps itself in a <p>.`,

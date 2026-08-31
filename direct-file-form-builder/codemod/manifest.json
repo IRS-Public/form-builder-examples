@@ -138,11 +138,11 @@
       },
       "<InternalLink>": {
         "count": 10,
-        "because": "every remaining one points at a `/data-view/…` route. This port has no DataView — the topic page is its review surface — so there is nowhere to link to. The words stay, the link goes."
+        "because": "every remaining one points at a `/data-view/…` route. This port has no DataView, since the topic page is its review surface, so there is nowhere to link to. The words survive without the link."
       },
       "<InlinePDFButton>": {
         "count": 3,
-        "because": "out of scope: PDF. The sentence survives; the download button does not."
+        "because": "out of scope: PDF. The sentence around it survives, without the download button."
       },
       "markup in a collection item label": {
         "count": 2,
@@ -150,7 +150,7 @@
       },
       "<span>": {
         "count": 1,
-        "because": "carries no semantics — \"the Form <span>W-2</span>\" reads the same without it. On a data-import screen, which is out of scope in any case."
+        "because": "carries no semantics. \"the Form <span>W-2</span>\" reads the same without it, and it appears on a data-import screen, which is out of scope in any case."
       }
     },
     "flattenedOptionLabels": 0,
