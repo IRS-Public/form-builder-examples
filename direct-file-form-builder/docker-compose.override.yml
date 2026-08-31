@@ -94,7 +94,16 @@ services:
       #
       # Neither is a live-edit mount, because neither has a source tree on the host to point at: the
       # engine bundle is stage 1's fastOptJS output and the USWDS mirror is stage 2's
-      # `make copy-uswds`. Rebuild the image to pick up a change to either.
+      # `make copy-uswds`.
+      #
+      # To pick up a change to either, **rebuilding the image is not enough** — `make rebuild`, or
+      # `docker compose down` and `docker volume rm <project>_vendor-fact-graph`. A named volume is
+      # seeded from the image only when it is *created*; after that it is the volume's content that
+      # wins, and `up --build` keeps serving what the volume already holds however many times the
+      # image is rebuilt. That cost a debugging session: a fixed Pin/IpPin `parseString` in
+      # ~/fact-graph, a correct bundle in the image, and a browser still loading the old engine and
+      # blowing its stack on any scenario carrying a PIN. The seeding-on-first-creation behaviour
+      # above is what makes `make up` work with no host toolchain; this is its other half.
       - vendor-fact-graph:/build/direct-file-form-builder/src/main/resources/direct-file/website-static/vendor/fact-graph
       - vendor-uswds:/build/direct-file-form-builder/src/main/resources/direct-file/website-static/vendor/uswds-3.13.0
 

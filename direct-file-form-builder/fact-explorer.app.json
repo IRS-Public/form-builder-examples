@@ -44,7 +44,7 @@
   ],
   "scenarios": {
     "dir": "scenarios",
-    "vocabulary": "none"
+    "vocabulary": "direct-file"
   },
 
   "$comment_customFlowTags": [

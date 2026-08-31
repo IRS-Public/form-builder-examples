@@ -27,12 +27,13 @@
  *
  *     make transpile-verify
  */
-import { existsSync, readFileSync, readdirSync } from 'fs';
+import { readFileSync } from 'fs';
 import { join } from 'path';
 import flowNodes from '/src/flow/flow.js';
 import { createFlowConfig } from '/src/flow/flowConfig.js';
 import { Condition } from '/src/flow/Condition.js';
 import { setupFactGraph } from '/src/test/setupFactGraph.js';
+import { asOurFormat, readScenarios } from './scenario-graph.ts';
 // Direct File's own converter, for Direct File's own graph. The two engines are separate builds and
 // a Scala collection from one is not a Scala collection the other can cast.
 import { scalaListToJsArray } from '@irs/js-factgraph-scala';
@@ -45,14 +46,6 @@ if (!DF_CLIENT_APP || !APP) {
 
 /** The dictionary the generated site ships, gates included. Written by `make site`. */
 const DICTIONARY = join(APP, `out/app/direct-file/resources/fact-dictionary.xml`);
-// Both are symlinks into the backend's test resources. `backend-scenarios-ero` is dangling in this
-// checkout — the ERO scenarios are not published with it — so a missing folder is skipped and
-// counted rather than fatal.
-const SCENARIOS = [
-  join(DF_CLIENT_APP, `src/test/factDictionaryTests/backend-scenarios`),
-  join(DF_CLIENT_APP, `src/test/factDictionaryTests/backend-scenarios-ero`),
-].filter((folder) => existsSync(folder));
-
 // The engine, as the browser loads it: the same bundle this application vendors, so the gates are
 // evaluated by the code that will evaluate them in the page.
 const fg = await import(join(APP, `src/main/resources/direct-file/website-static/vendor/fact-graph/factgraph-3.1.0.js`));
@@ -65,33 +58,6 @@ const flow = createFlowConfig(flowNodes);
 const dictionaryXml = readFileSync(DICTIONARY, `utf8`);
 const dictionary = fg.FactDictionaryFactory.importFromXml(dictionaryXml);
 
-/**
- * A serialized graph from Direct File's engine, as this one reads it.
- *
- * The two builds are the same lineage and disagree in one place: Direct File's writes an
- * `Option[String]` the way its upickle does, as a one-element array, and this one writes and reads a
- * bare string. `Enum.value` is the only field that shape reaches. Translating it here rather than
- * widening the engine's reader is deliberate — nothing in this application ever loads a graph
- * Direct File wrote, and a reader that quietly accepts two encodings is a reader that stops telling
- * you when they diverge again.
- *
- * The empty `/email` some scenarios carry is dropped rather than translated: this engine's
- * `EmailAddress` requires an `@`, `setupFactGraph` fills a real address in when the fact is absent,
- * and no screen condition reads it.
- */
-function asOurFormat(json: string): string {
-  const facts = JSON.parse(json) as Record<string, { $type?: string; item?: Record<string, unknown> }>;
-  for (const [path, wrapper] of Object.entries(facts)) {
-    const type = wrapper?.$type ?? ``;
-    if (type.endsWith(`EnumWrapper`) && Array.isArray(wrapper.item?.value)) {
-      wrapper.item.value = wrapper.item.value.length > 0 ? wrapper.item.value[0] : null;
-    }
-    if (type.endsWith(`EmailAddressWrapper`) && !String(wrapper.item?.email ?? ``).includes(`@`)) {
-      delete facts[path];
-    }
-  }
-  return JSON.stringify(facts);
-}
 
 /** The item ids of a collection, or `[null]` for a screen that is not in one. */
 function itemsOf(graph: unknown, collection: string | null | undefined): (string | null)[] {
@@ -153,39 +119,36 @@ let comparisons = 0;
 let agreements = 0;
 const screensWithAMismatch = new Set<string>();
 
-for (const folder of SCENARIOS) {
-  for (const file of readdirSync(folder).filter((f) => f.endsWith(`.json`) && !f.endsWith(`.expected.json`))) {
-    const facts = JSON.parse(readFileSync(join(folder, file), `utf8`)).facts;
-    const { factGraph } = setupFactGraph(facts);
-    // Same state, this application's dictionary. Serializing the seeded graph rather than reloading
-    // the file is what keeps the two sides looking at identical data.
-    const portGraph = fg.GraphFactory.fromJSON(dictionary, asOurFormat(factGraph.toJSON()));
-    scenarios += 1;
+for (const { name, facts } of readScenarios(DF_CLIENT_APP)) {
+  const { factGraph } = setupFactGraph(facts);
+  // Same state, this application's dictionary. Serializing the seeded graph rather than reloading
+  // the file is what keeps the two sides looking at identical data.
+  const portGraph = fg.GraphFactory.fromJSON(dictionary, asOurFormat(factGraph.toJSON()));
+  scenarios += 1;
 
-    for (const screen of flow.screens) {
-      const gate = screenGates[screen.screenRoute];
-      if (gate === undefined) continue; // a screen the extraction does not have; verify-order covers that
+  for (const screen of flow.screens) {
+    const gate = screenGates[screen.screenRoute];
+    if (gate === undefined) continue; // a screen the extraction does not have; verify-order covers that
 
-      for (const itemId of itemsOf(factGraph, screen.collectionContext)) {
-        const directFile = (screen.conditions ?? []).every((raw: unknown) =>
-          new Condition(raw as never).evaluate(factGraph as never, itemId)
-        );
+    for (const itemId of itemsOf(factGraph, screen.collectionContext)) {
+      const directFile = (screen.conditions ?? []).every((raw: unknown) =>
+        new Condition(raw as never).evaluate(factGraph as never, itemId)
+      );
 
-        let port: boolean;
-        if (gate === false) port = false;
-        else if (gate === null) port = true;
-        else {
-          const result = portGraph.get(concrete(gate, itemId));
-          port = result.complete === true && result.get === true;
-        }
+      let port: boolean;
+      if (gate === false) port = false;
+      else if (gate === null) port = true;
+      else {
+        const result = portGraph.get(concrete(gate, itemId));
+        port = result.complete === true && result.get === true;
+      }
 
-        comparisons += 1;
-        if (directFile === port) {
-          agreements += 1;
-        } else {
-          screensWithAMismatch.add(screen.screenRoute);
-          mismatches.push({ scenario: file, screen: screen.screenRoute, directFile, port, gate });
-        }
+      comparisons += 1;
+      if (directFile === port) {
+        agreements += 1;
+      } else {
+        screensWithAMismatch.add(screen.screenRoute);
+        mismatches.push({ scenario: name, screen: screen.screenRoute, directFile, port, gate });
       }
     }
   }

@@ -9,5 +9,16 @@
     <script type="module" th:inline="javascript">
         import { enable } from /*[[|${basePath}/resources/vendor/taxpert/audit-panel/js/taxpert-audit-panel.js|]]*/ ''
         enable()
+
+        // The Scenario picker's three dropdowns. Registered from here rather than by overriding the
+        // scaffold's audit-panel.html the way credit-assistant does: the only thing this application
+        // adds to that fragment is a filter vocabulary, and a whole template override to reach one
+        // method is a copy that has to be kept in step with a library file forever. This fragment
+        // already renders at the end of <body> with the panel in the document.
+        //
+        // 161 scenarios; a flat list of them is not browsable. Nothing happens without a corpus, so
+        // this is inert until `make export-scenarios` has run.
+        import { registerScenarioFilters } from /*[[|${basePath}/resources/js/scenario-filters.js|]]*/ ''
+        registerScenarioFilters(document.querySelector('#audit-panel'))
     </script>
 </th:block>

@@ -314,6 +314,17 @@ transpile: ## Regenerate the flow and its gate facts from Direct File
 		codemod/extract.ts codemod/flow-config.json
 	node codemod/emit.ts codemod/flow-config.json $(RESOURCES_DIR)
 
+.PHONY: export-scenarios
+export-scenarios: ## Regenerate the scenario corpus from Direct File's backend scenarios
+	@# The Scenario picker's contents, and Fact Explorer's scenario list. Runs the same
+	@# `setupFactGraph` load `transpile-verify` does and keeps the graphs instead of comparing them,
+	@# so the corpus and the parity gate can never be looking at differently-translated data.
+	@#
+	@# Reads the generated fact-dictionary.xml to check every scenario loads before writing it, so
+	@# it needs a `make site` first.
+	npx --prefix $(DF_CLIENT_APP) vite-node --root $(DF_CLIENT_APP) \
+		codemod/export-scenarios.ts $(DF_CLIENT_APP) $(CURDIR)
+
 .PHONY: transpile-verify
 transpile-verify: ## Check the port against Direct File: page order, then gate parity per scenario
 	@# Two halves of one claim. The first is that declaration order is navigation order, so cutting
