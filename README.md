@@ -13,20 +13,6 @@ difference between Taxpert, Form Builder and the Fact Graph, see
 depended on. The reusable parts live in three other repositories, and these applications are what
 they look like in use, collected here for convenience.
 
-## Where this fits
-
-| Component                                                                    | What it is                                                                                                                                                                                                                                                                                                                                          |
-|------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| [`fact-graph`](https://github.com/IRS-Public/fact-graph)                     | `gov.irs::factgraph`, the rules engine. Cross-compiled: a JVM jar this library builds against, and a Scala.js bundle the browser runs.                                                                                                                                                                                                              |
-| [`form-builder`](https://github.com/IRS-Public/form-builder)                 | `gov.irs::form-builder`, presentation generator, including parsers, Thymeleaf engine, node templates, locales, RELAX NG schemas, theme, and flow runtime.                                                                                                                                                                                 |
-| [`taxpert`](https://github.com/IRS-Public/taxpert)                           | The workspace UI (`taxpert` on npm, in that repo's `packages/ui`): global nav, audit panel, tool panels. Optional. An application can ship without it. That repo's `packages/fact-explorer` is a React and Vite SPA that visualizes any Form Builder app's flow and facts as a graph, reading the JSON this library emits under `--formBuilderGraph`. |
-| [`form-builder-template`](https://github.com/IRS-Public/form-builder-template) | A cookiecutter that generates a new Form Builder app, with optional extensions like Taxpert.                                                                                                                                                                                                                                                        |
-| `form-builder-examples` | Reference applications that leverage the three core libraries.                                                                                                                                                                                                                                                                                      |
-
-Only Form Builder and Fact Graph are required. An application still runs without Taxpert, because the theme
-and the questionnaire runtime come from Form Builder's jar. Taxpert adds the tooling that lets you
-inspect a running application's business logic.
-
 ## Quickstart
 ```bash
 cd ~
@@ -112,6 +98,8 @@ Use `make run-all-docker APPS="credit-assistant benefits-enrollment"` to start a
 The four directories share no code. Each has its own `build.sbt`, `package.json`,
 `Makefile`, and `fact-explorer.app.json`, and each can be built without the others. See each application's README for its full target list.
 
+
+
 ## Inspecting a running application
 
 Fact Explorer, in the Taxpert repository, discovers applications by scanning a directory one level
@@ -131,6 +119,21 @@ The workspace UI in the applications themselves is switched on by a build flag. 
 passes `--auditMode` in all four. In credit-assistant, `make dev-ai` also passes
 `--aiScenarioGeneration --aiFactExplanation`, which reveal the two AI chat features.
 None of the other three wires those features up in their default state.
+
+## Where this fits
+
+| Component                                                                    | What it is                                                                                                                                                                                                                                                                                                                                          |
+|------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [`fact-graph`](https://github.com/IRS-Public/fact-graph)                     | `gov.irs::factgraph`, the rules engine. Cross-compiled: a JVM jar this library builds against, and a Scala.js bundle the browser runs.                                                                                                                                                                                                              |
+| [`form-builder`](https://github.com/IRS-Public/form-builder)                 | `gov.irs::form-builder`, presentation generator, including parsers, Thymeleaf engine, node templates, locales, RELAX NG schemas, theme, and flow runtime.                                                                                                                                                                                 |
+| [`taxpert`](https://github.com/IRS-Public/taxpert)                           | The workspace UI (`taxpert` on npm, in that repo's `packages/ui`): global nav, audit panel, tool panels. Optional. An application can ship without it. That repo's `packages/fact-explorer` is a React and Vite SPA that visualizes any Form Builder app's flow and facts as a graph, reading the JSON this library emits under `--formBuilderGraph`. |
+| [`form-builder-template`](https://github.com/IRS-Public/form-builder-template) | A cookiecutter that generates a new Form Builder app, with optional extensions like Taxpert.                                                                                                                                                                                                                                                        |
+| `form-builder-examples` | Reference applications that leverage the three core libraries.                                                                                                                                                                                                                                                                                      |
+
+Only Form Builder and Fact Graph are required. An application still runs without Taxpert, because the theme
+and the questionnaire runtime come from Form Builder's jar. Taxpert adds the tooling that lets you
+inspect a running application's business logic.
+
 
 
 ## Contributing
