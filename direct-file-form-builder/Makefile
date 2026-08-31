@@ -39,27 +39,47 @@ bootstrap: ## One-time setup: publish the sibling libraries and vendor their ass
 	npm --prefix $(RESOURCES_DIR) install
 	$(MAKE) copy-fg copy-shared-ui copy-uswds
 
+# ── One question per screen is this application's default ─────────────────────────────────────
+#
+# Every target below passes --singleQuestionPerScreen, and `make dev-topic-pages` is the way to see
+# it off. That is the opposite of the other three applications, and the reason is the transpiler's
+# central choice: Direct File's 727 screens were collapsed into 138 topic pages, one per
+# SubSubcategory, with in-page conditions hiding what does not apply. A topic page therefore carries
+# far more conditional content than any hand-written flow does — `income/jobs` alone is dozens of
+# questions — and reading the port at that grain is reading the collapse, not the product.
+#
+# Split back apart, each screen is one question again, which is the shape Direct File actually ships
+# and the shape the snapshot CSVs in codemod/ describe. PageSplitter cuts the same pages the emitter
+# wrote, so nothing about the flow changes: the same gates decide the same visibility, and the step
+# indicator groups by flow module either way, so it reads "4 of 25" in both.
+FLAGS := --auditMode --allScreens --scenarioMode --singleQuestionPerScreen
+
 .PHONY: dev
 dev: copy-fg copy-shared-ui copy-uswds ## Build and run the development server, watching for changes
-	sbt -Dsmol.port=$(PORT) '~run --serve --auditMode --allScreens --scenarioMode'
+	sbt -Dsmol.port=$(PORT) '~run --serve $(FLAGS)'
 
-.PHONY: dev-one-question
-dev-one-question: copy-fg copy-shared-ui copy-uswds ## Same as `dev`, one question per screen
-	sbt -Dsmol.port=$(PORT) '~run --serve --auditMode --allScreens --singleQuestionPerScreen --scenarioMode'
+.PHONY: dev-topic-pages
+dev-topic-pages: copy-fg copy-shared-ui copy-uswds ## Same as `dev`, one topic page per SubSubcategory
+	@# The un-split flow: 138 pages, each the whole of one Direct File SubSubcategory. What the
+	@# emitter writes, and the level to look at when a question appears on the wrong page.
+	sbt -Dsmol.port=$(PORT) '~run --serve --auditMode --allScreens --scenarioMode'
 
 .PHONY: dev-author
 dev-author: copy-fg copy-shared-ui copy-uswds ## Same as `dev`, with Author Mode editing enabled on $(AUTHOR_PORT)
+	@# Author Mode edits the Flow XML, which is the un-split flow — so this one deliberately does not
+	@# split: you would be editing a page the splitter invented rather than the one on disk.
 	sbt -Dsmol.port=$(PORT) -Dsmol.author.port=$(AUTHOR_PORT) '~run --serve --auditMode --allScreens --scenarioMode --authorMode'
 
 .PHONY: debug
 debug: copy-fg copy-shared-ui copy-uswds ## Same as `dev`, but also opens a port to attach a debugger
-	sbt -Dsmol.port=$(PORT) -jvm-debug $(DEBUGGER_PORT) '~run --serve --auditMode --allScreens --scenarioMode'
+	sbt -Dsmol.port=$(PORT) -jvm-debug $(DEBUGGER_PORT) '~run --serve $(FLAGS)'
 
 .PHONY: site
 site: copy-fg copy-shared-ui copy-uswds ## Build the site for production, into ./out
-	@# No flags: the workspace, the all-screens page and scenario mode are developer surfaces,
-	@# baked in at build time. A production build is the flow and nothing else.
-	sbt run
+	@# The workspace, the all-screens page and scenario mode are developer surfaces, baked in at
+	@# build time, so a production build passes none of them. --singleQuestionPerScreen is not one
+	@# of those: it is how this application presents its flow, in every build. See FLAGS above.
+	sbt 'run --singleQuestionPerScreen'
 
 # ── Docker ────────────────────────────────────────────────────────────────────
 #

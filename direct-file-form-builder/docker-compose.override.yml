@@ -67,6 +67,8 @@ services:
         "-Dsmol.author.host=0.0.0.0",
         "-Dsmol.author.port=3009",
         "~run --auditMode --allScreens --scenarioMode --authorMode",
+        # No --singleQuestionPerScreen, and for the reason `make dev-author` gives: Author Mode edits
+        # the Flow XML on disk, and the splitter's pages are not on disk.
       ]
     volumes:
       # This app's own source, live — sbt's watcher picks up an edit on the host immediately.

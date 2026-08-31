@@ -20,8 +20,10 @@
 #
 # There is no server at runtime: the generated site is fully static and the Taxpert workspace is
 # client-side JavaScript. Which developer surfaces exist is therefore decided at stage 2 by the
-# flags on `sbt run` — changing them means rebuilding this image. This one passes none, so the
-# image is the product and nothing else.
+# flags on `sbt run` — changing them means rebuilding this image. This one passes no *developer*
+# surface, so the image is the product and nothing else. --singleQuestionPerScreen is not one of
+# those: it is how this application presents its flow in every build, product included. The
+# Makefile's FLAGS comment says why.
 #
 # Each additional context keeps its own .dockerignore rather than this repo's. A library context with a
 # heavy target/ or node_modules/ and no .dockerignore of its own transfers it into the build.
@@ -81,7 +83,7 @@ RUN --mount=type=cache,target=/root/.npm \
 
 RUN --mount=type=cache,target=/root/.cache/coursier \
     --mount=type=cache,target=/root/.sbt \
-    sbt run
+    sbt 'run --singleQuestionPerScreen'
 
 # ---- stage 3: runtime --------------------------------------------------------------
 FROM nginx:1.27-alpine AS runtime
