@@ -1,5 +1,6 @@
 package gov.irs.directfile
 
+import gov.irs.directfile.inputs.{ Address, BankAccount, MaskedNumber }
 import gov.irs.formbuilder.{ FormBuilder, FormBuilderApp }
 import scala.collection.immutable.ListMap
 
@@ -30,14 +31,22 @@ val app: FormBuilderApp = FormBuilderApp(
   // The scaffold renders it into every page's <head>, whether or not the workspace is built in.
   storagePrefix = Some("direct-file"),
 
-  // Two extension points are left empty here, and both take a registration rather than a fork:
+  // The seven Fact Graph types the scaffold's built-in inputs do not cover. Each name selects three
+  // things that have to agree: the parser below, `templates/nodes/inputs/{name}.html`, and the
+  // handlers registered under it in `website-static/js/inputs/`.
   //
-  //   nodeTypes  = Map("fg-my-element" -> MyParser)   a flow element the scaffold has never heard of
-  //   inputTypes = Map("my-input" -> MyInputParser)   a new input, or a replacement for a built-in
+  // Seven and not the eight the porting plan listed. `fact-select` is not here, and its absence is
+  // the finding rather than an omission: what makes Direct File's FactSelect a component is the
+  // *amount* it collects beside the code, at a path assembled from the chosen code
+  // (`/formW2s/*/{code}`) — a path the Flow XML has no way to name. What is left once that is taken
+  // out is an enum rendered as a dropdown, which is the built-in `<select>`. Registering a type
+  // that only renamed a built-in would claim the gap was closed. See codemod/component-coverage.md.
   //
-  // A custom node's Thymeleaf template goes in this app's own `templates/nodes/`, where app-first
-  // resolution finds it ahead of the library's. See tax-withholding-estimator for a worked example
-  // of each.
+  // `nodeTypes` stays empty: Direct File's flow needs no element the scaffold has never heard of.
+  inputTypes = MaskedNumber.all ++ Map(
+    "address" -> Address,
+    "bank-account" -> BankAccount,
+  ),
 )
 
 @main def main(args: String*): Unit = FormBuilder.run(app, args)

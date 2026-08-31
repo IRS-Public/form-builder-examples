@@ -96,3 +96,100 @@ workspace:
     ptc: Premium Tax Credit
     ptc-eligibility: Eligibility
     ptc-amount: Amount
+
+# The seven custom input types this application registers (Main.scala's `inputTypes`), and the words
+# their templates need. Every string below is Direct File's own — the field labels from
+# `fields.generics.address` and `fields./bankAccount`, the state names from `enums.statesAndProvinces`
+# and `enums.armedForces`, and each `invalid` from that type's own `errorMessages` entry — so the port
+# says what upstream says rather than paraphrasing it.
+#
+# `invalid` is one message per type rather than one per failure reason. The browser handlers build
+# the value with the Fact Graph's own factory and get back a JSEither whose Left is a typed reason,
+# but `fg-set` has no place to put a per-reason message for a value it never sees as a string (see
+# website-static/js/inputs/masked-number.js). One accurate sentence beats a reason code.
+#
+# AE appears four times in the state list on purpose: upstream offers Africa, Canada, Europe and the
+# Middle East separately over the one code the Fact Graph stores.
+inputs:
+  tin:
+    invalid: Enter a valid number. This should look like 123-45-6789
+  ein:
+    invalid: Enter a valid EIN. This should look like 12-3456789
+  pin:
+    invalid: PIN must be 5 digits long
+  ip-pin:
+    invalid: PIN must be 6 digits long
+  phone-number:
+    invalid: This should look like 212-555-0134
+  address:
+    country: Country
+    street: Address
+    street2: Address line 2
+    city: City
+    state: State or military post
+    zip: ZIP code
+    invalid: The ZIP code must be in the format of 12345 or 12345-1234 or 12345-1234567
+    states:
+      AL: Alabama
+      AK: Alaska
+      AZ: Arizona
+      AR: Arkansas
+      CA: California
+      CO: Colorado
+      CT: Connecticut
+      DE: Delaware
+      DC: District of Columbia
+      FL: Florida
+      GA: Georgia
+      HI: Hawaii
+      ID: Idaho
+      IL: Illinois
+      IN: Indiana
+      IA: Iowa
+      KS: Kansas
+      KY: Kentucky
+      LA: Louisiana
+      ME: Maine
+      MD: Maryland
+      MA: Massachusetts
+      MI: Michigan
+      MN: Minnesota
+      MS: Mississippi
+      MO: Missouri
+      MT: Montana
+      NE: Nebraska
+      NV: Nevada
+      NH: New Hampshire
+      NJ: New Jersey
+      NM: New Mexico
+      NY: New York
+      NC: North Carolina
+      ND: North Dakota
+      OH: Ohio
+      OK: Oklahoma
+      OR: Oregon
+      PA: Pennsylvania
+      RI: Rhode Island
+      SC: South Carolina
+      SD: South Dakota
+      TN: Tennessee
+      TX: Texas
+      UT: Utah
+      VT: Vermont
+      VA: Virginia
+      WA: Washington
+      WV: West Virginia
+      WI: Wisconsin
+      WY: Wyoming
+      armedForcesAmericas: AA - Armed Forces Americas
+      armedForcesAfrica: AE - Armed Forces Africa
+      armedForcesCanada: AE - Armed Forces Canada
+      armedForcesEurope: AE - Armed Forces Europe
+      armedForcesMiddleEast: AE - Armed Forces Middle East
+      armedForcesPacific: AP - Armed Forces Pacific
+  bank-account:
+    checking: Checking
+    savings: Savings
+    routingNumber: Routing number
+    accountNumber: Account number
+    invalid: Not a valid routing number

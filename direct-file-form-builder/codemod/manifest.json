@@ -128,17 +128,35 @@
     "SectionReview": 1,
     "StateTaxReminderAlertWrapper": 1
   },
+  "content": {
+    "missingKeys": 0,
+    "unhandledInline": {
+      "block <li> inside inline text": 39,
+      "<InternalLink>": 16,
+      "<customerSupportLink>": 11,
+      "block <p> inside inline text": 5,
+      "block <ul> inside inline text": 5,
+      "<InlinePDFButton>": 3,
+      "<span>": 1
+    },
+    "flattenedOptionLabels": 70,
+    "render": {
+      "blocksDroppedByCondition": 3,
+      "setActionsWithoutAFactSource": 2,
+      "applyConditionsDropped": 11,
+      "wildcardPathsWithNoItem": 25,
+      "tableConditionsDropped": 10
+    },
+    "screensWithoutContent": []
+  },
   "deferred": {
-    "screen content": "Stage 4. Every screen currently renders its route and its component list; the 51 types in componentTypes are the worklist.",
-    "page titles": "Stage 4. Titles are the humanized route segment; the real one is the screen's Heading key.",
-    "knockout screens": "Stage 4. The 102 knockout screens are marked `class=\"df-knockout\"` and gated like any other; they become <fg-alert knockout=\"true\"> once their content exists.",
     "collection item names": "Stage 4, for 8 of the 19 collections. The rest take the noun out of upstream's own Add control (`fields.{collection}.controls.add`). An auto-iterating loop has no such key, because upstream never names those items — it renders no list and no Add button over a derived collection — so those fall back to the humanized collection path and owe a real word.",
-    "setActions": "Stage 4. 45 screens carry <SetFactAction>; <fg-apply> is the target."
+    "Spanish flow content": "Not stage 4's, and not a script run. flow_es.yaml is keyed by flow_en.yaml, which the scaffold regenerates from the emitted XML — so the keys exist only after a build. Direct File's own es.yaml has the translations, keyed the same way its en.yaml is; what is missing is the step that re-keys them. See docs/PORTING.md."
   },
   "gates": {
-    "total": 518,
-    "rootScoped": 330,
-    "collectionScoped": 188,
-    "sharedByMoreThanOneScreen": 57
+    "total": 798,
+    "rootScoped": 533,
+    "collectionScoped": 265,
+    "sharedByMoreThanOneScreen": 211
   }
 }

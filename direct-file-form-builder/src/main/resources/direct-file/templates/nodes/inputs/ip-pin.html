@@ -1,0 +1,8 @@
+<!--/* The 6-digit Identity Protection PIN the IRS issues. Six, not five: an IP PIN and a
+       self-select PIN are different numbers, which is why they are different input types rather
+       than one with a length attribute. */-->
+<input th:id="${controlId}" class="usa-input usa-input--medium" type="text" th:name="${controlId}"
+       maxlength="6" inputmode="numeric" autocomplete="off"
+       th:required="${not optional}" aria-invalid="false"
+       th:attr="aria-describedby=${hintId}, data-invalid-message=#{inputs.ip-pin.invalid}"
+>

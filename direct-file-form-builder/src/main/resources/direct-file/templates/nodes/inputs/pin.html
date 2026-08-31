@@ -1,0 +1,7 @@
+<!--/* The 5-digit self-select PIN used to sign a return. No grouping, so maxlength is the digit
+       count itself. */-->
+<input th:id="${controlId}" class="usa-input usa-input--medium" type="text" th:name="${controlId}"
+       maxlength="5" inputmode="numeric" autocomplete="off"
+       th:required="${not optional}" aria-invalid="false"
+       th:attr="aria-describedby=${hintId}, data-invalid-message=#{inputs.pin.invalid}"
+>

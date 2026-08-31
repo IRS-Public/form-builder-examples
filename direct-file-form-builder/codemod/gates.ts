@@ -24,6 +24,7 @@
  * here is real, and belongs in this comment rather than in a workaround.
  */
 import { createHash } from 'crypto';
+import type { FactKind } from './fact-types.ts';
 
 /** A condition as `createFlowConfig` leaves it: a bare fact path, or a path with an operator. */
 export type RawScreenCondition = string | { condition: string; operator?: string; section?: string };
@@ -38,6 +39,14 @@ export interface GateContext {
   loopCollection: string | null;
   /** For error messages. */
   screenRoute: string;
+  /**
+   * Whether a fold to false means the *screen* is gone.
+   *
+   * True for a screen's own conditions; false for a content declaration's, where folding to false
+   * removes one paragraph and leaves the screen standing. Without the distinction, `dropped` — which
+   * the manifest reports as screens — would count both.
+   */
+  recordDropped?: boolean;
 }
 
 export interface Gate {
@@ -153,10 +162,33 @@ function canonical(scope: string | null, conditions: NormalizedCondition[]): str
   return [scope ?? `/`, ...conditions.map((c) => `${c.operator}:${c.path}`).sort()].join(`\n`);
 }
 
+/**
+ * The fact an element that must always show hangs its condition on.
+ *
+ * `<fg-alert>` renders hidden unless something drives it — the element exists for fact-driven alerts
+ * and its template writes `class="hidden"` when `condition` is absent. Direct File's alerts are shown
+ * whenever their screen is, and the screen div already carries that gate, so an alert with no
+ * condition of its own needs a condition that is simply true. `<True/>` is a registered CompNode
+ * (`BooleanNode.scala`), so this costs one fact rather than a library change.
+ */
+export const ALWAYS_TRUE_PATH = `/flowAlwaysTrue`;
+
 export class GateSet {
   private readonly byCanonical = new Map<string, Gate>();
   /** Screens folded away entirely, and why. For the manifest. */
   readonly dropped: { screen: string; because: string }[] = [];
+  /** Set once something asks for it, so the fact is emitted only when the flow references it. */
+  private usesAlwaysTrue = false;
+
+  /** The always-true fact's path, marking it as needed. */
+  alwaysTrue(): string {
+    this.usesAlwaysTrue = true;
+    return ALWAYS_TRUE_PATH;
+  }
+
+  get needsAlwaysTrue(): boolean {
+    return this.usesAlwaysTrue;
+  }
 
   /** Every gate, in first-seen order, so regeneration produces a stable file. */
   get gates(): Gate[] {
@@ -190,7 +222,7 @@ export class GateSet {
         }
         if (!foldConstant(constant, operator)) {
           const because = `${operator}(${path}) is false in this port`;
-          this.dropped.push({ screen: context.screenRoute, because });
+          if (context.recordDropped !== false) this.dropped.push({ screen: context.screenRoute, because });
           return { kind: `never`, because };
         }
         continue; // folded to true: contributes nothing to the AND
@@ -230,20 +262,50 @@ export class GateSet {
 const INDENT = `        `;
 
 /**
- * Screen conditions whose fact is not Boolean, and the truthiness test each needs.
+ * How a fact of each type answers "is this truthy?" — Direct File's `!!fact.get`, written as a
+ * Boolean CompNode tree.
  *
- * Direct File's `PathCondition.evaluate` ends in `!!get`, so a condition may name a fact of any type
- * and get JavaScript truthiness. The Fact Graph has no such coercion — `<All>` rejects a non-Boolean
- * child outright — so every one of these needs its comparison written out. There is exactly one
- * today, and a new one upstream fails the Scala build with "all children of <All> must be
- * BooleanNodes", which is what points back here.
+ * A condition may name a fact of any type: `Condition.evaluate` ends in `!!fact.get` and JavaScript
+ * coerces. The Fact Graph does not — `<All>` rejects a non-Boolean child from inside
+ * `All.fromDerivedConfig`, with nothing in the message naming the gate — so the test is written out,
+ * against the type `fact-types.ts` reads out of the dictionary.
  *
- * `int`: `> 0` rather than `!= 0`, because the only such fact is a `<Count>` and cannot be negative.
- * A signed fact would need `NotEqual` instead, and belongs in a second case rather than this one.
+ * `object` collapsing to the `<IsComplete>` guard the expansion already emits is the one that looks
+ * like a shortcut and is not. A `Dollar`, `Day`, `Enum` or collection item crosses into JavaScript as
+ * an opaque Scala object (`interface Dollar {}` in `js-factgraph-scala/src/typings/DollarFactory.d.ts`),
+ * and an object is always truthy — so upstream, `!!get` on one *is* "has a value", zero included.
+ * `interest.xml`'s five bond-premium accordions are conditioned on Dollar facts that default to
+ * `<Dollar>0</Dollar>`, and upstream they show whenever the 1099-INT is complete. This reproduces
+ * that, rather than the "is it nonzero" the condition looks like it wants.
  */
-const NON_BOOLEAN_CONDITIONS: Record<string, 'int'> = {
-  '/claimedDependentsCount': `int`,
+type Truthiness = (path: string, pad: string) => string;
+
+const TRUTHINESS: Partial<Record<FactKind, Truthiness>> = {
+  boolean: (path, pad) => `${pad}<Dependency path="${path}" />`,
+  // Exactly `!!get` on a bare JS number: nonzero, sign included. `<NotEqual>` compares any two nodes
+  // of one class, so an Int against `<Int>0</Int>` needs no assumption about the fact's range.
+  int: (path, pad) =>
+    `${pad}<NotEqual>\n${pad}  <Left>\n${pad}    <Dependency path="${path}" />\n${pad}  </Left>\n` +
+    `${pad}  <Right>\n${pad}    <Int>0</Int>\n${pad}  </Right>\n${pad}</NotEqual>`,
+  object: (path, pad) => `${pad}<IsComplete>\n${pad}  <Dependency path="${path}" />\n${pad}</IsComplete>`,
 };
+
+/**
+ * The truthiness test for a fact, or a message saying why there is not one.
+ *
+ * `string` and `numeric` throw rather than guess. A JS string is falsy when empty and the Fact Graph
+ * has no length CompNode to say that with; `<Add>` is an Int over Ints and a Dollar over Dollars, and
+ * picking the wrong one turns a zero total into `true`. Neither is reachable from any condition
+ * today, and if one becomes reachable the answer is a line here rather than a default.
+ */
+function truthiness(kind: FactKind, path: string, screen: string): Truthiness {
+  const test = TRUTHINESS[kind];
+  if (test) return test;
+  throw new Error(
+    `condition "${path}" (from ${screen}) names a fact of kind "${kind}", which has no truthiness ` +
+      `test in gates.ts. Add one there, or correct what fact-types.ts resolves the path to.`
+  );
+}
 
 /** The path as the gate's own scope sees it: `/filers/*\/x` becomes `../x` inside `/filers/*\/gate`. */
 function relativeTo(path: string, scope: string | null): string {
@@ -251,14 +313,10 @@ function relativeTo(path: string, scope: string | null): string {
 }
 
 /** One condition, as the Boolean CompNode tree that reproduces `PathCondition.evaluate`. */
-function expand(condition: NormalizedCondition, scope: string | null, pad: string): string {
-  const path = relativeTo(condition.path, scope);
-  const truthy = NON_BOOLEAN_CONDITIONS[condition.path];
-  const dep = (p: string) =>
-    truthy === undefined
-      ? `${p}<Dependency path="${path}" />`
-      : `${p}<GreaterThan>\n${p}  <Left>\n${p}    <Dependency path="${path}" />\n${p}  </Left>\n` +
-        `${p}  <Right>\n${p}    <Int>0</Int>\n${p}  </Right>\n${p}</GreaterThan>`;
+function expand(condition: NormalizedCondition, gate: Gate, pad: string, kindOf: KindOf): string {
+  const path = relativeTo(condition.path, gate.scope);
+  const test = truthiness(kindOf(condition.path), condition.path, gate.screens[0]);
+  const dep = (p: string) => test(path, p);
   // `<IsComplete>` takes any node, so completeness always reads the fact itself.
   const rawDep = (p: string) => `${p}<Dependency path="${path}" />`;
   const complete = (p: string) => `${p}<IsComplete>\n${rawDep(`${p}  `)}\n${p}</IsComplete>`;
@@ -266,9 +324,18 @@ function expand(condition: NormalizedCondition, scope: string | null, pad: strin
 
   switch (condition.operator) {
     // `isTrue` and a bare path are the same thing; see the approximation note at the top.
+    // `isTrueAndComplete` shares the expansion rather than approximating it: `complete && !!get` is
+    // exactly what this tree says, and it is `isTrue` — `hasValue && !!get` — that the Fact Graph
+    // has no `HasValue` for. The same pairing holds for `isFalse` and `isFalseAndComplete`.
     case `isTrue`:
-      return `${pad}<All>\n${complete(`${pad}  `)}\n${dep(`${pad}  `)}\n${pad}</All>`;
+    case `isTrueAndComplete`:
+      // For an `object` fact the truthiness test *is* the completeness guard, and `<All>` of one
+      // thing twice reads as a mistake. Emit the guard alone.
+      return dep(`${pad}`) === complete(`${pad}`)
+        ? complete(pad)
+        : `${pad}<All>\n${complete(`${pad}  `)}\n${dep(`${pad}  `)}\n${pad}</All>`;
     case `isFalse`:
+    case `isFalseAndComplete`:
       return `${pad}<All>\n${complete(`${pad}  `)}\n${not(`${pad}  `, dep(`${pad}    `))}\n${pad}</All>`;
     case `isTrueOrIncomplete`:
       return `${pad}<Any>\n${not(`${pad}  `, complete(`${pad}    `))}\n${dep(`${pad}  `)}\n${pad}</Any>`;
@@ -288,15 +355,26 @@ function describe(gate: Gate): string {
   return `Screen gate: ${set}.`;
 }
 
+const ALWAYS_TRUE_FACT =
+  `    <Fact path="${ALWAYS_TRUE_PATH}">\n` +
+  `      <Description>Always true. What an element that must always show hangs its condition on: ` +
+  `&lt;fg-alert&gt; renders hidden unless something drives it, and a Direct File alert is shown ` +
+  `whenever its screen is.</Description>\n` +
+  `      <Derived>\n        <True/>\n      </Derived>\n` +
+  `    </Fact>`;
+
+/** What a condition's fact holds, as `fact-types.ts` reads it out of the dictionary. */
+export type KindOf = (path: string) => FactKind;
+
 /** The whole of `facts/flowGates.xml`. */
-export function renderGateFacts(gates: Gate[]): string {
+export function renderGateFacts(gates: Gate[], includeAlwaysTrue: boolean, kindOf: KindOf): string {
   const facts = gates
     .map((gate) => {
       const body =
         gate.conditions.length === 1
-          ? expand(gate.conditions[0], gate.scope, `${INDENT}`)
+          ? expand(gate.conditions[0], gate, `${INDENT}`, kindOf)
           : `${INDENT}<All>\n${gate.conditions
-              .map((c) => expand(c, gate.scope, `${INDENT}  `))
+              .map((c) => expand(c, gate, `${INDENT}  `, kindOf))
               .join(`\n`)}\n${INDENT}</All>`;
       return (
         `    <Fact path="${gate.factPath}">\n` +
@@ -306,6 +384,7 @@ export function renderGateFacts(gates: Gate[]): string {
       );
     })
     .join(`\n\n`);
+  const all = includeAlwaysTrue ? `${ALWAYS_TRUE_FACT}\n\n${facts}` : facts;
 
   return (
     `<?xml-model href="./FactDictionaryModule.rng"?>\n` +
@@ -318,6 +397,6 @@ export function renderGateFacts(gates: Gate[]): string {
     `     \`<All>\`/\`<Any>\` short-circuiting delivers that, and for the one \`isTrue\` approximation.\n\n` +
     `     Named by a hash of the normalized condition set, so identical sets collapse to one fact and\n` +
     `     regenerating after an unrelated change leaves these names alone. -->\n` +
-    `<FactDictionaryModule>\n  <Facts>\n${facts}\n  </Facts>\n</FactDictionaryModule>\n`
+    `<FactDictionaryModule>\n  <Facts>\n${all}\n  </Facts>\n</FactDictionaryModule>\n`
   );
 }

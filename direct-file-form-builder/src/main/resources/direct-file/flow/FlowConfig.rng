@@ -166,6 +166,18 @@
             <value>text</value>
             <value>date</value>
             <value>int</value>
+            <!-- Widened for this application: the seven types registered in Main.scala's
+                 `inputTypes`. They take no child elements, exactly like the built-in scalars above,
+                 because everything that varies is in the parser and the template rather than in the
+                 flow. Listing them here is what makes `<input type="tinn">` a validation failure
+                 instead of an "Unexpected input type" thrown halfway through the build. -->
+            <value>tin</value>
+            <value>ein</value>
+            <value>pin</value>
+            <value>ip-pin</value>
+            <value>phone-number</value>
+            <value>address</value>
+            <value>bank-account</value>
           </choice>
         </attribute>
       </element>
@@ -540,21 +552,46 @@
       <element name="heading">
         <ref name="FlowConfigModuleInlineContent"/>
       </element>
-      <oneOrMore>
+      <!-- Widened for this application: zeroOrMore rather than oneOrMore. Many of Direct File's
+           alerts are a single sentence, authored as `alertText.heading` with no body at all — the
+           heading *is* the message, and nodes/fg-alert.html renders it on its own perfectly well.
+           Requiring a body would mean the transpiler inventing a paragraph that repeats it. -->
+      <zeroOrMore>
         <ref name="AlertBodyContent"/>
-      </oneOrMore>
+      </zeroOrMore>
     </element>
   </define>
 
   <!-- What an alert may say: paragraphs and lists, optionally gathered into a
-       <div class="usa-alert__text"> wrapper. Both shapes are authored today. -->
+       <div class="usa-alert__text"> wrapper. Both shapes are authored today.
+
+       Widened for this application with <fg-detail>: a Direct File alert may hold an accordion,
+       which is what "You can file only as a paper tax return" plus a collapsed "Why?" is. Upstream
+       expresses it as a DFAccordion nested in the alert's own children. -->
   <define name="AlertBodyContent">
     <choice>
+      <ref name="fg-detail-module"/>
       <element name="p">
         <optional>
           <attribute name="class">
             <text/>
           </attribute>
+        </optional>
+        <!-- Widened for this application: an alert's paragraphs take a condition like any others.
+             Direct File's alerts carry conditional lines inside them — one sentence for a single
+             filer, another for a joint return — and the two are one alert, not two. -->
+        <optional>
+          <group>
+            <attribute name="condition">
+              <data type="anyURI"/>
+            </attribute>
+            <attribute name="operator">
+              <choice>
+                <value>isTrue</value>
+                <value>isFalse</value>
+              </choice>
+            </attribute>
+          </group>
         </optional>
         <ref name="FlowConfigModuleInlineContent"/>
       </element>
@@ -743,6 +780,22 @@
             <attribute name="class">
               <text/>
             </attribute>
+          </optional>
+          <!-- Widened for this application, to match the <ul> above. A conditional ordered list is
+               the same construct as a conditional unordered one; only <ul> had the attributes, and
+               the difference was an oversight rather than a rule. -->
+          <optional>
+            <group>
+              <attribute name="condition">
+                <data type="anyURI"/>
+              </attribute>
+              <attribute name="operator">
+                <choice>
+                  <value>isTrue</value>
+                  <value>isFalse</value>
+                </choice>
+              </attribute>
+            </group>
           </optional>
           <oneOrMore>
             <element name="li">

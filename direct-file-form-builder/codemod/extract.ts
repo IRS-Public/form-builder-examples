@@ -38,12 +38,20 @@
  *     make transpile   (or: vite-node --root <df-client-app> codemod/extract.ts <outfile>)
  */
 import { writeFileSync, mkdirSync } from 'fs';
-import { dirname, resolve } from 'path';
+import { dirname, join, resolve } from 'path';
 import en from '/src/locales/en.yaml';
 import flowNodes from '/src/flow/flow.js';
 import { createFlowConfig } from '/src/flow/flowConfig.js';
 import type { FlowConfig, FlowSubcategory, FlowSubSubcategory, FlowCollectionLoop } from '/src/flow/flowConfig.js';
 import type { ScreenConfig } from '/src/flow/ScreenConfig.js';
+import { Resolver, type ComponentCategory, type ContentReport, type Inline, type ScreenContent } from './content.ts';
+import {
+  ComponentMapper,
+  NOT_EXPRESSIBLE,
+  OUT_OF_SCOPE,
+  RENDERED_ELSEWHERE,
+  type ContentConfig,
+} from './components.ts';
 
 /** One screen, reduced to what the emitter needs. */
 interface ExtractedScreen {
@@ -308,6 +316,111 @@ function extract(flow: FlowConfig) {
   };
 }
 
+/** Which group a component type belongs to, read off the three tables `components.ts` declares. */
+function categoryOf(name: string): ComponentCategory {
+  if (Object.hasOwn(OUT_OF_SCOPE, name)) return `out-of-scope`;
+  if (Object.hasOwn(NOT_EXPRESSIBLE, name)) return `not-expressible`;
+  if (Object.hasOwn(RENDERED_ELSEWHERE, name)) return `rendered-elsewhere`;
+  return `expressed`;
+}
+
+/**
+ * A sub-subcategory label with its interpolations removed — "Basic information" for
+ * `{{/familyAndHousehold/*\/firstName}}\u2019s basic information`.
+ *
+ * 25 of Direct File's 155 labels name the person or the year the page is about, and its side nav
+ * fills them in per collection item. A Form Builder page title is a static attribute on `<page>`, so
+ * there is nothing to fill them in with, and the honest rendering is the label without them: the
+ * topic, minus the personalisation. This is a real difference from upstream and is recorded as one
+ * in codemod/README.md rather than papered over.
+ *
+ * The tidying is deliberately small: drop the interpolation and any possessive stuck to it, drop a
+ * preposition or `#` left dangling at either end, collapse the spaces, and capitalise what is left.
+ */
+function depersonalize(label: string): string {
+  const stripped = label
+    .replace(/\{\{[^}]*\}\}(\u2019s|'s)?/g, ` `)
+    .replace(/\s+/g, ` `)
+    .replace(/^[\s\u2019'#,-]+|[\s#,-]+$/g, ``)
+    .replace(/\s+(to|in|for|with|of|and)$/i, ``)
+    .trim();
+  return stripped.length === 0 ? label : stripped.charAt(0).toUpperCase() + stripped.slice(1);
+}
+
+/**
+ * Stage 4, driven per screen: the content of every screen, resolved once.
+ *
+ * Written beside `flow-config.json` rather than into it. The two answer different questions — one is
+ * the flow's shape, the other its words — and a change to Direct File's copy should show up as a
+ * diff of the second alone. `emit.ts` reads both.
+ */
+function resolveContent(
+  screens: ExtractedScreen[],
+  pages: Page[]
+): {
+  screens: Record<string, ScreenContent>;
+  subSubcategoryTitles: Record<string, string>;
+  report: ContentReport;
+} {
+  const resolver = new Resolver();
+  const mapper = new ComponentMapper(resolver);
+  const byScreen: Record<string, ScreenContent> = {};
+
+  for (const screen of screens) {
+    // The Heading is the screen's title and, for the first screen of a page, the page's. It is
+    // resolved before the rest because a fact control with no label of its own borrows it.
+    const headingConfig = screen.content.find((c) => c.componentName === `Heading`);
+    const headingKey = headingConfig ? ((headingConfig.props as { i18nKey?: string }).i18nKey ?? null) : null;
+    let heading: Inline[] = [];
+    if (headingKey !== null) {
+      heading = resolver.isModal(headingKey) ? resolver.modalInline(headingKey) : resolver.inlineForKey(headingKey);
+    }
+
+    const context = { screenRoute: screen.screenRoute, heading };
+    const blocks = screen.content.flatMap((config) => mapper.blocks(config as ContentConfig, context));
+
+    byScreen[screen.screenRoute] = {
+      heading: heading.length > 0 ? heading : null,
+      blocks,
+      modals: resolver.takeModals(),
+    };
+  }
+
+  // Direct File's own short nav label for each sub-subcategory — "Your basic information" rather
+  // than the question sentence its first screen opens with. `en.yaml` keys them under the
+  // subcategory they sit in, so the key is the subcategory route plus the sub-subcategory's own
+  // last segment. A page with no sub-subcategory (48 of them) has no label and keeps its heading.
+  const subSubcategoryTitles: Record<string, string> = {};
+  for (const page of pages) {
+    const route = page.subSubcategoryRoute;
+    if (route === null || route in subSubcategoryTitles) continue;
+    const title = resolver.lookupValue(`subsubcategories.${page.subcategoryRoute}.${route.split(`/`).pop()}`);
+    if (typeof title === `string`) subSubcategoryTitles[route] = depersonalize(title);
+  }
+
+  const components: ContentReport[`components`] = {};
+  for (const [name, dispositions] of mapper.dispositions) {
+    components[name] = {
+      category: categoryOf(name),
+      dispositions: [...dispositions]
+        .map(([disposition, count]) => ({ disposition, count }))
+        .sort((a, b) => b.count - a.count),
+      screens: mapper.screensPerComponent.get(name) ?? 0,
+    };
+  }
+
+  return {
+    screens: byScreen,
+    subSubcategoryTitles,
+    report: {
+      components,
+      missingKeys: [...resolver.missingKeys].sort(),
+      unhandledInline: Object.fromEntries([...resolver.unhandledInline].sort((a, b) => b[1] - a[1])),
+      flattenedOptionLabels: resolver.flattenedOptionLabels,
+    },
+  };
+}
+
 const outfile = resolve(process.argv[2] ?? `./flow-config.json`);
 const flow = createFlowConfig(flowNodes);
 const extracted = extract(flow);
@@ -315,7 +428,16 @@ const extracted = extract(flow);
 mkdirSync(dirname(outfile), { recursive: true });
 writeFileSync(outfile, JSON.stringify(extracted, null, 2) + `\n`);
 
+const content = resolveContent(extracted.screens, extracted.pages);
+const contentFile = join(dirname(outfile), `content.json`);
+writeFileSync(contentFile, JSON.stringify(content, null, 2) + `\n`);
+
 console.log(`wrote ${outfile}`);
 for (const [name, count] of Object.entries(extracted.counts)) {
   console.log(`  ${name.padEnd(20)} ${count}`);
 }
+console.log(`wrote ${contentFile}`);
+console.log(`  component types      ${Object.keys(content.report.components).length}`);
+console.log(`  missing keys         ${content.report.missingKeys.length}`);
+console.log(`  unhandled inline     ${Object.values(content.report.unhandledInline).reduce((a, b) => a + b, 0)}`);
+console.log(`  page titles          ${Object.keys(content.subSubcategoryTitles).length} from subsubcategory labels`);

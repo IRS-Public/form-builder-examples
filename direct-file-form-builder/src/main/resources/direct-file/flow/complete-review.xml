@@ -4,11 +4,13 @@
      Corrections belong in the transpiler, so the port stays reproducible against an upstream
      that is still moving. See codemod/README.md. -->
 <FlowConfig>
-  <page title="Review" route="/complete/review/review">
+  <page title="Review and confirm" route="/complete/review/review">
     <section>
       <div class="df-screen">
-        <h2>review</h2>
-        <p>Heading, InfoDisplay, Subheading ×2, DownloadPDFButton, SectionReview, SaveAndOrContinueAndSetFactButton</p>
+        <h2>Review and confirm</h2>
+        <p>From here you can download a draft of your tax return information and review everything you entered. There’s still time to make edits if you want.</p>
+        <h3>Download draft</h3>
+        <h3>Review by section</h3>
       </div>
     </section>
   </page>

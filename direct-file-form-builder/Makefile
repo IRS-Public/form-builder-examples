@@ -212,10 +212,17 @@ test-watch: ## Run and watch the tests
 	sbt -info 'set Test / testOptions += Tests.Argument(TestFrameworks.ScalaTest, "-oC")' '~test'
 
 .PHONY: format
-format: ## Format the Scala, XML and JavaScript
-	@# Only the fact configs are formatted automatically — the flow XML carries authored prose
-	@# whose whitespace is meaningful once it reaches the page.
-	find $(FACTS_DIR) -name '*.xml' | xargs -I {} xmllint --format {} --output {}
+format: ## Format the Scala and JavaScript
+	@# The XML is deliberately not formatted here, and this application is the reason the other
+	@# three do it and this one does not.
+	@#
+	@# `facts/` is Direct File's dictionary carried over unchanged — 33 of its 36 modules are
+	@# byte-identical to upstream, which is what makes the copy auditable and what
+	@# docs/PORTING.md rests its argument on. `xmllint --format` rewrites all 36 and destroys
+	@# that in one command, silently, with a 16,000-line diff.
+	@#
+	@# `flow/` is generated, so formatting it is a no-op that the next `make transpile` undoes,
+	@# and its authored prose carries whitespace that is meaningful once it reaches the page.
 	sbt scalafmtAll
 	npm --prefix $(RESOURCES_DIR) run format
 
@@ -308,6 +315,13 @@ transpile: ## Regenerate the flow and its gate facts from Direct File
 	node codemod/emit.ts codemod/flow-config.json $(RESOURCES_DIR)
 
 .PHONY: transpile-verify
-transpile-verify: ## Check the extracted page order against Direct File's 175 scenario snapshots
+transpile-verify: ## Check the port against Direct File: page order, then gate parity per scenario
+	@# Two halves of one claim. The first is that declaration order is navigation order, so cutting
+	@# pages from runs of it cannot reorder a question. The second is that a screen shows for
+	@# exactly the taxpayers it shows for upstream — the synthesized gate facts against
+	@# `Condition.evaluate`, over every backend scenario. The second reads the generated
+	@# fact-dictionary.xml, so it needs a `make site` first.
 	npx --prefix $(DF_CLIENT_APP) vite-node --root $(DF_CLIENT_APP) \
 		codemod/verify-order.ts $(DF_CLIENT_APP)
+	npx --prefix $(DF_CLIENT_APP) vite-node --root $(DF_CLIENT_APP) \
+		codemod/verify-visibility.ts $(DF_CLIENT_APP) $(CURDIR)

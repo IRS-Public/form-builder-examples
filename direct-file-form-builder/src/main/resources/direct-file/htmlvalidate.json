@@ -23,6 +23,7 @@
     "element-permitted-content": "off",
     "element-permitted-parent": "off",
     "empty-heading": "warn",
+    "form-dup-name": ["error", { "shared": ["radio", "checkbox"] }],
     "empty-title": "warn",
     "long-title": "off",
     "no-implicit-input-type": "off",

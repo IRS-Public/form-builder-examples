@@ -31,9 +31,9 @@ browser. The check has teeth: pointing one `fg-set` at a path that does not exis
 with `InvalidFormConfig: /thisFactDoesNotExist not found in the fact dictionary`.
 
 The probe is gone — the transpiler's output replaced it, as its header said it would — and the
-safety net it demonstrated now covers the real thing: 713 screens across 217 pages, and 518
-synthesized gate facts whose every dependency is checked against this dictionary before the XML is
-written.
+safety net it demonstrated now covers the real thing: 713 screens across 138 pages, and 798
+synthesized gate facts whose every dependency is both checked against this dictionary before the XML
+is written *and* typed from it, so each condition gets the truthiness test its fact's type needs.
 
 ## Deviations from upstream
 
@@ -68,7 +68,7 @@ engine ignored it before and ignores it now.
 ## The flow is generated
 
 The Flow XML under `src/main/resources/direct-file/flow/` is transpiler output and is never
-hand-edited, and so is `facts/flowGates.xml` — 518 synthesized Boolean facts, one per distinct set
+hand-edited, and so is `facts/flowGates.xml` — 798 synthesized Boolean facts, one per distinct set
 of screen conditions. See [../codemod/README.md](../codemod/README.md) for the contract, the stage
 list, and the condition-operator table the gate facts are built from.
 
@@ -77,16 +77,18 @@ order; each module is one Direct File subcategory and each page is a contiguous 
 declaration order — except that a collection loop's runs are absorbed into a single
 `<fg-collection>`, which is what turns 218 runs into 138 pages.
 
-`locales/flow_es.yaml` is empty on purpose until stage 4. Its key set is owned by the generated
-`flow_en.yaml`, so every key in it today would be a translation of a placeholder. Direct File ships
-its own `es` locale beside the `en` one its content components name, and stage 4 emits both files
-from it; until then the resolver falls back to English and the `/es/` pages render the English
-placeholders.
+`locales/flow_es.yaml` is still empty, and that is the port's largest remaining gap. Its key set is
+owned by the generated `flow_en.yaml`, which the scaffold writes from the emitted XML — so the keys
+exist only *after* a build, and re-keying Direct File's own `es.yaml` against them is a post-build
+step rather than something stage 4 could have emitted. Direct File has the translations, keyed the
+way its `en.yaml` is; what is missing is the step that moves them across. Until then the resolver
+falls back to English and the `/es/` pages render English text under Spanish chrome.
 
 ## Library changes this port needed
 
-Three, all landed in `form-builder` rather than worked around here, because each is something
-another application would want.
+Seven in `form-builder` and one in `fact-graph`, all landed in the libraries rather than worked
+around here, because each is something another application would want. The first three are gaps; the
+rest are defects — constructs Direct File's flow and dictionary use that the libraries mishandled.
 
 1. **`registerInputType()`** in the flow runtime's `input-types.js`. `parser/Input.scala` already
    let an application register a custom `<input type>`; the browser half was hardcoded in five
@@ -100,11 +102,77 @@ another application would want.
    writes the collection fact. It does not make the fields read-only, which is a different gap
    benefits-enrollment's `review.xml` still names.
 
+4. **`<fg-set>` on a path that reaches its fact through a collection-item alias.** 47 of this port's
+   questions write `/primaryFiler/firstName` or `/secondaryFiler/lastName`, where the declared fact
+   is `/filers/*/firstName` and `/primaryFiler` is a `<Find>` over `/filers`. Direct File resolves
+   these from the screen's `collectionContext`, which Form Builder has no equivalent of, so the alias
+   path *is* the expression. `getDefinition` already resolved it; `FgSet` was looking the raw path up
+   in `getDefinitionsAsNodes`, a plain map keyed by declared paths, and dying with
+   `NoSuchElementException` several frames from anything naming the question. It now asks the
+   definition where it lives.
+5. **A body-less `<fg-alert>`.** Many Direct File alerts are a heading and nothing else. The parser
+   rejected an element with no children left to parse — the right error for an empty `<fg-set>`, the
+   wrong one here — so `parseChildElements` grew a `required` flag and the seed grammar says
+   `zeroOrMore`.
+6. **Per-question DOM ids and translation keys.** A page may ask about one fact twice: two
+   conditional branches, only one of which shows, sometimes worded differently ("No, this hasn't
+   happened to me" / "…to us", by filing status) and sometimes identically. Both cases used to
+   collide. Translation keys now break the tie on the authored content — identical wording shares one
+   key and one translation, different wording gets `path-<hash>` — and DOM ids break it again per
+   page, so `id`/`name` are unique even where the translation is shared. Ids for a flow with no
+   repeats are byte-identical to before.
+7. **A guard on over-long translation keys.** `generateFlowLocaleFile` now refuses a key past 128
+   characters, naming it. Past that the YAML printer emits the explicit-key form (`? key` / `:
+   value`) which the parser reading the file back rejects — so the build wrote a file it could not
+   load, and the error surfaced on the next run pointing at a line that looked fine.
+
+Two more landed in **`fact-graph`** rather than `form-builder`.
+
+`Pin.apply(String)` called `parseString`, which called `Pin.apply(String)`. Construction goes through
+`new` everywhere in the engine so nothing noticed, but the derived `ReadWriter` constructs through
+`apply` — so **a saved fact graph holding a `Pin` or an `IpPin` could not be loaded**, with a stack
+overflow whose trace named neither type. In an application that is: answer the self-select PIN or an
+IP PIN, reload the page, lose the return. Both are fixed, with a round-trip test each. This port's
+`pin` and `ip-pin` input types are what walked into it.
+
+`FactDictionary.resolveCollectionAliasPath` cast the first segment of an unresolved path to
+`CollectionItemNode` without checking, so any path under a collection that the dictionary does not
+declare verbatim raised `ClassCastException` from inside a lookup whose contract is to return null.
+It now matches on the node type, and handles the other alias shape as well: `/alaskaPfd1099s` is a
+`<Filter>` over `/form1099Miscs`, so `/alaskaPfd1099s/*/writableOtherIncome` resolves — which is what
+Direct File's own `SetFactAction` on that path needs.
+
 `<br/>` needed no library change, contrary to the plan: `parser/Html.scala` treats `<p>`, `<li>`,
 `<td>` and the headings as leaf nodes and re-emits their inner markup verbatim, so a `<br/>` inside
 one already survives. Only this application's `flow/FlowConfig.rng` rejected it, and that grammar
 is widened here — as is `fg-apply` itself, which form-builder parses but never described in its
 seed grammar, no application here having used one before.
+
+## What proves the port
+
+`make transpile-verify`, and it is worth stating what it establishes because "it builds" does not.
+
+    scenarios          175           # verify-order: every recorded traversal
+    violations         0             # …walks the declaration order forwards
+
+    scenarios              161       # verify-visibility: every backend scenario
+    screen/item decisions  89329
+    agreements             88428
+    known differences      901  (7 screens)
+    unexpected             0
+
+The first says declaration order is navigation order, so cutting pages from runs of it cannot reorder
+a question. The second says a screen shows for exactly the taxpayers it shows for upstream: for each
+scenario it builds the fact graph the way Direct File's own snapshot test does, loads that same state
+into a graph over this application's dictionary, and compares `Condition.evaluate` against the
+synthesized gate fact, screen by screen and collection item by collection item.
+
+Seven screens differ, all seven for a reason on the record: six because Direct File's `isTrue` is
+`hasValue && !!get` and `hasValue` is true for a *placeholder*, which the Fact Graph has no CompNode
+for; one because it only exists on the e-signature path, which is out of scope. They are enumerated
+in `codemod/verify-visibility.ts`'s `KNOWN`, and the check fails on anything else — and on a `KNOWN`
+entry that has come back into line, so a stale exemption cannot hide a later regression. See
+[../codemod/README.md](../codemod/README.md) for the full account.
 
 ## The workspace over it
 
@@ -132,9 +200,12 @@ worse than the blank file.
 
 ## Hazards
 
-- **`make format` reformats `facts/*.xml`** with `xmllint --format`. Running it would rewrite all
-  36 modules and destroy the byte-for-byte correspondence with upstream that makes the copy
-  auditable. Format the Scala and the JavaScript by hand instead until the flow is generated.
+- **`make format` here does not touch the XML, and that is on purpose.** The other three
+  applications run `xmllint --format` over their fact configs; doing that here rewrites all 36
+  modules and destroys the byte-for-byte correspondence with upstream that makes the copy auditable
+  — silently, in one command, as a 16,000-line diff. The target was changed rather than the advice:
+  a hazard a Makefile can simply not have is better than a hazard documented in a file nobody reads
+  first. `flow/` is generated, so there is nothing to format there either.
 - **`facts/*.xml` merge in sorted filename order, last `<Fact path>` wins.** Direct File ships a
   `flow.xml` in its `tax/` directory; it is a *fact* module about flow state, and it belongs in
   `facts/`, not in `flow/`.

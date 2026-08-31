@@ -13,6 +13,13 @@
      regenerating after an unrelated change leaves these names alone. -->
 <FactDictionaryModule>
   <Facts>
+    <Fact path="/flowAlwaysTrue">
+      <Description>Always true. What an element that must always show hangs its condition on: &lt;fg-alert&gt; renders hidden unless something drives it, and a Direct File alert is shown whenever its screen is.</Description>
+      <Derived>
+        <True/>
+      </Derived>
+    </Fact>
+
     <Fact path="/flowGate62fe02b1">
       <Description>Screen gate: isTrue(/primaryFiler/youngerThan16).</Description>
       <Derived>
@@ -191,6 +198,32 @@
       </Derived>
     </Fact>
 
+    <Fact path="/flowGate98c73d65">
+      <Description>Screen gate: isTrue(/receivedAlaskaPfd).</Description>
+      <Derived>
+        <All>
+          <IsComplete>
+            <Dependency path="/receivedAlaskaPfd" />
+          </IsComplete>
+          <Dependency path="/receivedAlaskaPfd" />
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGate9a06c6ca">
+      <Description>Screen gate: isFalse(/receivedAlaskaPfd).</Description>
+      <Derived>
+        <All>
+          <IsComplete>
+            <Dependency path="/receivedAlaskaPfd" />
+          </IsComplete>
+          <Not>
+            <Dependency path="/receivedAlaskaPfd" />
+          </Not>
+        </All>
+      </Derived>
+    </Fact>
+
     <Fact path="/flowGateaf1b4bc6">
       <Description>Screen gate: isTrue(/primaryFiler/needsSSNWorkStatus).</Description>
       <Derived>
@@ -348,6 +381,73 @@
           </IsComplete>
           <Dependency path="/primaryFilerCouldBeDependentAndClaimerIsRequiredToFileOrFilingForCredits" />
         </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGatec785fecc">
+      <Description>Screen gate: isFalse(/taxpayerCannotBeClaimed).</Description>
+      <Derived>
+        <All>
+          <IsComplete>
+            <Dependency path="/taxpayerCannotBeClaimed" />
+          </IsComplete>
+          <Not>
+            <Dependency path="/taxpayerCannotBeClaimed" />
+          </Not>
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGate0c06f0a2">
+      <Description>Screen gate: isTrue(/taxpayerCannotBeClaimed) and isFalseOrIncomplete(/primaryFiler/willBeClaimed).</Description>
+      <Derived>
+        <All>
+          <All>
+            <IsComplete>
+              <Dependency path="/taxpayerCannotBeClaimed" />
+            </IsComplete>
+            <Dependency path="/taxpayerCannotBeClaimed" />
+          </All>
+          <Any>
+            <Not>
+              <IsComplete>
+                <Dependency path="/primaryFiler/willBeClaimed" />
+              </IsComplete>
+            </Not>
+            <Not>
+              <Dependency path="/primaryFiler/willBeClaimed" />
+            </Not>
+          </Any>
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGate78da3438">
+      <Description>Screen gate: isTrue(/taxpayerCannotBeClaimed) and isTrue(/primaryFiler/willBeClaimed).</Description>
+      <Derived>
+        <All>
+          <All>
+            <IsComplete>
+              <Dependency path="/taxpayerCannotBeClaimed" />
+            </IsComplete>
+            <Dependency path="/taxpayerCannotBeClaimed" />
+          </All>
+          <All>
+            <IsComplete>
+              <Dependency path="/primaryFiler/willBeClaimed" />
+            </IsComplete>
+            <Dependency path="/primaryFiler/willBeClaimed" />
+          </All>
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGate4ddc79e0">
+      <Description>Screen gate: isComplete(/filingStatus).</Description>
+      <Derived>
+        <IsComplete>
+          <Dependency path="/filingStatus" />
+        </IsComplete>
       </Derived>
     </Fact>
 
@@ -789,6 +889,18 @@
       </Derived>
     </Fact>
 
+    <Fact path="/flowGate001603c1">
+      <Description>Screen gate: isTrue(/isWidowedInTaxYear).</Description>
+      <Derived>
+        <All>
+          <IsComplete>
+            <Dependency path="/isWidowedInTaxYear" />
+          </IsComplete>
+          <Dependency path="/isWidowedInTaxYear" />
+        </All>
+      </Derived>
+    </Fact>
+
     <Fact path="/flowGate29615176">
       <Description>Screen gate: isTrue(/maritalStatusAllowsFilingMarried) and isTrue(/readyToEnterSpouseInformation) and isTrue(/wantsJointReturn) and isTrue(/secondaryFiler/youngerThan16).</Description>
       <Derived>
@@ -1163,6 +1275,32 @@
       </Derived>
     </Fact>
 
+    <Fact path="/flowGateaf08d616">
+      <Description>Screen gate: isTrue(/isResidentOfStateWithMarketplace).</Description>
+      <Derived>
+        <All>
+          <IsComplete>
+            <Dependency path="/isResidentOfStateWithMarketplace" />
+          </IsComplete>
+          <Dependency path="/isResidentOfStateWithMarketplace" />
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGate9840b715">
+      <Description>Screen gate: isFalse(/isResidentOfStateWithMarketplace).</Description>
+      <Derived>
+        <All>
+          <IsComplete>
+            <Dependency path="/isResidentOfStateWithMarketplace" />
+          </IsComplete>
+          <Not>
+            <Dependency path="/isResidentOfStateWithMarketplace" />
+          </Not>
+        </All>
+      </Derived>
+    </Fact>
+
     <Fact path="/flowGatedc7192a3">
       <Description>Screen gate: isTrue(/maritalStatusAllowsFilingMarried) and isTrue(/readyToEnterSpouseInformation) and isTrue(/wantsJointReturn) and isTrue(/flowMFJSpouseFilingRequirementSubsection) and isTrue(/MFJNotRequiredToFileAndEitherFilerCanBeClaimed) and isFalse(/MFJDependentsFilingForCredits) and isTrue(/MFJDepedentsEnrolledMarketplacePlan).</Description>
       <Derived>
@@ -1423,6 +1561,82 @@
       </Derived>
     </Fact>
 
+    <Fact path="/flowGatec4a7358c">
+      <Description>Screen gate: isTrue(/primaryFilerHasMarketplacePlanAndIsNotClaimedAsDependent) and isFalse(/secondaryFilerHasMarketplacePlanAndIsNotClaimedAsDependent).</Description>
+      <Derived>
+        <All>
+          <All>
+            <IsComplete>
+              <Dependency path="/primaryFilerHasMarketplacePlanAndIsNotClaimedAsDependent" />
+            </IsComplete>
+            <Dependency path="/primaryFilerHasMarketplacePlanAndIsNotClaimedAsDependent" />
+          </All>
+          <All>
+            <IsComplete>
+              <Dependency path="/secondaryFilerHasMarketplacePlanAndIsNotClaimedAsDependent" />
+            </IsComplete>
+            <Not>
+              <Dependency path="/secondaryFilerHasMarketplacePlanAndIsNotClaimedAsDependent" />
+            </Not>
+          </All>
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGate655814cf">
+      <Description>Screen gate: isFalse(/primaryFilerHasMarketplacePlanAndIsNotClaimedAsDependent) and isTrue(/secondaryFilerHasMarketplacePlanAndIsNotClaimedAsDependent).</Description>
+      <Derived>
+        <All>
+          <All>
+            <IsComplete>
+              <Dependency path="/primaryFilerHasMarketplacePlanAndIsNotClaimedAsDependent" />
+            </IsComplete>
+            <Not>
+              <Dependency path="/primaryFilerHasMarketplacePlanAndIsNotClaimedAsDependent" />
+            </Not>
+          </All>
+          <All>
+            <IsComplete>
+              <Dependency path="/secondaryFilerHasMarketplacePlanAndIsNotClaimedAsDependent" />
+            </IsComplete>
+            <Dependency path="/secondaryFilerHasMarketplacePlanAndIsNotClaimedAsDependent" />
+          </All>
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGate1ceaf817">
+      <Description>Screen gate: isTrue(/primaryFilerHasMarketplacePlanAndIsNotClaimedAsDependent) and isTrue(/secondaryFilerHasMarketplacePlanAndIsNotClaimedAsDependent).</Description>
+      <Derived>
+        <All>
+          <All>
+            <IsComplete>
+              <Dependency path="/primaryFilerHasMarketplacePlanAndIsNotClaimedAsDependent" />
+            </IsComplete>
+            <Dependency path="/primaryFilerHasMarketplacePlanAndIsNotClaimedAsDependent" />
+          </All>
+          <All>
+            <IsComplete>
+              <Dependency path="/secondaryFilerHasMarketplacePlanAndIsNotClaimedAsDependent" />
+            </IsComplete>
+            <Dependency path="/secondaryFilerHasMarketplacePlanAndIsNotClaimedAsDependent" />
+          </All>
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGateff5da3e6">
+      <Description>Screen gate: isTrue(/notDependentNotOtherTaxFamily).</Description>
+      <Derived>
+        <All>
+          <IsComplete>
+            <Dependency path="/notDependentNotOtherTaxFamily" />
+          </IsComplete>
+          <Dependency path="/notDependentNotOtherTaxFamily" />
+        </All>
+      </Derived>
+    </Fact>
+
     <Fact path="/flowGate07eb899d">
       <Description>Screen gate: isTrue(/maritalStatusAllowsFilingMarried) and isTrue(/readyToEnterSpouseInformation) and isTrue(/wantsJointReturn) and isTrue(/flowMFJSpouseFilingRequirementSubsection) and isTrue(/MFJNotRequiredToFileAndEitherFilerCanBeClaimed) and isFalse(/MFJDependentsFilingForCredits) and isTrue(/mfjdOK).</Description>
       <Derived>
@@ -1527,6 +1741,42 @@
       </Derived>
     </Fact>
 
+    <Fact path="/flowGatea151f844">
+      <Description>Screen gate: isTrue(/dependentClaimedAndEnrolleeIsSelf).</Description>
+      <Derived>
+        <All>
+          <IsComplete>
+            <Dependency path="/dependentClaimedAndEnrolleeIsSelf" />
+          </IsComplete>
+          <Dependency path="/dependentClaimedAndEnrolleeIsSelf" />
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGated874b609">
+      <Description>Screen gate: isTrue(/dependentClaimedAndEnrolleeIsSpouse).</Description>
+      <Derived>
+        <All>
+          <IsComplete>
+            <Dependency path="/dependentClaimedAndEnrolleeIsSpouse" />
+          </IsComplete>
+          <Dependency path="/dependentClaimedAndEnrolleeIsSpouse" />
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGate52cdce2c">
+      <Description>Screen gate: isTrue(/dependentClaimedAndEnrolleeIsBoth).</Description>
+      <Derived>
+        <All>
+          <IsComplete>
+            <Dependency path="/dependentClaimedAndEnrolleeIsBoth" />
+          </IsComplete>
+          <Dependency path="/dependentClaimedAndEnrolleeIsBoth" />
+        </All>
+      </Derived>
+    </Fact>
+
     <Fact path="/flowGateed0069fb">
       <Description>Screen gate: isTrue(/maritalStatusAllowsFilingMarried) and isTrue(/readyToEnterSpouseInformation) and isTrue(/wantsJointReturn) and isTrue(/flowMFJSpouseFilingRequirementSubsection) and isTrue(/MFJNotRequiredToFileAndEitherFilerCanBeClaimed) and isTrue(/mfjDependentChoiceA).</Description>
       <Derived>
@@ -1612,6 +1862,38 @@
             <Not>
               <Dependency path="/MFJClaimingRefundOnly" />
             </Not>
+          </All>
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGate14f86db4">
+      <Description>Screen gate: isTrue(/showMFJDChoiceBDynamic).</Description>
+      <Derived>
+        <All>
+          <IsComplete>
+            <Dependency path="/showMFJDChoiceBDynamic" />
+          </IsComplete>
+          <Dependency path="/showMFJDChoiceBDynamic" />
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGate2b228556">
+      <Description>Screen gate: isTrue(/primaryFiler/willBeClaimed) and isTrue(/primaryFilerCouldBeDependentAndClaimerIsRequiredToFileOrFilingForCredits).</Description>
+      <Derived>
+        <All>
+          <All>
+            <IsComplete>
+              <Dependency path="/primaryFiler/willBeClaimed" />
+            </IsComplete>
+            <Dependency path="/primaryFiler/willBeClaimed" />
+          </All>
+          <All>
+            <IsComplete>
+              <Dependency path="/primaryFilerCouldBeDependentAndClaimerIsRequiredToFileOrFilingForCredits" />
+            </IsComplete>
+            <Dependency path="/primaryFilerCouldBeDependentAndClaimerIsRequiredToFileOrFilingForCredits" />
           </All>
         </All>
       </Derived>
@@ -1851,6 +2133,30 @@
       </Derived>
     </Fact>
 
+    <Fact path="/flowGate7142c1b6">
+      <Description>Screen gate: isTrue(/livedInMd).</Description>
+      <Derived>
+        <All>
+          <IsComplete>
+            <Dependency path="/livedInMd" />
+          </IsComplete>
+          <Dependency path="/livedInMd" />
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGate328e898c">
+      <Description>Screen gate: isTrue(/livedInNc).</Description>
+      <Derived>
+        <All>
+          <IsComplete>
+            <Dependency path="/livedInNc" />
+          </IsComplete>
+          <Dependency path="/livedInNc" />
+        </All>
+      </Derived>
+    </Fact>
+
     <Fact path="/flowGate74ca6bd9">
       <Description>Screen gate: isTrue(/maritalStatusAllowsFilingMarried) and isTrue(/readyToEnterSpouseInformation) and isTrue(/wantsSeparateReturn) and isTrue(/MFSNeedSpouseTaxId).</Description>
       <Derived>
@@ -2023,6 +2329,32 @@
       </Derived>
     </Fact>
 
+    <Fact path="/flowGate37aa0bd8">
+      <Description>Screen gate: isFalse(/treatAsMFJ).</Description>
+      <Derived>
+        <All>
+          <IsComplete>
+            <Dependency path="/treatAsMFJ" />
+          </IsComplete>
+          <Not>
+            <Dependency path="/treatAsMFJ" />
+          </Not>
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGate64bd522f">
+      <Description>Screen gate: isTrue(/treatAsMFJ).</Description>
+      <Derived>
+        <All>
+          <IsComplete>
+            <Dependency path="/treatAsMFJ" />
+          </IsComplete>
+          <Dependency path="/treatAsMFJ" />
+        </All>
+      </Derived>
+    </Fact>
+
     <Fact path="/flowGate36c25615">
       <Description>Screen gate: isTrueOrIncomplete(/filersCouldHaveDependentOrQualifyingPerson).</Description>
       <Derived>
@@ -2033,6 +2365,22 @@
             </IsComplete>
           </Not>
           <Dependency path="/filersCouldHaveDependentOrQualifyingPerson" />
+        </Any>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGateb406695c">
+      <Description>Screen gate: isFalseOrIncomplete(/treatAsMFJ).</Description>
+      <Derived>
+        <Any>
+          <Not>
+            <IsComplete>
+              <Dependency path="/treatAsMFJ" />
+            </IsComplete>
+          </Not>
+          <Not>
+            <Dependency path="/treatAsMFJ" />
+          </Not>
         </Any>
       </Derived>
     </Fact>
@@ -2169,6 +2517,18 @@
       </Derived>
     </Fact>
 
+    <Fact path="/familyAndHousehold/*/flowGate627f7c43">
+      <Description>Screen gate: isTrue(/familyAndHousehold/*/mayHaveNotlivedWithTaxpayerInUSForFullTaxYear).</Description>
+      <Derived>
+        <All>
+          <IsComplete>
+            <Dependency path="../mayHaveNotlivedWithTaxpayerInUSForFullTaxYear" />
+          </IsComplete>
+          <Dependency path="../mayHaveNotlivedWithTaxpayerInUSForFullTaxYear" />
+        </All>
+      </Derived>
+    </Fact>
+
     <Fact path="/familyAndHousehold/*/flowGate607852bf">
       <Description>Screen gate: isTrueOrIncomplete(/filersCouldHaveDependentOrQualifyingPerson) and isTrue(/familyAndHousehold/*/childMayQualifyForBenefitSplit) and isTrue(/familyAndHousehold/*/tpIsParent).</Description>
       <Derived>
@@ -2267,6 +2627,42 @@
             </IsComplete>
             <Dependency path="../parentalSomeParentNotClaiming" />
           </All>
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/familyAndHousehold/*/flowGated6d65733">
+      <Description>Screen gate: isTrue(/familyAndHousehold/*/primaryFilerNotClaiming).</Description>
+      <Derived>
+        <All>
+          <IsComplete>
+            <Dependency path="../primaryFilerNotClaiming" />
+          </IsComplete>
+          <Dependency path="../primaryFilerNotClaiming" />
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/familyAndHousehold/*/flowGate7c99e5f0">
+      <Description>Screen gate: isTrue(/familyAndHousehold/*/bothFilersNotClaiming).</Description>
+      <Derived>
+        <All>
+          <IsComplete>
+            <Dependency path="../bothFilersNotClaiming" />
+          </IsComplete>
+          <Dependency path="../bothFilersNotClaiming" />
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/familyAndHousehold/*/flowGate1911ee0a">
+      <Description>Screen gate: isTrue(/familyAndHousehold/*/otherParentNotClaiming).</Description>
+      <Derived>
+        <All>
+          <IsComplete>
+            <Dependency path="../otherParentNotClaiming" />
+          </IsComplete>
+          <Dependency path="../otherParentNotClaiming" />
         </All>
       </Derived>
     </Fact>
@@ -2643,6 +3039,30 @@
             </IsComplete>
             <Dependency path="/knockedOutByContradictory8832" />
           </All>
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGate4857bec6">
+      <Description>Screen gate: isTrue(/contradictory8832TPIsCustodialParentTriggeredKnockout).</Description>
+      <Derived>
+        <All>
+          <IsComplete>
+            <Dependency path="/contradictory8832TPIsCustodialParentTriggeredKnockout" />
+          </IsComplete>
+          <Dependency path="/contradictory8832TPIsCustodialParentTriggeredKnockout" />
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGate6eae66d8">
+      <Description>Screen gate: isTrue(/contradictory8832TPNotCustodialParentTriggeredKnockout).</Description>
+      <Derived>
+        <All>
+          <IsComplete>
+            <Dependency path="/contradictory8832TPNotCustodialParentTriggeredKnockout" />
+          </IsComplete>
+          <Dependency path="/contradictory8832TPNotCustodialParentTriggeredKnockout" />
         </All>
       </Derived>
     </Fact>
@@ -3465,6 +3885,26 @@
       </Derived>
     </Fact>
 
+    <Fact path="/familyAndHousehold/*/flowGatea505f8cb">
+      <Description>Screen gate: isTrue(/familyAndHousehold/*/childIsAdopted) and isTrue(/eitherFilerUSCitizenOrNational).</Description>
+      <Derived>
+        <All>
+          <All>
+            <IsComplete>
+              <Dependency path="../childIsAdopted" />
+            </IsComplete>
+            <Dependency path="../childIsAdopted" />
+          </All>
+          <All>
+            <IsComplete>
+              <Dependency path="/eitherFilerUSCitizenOrNational" />
+            </IsComplete>
+            <Dependency path="/eitherFilerUSCitizenOrNational" />
+          </All>
+        </All>
+      </Derived>
+    </Fact>
+
     <Fact path="/familyAndHousehold/*/flowGate68ee35de">
       <Description>Screen gate: isTrueOrIncomplete(/filersCouldHaveDependentOrQualifyingPerson) and isFalse(/familyAndHousehold/*/disqualifiedDueToParentalCustody) and isFalse(/familyAndHousehold/*/isUsCitizenFullYear).</Description>
       <Derived>
@@ -3783,6 +4223,32 @@
       </Derived>
     </Fact>
 
+    <Fact path="/familyAndHousehold/*/flowGate9dd8a25c">
+      <Description>Screen gate: isFalse(/familyAndHousehold/*/potentialClaimerDidFile).</Description>
+      <Derived>
+        <All>
+          <IsComplete>
+            <Dependency path="../potentialClaimerDidFile" />
+          </IsComplete>
+          <Not>
+            <Dependency path="../potentialClaimerDidFile" />
+          </Not>
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/familyAndHousehold/*/flowGateeac6cf96">
+      <Description>Screen gate: isTrue(/familyAndHousehold/*/potentialClaimerFiledOnlyForRefund).</Description>
+      <Derived>
+        <All>
+          <IsComplete>
+            <Dependency path="../potentialClaimerFiledOnlyForRefund" />
+          </IsComplete>
+          <Dependency path="../potentialClaimerFiledOnlyForRefund" />
+        </All>
+      </Derived>
+    </Fact>
+
     <Fact path="/familyAndHousehold/*/flowGate6d15705a">
       <Description>Screen gate: isTrueOrIncomplete(/filersCouldHaveDependentOrQualifyingPerson) and isFalse(/familyAndHousehold/*/disqualifiedDueToParentalCustody) and isTrue(/familyAndHousehold/*/eligibleDependent) and isTrue(/familyAndHousehold/*/isQualifyingChildOfAnother).</Description>
       <Derived>
@@ -3853,6 +4319,92 @@
               <Dependency path="../isQualifyingChildOfAnother" />
             </Not>
           </All>
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/familyAndHousehold/*/flowGate0cc6d474">
+      <Description>Screen gate: isFalseOrIncomplete(/familyAndHousehold/*/doesQualifyTPForTaxBenefits).</Description>
+      <Derived>
+        <Any>
+          <Not>
+            <IsComplete>
+              <Dependency path="../doesQualifyTPForTaxBenefits" />
+            </IsComplete>
+          </Not>
+          <Not>
+            <Dependency path="../doesQualifyTPForTaxBenefits" />
+          </Not>
+        </Any>
+      </Derived>
+    </Fact>
+
+    <Fact path="/familyAndHousehold/*/flowGate6d75621f">
+      <Description>Screen gate: isTrueOrIncomplete(/familyAndHousehold/*/mayQualifyTPForTaxBenefits) and isFalseOrIncomplete(/familyAndHousehold/*/doesQualifyTPForTaxBenefits).</Description>
+      <Derived>
+        <All>
+          <Any>
+            <Not>
+              <IsComplete>
+                <Dependency path="../mayQualifyTPForTaxBenefits" />
+              </IsComplete>
+            </Not>
+            <Dependency path="../mayQualifyTPForTaxBenefits" />
+          </Any>
+          <Any>
+            <Not>
+              <IsComplete>
+                <Dependency path="../doesQualifyTPForTaxBenefits" />
+              </IsComplete>
+            </Not>
+            <Not>
+              <Dependency path="../doesQualifyTPForTaxBenefits" />
+            </Not>
+          </Any>
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/familyAndHousehold/*/flowGate30f26fc5">
+      <Description>Screen gate: isTrue(/familyAndHousehold/*/doesQualifyTPForTaxBenefits).</Description>
+      <Derived>
+        <All>
+          <IsComplete>
+            <Dependency path="../doesQualifyTPForTaxBenefits" />
+          </IsComplete>
+          <Dependency path="../doesQualifyTPForTaxBenefits" />
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/familyAndHousehold/*/flowGatec7aa269f">
+      <Description>Screen gate: isTrue(/familyAndHousehold/*/doesQualifyTPForTaxBenefits) and isTrue(/familyAndHousehold/*/hasIncompletePossibleBenefits).</Description>
+      <Derived>
+        <All>
+          <All>
+            <IsComplete>
+              <Dependency path="../doesQualifyTPForTaxBenefits" />
+            </IsComplete>
+            <Dependency path="../doesQualifyTPForTaxBenefits" />
+          </All>
+          <All>
+            <IsComplete>
+              <Dependency path="../hasIncompletePossibleBenefits" />
+            </IsComplete>
+            <Dependency path="../hasIncompletePossibleBenefits" />
+          </All>
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/familyAndHousehold/*/flowGatea92195db">
+      <Description>Screen gate: isTrue(/familyAndHousehold/*/flowShowParentHelpText).</Description>
+      <Derived>
+        <All>
+          <IsComplete>
+            <Dependency path="../flowShowParentHelpText" />
+          </IsComplete>
+          <Dependency path="../flowShowParentHelpText" />
         </All>
       </Derived>
     </Fact>
@@ -4511,6 +5063,20 @@
       </Derived>
     </Fact>
 
+    <Fact path="/flowGatec68ca9d9">
+      <Description>Screen gate: isFalse(/isWidowed).</Description>
+      <Derived>
+        <All>
+          <IsComplete>
+            <Dependency path="/isWidowed" />
+          </IsComplete>
+          <Not>
+            <Dependency path="/isWidowed" />
+          </Not>
+        </All>
+      </Derived>
+    </Fact>
+
     <Fact path="/flowGate464b9c97">
       <Description>Screen gate: isIncomplete(/filingStatus) and isFalseOrIncomplete(/tpSelectedStatusInSpouseSectionAndCanUseIt) and isTrue(/showMFSFilingStatusScreen).</Description>
       <Derived>
@@ -4565,6 +5131,18 @@
             </IsComplete>
             <Dependency path="/showHoHFilingStatusScreen" />
           </All>
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGatee0be7a11">
+      <Description>Screen gate: isTrue(/hasMultipleEligibleFilingStatuses).</Description>
+      <Derived>
+        <All>
+          <IsComplete>
+            <Dependency path="/hasMultipleEligibleFilingStatuses" />
+          </IsComplete>
+          <Dependency path="/hasMultipleEligibleFilingStatuses" />
         </All>
       </Derived>
     </Fact>
@@ -4646,12 +5224,71 @@
       </Derived>
     </Fact>
 
-    <Fact path="/flowGate4ddc79e0">
-      <Description>Screen gate: isComplete(/filingStatus).</Description>
+    <Fact path="/flowGate31209e02">
+      <Description>Screen gate: isTrue(/treatAsMFS).</Description>
       <Derived>
-        <IsComplete>
-          <Dependency path="/filingStatus" />
-        </IsComplete>
+        <All>
+          <IsComplete>
+            <Dependency path="/treatAsMFS" />
+          </IsComplete>
+          <Dependency path="/treatAsMFS" />
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGate9759668d">
+      <Description>Screen gate: isFalse(/eligibleForMFJ).</Description>
+      <Derived>
+        <All>
+          <IsComplete>
+            <Dependency path="/eligibleForMFJ" />
+          </IsComplete>
+          <Not>
+            <Dependency path="/eligibleForMFJ" />
+          </Not>
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGatebf866066">
+      <Description>Screen gate: isTrue(/eligibleForMFJ) and isFalse(/eligibleForHoh).</Description>
+      <Derived>
+        <All>
+          <All>
+            <IsComplete>
+              <Dependency path="/eligibleForMFJ" />
+            </IsComplete>
+            <Dependency path="/eligibleForMFJ" />
+          </All>
+          <All>
+            <IsComplete>
+              <Dependency path="/eligibleForHoh" />
+            </IsComplete>
+            <Not>
+              <Dependency path="/eligibleForHoh" />
+            </Not>
+          </All>
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGatece862ea9">
+      <Description>Screen gate: isTrue(/eligibleForMFJ) and isTrue(/eligibleForHoh).</Description>
+      <Derived>
+        <All>
+          <All>
+            <IsComplete>
+              <Dependency path="/eligibleForMFJ" />
+            </IsComplete>
+            <Dependency path="/eligibleForMFJ" />
+          </All>
+          <All>
+            <IsComplete>
+              <Dependency path="/eligibleForHoh" />
+            </IsComplete>
+            <Dependency path="/eligibleForHoh" />
+          </All>
+        </All>
       </Derived>
     </Fact>
 
@@ -4668,6 +5305,174 @@
             </IsComplete>
             <Dependency path="/hasValidFillingStatusWithChoice" />
           </All>
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGate3ed56a54">
+      <Description>Screen gate: isTrue(/needsToRevisitHohQualifyingPersonSelectionOrFilingStatus).</Description>
+      <Derived>
+        <All>
+          <IsComplete>
+            <Dependency path="/needsToRevisitHohQualifyingPersonSelectionOrFilingStatus" />
+          </IsComplete>
+          <Dependency path="/needsToRevisitHohQualifyingPersonSelectionOrFilingStatus" />
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGate1f2b0717">
+      <Description>Screen gate: isFalse(/isFilingStatusSingle) and isFalse(/isFilingStatusMFS).</Description>
+      <Derived>
+        <All>
+          <All>
+            <IsComplete>
+              <Dependency path="/isFilingStatusSingle" />
+            </IsComplete>
+            <Not>
+              <Dependency path="/isFilingStatusSingle" />
+            </Not>
+          </All>
+          <All>
+            <IsComplete>
+              <Dependency path="/isFilingStatusMFS" />
+            </IsComplete>
+            <Not>
+              <Dependency path="/isFilingStatusMFS" />
+            </Not>
+          </All>
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGate52d9b4c3">
+      <Description>Screen gate: isTrue(/isFilingStatusSingle) and isFalse(/isMarried) and isFalse(/isWidowed).</Description>
+      <Derived>
+        <All>
+          <All>
+            <IsComplete>
+              <Dependency path="/isFilingStatusSingle" />
+            </IsComplete>
+            <Dependency path="/isFilingStatusSingle" />
+          </All>
+          <All>
+            <IsComplete>
+              <Dependency path="/isMarried" />
+            </IsComplete>
+            <Not>
+              <Dependency path="/isMarried" />
+            </Not>
+          </All>
+          <All>
+            <IsComplete>
+              <Dependency path="/isWidowed" />
+            </IsComplete>
+            <Not>
+              <Dependency path="/isWidowed" />
+            </Not>
+          </All>
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGate6741f7a5">
+      <Description>Screen gate: isTrue(/isFilingStatusSingle) and isTrue(/isWidowed) and isTrue(/eligibleForQss).</Description>
+      <Derived>
+        <All>
+          <All>
+            <IsComplete>
+              <Dependency path="/isFilingStatusSingle" />
+            </IsComplete>
+            <Dependency path="/isFilingStatusSingle" />
+          </All>
+          <All>
+            <IsComplete>
+              <Dependency path="/isWidowed" />
+            </IsComplete>
+            <Dependency path="/isWidowed" />
+          </All>
+          <All>
+            <IsComplete>
+              <Dependency path="/eligibleForQss" />
+            </IsComplete>
+            <Dependency path="/eligibleForQss" />
+          </All>
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGate59a114dd">
+      <Description>Screen gate: isTrue(/isFilingStatusSingle) and isTrue(/isWidowed) and isFalse(/eligibleForQss).</Description>
+      <Derived>
+        <All>
+          <All>
+            <IsComplete>
+              <Dependency path="/isFilingStatusSingle" />
+            </IsComplete>
+            <Dependency path="/isFilingStatusSingle" />
+          </All>
+          <All>
+            <IsComplete>
+              <Dependency path="/isWidowed" />
+            </IsComplete>
+            <Dependency path="/isWidowed" />
+          </All>
+          <All>
+            <IsComplete>
+              <Dependency path="/eligibleForQss" />
+            </IsComplete>
+            <Not>
+              <Dependency path="/eligibleForQss" />
+            </Not>
+          </All>
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGate96f9a9f4">
+      <Description>Screen gate: isTrue(/isFilingStatusQSS).</Description>
+      <Derived>
+        <All>
+          <IsComplete>
+            <Dependency path="/isFilingStatusQSS" />
+          </IsComplete>
+          <Dependency path="/isFilingStatusQSS" />
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGate980b4142">
+      <Description>Screen gate: isTrue(/isFilingStatusMFJ).</Description>
+      <Derived>
+        <All>
+          <IsComplete>
+            <Dependency path="/isFilingStatusMFJ" />
+          </IsComplete>
+          <Dependency path="/isFilingStatusMFJ" />
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGatec76a1ed0">
+      <Description>Screen gate: isTrue(/isFilingStatusMFS).</Description>
+      <Derived>
+        <All>
+          <IsComplete>
+            <Dependency path="/isFilingStatusMFS" />
+          </IsComplete>
+          <Dependency path="/isFilingStatusMFS" />
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGatef8ae11f1">
+      <Description>Screen gate: isTrue(/isFilingStatusHOH).</Description>
+      <Derived>
+        <All>
+          <IsComplete>
+            <Dependency path="/isFilingStatusHOH" />
+          </IsComplete>
+          <Dependency path="/isFilingStatusHOH" />
         </All>
       </Derived>
     </Fact>
@@ -4824,6 +5629,20 @@
       </Derived>
     </Fact>
 
+    <Fact path="/flowGate5d2db302">
+      <Description>Screen gate: isFalse(/firstHohQP/isClaimedDependent).</Description>
+      <Derived>
+        <All>
+          <IsComplete>
+            <Dependency path="/firstHohQP/isClaimedDependent" />
+          </IsComplete>
+          <Not>
+            <Dependency path="/firstHohQP/isClaimedDependent" />
+          </Not>
+        </All>
+      </Derived>
+    </Fact>
+
     <Fact path="/flowGate3ae1098d">
       <Description>Screen gate: isComplete(/filingStatus) and isTrue(/isFilingStatusHOH) and isFalse(/hasExactlyOneHohQP).</Description>
       <Derived>
@@ -4845,6 +5664,20 @@
               <Dependency path="/hasExactlyOneHohQP" />
             </Not>
           </All>
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGate7dec40f9">
+      <Description>Screen gate: isFalse(/allHoHQPsAreClaimedDependents).</Description>
+      <Derived>
+        <All>
+          <IsComplete>
+            <Dependency path="/allHoHQPsAreClaimedDependents" />
+          </IsComplete>
+          <Not>
+            <Dependency path="/allHoHQPsAreClaimedDependents" />
+          </Not>
         </All>
       </Derived>
     </Fact>
@@ -4891,6 +5724,20 @@
             </IsComplete>
             <Dependency path="/needToEnterHohQPTin" />
           </All>
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGateaecf3df1">
+      <Description>Screen gate: isFalse(/isFilingStatusMFJ).</Description>
+      <Derived>
+        <All>
+          <IsComplete>
+            <Dependency path="/isFilingStatusMFJ" />
+          </IsComplete>
+          <Not>
+            <Dependency path="/isFilingStatusMFJ" />
+          </Not>
         </All>
       </Derived>
     </Fact>
@@ -4991,6 +5838,34 @@
       </Derived>
     </Fact>
 
+    <Fact path="/flowGate6a65d878">
+      <Description>Screen gate: isFalseOrIncomplete(/hasW2s).</Description>
+      <Derived>
+        <Any>
+          <Not>
+            <IsComplete>
+              <Dependency path="/hasW2s" />
+            </IsComplete>
+          </Not>
+          <Not>
+            <Dependency path="/hasW2s" />
+          </Not>
+        </Any>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGate03e50547">
+      <Description>Screen gate: isTrue(/hasW2s).</Description>
+      <Derived>
+        <All>
+          <IsComplete>
+            <Dependency path="/hasW2s" />
+          </IsComplete>
+          <Dependency path="/hasW2s" />
+        </All>
+      </Derived>
+    </Fact>
+
     <Fact path="/formW2s/*/flowGate7d13d8a7">
       <Description>Screen gate: isTrue(/formW2s/*/isImported) and isTrue(/knockoutFormW2s).</Description>
       <Derived>
@@ -5007,6 +5882,133 @@
             </IsComplete>
             <Dependency path="/knockoutFormW2s" />
           </All>
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGate5695ac15">
+      <Description>Screen gate: isTrue(/anyFilerExceedsMaxOasdiWages).</Description>
+      <Derived>
+        <All>
+          <IsComplete>
+            <Dependency path="/anyFilerExceedsMaxOasdiWages" />
+          </IsComplete>
+          <Dependency path="/anyFilerExceedsMaxOasdiWages" />
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGate7f0844e6">
+      <Description>Screen gate: isTrue(/knockoutMedicareWages) and isTrue(/isFilingStatusMFS).</Description>
+      <Derived>
+        <All>
+          <All>
+            <IsComplete>
+              <Dependency path="/knockoutMedicareWages" />
+            </IsComplete>
+            <Dependency path="/knockoutMedicareWages" />
+          </All>
+          <All>
+            <IsComplete>
+              <Dependency path="/isFilingStatusMFS" />
+            </IsComplete>
+            <Dependency path="/isFilingStatusMFS" />
+          </All>
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGate3ac15b94">
+      <Description>Screen gate: isTrue(/knockoutMedicareWages) and isTrue(/isFilingStatusMFJ).</Description>
+      <Derived>
+        <All>
+          <All>
+            <IsComplete>
+              <Dependency path="/knockoutMedicareWages" />
+            </IsComplete>
+            <Dependency path="/knockoutMedicareWages" />
+          </All>
+          <All>
+            <IsComplete>
+              <Dependency path="/isFilingStatusMFJ" />
+            </IsComplete>
+            <Dependency path="/isFilingStatusMFJ" />
+          </All>
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGatea675724e">
+      <Description>Screen gate: isTrue(/knockoutMedicareWages) and isFalse(/isFilingStatusMFJ) and isFalse(/isFilingStatusMFS).</Description>
+      <Derived>
+        <All>
+          <All>
+            <IsComplete>
+              <Dependency path="/knockoutMedicareWages" />
+            </IsComplete>
+            <Dependency path="/knockoutMedicareWages" />
+          </All>
+          <All>
+            <IsComplete>
+              <Dependency path="/isFilingStatusMFJ" />
+            </IsComplete>
+            <Not>
+              <Dependency path="/isFilingStatusMFJ" />
+            </Not>
+          </All>
+          <All>
+            <IsComplete>
+              <Dependency path="/isFilingStatusMFS" />
+            </IsComplete>
+            <Not>
+              <Dependency path="/isFilingStatusMFS" />
+            </Not>
+          </All>
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGate6400dd1f">
+      <Description>Screen gate: isTrue(/formW2WithAllocatedTips).</Description>
+      <Derived>
+        <IsComplete>
+          <Dependency path="/formW2WithAllocatedTips" />
+        </IsComplete>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGatedc4c75d2">
+      <Description>Screen gate: isTrue(/flowKnockoutNonQualifiedPlans).</Description>
+      <Derived>
+        <All>
+          <IsComplete>
+            <Dependency path="/flowKnockoutNonQualifiedPlans" />
+          </IsComplete>
+          <Dependency path="/flowKnockoutNonQualifiedPlans" />
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGateb4918834">
+      <Description>Screen gate: isTrue(/flowKnockoutThirdPartySickPay).</Description>
+      <Derived>
+        <All>
+          <IsComplete>
+            <Dependency path="/flowKnockoutThirdPartySickPay" />
+          </IsComplete>
+          <Dependency path="/flowKnockoutThirdPartySickPay" />
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGate778da85d">
+      <Description>Screen gate: isTrue(/flowKnockoutStatutoryEmployee).</Description>
+      <Derived>
+        <All>
+          <IsComplete>
+            <Dependency path="/flowKnockoutStatutoryEmployee" />
+          </IsComplete>
+          <Dependency path="/flowKnockoutStatutoryEmployee" />
         </All>
       </Derived>
     </Fact>
@@ -5067,6 +6069,86 @@
       </Derived>
     </Fact>
 
+    <Fact path="/formW2s/*/flowGate052cb31e">
+      <Description>Screen gate: isIncomplete(/formW2s/*/filer) and isFalseOrIncomplete(/treatAsMFJ).</Description>
+      <Derived>
+        <All>
+          <Not>
+            <IsComplete>
+              <Dependency path="../filer" />
+            </IsComplete>
+          </Not>
+          <Any>
+            <Not>
+              <IsComplete>
+                <Dependency path="/treatAsMFJ" />
+              </IsComplete>
+            </Not>
+            <Not>
+              <Dependency path="/treatAsMFJ" />
+            </Not>
+          </Any>
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/formW2s/*/flowGatea0fd4178">
+      <Description>Screen gate: isIncomplete(/formW2s/*/filer) and isTrue(/formW2s/*/isImported).</Description>
+      <Derived>
+        <All>
+          <Not>
+            <IsComplete>
+              <Dependency path="../filer" />
+            </IsComplete>
+          </Not>
+          <All>
+            <IsComplete>
+              <Dependency path="../isImported" />
+            </IsComplete>
+            <Dependency path="../isImported" />
+          </All>
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/formW2s/*/flowGate2992a9ad">
+      <Description>Screen gate: isTrue(/formW2s/*/filer/isPrimaryFiler).</Description>
+      <Derived>
+        <All>
+          <IsComplete>
+            <Dependency path="../filer/isPrimaryFiler" />
+          </IsComplete>
+          <Dependency path="../filer/isPrimaryFiler" />
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/formW2s/*/flowGate9a1205bc">
+      <Description>Screen gate: isTrue(/formW2s/*/filer/isSecondaryFiler).</Description>
+      <Derived>
+        <All>
+          <IsComplete>
+            <Dependency path="../filer/isSecondaryFiler" />
+          </IsComplete>
+          <Dependency path="../filer/isSecondaryFiler" />
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/formW2s/*/flowGate6fcdc7e8">
+      <Description>Screen gate: isTrueOrIncomplete(/formW2s/*/filer/isPrimaryFiler).</Description>
+      <Derived>
+        <Any>
+          <Not>
+            <IsComplete>
+              <Dependency path="../filer/isPrimaryFiler" />
+            </IsComplete>
+          </Not>
+          <Dependency path="../filer/isPrimaryFiler" />
+        </Any>
+      </Derived>
+    </Fact>
+
     <Fact path="/formW2s/*/flowGate88306618">
       <Description>Screen gate: isFalseOrIncomplete(/formW2s/*/flowFilerTinIsSsn).</Description>
       <Derived>
@@ -5111,15 +6193,31 @@
       </Derived>
     </Fact>
 
-    <Fact path="/flowGate5695ac15">
-      <Description>Screen gate: isTrue(/anyFilerExceedsMaxOasdiWages).</Description>
+    <Fact path="/flowGate4052b44f">
+      <Description>Screen gate: isTrue(/primaryFilerExceedsMaxOasdiWages).</Description>
       <Derived>
         <All>
           <IsComplete>
-            <Dependency path="/anyFilerExceedsMaxOasdiWages" />
+            <Dependency path="/primaryFilerExceedsMaxOasdiWages" />
           </IsComplete>
-          <Dependency path="/anyFilerExceedsMaxOasdiWages" />
+          <Dependency path="/primaryFilerExceedsMaxOasdiWages" />
         </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGate71151751">
+      <Description>Screen gate: isFalseOrIncomplete(/primaryFilerExceedsMaxOasdiWages).</Description>
+      <Derived>
+        <Any>
+          <Not>
+            <IsComplete>
+              <Dependency path="/primaryFilerExceedsMaxOasdiWages" />
+            </IsComplete>
+          </Not>
+          <Not>
+            <Dependency path="/primaryFilerExceedsMaxOasdiWages" />
+          </Not>
+        </Any>
       </Derived>
     </Fact>
 
@@ -5140,6 +6238,22 @@
             <Dependency path="/anyFilerRequiredToPayExtraMedicareTax" />
           </All>
         </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGate2543ddb2">
+      <Description>Screen gate: isFalseOrIncomplete(/isFilingStatusMFJ).</Description>
+      <Derived>
+        <Any>
+          <Not>
+            <IsComplete>
+              <Dependency path="/isFilingStatusMFJ" />
+            </IsComplete>
+          </Not>
+          <Not>
+            <Dependency path="/isFilingStatusMFJ" />
+          </Not>
+        </Any>
       </Derived>
     </Fact>
 
@@ -5175,14 +6289,26 @@
       </Derived>
     </Fact>
 
-    <Fact path="/flowGatedc4c75d2">
-      <Description>Screen gate: isTrue(/flowKnockoutNonQualifiedPlans).</Description>
+    <Fact path="/flowGatef521eb6d">
+      <Description>Screen gate: isTrue(/formW2WithAllocatedTips/filer/isPrimaryFiler).</Description>
       <Derived>
         <All>
           <IsComplete>
-            <Dependency path="/flowKnockoutNonQualifiedPlans" />
+            <Dependency path="/formW2WithAllocatedTips/filer/isPrimaryFiler" />
           </IsComplete>
-          <Dependency path="/flowKnockoutNonQualifiedPlans" />
+          <Dependency path="/formW2WithAllocatedTips/filer/isPrimaryFiler" />
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGate3e63adf8">
+      <Description>Screen gate: isTrue(/formW2WithAllocatedTips/filer/isSecondaryFiler).</Description>
+      <Derived>
+        <All>
+          <IsComplete>
+            <Dependency path="/formW2WithAllocatedTips/filer/isSecondaryFiler" />
+          </IsComplete>
+          <Dependency path="/formW2WithAllocatedTips/filer/isSecondaryFiler" />
         </All>
       </Derived>
     </Fact>
@@ -5247,30 +6373,6 @@
       </Derived>
     </Fact>
 
-    <Fact path="/flowGate778da85d">
-      <Description>Screen gate: isTrue(/flowKnockoutStatutoryEmployee).</Description>
-      <Derived>
-        <All>
-          <IsComplete>
-            <Dependency path="/flowKnockoutStatutoryEmployee" />
-          </IsComplete>
-          <Dependency path="/flowKnockoutStatutoryEmployee" />
-        </All>
-      </Derived>
-    </Fact>
-
-    <Fact path="/flowGateb4918834">
-      <Description>Screen gate: isTrue(/flowKnockoutThirdPartySickPay).</Description>
-      <Derived>
-        <All>
-          <IsComplete>
-            <Dependency path="/flowKnockoutThirdPartySickPay" />
-          </IsComplete>
-          <Dependency path="/flowKnockoutThirdPartySickPay" />
-        </All>
-      </Derived>
-    </Fact>
-
     <Fact path="/formW2s/*/flowGate53bfd4eb">
       <Description>Screen gate: isTrue(/formW2s/*/hasBox14Codes) and isFalse(/flowStateToolNeedsBox14).</Description>
       <Derived>
@@ -5329,6 +6431,32 @@
             </IsComplete>
             <Dependency path="/flowStateToolNeedsBox14" />
           </All>
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGate3b289a27">
+      <Description>Screen gate: isFalse(/livedInMd).</Description>
+      <Derived>
+        <All>
+          <IsComplete>
+            <Dependency path="/livedInMd" />
+          </IsComplete>
+          <Not>
+            <Dependency path="/livedInMd" />
+          </Not>
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGateea4eb61c">
+      <Description>Screen gate: isTrue(/livedInNy).</Description>
+      <Derived>
+        <All>
+          <IsComplete>
+            <Dependency path="/livedInNy" />
+          </IsComplete>
+          <Dependency path="/livedInNy" />
         </All>
       </Derived>
     </Fact>
@@ -5433,6 +6561,34 @@
             <Dependency path="../showW2NonStandardOrCorrectedScreen" />
           </IsComplete>
           <Dependency path="../showW2NonStandardOrCorrectedScreen" />
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGateef8c36b6">
+      <Description>Screen gate: isFalseOrIncomplete(/hasForm1099Gs).</Description>
+      <Derived>
+        <Any>
+          <Not>
+            <IsComplete>
+              <Dependency path="/hasForm1099Gs" />
+            </IsComplete>
+          </Not>
+          <Not>
+            <Dependency path="/hasForm1099Gs" />
+          </Not>
+        </Any>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGate20b43d0e">
+      <Description>Screen gate: isTrue(/hasForm1099Gs).</Description>
+      <Derived>
+        <All>
+          <IsComplete>
+            <Dependency path="/hasForm1099Gs" />
+          </IsComplete>
+          <Dependency path="/hasForm1099Gs" />
         </All>
       </Derived>
     </Fact>
@@ -5629,6 +6785,34 @@
       </Derived>
     </Fact>
 
+    <Fact path="/flowGate45b08d5d">
+      <Description>Screen gate: isFalseOrIncomplete(/hasInterestReports).</Description>
+      <Derived>
+        <Any>
+          <Not>
+            <IsComplete>
+              <Dependency path="/hasInterestReports" />
+            </IsComplete>
+          </Not>
+          <Not>
+            <Dependency path="/hasInterestReports" />
+          </Not>
+        </Any>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGate09bfea81">
+      <Description>Screen gate: isTrue(/hasInterestReports).</Description>
+      <Derived>
+        <All>
+          <IsComplete>
+            <Dependency path="/hasInterestReports" />
+          </IsComplete>
+          <Dependency path="/hasInterestReports" />
+        </All>
+      </Derived>
+    </Fact>
+
     <Fact path="/interestReports/*/flowGateb986cf12">
       <Description>Screen gate: isTrue(/interestReports/*/isImported) and isTrue(/knockoutInterestIncome).</Description>
       <Derived>
@@ -5646,6 +6830,99 @@
             <Dependency path="/knockoutInterestIncome" />
           </All>
         </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGatefe95dfac">
+      <Description>Screen gate: isTrue(/interestReports/hasRequiredFactaFilings).</Description>
+      <Derived>
+        <All>
+          <IsComplete>
+            <Dependency path="/interestReports/hasRequiredFactaFilings" />
+          </IsComplete>
+          <Dependency path="/interestReports/hasRequiredFactaFilings" />
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGate4451bfdf">
+      <Description>Screen gate: isTrue(/flowKnockoutHasEarlyWithdrawlPenalty).</Description>
+      <Derived>
+        <All>
+          <IsComplete>
+            <Dependency path="/flowKnockoutHasEarlyWithdrawlPenalty" />
+          </IsComplete>
+          <Dependency path="/flowKnockoutHasEarlyWithdrawlPenalty" />
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGatefec16c71">
+      <Description>Screen gate: isTrue(/flowKnockoutHasForeignTaxPaid).</Description>
+      <Derived>
+        <All>
+          <IsComplete>
+            <Dependency path="/flowKnockoutHasForeignTaxPaid" />
+          </IsComplete>
+          <Dependency path="/flowKnockoutHasForeignTaxPaid" />
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGateb0ce2adc">
+      <Description>Screen gate: isTrue(/flowKnockoutTaxExemptInterest).</Description>
+      <Derived>
+        <All>
+          <IsComplete>
+            <Dependency path="/flowKnockoutTaxExemptInterest" />
+          </IsComplete>
+          <Dependency path="/flowKnockoutTaxExemptInterest" />
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/interestReports/*/flowGatea4a00c37">
+      <Description>Screen gate: isTrue(/interestReports/*/specifiedPrivateActivityBondInterest).</Description>
+      <Derived>
+        <IsComplete>
+          <Dependency path="../specifiedPrivateActivityBondInterest" />
+        </IsComplete>
+      </Derived>
+    </Fact>
+
+    <Fact path="/interestReports/*/flowGateaacde28b">
+      <Description>Screen gate: isTrue(/interestReports/*/marketDiscount).</Description>
+      <Derived>
+        <IsComplete>
+          <Dependency path="../marketDiscount" />
+        </IsComplete>
+      </Derived>
+    </Fact>
+
+    <Fact path="/interestReports/*/flowGate1e11f80e">
+      <Description>Screen gate: isTrue(/interestReports/*/bondPremium).</Description>
+      <Derived>
+        <IsComplete>
+          <Dependency path="../bondPremium" />
+        </IsComplete>
+      </Derived>
+    </Fact>
+
+    <Fact path="/interestReports/*/flowGate3632c52a">
+      <Description>Screen gate: isTrue(/interestReports/*/bondPremiumOnTreasuryObligations).</Description>
+      <Derived>
+        <IsComplete>
+          <Dependency path="../bondPremiumOnTreasuryObligations" />
+        </IsComplete>
+      </Derived>
+    </Fact>
+
+    <Fact path="/interestReports/*/flowGatee6cdf6d6">
+      <Description>Screen gate: isTrue(/interestReports/*/bondPremiumOnTaxExemptBond).</Description>
+      <Derived>
+        <IsComplete>
+          <Dependency path="../bondPremiumOnTaxExemptBond" />
+        </IsComplete>
       </Derived>
     </Fact>
 
@@ -5717,6 +6994,48 @@
             <Dependency path="../has1099" />
           </IsComplete>
           <Dependency path="../has1099" />
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/interestReports/*/flowGated77b2875">
+      <Description>Screen gate: isIncomplete(/interestReports/*/filer) and isFalseOrIncomplete(/treatAsMFJ).</Description>
+      <Derived>
+        <All>
+          <Not>
+            <IsComplete>
+              <Dependency path="../filer" />
+            </IsComplete>
+          </Not>
+          <Any>
+            <Not>
+              <IsComplete>
+                <Dependency path="/treatAsMFJ" />
+              </IsComplete>
+            </Not>
+            <Not>
+              <Dependency path="/treatAsMFJ" />
+            </Not>
+          </Any>
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/interestReports/*/flowGate050c6566">
+      <Description>Screen gate: isIncomplete(/interestReports/*/filer) and isTrue(/interestReports/*/isImported).</Description>
+      <Derived>
+        <All>
+          <Not>
+            <IsComplete>
+              <Dependency path="../filer" />
+            </IsComplete>
+          </Not>
+          <All>
+            <IsComplete>
+              <Dependency path="../isImported" />
+            </IsComplete>
+            <Dependency path="../isImported" />
+          </All>
         </All>
       </Derived>
     </Fact>
@@ -5917,14 +7236,152 @@
       </Derived>
     </Fact>
 
-    <Fact path="/flowGate980b4142">
-      <Description>Screen gate: isTrue(/isFilingStatusMFJ).</Description>
+    <Fact path="/flowGate47202dcf">
+      <Description>Screen gate: isFalseOrIncomplete(/has1099Misc).</Description>
+      <Derived>
+        <Any>
+          <Not>
+            <IsComplete>
+              <Dependency path="/has1099Misc" />
+            </IsComplete>
+          </Not>
+          <Not>
+            <Dependency path="/has1099Misc" />
+          </Not>
+        </Any>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGated3a234f4">
+      <Description>Screen gate: isTrue(/hasAtLeastOneCompletedApfIncomeItem).</Description>
       <Derived>
         <All>
           <IsComplete>
-            <Dependency path="/isFilingStatusMFJ" />
+            <Dependency path="/hasAtLeastOneCompletedApfIncomeItem" />
           </IsComplete>
-          <Dependency path="/isFilingStatusMFJ" />
+          <Dependency path="/hasAtLeastOneCompletedApfIncomeItem" />
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGated0002a27">
+      <Description>Screen gate: isTrue(/hasNoCompleteApfIncomeItems).</Description>
+      <Derived>
+        <All>
+          <IsComplete>
+            <Dependency path="/hasNoCompleteApfIncomeItems" />
+          </IsComplete>
+          <Dependency path="/hasNoCompleteApfIncomeItems" />
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGate0c2233b8">
+      <Description>Screen gate: isFalse(/cdccHasDepCareBenefitsBox10) and isFalse(/isFilingStatusMFJ).</Description>
+      <Derived>
+        <All>
+          <All>
+            <IsComplete>
+              <Dependency path="/cdccHasDepCareBenefitsBox10" />
+            </IsComplete>
+            <Not>
+              <Dependency path="/cdccHasDepCareBenefitsBox10" />
+            </Not>
+          </All>
+          <All>
+            <IsComplete>
+              <Dependency path="/isFilingStatusMFJ" />
+            </IsComplete>
+            <Not>
+              <Dependency path="/isFilingStatusMFJ" />
+            </Not>
+          </All>
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGated83fb2b5">
+      <Description>Screen gate: isFalse(/cdccHasDepCareBenefitsBox10) and isTrue(/isFilingStatusMFJ).</Description>
+      <Derived>
+        <All>
+          <All>
+            <IsComplete>
+              <Dependency path="/cdccHasDepCareBenefitsBox10" />
+            </IsComplete>
+            <Not>
+              <Dependency path="/cdccHasDepCareBenefitsBox10" />
+            </Not>
+          </All>
+          <All>
+            <IsComplete>
+              <Dependency path="/isFilingStatusMFJ" />
+            </IsComplete>
+            <Dependency path="/isFilingStatusMFJ" />
+          </All>
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGatebe8c9ea4">
+      <Description>Screen gate: isTrue(/hasReportedPrimaryFilerDependentCareBenefits) and isTrue(/hasReportedSecondaryFilerDependentCareBenefits).</Description>
+      <Derived>
+        <All>
+          <All>
+            <IsComplete>
+              <Dependency path="/hasReportedPrimaryFilerDependentCareBenefits" />
+            </IsComplete>
+            <Dependency path="/hasReportedPrimaryFilerDependentCareBenefits" />
+          </All>
+          <All>
+            <IsComplete>
+              <Dependency path="/hasReportedSecondaryFilerDependentCareBenefits" />
+            </IsComplete>
+            <Dependency path="/hasReportedSecondaryFilerDependentCareBenefits" />
+          </All>
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGatec86cb4c2">
+      <Description>Screen gate: isTrue(/hasReportedPrimaryFilerDependentCareBenefits) and isFalse(/hasReportedSecondaryFilerDependentCareBenefits).</Description>
+      <Derived>
+        <All>
+          <All>
+            <IsComplete>
+              <Dependency path="/hasReportedPrimaryFilerDependentCareBenefits" />
+            </IsComplete>
+            <Dependency path="/hasReportedPrimaryFilerDependentCareBenefits" />
+          </All>
+          <All>
+            <IsComplete>
+              <Dependency path="/hasReportedSecondaryFilerDependentCareBenefits" />
+            </IsComplete>
+            <Not>
+              <Dependency path="/hasReportedSecondaryFilerDependentCareBenefits" />
+            </Not>
+          </All>
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGatea3d0d2ab">
+      <Description>Screen gate: isTrue(/hasReportedSecondaryFilerDependentCareBenefits) and isFalse(/hasReportedPrimaryFilerDependentCareBenefits).</Description>
+      <Derived>
+        <All>
+          <All>
+            <IsComplete>
+              <Dependency path="/hasReportedSecondaryFilerDependentCareBenefits" />
+            </IsComplete>
+            <Dependency path="/hasReportedSecondaryFilerDependentCareBenefits" />
+          </All>
+          <All>
+            <IsComplete>
+              <Dependency path="/hasReportedPrimaryFilerDependentCareBenefits" />
+            </IsComplete>
+            <Not>
+              <Dependency path="/hasReportedPrimaryFilerDependentCareBenefits" />
+            </Not>
+          </All>
         </All>
       </Derived>
     </Fact>
@@ -6077,6 +7534,106 @@
       </Derived>
     </Fact>
 
+    <Fact path="/flowGate17d54661">
+      <Description>Screen gate: isFalse(/isFilingStatusMFJ) and isTrue(/cdccMoreThanOneQualifyingPerson).</Description>
+      <Derived>
+        <All>
+          <All>
+            <IsComplete>
+              <Dependency path="/isFilingStatusMFJ" />
+            </IsComplete>
+            <Not>
+              <Dependency path="/isFilingStatusMFJ" />
+            </Not>
+          </All>
+          <All>
+            <IsComplete>
+              <Dependency path="/cdccMoreThanOneQualifyingPerson" />
+            </IsComplete>
+            <Dependency path="/cdccMoreThanOneQualifyingPerson" />
+          </All>
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGate11dc9ee6">
+      <Description>Screen gate: isTrue(/isFilingStatusMFJ) and isTrue(/cdccMoreThanOneQualifyingPerson).</Description>
+      <Derived>
+        <All>
+          <All>
+            <IsComplete>
+              <Dependency path="/isFilingStatusMFJ" />
+            </IsComplete>
+            <Dependency path="/isFilingStatusMFJ" />
+          </All>
+          <All>
+            <IsComplete>
+              <Dependency path="/cdccMoreThanOneQualifyingPerson" />
+            </IsComplete>
+            <Dependency path="/cdccMoreThanOneQualifyingPerson" />
+          </All>
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGatee9fe3970">
+      <Description>Screen gate: isFalse(/isFilingStatusMFJ) and isFalse(/cdccMoreThanOneQualifyingPerson).</Description>
+      <Derived>
+        <All>
+          <All>
+            <IsComplete>
+              <Dependency path="/isFilingStatusMFJ" />
+            </IsComplete>
+            <Not>
+              <Dependency path="/isFilingStatusMFJ" />
+            </Not>
+          </All>
+          <All>
+            <IsComplete>
+              <Dependency path="/cdccMoreThanOneQualifyingPerson" />
+            </IsComplete>
+            <Not>
+              <Dependency path="/cdccMoreThanOneQualifyingPerson" />
+            </Not>
+          </All>
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGateb915ffe8">
+      <Description>Screen gate: isTrue(/isFilingStatusMFJ) and isFalse(/cdccMoreThanOneQualifyingPerson).</Description>
+      <Derived>
+        <All>
+          <All>
+            <IsComplete>
+              <Dependency path="/isFilingStatusMFJ" />
+            </IsComplete>
+            <Dependency path="/isFilingStatusMFJ" />
+          </All>
+          <All>
+            <IsComplete>
+              <Dependency path="/cdccMoreThanOneQualifyingPerson" />
+            </IsComplete>
+            <Not>
+              <Dependency path="/cdccMoreThanOneQualifyingPerson" />
+            </Not>
+          </All>
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGate45c01479">
+      <Description>Screen gate: isTrue(/hasQualifyingPersonsWithExpenseRestrictions).</Description>
+      <Derived>
+        <All>
+          <IsComplete>
+            <Dependency path="/hasQualifyingPersonsWithExpenseRestrictions" />
+          </IsComplete>
+          <Dependency path="/hasQualifyingPersonsWithExpenseRestrictions" />
+        </All>
+      </Derived>
+    </Fact>
+
     <Fact path="/flowGate22d45e69">
       <Description>Screen gate: isTrue(/maybeEligibleForDependentCareBenefits) and isTrue(/combatPayCouldImpactDependentCareBenefits).</Description>
       <Derived>
@@ -6097,6 +7654,30 @@
       </Derived>
     </Fact>
 
+    <Fact path="/flowGatef2d2f40c">
+      <Description>Screen gate: isTrue(/onlyOneFilerHasCombatPay).</Description>
+      <Derived>
+        <All>
+          <IsComplete>
+            <Dependency path="/onlyOneFilerHasCombatPay" />
+          </IsComplete>
+          <Dependency path="/onlyOneFilerHasCombatPay" />
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGate9aa0be30">
+      <Description>Screen gate: isTrue(/bothFilersHasCombatPay).</Description>
+      <Derived>
+        <All>
+          <IsComplete>
+            <Dependency path="/bothFilersHasCombatPay" />
+          </IsComplete>
+          <Dependency path="/bothFilersHasCombatPay" />
+        </All>
+      </Derived>
+    </Fact>
+
     <Fact path="/flowGate5309547a">
       <Description>Screen gate: isTrue(/maybeEligibleForDependentCareBenefits) and isTrue(/showSpecialEarnedIncomeKnockoutFlowInBenefits).</Description>
       <Derived>
@@ -6112,6 +7693,144 @@
               <Dependency path="/showSpecialEarnedIncomeKnockoutFlowInBenefits" />
             </IsComplete>
             <Dependency path="/showSpecialEarnedIncomeKnockoutFlowInBenefits" />
+          </All>
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGatef9137ab5">
+      <Description>Screen gate: isTrue(/showSpecialEarnedIncomeKnockoutFlowInCredits).</Description>
+      <Derived>
+        <All>
+          <IsComplete>
+            <Dependency path="/showSpecialEarnedIncomeKnockoutFlowInCredits" />
+          </IsComplete>
+          <Dependency path="/showSpecialEarnedIncomeKnockoutFlowInCredits" />
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGate36159f20">
+      <Description>Screen gate: isTrue(/isStudentOnly) and isTrue(/isFilingStatusMFJ).</Description>
+      <Derived>
+        <All>
+          <All>
+            <IsComplete>
+              <Dependency path="/isStudentOnly" />
+            </IsComplete>
+            <Dependency path="/isStudentOnly" />
+          </All>
+          <All>
+            <IsComplete>
+              <Dependency path="/isFilingStatusMFJ" />
+            </IsComplete>
+            <Dependency path="/isFilingStatusMFJ" />
+          </All>
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGate2e363a61">
+      <Description>Screen gate: isTrue(/isDisabledOnly) and isTrue(/isFilingStatusMFJ).</Description>
+      <Derived>
+        <All>
+          <All>
+            <IsComplete>
+              <Dependency path="/isDisabledOnly" />
+            </IsComplete>
+            <Dependency path="/isDisabledOnly" />
+          </All>
+          <All>
+            <IsComplete>
+              <Dependency path="/isFilingStatusMFJ" />
+            </IsComplete>
+            <Dependency path="/isFilingStatusMFJ" />
+          </All>
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGate16c3bcba">
+      <Description>Screen gate: isTrue(/isStudentAndDisabled) and isTrue(/isFilingStatusMFJ).</Description>
+      <Derived>
+        <All>
+          <All>
+            <IsComplete>
+              <Dependency path="/isStudentAndDisabled" />
+            </IsComplete>
+            <Dependency path="/isStudentAndDisabled" />
+          </All>
+          <All>
+            <IsComplete>
+              <Dependency path="/isFilingStatusMFJ" />
+            </IsComplete>
+            <Dependency path="/isFilingStatusMFJ" />
+          </All>
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGate6d1d69cb">
+      <Description>Screen gate: isTrue(/isStudentOnly) and isFalse(/isFilingStatusMFJ).</Description>
+      <Derived>
+        <All>
+          <All>
+            <IsComplete>
+              <Dependency path="/isStudentOnly" />
+            </IsComplete>
+            <Dependency path="/isStudentOnly" />
+          </All>
+          <All>
+            <IsComplete>
+              <Dependency path="/isFilingStatusMFJ" />
+            </IsComplete>
+            <Not>
+              <Dependency path="/isFilingStatusMFJ" />
+            </Not>
+          </All>
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGatee1c26cf2">
+      <Description>Screen gate: isTrue(/isDisabledOnly) and isFalse(/isFilingStatusMFJ).</Description>
+      <Derived>
+        <All>
+          <All>
+            <IsComplete>
+              <Dependency path="/isDisabledOnly" />
+            </IsComplete>
+            <Dependency path="/isDisabledOnly" />
+          </All>
+          <All>
+            <IsComplete>
+              <Dependency path="/isFilingStatusMFJ" />
+            </IsComplete>
+            <Not>
+              <Dependency path="/isFilingStatusMFJ" />
+            </Not>
+          </All>
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGatef0a32786">
+      <Description>Screen gate: isTrue(/isStudentAndDisabled) and isFalse(/isFilingStatusMFJ).</Description>
+      <Derived>
+        <All>
+          <All>
+            <IsComplete>
+              <Dependency path="/isStudentAndDisabled" />
+            </IsComplete>
+            <Dependency path="/isStudentAndDisabled" />
+          </All>
+          <All>
+            <IsComplete>
+              <Dependency path="/isFilingStatusMFJ" />
+            </IsComplete>
+            <Not>
+              <Dependency path="/isFilingStatusMFJ" />
+            </Not>
           </All>
         </All>
       </Derived>
@@ -6267,6 +7986,18 @@
       </Derived>
     </Fact>
 
+    <Fact path="/flowGatea7406c0f">
+      <Description>Screen gate: isTrue(/hasReportedDependentCareBenefits).</Description>
+      <Derived>
+        <All>
+          <IsComplete>
+            <Dependency path="/hasReportedDependentCareBenefits" />
+          </IsComplete>
+          <Dependency path="/hasReportedDependentCareBenefits" />
+        </All>
+      </Derived>
+    </Fact>
+
     <Fact path="/flowGate8b03a50f">
       <Description>Screen gate: isTrue(/cdccQualifiedForBenefit).</Description>
       <Derived>
@@ -6275,6 +8006,74 @@
             <Dependency path="/cdccQualifiedForBenefit" />
           </IsComplete>
           <Dependency path="/cdccQualifiedForBenefit" />
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGate21dd38a2">
+      <Description>Screen gate: isFalse(/cdccMoreThanOneQualifyingPerson) and isTrue(/hasAtLeastOneCareProvider).</Description>
+      <Derived>
+        <All>
+          <All>
+            <IsComplete>
+              <Dependency path="/cdccMoreThanOneQualifyingPerson" />
+            </IsComplete>
+            <Not>
+              <Dependency path="/cdccMoreThanOneQualifyingPerson" />
+            </Not>
+          </All>
+          <All>
+            <IsComplete>
+              <Dependency path="/hasAtLeastOneCareProvider" />
+            </IsComplete>
+            <Dependency path="/hasAtLeastOneCareProvider" />
+          </All>
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGate02317df8">
+      <Description>Screen gate: isTrue(/cdccMoreThanOneQualifyingPerson) and isTrue(/hasAtLeastOneCareProvider).</Description>
+      <Derived>
+        <All>
+          <All>
+            <IsComplete>
+              <Dependency path="/cdccMoreThanOneQualifyingPerson" />
+            </IsComplete>
+            <Dependency path="/cdccMoreThanOneQualifyingPerson" />
+          </All>
+          <All>
+            <IsComplete>
+              <Dependency path="/hasAtLeastOneCareProvider" />
+            </IsComplete>
+            <Dependency path="/hasAtLeastOneCareProvider" />
+          </All>
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGatee7da1a9d">
+      <Description>Screen gate: isTrue(/hasCdccImmediateChildQpUnder13).</Description>
+      <Derived>
+        <All>
+          <IsComplete>
+            <Dependency path="/hasCdccImmediateChildQpUnder13" />
+          </IsComplete>
+          <Dependency path="/hasCdccImmediateChildQpUnder13" />
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGate03a4409b">
+      <Description>Screen gate: isFalse(/hasCdccImmediateChildQpUnder13).</Description>
+      <Derived>
+        <All>
+          <IsComplete>
+            <Dependency path="/hasCdccImmediateChildQpUnder13" />
+          </IsComplete>
+          <Not>
+            <Dependency path="/hasCdccImmediateChildQpUnder13" />
+          </Not>
         </All>
       </Derived>
     </Fact>
@@ -6443,6 +8242,46 @@
       </Derived>
     </Fact>
 
+    <Fact path="/flowGate150ff010">
+      <Description>Screen gate: isFalse(/filersHaveExactlyOneW2).</Description>
+      <Derived>
+        <All>
+          <IsComplete>
+            <Dependency path="/filersHaveExactlyOneW2" />
+          </IsComplete>
+          <Not>
+            <Dependency path="/filersHaveExactlyOneW2" />
+          </Not>
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGatefda9c18b">
+      <Description>Screen gate: isTrue(/cdccHasExactlyOneQualifyingPerson).</Description>
+      <Derived>
+        <All>
+          <IsComplete>
+            <Dependency path="/cdccHasExactlyOneQualifyingPerson" />
+          </IsComplete>
+          <Dependency path="/cdccHasExactlyOneQualifyingPerson" />
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGate2a421880">
+      <Description>Screen gate: isFalse(/cdccHasExactlyOneQualifyingPerson).</Description>
+      <Derived>
+        <All>
+          <IsComplete>
+            <Dependency path="/cdccHasExactlyOneQualifyingPerson" />
+          </IsComplete>
+          <Not>
+            <Dependency path="/cdccHasExactlyOneQualifyingPerson" />
+          </Not>
+        </All>
+      </Derived>
+    </Fact>
+
     <Fact path="/cdccCareProviders/*/flowGate47b00cf4">
       <Description>Screen gate: isTrue(/cdccQualifiedForBenefit) and isTrue(/cdccCareProviders/*/collectProviderDetails).</Description>
       <Derived>
@@ -6458,6 +8297,85 @@
               <Dependency path="../collectProviderDetails" />
             </IsComplete>
             <Dependency path="../collectProviderDetails" />
+          </All>
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/cdccCareProviders/*/flowGatec5b71da7">
+      <Description>Screen gate: isTrue(/cdccCareProviders/*/isOrganization) and isFalse(/cdccCareProviders/*/hasW2Employer) and isTrue(/cdccCarryoverAmountFromPriorTaxYear).</Description>
+      <Derived>
+        <All>
+          <All>
+            <IsComplete>
+              <Dependency path="../isOrganization" />
+            </IsComplete>
+            <Dependency path="../isOrganization" />
+          </All>
+          <All>
+            <IsComplete>
+              <Dependency path="../hasW2Employer" />
+            </IsComplete>
+            <Not>
+              <Dependency path="../hasW2Employer" />
+            </Not>
+          </All>
+          <IsComplete>
+            <Dependency path="/cdccCarryoverAmountFromPriorTaxYear" />
+          </IsComplete>
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/cdccCareProviders/*/flowGate1d807635">
+      <Description>Screen gate: isTrue(/cdccCareProviders/*/isOrganization).</Description>
+      <Derived>
+        <All>
+          <IsComplete>
+            <Dependency path="../isOrganization" />
+          </IsComplete>
+          <Dependency path="../isOrganization" />
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/cdccCareProviders/*/flowGate7fb68767">
+      <Description>Screen gate: isFalse(/cdccCareProviders/*/isOrganization).</Description>
+      <Derived>
+        <All>
+          <IsComplete>
+            <Dependency path="../isOrganization" />
+          </IsComplete>
+          <Not>
+            <Dependency path="../isOrganization" />
+          </Not>
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/cdccCareProviders/*/flowGatec46a5c29">
+      <Description>Screen gate: isTrue(/cdccCareProviders/*/isOrganization) and isFalse(/cdccCareProviders/*/hasW2Employer) and isTrue(/flowTrue).</Description>
+      <Derived>
+        <All>
+          <All>
+            <IsComplete>
+              <Dependency path="../isOrganization" />
+            </IsComplete>
+            <Dependency path="../isOrganization" />
+          </All>
+          <All>
+            <IsComplete>
+              <Dependency path="../hasW2Employer" />
+            </IsComplete>
+            <Not>
+              <Dependency path="../hasW2Employer" />
+            </Not>
+          </All>
+          <All>
+            <IsComplete>
+              <Dependency path="/flowTrue" />
+            </IsComplete>
+            <Dependency path="/flowTrue" />
           </All>
         </All>
       </Derived>
@@ -6627,6 +8545,70 @@
       </Derived>
     </Fact>
 
+    <Fact path="/flowGate97740136">
+      <Description>Screen gate: isFalse(/hasReportedDependentCareBenefits).</Description>
+      <Derived>
+        <All>
+          <IsComplete>
+            <Dependency path="/hasReportedDependentCareBenefits" />
+          </IsComplete>
+          <Not>
+            <Dependency path="/hasReportedDependentCareBenefits" />
+          </Not>
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGate4ee14f84">
+      <Description>Screen gate: isTrue(/hasQpWhoTurned13AndWasNotUnableToCareForSelf) and isFalse(/hasMoreThanOneQpWhoTurned13AndWasNotUnableToCareForSelf).</Description>
+      <Derived>
+        <All>
+          <All>
+            <IsComplete>
+              <Dependency path="/hasQpWhoTurned13AndWasNotUnableToCareForSelf" />
+            </IsComplete>
+            <Dependency path="/hasQpWhoTurned13AndWasNotUnableToCareForSelf" />
+          </All>
+          <All>
+            <IsComplete>
+              <Dependency path="/hasMoreThanOneQpWhoTurned13AndWasNotUnableToCareForSelf" />
+            </IsComplete>
+            <Not>
+              <Dependency path="/hasMoreThanOneQpWhoTurned13AndWasNotUnableToCareForSelf" />
+            </Not>
+          </All>
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGate80a4f320">
+      <Description>Screen gate: isTrue(/hasMoreThanOneQpWhoTurned13AndWasNotUnableToCareForSelf).</Description>
+      <Derived>
+        <All>
+          <IsComplete>
+            <Dependency path="/hasMoreThanOneQpWhoTurned13AndWasNotUnableToCareForSelf" />
+          </IsComplete>
+          <Dependency path="/hasMoreThanOneQpWhoTurned13AndWasNotUnableToCareForSelf" />
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGated5070589">
+      <Description>Screen gate: isFalseOrIncomplete(/isHsaSectionComplete).</Description>
+      <Derived>
+        <Any>
+          <Not>
+            <IsComplete>
+              <Dependency path="/isHsaSectionComplete" />
+            </IsComplete>
+          </Not>
+          <Not>
+            <Dependency path="/isHsaSectionComplete" />
+          </Not>
+        </Any>
+      </Derived>
+    </Fact>
+
     <Fact path="/flowGate759d832b">
       <Description>Screen gate: isTrue(/hasHsaContributionsOnW2).</Description>
       <Derived>
@@ -6635,6 +8617,68 @@
             <Dependency path="/hasHsaContributionsOnW2" />
           </IsComplete>
           <Dependency path="/hasHsaContributionsOnW2" />
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGate4251283f">
+      <Description>Screen gate: isTrue(/hasPrimaryFilerHsaContributionsFromW2s) and isFalse(/mfjBothFilersHaveHsaContributionsOnW2).</Description>
+      <Derived>
+        <All>
+          <All>
+            <IsComplete>
+              <Dependency path="/hasPrimaryFilerHsaContributionsFromW2s" />
+            </IsComplete>
+            <Dependency path="/hasPrimaryFilerHsaContributionsFromW2s" />
+          </All>
+          <All>
+            <IsComplete>
+              <Dependency path="/mfjBothFilersHaveHsaContributionsOnW2" />
+            </IsComplete>
+            <Not>
+              <Dependency path="/mfjBothFilersHaveHsaContributionsOnW2" />
+            </Not>
+          </All>
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGate954e59f0">
+      <Description>Screen gate: isTrue(/isFilingStatusMFJ) and isTrue(/hasSecondaryFilerHsaContributionsFromW2s) and isFalse(/mfjBothFilersHaveHsaContributionsOnW2).</Description>
+      <Derived>
+        <All>
+          <All>
+            <IsComplete>
+              <Dependency path="/isFilingStatusMFJ" />
+            </IsComplete>
+            <Dependency path="/isFilingStatusMFJ" />
+          </All>
+          <All>
+            <IsComplete>
+              <Dependency path="/hasSecondaryFilerHsaContributionsFromW2s" />
+            </IsComplete>
+            <Dependency path="/hasSecondaryFilerHsaContributionsFromW2s" />
+          </All>
+          <All>
+            <IsComplete>
+              <Dependency path="/mfjBothFilersHaveHsaContributionsOnW2" />
+            </IsComplete>
+            <Not>
+              <Dependency path="/mfjBothFilersHaveHsaContributionsOnW2" />
+            </Not>
+          </All>
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGatee99b9ba6">
+      <Description>Screen gate: isTrue(/mfjBothFilersHaveHsaContributionsOnW2).</Description>
+      <Derived>
+        <All>
+          <IsComplete>
+            <Dependency path="/mfjBothFilersHaveHsaContributionsOnW2" />
+          </IsComplete>
+          <Dependency path="/mfjBothFilersHaveHsaContributionsOnW2" />
         </All>
       </Derived>
     </Fact>
@@ -6743,6 +8787,50 @@
             <Dependency path="/someFilerHasSomeHsaActivity" />
           </IsComplete>
           <Dependency path="/someFilerHasSomeHsaActivity" />
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/filers/*/flowGate82687f31">
+      <Description>Screen gate: isTrue(/filers/*/isPrimaryFiler).</Description>
+      <Derived>
+        <All>
+          <IsComplete>
+            <Dependency path="../isPrimaryFiler" />
+          </IsComplete>
+          <Dependency path="../isPrimaryFiler" />
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/filers/*/flowGate009ed267">
+      <Description>Screen gate: isTrue(/filers/*/isSecondaryFiler).</Description>
+      <Derived>
+        <All>
+          <IsComplete>
+            <Dependency path="../isSecondaryFiler" />
+          </IsComplete>
+          <Dependency path="../isSecondaryFiler" />
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/filers/*/flowGatee16f431b">
+      <Description>Screen gate: isTrue(/filers/*/isPrimaryFiler) and isTrue(/bothFilersHaveHsa).</Description>
+      <Derived>
+        <All>
+          <All>
+            <IsComplete>
+              <Dependency path="../isPrimaryFiler" />
+            </IsComplete>
+            <Dependency path="../isPrimaryFiler" />
+          </All>
+          <All>
+            <IsComplete>
+              <Dependency path="/bothFilersHaveHsa" />
+            </IsComplete>
+            <Dependency path="/bothFilersHaveHsa" />
+          </All>
         </All>
       </Derived>
     </Fact>
@@ -6897,6 +8985,30 @@
             </IsComplete>
             <Dependency path="../flowShouldAskForHsaHdhpCoverageType" />
           </All>
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGateaf3534da">
+      <Description>Screen gate: isTrue(/isFilingStatusSingle).</Description>
+      <Derived>
+        <All>
+          <IsComplete>
+            <Dependency path="/isFilingStatusSingle" />
+          </IsComplete>
+          <Dependency path="/isFilingStatusSingle" />
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGate2a291025">
+      <Description>Screen gate: isTrue(/isFilingStatusMfjOrMfs).</Description>
+      <Derived>
+        <All>
+          <IsComplete>
+            <Dependency path="/isFilingStatusMfjOrMfs" />
+          </IsComplete>
+          <Dependency path="/isFilingStatusMfjOrMfs" />
         </All>
       </Derived>
     </Fact>
@@ -7203,6 +9315,90 @@
       </Derived>
     </Fact>
 
+    <Fact path="/flowGate6adee4f2">
+      <Description>Screen gate: isTrue(/primaryFiler/hasMadeContributionsToHsa) and isFalse(/flowHsaContributionsSummaryTableOverageVisibility).</Description>
+      <Derived>
+        <All>
+          <All>
+            <IsComplete>
+              <Dependency path="/primaryFiler/hasMadeContributionsToHsa" />
+            </IsComplete>
+            <Dependency path="/primaryFiler/hasMadeContributionsToHsa" />
+          </All>
+          <All>
+            <IsComplete>
+              <Dependency path="/flowHsaContributionsSummaryTableOverageVisibility" />
+            </IsComplete>
+            <Not>
+              <Dependency path="/flowHsaContributionsSummaryTableOverageVisibility" />
+            </Not>
+          </All>
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGatee983c430">
+      <Description>Screen gate: isTrue(/primaryFiler/hasMadeContributionsToHsa) and isTrue(/flowHsaContributionsSummaryTableOverageVisibility).</Description>
+      <Derived>
+        <All>
+          <All>
+            <IsComplete>
+              <Dependency path="/primaryFiler/hasMadeContributionsToHsa" />
+            </IsComplete>
+            <Dependency path="/primaryFiler/hasMadeContributionsToHsa" />
+          </All>
+          <All>
+            <IsComplete>
+              <Dependency path="/flowHsaContributionsSummaryTableOverageVisibility" />
+            </IsComplete>
+            <Dependency path="/flowHsaContributionsSummaryTableOverageVisibility" />
+          </All>
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGate17f1a9f7">
+      <Description>Screen gate: isTrue(/secondaryFiler/hasMadeContributionsToHsa) and isFalse(/flowHsaContributionsSummaryTableOverageVisibilitySpouse).</Description>
+      <Derived>
+        <All>
+          <All>
+            <IsComplete>
+              <Dependency path="/secondaryFiler/hasMadeContributionsToHsa" />
+            </IsComplete>
+            <Dependency path="/secondaryFiler/hasMadeContributionsToHsa" />
+          </All>
+          <All>
+            <IsComplete>
+              <Dependency path="/flowHsaContributionsSummaryTableOverageVisibilitySpouse" />
+            </IsComplete>
+            <Not>
+              <Dependency path="/flowHsaContributionsSummaryTableOverageVisibilitySpouse" />
+            </Not>
+          </All>
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGate70bbf07e">
+      <Description>Screen gate: isTrue(/secondaryFiler/hasMadeContributionsToHsa) and isTrue(/flowHsaContributionsSummaryTableOverageVisibilitySpouse).</Description>
+      <Derived>
+        <All>
+          <All>
+            <IsComplete>
+              <Dependency path="/secondaryFiler/hasMadeContributionsToHsa" />
+            </IsComplete>
+            <Dependency path="/secondaryFiler/hasMadeContributionsToHsa" />
+          </All>
+          <All>
+            <IsComplete>
+              <Dependency path="/flowHsaContributionsSummaryTableOverageVisibilitySpouse" />
+            </IsComplete>
+            <Dependency path="/flowHsaContributionsSummaryTableOverageVisibilitySpouse" />
+          </All>
+        </All>
+      </Derived>
+    </Fact>
+
     <Fact path="/flowGateae43ae98">
       <Description>Screen gate: isTrue(/flowShowHsaTestingPeriodContributionCheck).</Description>
       <Derived>
@@ -7211,6 +9407,62 @@
             <Dependency path="/flowShowHsaTestingPeriodContributionCheck" />
           </IsComplete>
           <Dependency path="/flowShowHsaTestingPeriodContributionCheck" />
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGate4426de4a">
+      <Description>Screen gate: isFalse(/bothFilersHaveToShowTestingPeriodCheck) and isTrue(/primaryFiler/hasToShowTestingPeriodCheck).</Description>
+      <Derived>
+        <All>
+          <All>
+            <IsComplete>
+              <Dependency path="/bothFilersHaveToShowTestingPeriodCheck" />
+            </IsComplete>
+            <Not>
+              <Dependency path="/bothFilersHaveToShowTestingPeriodCheck" />
+            </Not>
+          </All>
+          <All>
+            <IsComplete>
+              <Dependency path="/primaryFiler/hasToShowTestingPeriodCheck" />
+            </IsComplete>
+            <Dependency path="/primaryFiler/hasToShowTestingPeriodCheck" />
+          </All>
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGate069d6715">
+      <Description>Screen gate: isFalse(/bothFilersHaveToShowTestingPeriodCheck) and isTrue(/secondaryFiler/hasToShowTestingPeriodCheck).</Description>
+      <Derived>
+        <All>
+          <All>
+            <IsComplete>
+              <Dependency path="/bothFilersHaveToShowTestingPeriodCheck" />
+            </IsComplete>
+            <Not>
+              <Dependency path="/bothFilersHaveToShowTestingPeriodCheck" />
+            </Not>
+          </All>
+          <All>
+            <IsComplete>
+              <Dependency path="/secondaryFiler/hasToShowTestingPeriodCheck" />
+            </IsComplete>
+            <Dependency path="/secondaryFiler/hasToShowTestingPeriodCheck" />
+          </All>
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGatea57644ee">
+      <Description>Screen gate: isTrue(/bothFilersHaveToShowTestingPeriodCheck).</Description>
+      <Derived>
+        <All>
+          <IsComplete>
+            <Dependency path="/bothFilersHaveToShowTestingPeriodCheck" />
+          </IsComplete>
+          <Dependency path="/bothFilersHaveToShowTestingPeriodCheck" />
         </All>
       </Derived>
     </Fact>
@@ -7267,6 +9519,56 @@
       </Derived>
     </Fact>
 
+    <Fact path="/flowGate921b19ab">
+      <Description>Screen gate: isTrue(/primaryFiler/hasHsaContributionsNotExceedLimits) and isTrueOrIncomplete(/primaryFiler/primaryFilerHasMadeContributionsToHsa).</Description>
+      <Derived>
+        <All>
+          <All>
+            <IsComplete>
+              <Dependency path="/primaryFiler/hasHsaContributionsNotExceedLimits" />
+            </IsComplete>
+            <Dependency path="/primaryFiler/hasHsaContributionsNotExceedLimits" />
+          </All>
+          <Any>
+            <Not>
+              <IsComplete>
+                <Dependency path="/primaryFiler/primaryFilerHasMadeContributionsToHsa" />
+              </IsComplete>
+            </Not>
+            <Dependency path="/primaryFiler/primaryFilerHasMadeContributionsToHsa" />
+          </Any>
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGate34a2e077">
+      <Description>Screen gate: isTrue(/secondaryFiler/hasHsaContributionsNotExceedLimits) and isTrue(/isFilingStatusMFJ) and isTrueOrIncomplete(/secondaryFiler/secondaryFilerHasMadeContributionsToHsa).</Description>
+      <Derived>
+        <All>
+          <All>
+            <IsComplete>
+              <Dependency path="/secondaryFiler/hasHsaContributionsNotExceedLimits" />
+            </IsComplete>
+            <Dependency path="/secondaryFiler/hasHsaContributionsNotExceedLimits" />
+          </All>
+          <All>
+            <IsComplete>
+              <Dependency path="/isFilingStatusMFJ" />
+            </IsComplete>
+            <Dependency path="/isFilingStatusMFJ" />
+          </All>
+          <Any>
+            <Not>
+              <IsComplete>
+                <Dependency path="/secondaryFiler/secondaryFilerHasMadeContributionsToHsa" />
+              </IsComplete>
+            </Not>
+            <Dependency path="/secondaryFiler/secondaryFilerHasMadeContributionsToHsa" />
+          </Any>
+        </All>
+      </Derived>
+    </Fact>
+
     <Fact path="/flowGate0f62113b">
       <Description>Screen gate: isTrue(/someFilerCanHaveDistribution).</Description>
       <Derived>
@@ -7275,6 +9577,34 @@
             <Dependency path="/someFilerCanHaveDistribution" />
           </IsComplete>
           <Dependency path="/someFilerCanHaveDistribution" />
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGate96144919">
+      <Description>Screen gate: isFalseOrIncomplete(/hasHsaDistributions).</Description>
+      <Derived>
+        <Any>
+          <Not>
+            <IsComplete>
+              <Dependency path="/hasHsaDistributions" />
+            </IsComplete>
+          </Not>
+          <Not>
+            <Dependency path="/hasHsaDistributions" />
+          </Not>
+        </Any>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGate1d8e64a0">
+      <Description>Screen gate: isTrue(/hasHsaDistributions).</Description>
+      <Derived>
+        <All>
+          <IsComplete>
+            <Dependency path="/hasHsaDistributions" />
+          </IsComplete>
+          <Dependency path="/hasHsaDistributions" />
         </All>
       </Derived>
     </Fact>
@@ -7295,6 +9625,29 @@
             </IsComplete>
             <Dependency path="/isFilingStatusMFJ" />
           </All>
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/hsaDistributions/*/flowGate30559460">
+      <Description>Screen gate: isIncomplete(/hsaDistributions/*/filer) and isFalseOrIncomplete(/treatAsMFJ).</Description>
+      <Derived>
+        <All>
+          <Not>
+            <IsComplete>
+              <Dependency path="../filer" />
+            </IsComplete>
+          </Not>
+          <Any>
+            <Not>
+              <IsComplete>
+                <Dependency path="/treatAsMFJ" />
+              </IsComplete>
+            </Not>
+            <Not>
+              <Dependency path="/treatAsMFJ" />
+            </Not>
+          </Any>
         </All>
       </Derived>
     </Fact>
@@ -7419,6 +9772,34 @@
       </Derived>
     </Fact>
 
+    <Fact path="/flowGatefeff9f2b">
+      <Description>Screen gate: isFalseOrIncomplete(/has1099R).</Description>
+      <Derived>
+        <Any>
+          <Not>
+            <IsComplete>
+              <Dependency path="/has1099R" />
+            </IsComplete>
+          </Not>
+          <Not>
+            <Dependency path="/has1099R" />
+          </Not>
+        </Any>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGate595be616">
+      <Description>Screen gate: isTrue(/has1099R).</Description>
+      <Derived>
+        <All>
+          <IsComplete>
+            <Dependency path="/has1099R" />
+          </IsComplete>
+          <Dependency path="/has1099R" />
+        </All>
+      </Derived>
+    </Fact>
+
     <Fact path="/flowGate0617ac9e">
       <Description>Screen gate: isTrue(/has1099rFormsAndFeatureIsNotEnabled).</Description>
       <Derived>
@@ -7427,6 +9808,53 @@
             <Dependency path="/has1099rFormsAndFeatureIsNotEnabled" />
           </IsComplete>
           <Dependency path="/has1099rFormsAndFeatureIsNotEnabled" />
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/form1099Rs/*/flowGatee58812dd">
+      <Description>Screen gate: isTrue(/form1099Rs/*/belongsToPrimaryFiler).</Description>
+      <Derived>
+        <All>
+          <IsComplete>
+            <Dependency path="../belongsToPrimaryFiler" />
+          </IsComplete>
+          <Dependency path="../belongsToPrimaryFiler" />
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/form1099Rs/*/flowGatee23b3c26">
+      <Description>Screen gate: isTrue(/form1099Rs/*/belongsToSecondaryFiler).</Description>
+      <Derived>
+        <All>
+          <IsComplete>
+            <Dependency path="../belongsToSecondaryFiler" />
+          </IsComplete>
+          <Dependency path="../belongsToSecondaryFiler" />
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/form1099Rs/*/flowGate0bcf6f10">
+      <Description>Screen gate: isIncomplete(/form1099Rs/*/filer) and isFalseOrIncomplete(/treatAsMFJ).</Description>
+      <Derived>
+        <All>
+          <Not>
+            <IsComplete>
+              <Dependency path="../filer" />
+            </IsComplete>
+          </Not>
+          <Any>
+            <Not>
+              <IsComplete>
+                <Dependency path="/treatAsMFJ" />
+              </IsComplete>
+            </Not>
+            <Not>
+              <Dependency path="/treatAsMFJ" />
+            </Not>
+          </Any>
         </All>
       </Derived>
     </Fact>
@@ -7797,6 +10225,88 @@
       </Derived>
     </Fact>
 
+    <Fact path="/flowGate4c461469">
+      <Description>Screen gate: isFalseOrIncomplete(/hasSocialSecurityReports).</Description>
+      <Derived>
+        <Any>
+          <Not>
+            <IsComplete>
+              <Dependency path="/hasSocialSecurityReports" />
+            </IsComplete>
+          </Not>
+          <Not>
+            <Dependency path="/hasSocialSecurityReports" />
+          </Not>
+        </Any>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGate65cb6fc5">
+      <Description>Screen gate: isTrue(/hasSocialSecurityReports).</Description>
+      <Derived>
+        <All>
+          <IsComplete>
+            <Dependency path="/hasSocialSecurityReports" />
+          </IsComplete>
+          <Dependency path="/hasSocialSecurityReports" />
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGatea9c53791">
+      <Description>Screen gate: isTrue(/hasSocialSecurityReports) and isTrue(/socialSecurityBenefitsAreLossUpto3k).</Description>
+      <Derived>
+        <All>
+          <All>
+            <IsComplete>
+              <Dependency path="/hasSocialSecurityReports" />
+            </IsComplete>
+            <Dependency path="/hasSocialSecurityReports" />
+          </All>
+          <All>
+            <IsComplete>
+              <Dependency path="/socialSecurityBenefitsAreLossUpto3k" />
+            </IsComplete>
+            <Dependency path="/socialSecurityBenefitsAreLossUpto3k" />
+          </All>
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGate91b249c1">
+      <Description>Screen gate: isTrue(/hasSocialSecurityReports) and isFalse(/socialSecurityBenefitsAreLossUpto3k).</Description>
+      <Derived>
+        <All>
+          <All>
+            <IsComplete>
+              <Dependency path="/hasSocialSecurityReports" />
+            </IsComplete>
+            <Dependency path="/hasSocialSecurityReports" />
+          </All>
+          <All>
+            <IsComplete>
+              <Dependency path="/socialSecurityBenefitsAreLossUpto3k" />
+            </IsComplete>
+            <Not>
+              <Dependency path="/socialSecurityBenefitsAreLossUpto3k" />
+            </Not>
+          </All>
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGate019a9011">
+      <Description>Screen gate: isTrue(/hasAtLeastOneSocialSecurityReport).</Description>
+      <Derived>
+        <All>
+          <IsComplete>
+            <Dependency path="/hasAtLeastOneSocialSecurityReport" />
+          </IsComplete>
+          <Dependency path="/hasAtLeastOneSocialSecurityReport" />
+        </All>
+      </Derived>
+    </Fact>
+
     <Fact path="/flowGate5bd8b9df">
       <Description>Screen gate: isTrue(/socialSecurityBenefitsAreLossGreaterThan3k).</Description>
       <Derived>
@@ -7897,6 +10407,62 @@
             <Dependency path="/hasHsaDeduction" />
           </IsComplete>
           <Dependency path="/hasHsaDeduction" />
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGated56558b8">
+      <Description>Screen gate: isTrue(/primaryFiler/hasHsaDeduction) and isFalse(/isFilingMfJAndBothFilersHaveHsaDeductions).</Description>
+      <Derived>
+        <All>
+          <All>
+            <IsComplete>
+              <Dependency path="/primaryFiler/hasHsaDeduction" />
+            </IsComplete>
+            <Dependency path="/primaryFiler/hasHsaDeduction" />
+          </All>
+          <All>
+            <IsComplete>
+              <Dependency path="/isFilingMfJAndBothFilersHaveHsaDeductions" />
+            </IsComplete>
+            <Not>
+              <Dependency path="/isFilingMfJAndBothFilersHaveHsaDeductions" />
+            </Not>
+          </All>
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGate27cfbce6">
+      <Description>Screen gate: isTrue(/secondaryFiler/hasHsaDeduction) and isFalse(/isFilingMfJAndBothFilersHaveHsaDeductions).</Description>
+      <Derived>
+        <All>
+          <All>
+            <IsComplete>
+              <Dependency path="/secondaryFiler/hasHsaDeduction" />
+            </IsComplete>
+            <Dependency path="/secondaryFiler/hasHsaDeduction" />
+          </All>
+          <All>
+            <IsComplete>
+              <Dependency path="/isFilingMfJAndBothFilersHaveHsaDeductions" />
+            </IsComplete>
+            <Not>
+              <Dependency path="/isFilingMfJAndBothFilersHaveHsaDeductions" />
+            </Not>
+          </All>
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGate31cc98d8">
+      <Description>Screen gate: isTrue(/isFilingMfJAndBothFilersHaveHsaDeductions).</Description>
+      <Derived>
+        <All>
+          <IsComplete>
+            <Dependency path="/isFilingMfJAndBothFilersHaveHsaDeductions" />
+          </IsComplete>
+          <Dependency path="/isFilingMfJAndBothFilersHaveHsaDeductions" />
         </All>
       </Derived>
     </Fact>
@@ -8095,6 +10661,40 @@
       </Derived>
     </Fact>
 
+    <Fact path="/flowGate5aeaa0be">
+      <Description>Screen gate: isTrue(/incomeTooHighForStudentLoanInterestDeductionNotMFJ) and isFalse(/isFilingStatusMFS).</Description>
+      <Derived>
+        <All>
+          <All>
+            <IsComplete>
+              <Dependency path="/incomeTooHighForStudentLoanInterestDeductionNotMFJ" />
+            </IsComplete>
+            <Dependency path="/incomeTooHighForStudentLoanInterestDeductionNotMFJ" />
+          </All>
+          <All>
+            <IsComplete>
+              <Dependency path="/isFilingStatusMFS" />
+            </IsComplete>
+            <Not>
+              <Dependency path="/isFilingStatusMFS" />
+            </Not>
+          </All>
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGate8c318754">
+      <Description>Screen gate: isTrue(/incomeTooHighForStudentLoanInterestDeductionMFJ).</Description>
+      <Derived>
+        <All>
+          <IsComplete>
+            <Dependency path="/incomeTooHighForStudentLoanInterestDeductionMFJ" />
+          </IsComplete>
+          <Dependency path="/incomeTooHighForStudentLoanInterestDeductionMFJ" />
+        </All>
+      </Derived>
+    </Fact>
+
     <Fact path="/flowGate60520c93">
       <Description>Screen gate: isTrue(/hasInterestIncomeAndAgiAboveThresholdForMfs).</Description>
       <Derived>
@@ -8192,6 +10792,122 @@
               <Dependency path="/has1095AInIRDAS" />
             </IsComplete>
             <Dependency path="/has1095AInIRDAS" />
+          </All>
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGate14546ad2">
+      <Description>Screen gate: isFalse(/isFilingStatusMFJ) and isFalse(/claimedDependentsCount).</Description>
+      <Derived>
+        <All>
+          <All>
+            <IsComplete>
+              <Dependency path="/isFilingStatusMFJ" />
+            </IsComplete>
+            <Not>
+              <Dependency path="/isFilingStatusMFJ" />
+            </Not>
+          </All>
+          <All>
+            <IsComplete>
+              <Dependency path="/claimedDependentsCount" />
+            </IsComplete>
+            <Not>
+              <NotEqual>
+                <Left>
+                  <Dependency path="/claimedDependentsCount" />
+                </Left>
+                <Right>
+                  <Int>0</Int>
+                </Right>
+              </NotEqual>
+            </Not>
+          </All>
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGate255e3e20">
+      <Description>Screen gate: isFalse(/isFilingStatusMFJ) and isTrue(/claimedDependentsCount).</Description>
+      <Derived>
+        <All>
+          <All>
+            <IsComplete>
+              <Dependency path="/isFilingStatusMFJ" />
+            </IsComplete>
+            <Not>
+              <Dependency path="/isFilingStatusMFJ" />
+            </Not>
+          </All>
+          <All>
+            <IsComplete>
+              <Dependency path="/claimedDependentsCount" />
+            </IsComplete>
+            <NotEqual>
+              <Left>
+                <Dependency path="/claimedDependentsCount" />
+              </Left>
+              <Right>
+                <Int>0</Int>
+              </Right>
+            </NotEqual>
+          </All>
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGated50370d5">
+      <Description>Screen gate: isTrue(/isFilingStatusMFJ) and isFalse(/claimedDependentsCount).</Description>
+      <Derived>
+        <All>
+          <All>
+            <IsComplete>
+              <Dependency path="/isFilingStatusMFJ" />
+            </IsComplete>
+            <Dependency path="/isFilingStatusMFJ" />
+          </All>
+          <All>
+            <IsComplete>
+              <Dependency path="/claimedDependentsCount" />
+            </IsComplete>
+            <Not>
+              <NotEqual>
+                <Left>
+                  <Dependency path="/claimedDependentsCount" />
+                </Left>
+                <Right>
+                  <Int>0</Int>
+                </Right>
+              </NotEqual>
+            </Not>
+          </All>
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGate1b1f3b04">
+      <Description>Screen gate: isTrue(/isFilingStatusMFJ) and isTrue(/claimedDependentsCount).</Description>
+      <Derived>
+        <All>
+          <All>
+            <IsComplete>
+              <Dependency path="/isFilingStatusMFJ" />
+            </IsComplete>
+            <Dependency path="/isFilingStatusMFJ" />
+          </All>
+          <All>
+            <IsComplete>
+              <Dependency path="/claimedDependentsCount" />
+            </IsComplete>
+            <NotEqual>
+              <Left>
+                <Dependency path="/claimedDependentsCount" />
+              </Left>
+              <Right>
+                <Int>0</Int>
+              </Right>
+            </NotEqual>
           </All>
         </All>
       </Derived>
@@ -8323,6 +11039,30 @@
       </Derived>
     </Fact>
 
+    <Fact path="/flowGated0a52e47">
+      <Description>Screen gate: isTrue(/notClaimedAndPartOfDifferentTaxFamily).</Description>
+      <Derived>
+        <All>
+          <IsComplete>
+            <Dependency path="/notClaimedAndPartOfDifferentTaxFamily" />
+          </IsComplete>
+          <Dependency path="/notClaimedAndPartOfDifferentTaxFamily" />
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGate073a215e">
+      <Description>Screen gate: isTrue(/claimedAndNotPartOfDifferentTaxFamily).</Description>
+      <Derived>
+        <All>
+          <IsComplete>
+            <Dependency path="/claimedAndNotPartOfDifferentTaxFamily" />
+          </IsComplete>
+          <Dependency path="/claimedAndNotPartOfDifferentTaxFamily" />
+        </All>
+      </Derived>
+    </Fact>
+
     <Fact path="/flowGateb0919909">
       <Description>Screen gate: isTrue(/hasPotentialCredits) and isTrue(/maybeEligibleForPtc) and isTrue(/notMfjAndPrimaryFilerCouldBeDependentAndClaimerIsRequiredToFileOrFilingForCredits) and isTrue(/dependentTpNeedToCollectMoreInfo).</Description>
       <Derived>
@@ -8355,6 +11095,42 @@
       </Derived>
     </Fact>
 
+    <Fact path="/flowGate00ce5857">
+      <Description>Screen gate: isTrue(/ptcDependentTpNotClaimedAndOnlyEnrolledSelf).</Description>
+      <Derived>
+        <All>
+          <IsComplete>
+            <Dependency path="/ptcDependentTpNotClaimedAndOnlyEnrolledSelf" />
+          </IsComplete>
+          <Dependency path="/ptcDependentTpNotClaimedAndOnlyEnrolledSelf" />
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGatee6fc5f23">
+      <Description>Screen gate: isTrue(/ptcDependentTpOnlyEnrolledOthersAndNotPartOfDifferentTaxFamily).</Description>
+      <Derived>
+        <All>
+          <IsComplete>
+            <Dependency path="/ptcDependentTpOnlyEnrolledOthersAndNotPartOfDifferentTaxFamily" />
+          </IsComplete>
+          <Dependency path="/ptcDependentTpOnlyEnrolledOthersAndNotPartOfDifferentTaxFamily" />
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGate1a5d1337">
+      <Description>Screen gate: isTrue(/ptcDependentTpNotClaimedEnrolledSelfAndOthersNotPartOfDifferentTaxFamily).</Description>
+      <Derived>
+        <All>
+          <IsComplete>
+            <Dependency path="/ptcDependentTpNotClaimedEnrolledSelfAndOthersNotPartOfDifferentTaxFamily" />
+          </IsComplete>
+          <Dependency path="/ptcDependentTpNotClaimedEnrolledSelfAndOthersNotPartOfDifferentTaxFamily" />
+        </All>
+      </Derived>
+    </Fact>
+
     <Fact path="/flowGate87bc1c1c">
       <Description>Screen gate: isTrue(/hasPotentialCredits) and isTrue(/maybeEligibleForPtc) and isFalse(/notMfjAndPrimaryFilerCouldBeDependentAndClaimerIsRequiredToFileOrFilingForCredits).</Description>
       <Derived>
@@ -8378,6 +11154,48 @@
             <Not>
               <Dependency path="/notMfjAndPrimaryFilerCouldBeDependentAndClaimerIsRequiredToFileOrFilingForCredits" />
             </Not>
+          </All>
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGatec0c05d09">
+      <Description>Screen gate: isTrue(/has1095AInIRDAS) and isFalse(/isFilingStatusMFJ).</Description>
+      <Derived>
+        <All>
+          <All>
+            <IsComplete>
+              <Dependency path="/has1095AInIRDAS" />
+            </IsComplete>
+            <Dependency path="/has1095AInIRDAS" />
+          </All>
+          <All>
+            <IsComplete>
+              <Dependency path="/isFilingStatusMFJ" />
+            </IsComplete>
+            <Not>
+              <Dependency path="/isFilingStatusMFJ" />
+            </Not>
+          </All>
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGate8bc00e5d">
+      <Description>Screen gate: isTrue(/has1095AInIRDAS) and isTrue(/isFilingStatusMFJ).</Description>
+      <Derived>
+        <All>
+          <All>
+            <IsComplete>
+              <Dependency path="/has1095AInIRDAS" />
+            </IsComplete>
+            <Dependency path="/has1095AInIRDAS" />
+          </All>
+          <All>
+            <IsComplete>
+              <Dependency path="/isFilingStatusMFJ" />
+            </IsComplete>
+            <Dependency path="/isFilingStatusMFJ" />
           </All>
         </All>
       </Derived>
@@ -8441,14 +11259,14 @@
             <IsComplete>
               <Dependency path="/claimedDependentsCount" />
             </IsComplete>
-            <GreaterThan>
+            <NotEqual>
               <Left>
                 <Dependency path="/claimedDependentsCount" />
               </Left>
               <Right>
                 <Int>0</Int>
               </Right>
-            </GreaterThan>
+            </NotEqual>
           </All>
         </All>
       </Derived>
@@ -8672,6 +11490,30 @@
             </IsComplete>
             <Dependency path="/needsAllocations" />
           </All>
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGate4f0c2397">
+      <Description>Screen gate: isTrue(/isEnrolledWithOtherFamily).</Description>
+      <Derived>
+        <All>
+          <IsComplete>
+            <Dependency path="/isEnrolledWithOtherFamily" />
+          </IsComplete>
+          <Dependency path="/isEnrolledWithOtherFamily" />
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGate92c99b0a">
+      <Description>Screen gate: isTrue(/isAdditionalPersonPartofDifferentTaxFamily).</Description>
+      <Derived>
+        <All>
+          <IsComplete>
+            <Dependency path="/isAdditionalPersonPartofDifferentTaxFamily" />
+          </IsComplete>
+          <Dependency path="/isAdditionalPersonPartofDifferentTaxFamily" />
         </All>
       </Derived>
     </Fact>
@@ -9410,6 +12252,150 @@
       </Derived>
     </Fact>
 
+    <Fact path="/1095As/*/flowGatedfedf07c">
+      <Description>Screen gate: isTrue(/1095As/*/policyIsActiveInJan).</Description>
+      <Derived>
+        <All>
+          <IsComplete>
+            <Dependency path="../policyIsActiveInJan" />
+          </IsComplete>
+          <Dependency path="../policyIsActiveInJan" />
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/1095As/*/flowGate8c1b6ac7">
+      <Description>Screen gate: isTrue(/1095As/*/policyIsActiveInFeb).</Description>
+      <Derived>
+        <All>
+          <IsComplete>
+            <Dependency path="../policyIsActiveInFeb" />
+          </IsComplete>
+          <Dependency path="../policyIsActiveInFeb" />
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/1095As/*/flowGatef91dcf2b">
+      <Description>Screen gate: isTrue(/1095As/*/policyIsActiveInMar).</Description>
+      <Derived>
+        <All>
+          <IsComplete>
+            <Dependency path="../policyIsActiveInMar" />
+          </IsComplete>
+          <Dependency path="../policyIsActiveInMar" />
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/1095As/*/flowGate4e66fba3">
+      <Description>Screen gate: isTrue(/1095As/*/policyIsActiveInApr).</Description>
+      <Derived>
+        <All>
+          <IsComplete>
+            <Dependency path="../policyIsActiveInApr" />
+          </IsComplete>
+          <Dependency path="../policyIsActiveInApr" />
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/1095As/*/flowGate6aa946f9">
+      <Description>Screen gate: isTrue(/1095As/*/policyIsActiveInMay).</Description>
+      <Derived>
+        <All>
+          <IsComplete>
+            <Dependency path="../policyIsActiveInMay" />
+          </IsComplete>
+          <Dependency path="../policyIsActiveInMay" />
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/1095As/*/flowGatef129ff3f">
+      <Description>Screen gate: isTrue(/1095As/*/policyIsActiveInJun).</Description>
+      <Derived>
+        <All>
+          <IsComplete>
+            <Dependency path="../policyIsActiveInJun" />
+          </IsComplete>
+          <Dependency path="../policyIsActiveInJun" />
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/1095As/*/flowGated632ee28">
+      <Description>Screen gate: isTrue(/1095As/*/policyIsActiveInJul).</Description>
+      <Derived>
+        <All>
+          <IsComplete>
+            <Dependency path="../policyIsActiveInJul" />
+          </IsComplete>
+          <Dependency path="../policyIsActiveInJul" />
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/1095As/*/flowGatef4b40d49">
+      <Description>Screen gate: isTrue(/1095As/*/policyIsActiveInAug).</Description>
+      <Derived>
+        <All>
+          <IsComplete>
+            <Dependency path="../policyIsActiveInAug" />
+          </IsComplete>
+          <Dependency path="../policyIsActiveInAug" />
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/1095As/*/flowGate632ec490">
+      <Description>Screen gate: isTrue(/1095As/*/policyIsActiveInSep).</Description>
+      <Derived>
+        <All>
+          <IsComplete>
+            <Dependency path="../policyIsActiveInSep" />
+          </IsComplete>
+          <Dependency path="../policyIsActiveInSep" />
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/1095As/*/flowGated0d31a6c">
+      <Description>Screen gate: isTrue(/1095As/*/policyIsActiveInOct).</Description>
+      <Derived>
+        <All>
+          <IsComplete>
+            <Dependency path="../policyIsActiveInOct" />
+          </IsComplete>
+          <Dependency path="../policyIsActiveInOct" />
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/1095As/*/flowGate0e469aa0">
+      <Description>Screen gate: isTrue(/1095As/*/policyIsActiveInNov).</Description>
+      <Derived>
+        <All>
+          <IsComplete>
+            <Dependency path="../policyIsActiveInNov" />
+          </IsComplete>
+          <Dependency path="../policyIsActiveInNov" />
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/1095As/*/flowGate5a382e76">
+      <Description>Screen gate: isTrue(/1095As/*/policyIsActiveInDec).</Description>
+      <Derived>
+        <All>
+          <IsComplete>
+            <Dependency path="../policyIsActiveInDec" />
+          </IsComplete>
+          <Dependency path="../policyIsActiveInDec" />
+        </All>
+      </Derived>
+    </Fact>
+
     <Fact path="/1095As/*/flowGate41a44c49">
       <Description>Screen gate: isTrue(/hasPotentialCredits) and isTrue(/maybeEligibleForPtc) and isTrue(/hasPtcQualifyingPlan) and isTrue(/applicableTaxPayerOrHasAptc) and isFalseOrIncomplete(/notPtcApplicableTaxPayer) and isTrue(/1095As/*/hasAtLeastOneCoverageMonth).</Description>
       <Derived>
@@ -9508,6 +12494,32 @@
             </IsComplete>
             <Dependency path="../noChangesAnd12MonthPolicy" />
           </All>
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/1095As/*/flowGate9d395117">
+      <Description>Screen gate: isTrue(/1095As/*/hasStateMarketplacePlan).</Description>
+      <Derived>
+        <All>
+          <IsComplete>
+            <Dependency path="../hasStateMarketplacePlan" />
+          </IsComplete>
+          <Dependency path="../hasStateMarketplacePlan" />
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/1095As/*/flowGate3c144cda">
+      <Description>Screen gate: isFalse(/1095As/*/hasStateMarketplacePlan).</Description>
+      <Derived>
+        <All>
+          <IsComplete>
+            <Dependency path="../hasStateMarketplacePlan" />
+          </IsComplete>
+          <Not>
+            <Dependency path="../hasStateMarketplacePlan" />
+          </Not>
         </All>
       </Derived>
     </Fact>
@@ -9615,6 +12627,598 @@
               <Dependency path="../hasChangeOrPolicyIsNotForAllMonths" />
             </IsComplete>
             <Dependency path="../hasChangeOrPolicyIsNotForAllMonths" />
+          </All>
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/1095As/*/flowGated5075a59">
+      <Description>Screen gate: isTrue(/1095As/*/hasChangeInCircumstance) and isTrue(/1095As/*/hasStateMarketplacePlan).</Description>
+      <Derived>
+        <All>
+          <All>
+            <IsComplete>
+              <Dependency path="../hasChangeInCircumstance" />
+            </IsComplete>
+            <Dependency path="../hasChangeInCircumstance" />
+          </All>
+          <All>
+            <IsComplete>
+              <Dependency path="../hasStateMarketplacePlan" />
+            </IsComplete>
+            <Dependency path="../hasStateMarketplacePlan" />
+          </All>
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/1095As/*/flowGate754de5e0">
+      <Description>Screen gate: isTrue(/1095As/*/hasChangeInCircumstance) and isFalse(/1095As/*/hasStateMarketplacePlan).</Description>
+      <Derived>
+        <All>
+          <All>
+            <IsComplete>
+              <Dependency path="../hasChangeInCircumstance" />
+            </IsComplete>
+            <Dependency path="../hasChangeInCircumstance" />
+          </All>
+          <All>
+            <IsComplete>
+              <Dependency path="../hasStateMarketplacePlan" />
+            </IsComplete>
+            <Not>
+              <Dependency path="../hasStateMarketplacePlan" />
+            </Not>
+          </All>
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/1095As/*/flowGatebe570931">
+      <Description>Screen gate: isFalse(/1095As/*/hasChangeInCircumstance) and isTrue(/1095As/*/hasStateMarketplacePlan).</Description>
+      <Derived>
+        <All>
+          <All>
+            <IsComplete>
+              <Dependency path="../hasChangeInCircumstance" />
+            </IsComplete>
+            <Not>
+              <Dependency path="../hasChangeInCircumstance" />
+            </Not>
+          </All>
+          <All>
+            <IsComplete>
+              <Dependency path="../hasStateMarketplacePlan" />
+            </IsComplete>
+            <Dependency path="../hasStateMarketplacePlan" />
+          </All>
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/1095As/*/flowGate84e963e6">
+      <Description>Screen gate: isFalse(/1095As/*/hasChangeInCircumstance) and isFalse(/1095As/*/hasStateMarketplacePlan).</Description>
+      <Derived>
+        <All>
+          <All>
+            <IsComplete>
+              <Dependency path="../hasChangeInCircumstance" />
+            </IsComplete>
+            <Not>
+              <Dependency path="../hasChangeInCircumstance" />
+            </Not>
+          </All>
+          <All>
+            <IsComplete>
+              <Dependency path="../hasStateMarketplacePlan" />
+            </IsComplete>
+            <Not>
+              <Dependency path="../hasStateMarketplacePlan" />
+            </Not>
+          </All>
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/1095As/*/flowGatedd96d2eb">
+      <Description>Screen gate: isTrue(/1095As/*/policyIsActiveInJan) and isTrue(/1095As/*/hasJanCoverageMonth).</Description>
+      <Derived>
+        <All>
+          <All>
+            <IsComplete>
+              <Dependency path="../policyIsActiveInJan" />
+            </IsComplete>
+            <Dependency path="../policyIsActiveInJan" />
+          </All>
+          <All>
+            <IsComplete>
+              <Dependency path="../hasJanCoverageMonth" />
+            </IsComplete>
+            <Dependency path="../hasJanCoverageMonth" />
+          </All>
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/1095As/*/flowGate17fa8709">
+      <Description>Screen gate: isTrue(/1095As/*/policyIsActiveInJan) and isFalse(/1095As/*/hasJanCoverageMonth).</Description>
+      <Derived>
+        <All>
+          <All>
+            <IsComplete>
+              <Dependency path="../policyIsActiveInJan" />
+            </IsComplete>
+            <Dependency path="../policyIsActiveInJan" />
+          </All>
+          <All>
+            <IsComplete>
+              <Dependency path="../hasJanCoverageMonth" />
+            </IsComplete>
+            <Not>
+              <Dependency path="../hasJanCoverageMonth" />
+            </Not>
+          </All>
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/1095As/*/flowGatec422710c">
+      <Description>Screen gate: isTrue(/1095As/*/policyIsActiveInFeb) and isTrue(/1095As/*/hasFebCoverageMonth).</Description>
+      <Derived>
+        <All>
+          <All>
+            <IsComplete>
+              <Dependency path="../policyIsActiveInFeb" />
+            </IsComplete>
+            <Dependency path="../policyIsActiveInFeb" />
+          </All>
+          <All>
+            <IsComplete>
+              <Dependency path="../hasFebCoverageMonth" />
+            </IsComplete>
+            <Dependency path="../hasFebCoverageMonth" />
+          </All>
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/1095As/*/flowGate93c42e4c">
+      <Description>Screen gate: isTrue(/1095As/*/policyIsActiveInFeb) and isFalse(/1095As/*/hasFebCoverageMonth).</Description>
+      <Derived>
+        <All>
+          <All>
+            <IsComplete>
+              <Dependency path="../policyIsActiveInFeb" />
+            </IsComplete>
+            <Dependency path="../policyIsActiveInFeb" />
+          </All>
+          <All>
+            <IsComplete>
+              <Dependency path="../hasFebCoverageMonth" />
+            </IsComplete>
+            <Not>
+              <Dependency path="../hasFebCoverageMonth" />
+            </Not>
+          </All>
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/1095As/*/flowGate425a50cb">
+      <Description>Screen gate: isTrue(/1095As/*/policyIsActiveInMar) and isTrue(/1095As/*/hasMarCoverageMonth).</Description>
+      <Derived>
+        <All>
+          <All>
+            <IsComplete>
+              <Dependency path="../policyIsActiveInMar" />
+            </IsComplete>
+            <Dependency path="../policyIsActiveInMar" />
+          </All>
+          <All>
+            <IsComplete>
+              <Dependency path="../hasMarCoverageMonth" />
+            </IsComplete>
+            <Dependency path="../hasMarCoverageMonth" />
+          </All>
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/1095As/*/flowGate535f4fdf">
+      <Description>Screen gate: isTrue(/1095As/*/policyIsActiveInMar) and isFalse(/1095As/*/hasMarCoverageMonth).</Description>
+      <Derived>
+        <All>
+          <All>
+            <IsComplete>
+              <Dependency path="../policyIsActiveInMar" />
+            </IsComplete>
+            <Dependency path="../policyIsActiveInMar" />
+          </All>
+          <All>
+            <IsComplete>
+              <Dependency path="../hasMarCoverageMonth" />
+            </IsComplete>
+            <Not>
+              <Dependency path="../hasMarCoverageMonth" />
+            </Not>
+          </All>
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/1095As/*/flowGate6240923b">
+      <Description>Screen gate: isTrue(/1095As/*/policyIsActiveInApr) and isTrue(/1095As/*/hasAprCoverageMonth).</Description>
+      <Derived>
+        <All>
+          <All>
+            <IsComplete>
+              <Dependency path="../policyIsActiveInApr" />
+            </IsComplete>
+            <Dependency path="../policyIsActiveInApr" />
+          </All>
+          <All>
+            <IsComplete>
+              <Dependency path="../hasAprCoverageMonth" />
+            </IsComplete>
+            <Dependency path="../hasAprCoverageMonth" />
+          </All>
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/1095As/*/flowGateb35341ca">
+      <Description>Screen gate: isTrue(/1095As/*/policyIsActiveInApr) and isFalse(/1095As/*/hasAprCoverageMonth).</Description>
+      <Derived>
+        <All>
+          <All>
+            <IsComplete>
+              <Dependency path="../policyIsActiveInApr" />
+            </IsComplete>
+            <Dependency path="../policyIsActiveInApr" />
+          </All>
+          <All>
+            <IsComplete>
+              <Dependency path="../hasAprCoverageMonth" />
+            </IsComplete>
+            <Not>
+              <Dependency path="../hasAprCoverageMonth" />
+            </Not>
+          </All>
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/1095As/*/flowGated7cfd11b">
+      <Description>Screen gate: isTrue(/1095As/*/policyIsActiveInMay) and isTrue(/1095As/*/hasMayCoverageMonth).</Description>
+      <Derived>
+        <All>
+          <All>
+            <IsComplete>
+              <Dependency path="../policyIsActiveInMay" />
+            </IsComplete>
+            <Dependency path="../policyIsActiveInMay" />
+          </All>
+          <All>
+            <IsComplete>
+              <Dependency path="../hasMayCoverageMonth" />
+            </IsComplete>
+            <Dependency path="../hasMayCoverageMonth" />
+          </All>
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/1095As/*/flowGatedc2d112c">
+      <Description>Screen gate: isTrue(/1095As/*/policyIsActiveInMay) and isFalse(/1095As/*/hasMayCoverageMonth).</Description>
+      <Derived>
+        <All>
+          <All>
+            <IsComplete>
+              <Dependency path="../policyIsActiveInMay" />
+            </IsComplete>
+            <Dependency path="../policyIsActiveInMay" />
+          </All>
+          <All>
+            <IsComplete>
+              <Dependency path="../hasMayCoverageMonth" />
+            </IsComplete>
+            <Not>
+              <Dependency path="../hasMayCoverageMonth" />
+            </Not>
+          </All>
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/1095As/*/flowGated900269f">
+      <Description>Screen gate: isTrue(/1095As/*/policyIsActiveInJun) and isTrue(/1095As/*/hasJunCoverageMonth).</Description>
+      <Derived>
+        <All>
+          <All>
+            <IsComplete>
+              <Dependency path="../policyIsActiveInJun" />
+            </IsComplete>
+            <Dependency path="../policyIsActiveInJun" />
+          </All>
+          <All>
+            <IsComplete>
+              <Dependency path="../hasJunCoverageMonth" />
+            </IsComplete>
+            <Dependency path="../hasJunCoverageMonth" />
+          </All>
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/1095As/*/flowGate187ad470">
+      <Description>Screen gate: isTrue(/1095As/*/policyIsActiveInJun) and isFalse(/1095As/*/hasJunCoverageMonth).</Description>
+      <Derived>
+        <All>
+          <All>
+            <IsComplete>
+              <Dependency path="../policyIsActiveInJun" />
+            </IsComplete>
+            <Dependency path="../policyIsActiveInJun" />
+          </All>
+          <All>
+            <IsComplete>
+              <Dependency path="../hasJunCoverageMonth" />
+            </IsComplete>
+            <Not>
+              <Dependency path="../hasJunCoverageMonth" />
+            </Not>
+          </All>
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/1095As/*/flowGate1b126a58">
+      <Description>Screen gate: isTrue(/1095As/*/policyIsActiveInJul) and isTrue(/1095As/*/hasJulCoverageMonth).</Description>
+      <Derived>
+        <All>
+          <All>
+            <IsComplete>
+              <Dependency path="../policyIsActiveInJul" />
+            </IsComplete>
+            <Dependency path="../policyIsActiveInJul" />
+          </All>
+          <All>
+            <IsComplete>
+              <Dependency path="../hasJulCoverageMonth" />
+            </IsComplete>
+            <Dependency path="../hasJulCoverageMonth" />
+          </All>
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/1095As/*/flowGate8370a469">
+      <Description>Screen gate: isTrue(/1095As/*/policyIsActiveInJul) and isFalse(/1095As/*/hasJulCoverageMonth).</Description>
+      <Derived>
+        <All>
+          <All>
+            <IsComplete>
+              <Dependency path="../policyIsActiveInJul" />
+            </IsComplete>
+            <Dependency path="../policyIsActiveInJul" />
+          </All>
+          <All>
+            <IsComplete>
+              <Dependency path="../hasJulCoverageMonth" />
+            </IsComplete>
+            <Not>
+              <Dependency path="../hasJulCoverageMonth" />
+            </Not>
+          </All>
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/1095As/*/flowGate3d5b169b">
+      <Description>Screen gate: isTrue(/1095As/*/policyIsActiveInAug) and isTrue(/1095As/*/hasAugCoverageMonth).</Description>
+      <Derived>
+        <All>
+          <All>
+            <IsComplete>
+              <Dependency path="../policyIsActiveInAug" />
+            </IsComplete>
+            <Dependency path="../policyIsActiveInAug" />
+          </All>
+          <All>
+            <IsComplete>
+              <Dependency path="../hasAugCoverageMonth" />
+            </IsComplete>
+            <Dependency path="../hasAugCoverageMonth" />
+          </All>
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/1095As/*/flowGate2d660f63">
+      <Description>Screen gate: isTrue(/1095As/*/policyIsActiveInAug) and isFalse(/1095As/*/hasAugCoverageMonth).</Description>
+      <Derived>
+        <All>
+          <All>
+            <IsComplete>
+              <Dependency path="../policyIsActiveInAug" />
+            </IsComplete>
+            <Dependency path="../policyIsActiveInAug" />
+          </All>
+          <All>
+            <IsComplete>
+              <Dependency path="../hasAugCoverageMonth" />
+            </IsComplete>
+            <Not>
+              <Dependency path="../hasAugCoverageMonth" />
+            </Not>
+          </All>
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/1095As/*/flowGate59137866">
+      <Description>Screen gate: isTrue(/1095As/*/policyIsActiveInSep) and isTrue(/1095As/*/hasSepCoverageMonth).</Description>
+      <Derived>
+        <All>
+          <All>
+            <IsComplete>
+              <Dependency path="../policyIsActiveInSep" />
+            </IsComplete>
+            <Dependency path="../policyIsActiveInSep" />
+          </All>
+          <All>
+            <IsComplete>
+              <Dependency path="../hasSepCoverageMonth" />
+            </IsComplete>
+            <Dependency path="../hasSepCoverageMonth" />
+          </All>
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/1095As/*/flowGatea6b1de0d">
+      <Description>Screen gate: isTrue(/1095As/*/policyIsActiveInSep) and isFalse(/1095As/*/hasSepCoverageMonth).</Description>
+      <Derived>
+        <All>
+          <All>
+            <IsComplete>
+              <Dependency path="../policyIsActiveInSep" />
+            </IsComplete>
+            <Dependency path="../policyIsActiveInSep" />
+          </All>
+          <All>
+            <IsComplete>
+              <Dependency path="../hasSepCoverageMonth" />
+            </IsComplete>
+            <Not>
+              <Dependency path="../hasSepCoverageMonth" />
+            </Not>
+          </All>
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/1095As/*/flowGated587cb96">
+      <Description>Screen gate: isTrue(/1095As/*/policyIsActiveInOct) and isTrue(/1095As/*/hasOctCoverageMonth).</Description>
+      <Derived>
+        <All>
+          <All>
+            <IsComplete>
+              <Dependency path="../policyIsActiveInOct" />
+            </IsComplete>
+            <Dependency path="../policyIsActiveInOct" />
+          </All>
+          <All>
+            <IsComplete>
+              <Dependency path="../hasOctCoverageMonth" />
+            </IsComplete>
+            <Dependency path="../hasOctCoverageMonth" />
+          </All>
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/1095As/*/flowGate2a2e1ab2">
+      <Description>Screen gate: isTrue(/1095As/*/policyIsActiveInOct) and isFalse(/1095As/*/hasOctCoverageMonth).</Description>
+      <Derived>
+        <All>
+          <All>
+            <IsComplete>
+              <Dependency path="../policyIsActiveInOct" />
+            </IsComplete>
+            <Dependency path="../policyIsActiveInOct" />
+          </All>
+          <All>
+            <IsComplete>
+              <Dependency path="../hasOctCoverageMonth" />
+            </IsComplete>
+            <Not>
+              <Dependency path="../hasOctCoverageMonth" />
+            </Not>
+          </All>
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/1095As/*/flowGate1f285edc">
+      <Description>Screen gate: isTrue(/1095As/*/policyIsActiveInNov) and isTrue(/1095As/*/hasNovCoverageMonth).</Description>
+      <Derived>
+        <All>
+          <All>
+            <IsComplete>
+              <Dependency path="../policyIsActiveInNov" />
+            </IsComplete>
+            <Dependency path="../policyIsActiveInNov" />
+          </All>
+          <All>
+            <IsComplete>
+              <Dependency path="../hasNovCoverageMonth" />
+            </IsComplete>
+            <Dependency path="../hasNovCoverageMonth" />
+          </All>
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/1095As/*/flowGate904f8f45">
+      <Description>Screen gate: isTrue(/1095As/*/policyIsActiveInNov) and isFalse(/1095As/*/hasNovCoverageMonth).</Description>
+      <Derived>
+        <All>
+          <All>
+            <IsComplete>
+              <Dependency path="../policyIsActiveInNov" />
+            </IsComplete>
+            <Dependency path="../policyIsActiveInNov" />
+          </All>
+          <All>
+            <IsComplete>
+              <Dependency path="../hasNovCoverageMonth" />
+            </IsComplete>
+            <Not>
+              <Dependency path="../hasNovCoverageMonth" />
+            </Not>
+          </All>
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/1095As/*/flowGate3802d07e">
+      <Description>Screen gate: isTrue(/1095As/*/policyIsActiveInDec) and isTrue(/1095As/*/hasDecCoverageMonth).</Description>
+      <Derived>
+        <All>
+          <All>
+            <IsComplete>
+              <Dependency path="../policyIsActiveInDec" />
+            </IsComplete>
+            <Dependency path="../policyIsActiveInDec" />
+          </All>
+          <All>
+            <IsComplete>
+              <Dependency path="../hasDecCoverageMonth" />
+            </IsComplete>
+            <Dependency path="../hasDecCoverageMonth" />
+          </All>
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/1095As/*/flowGate62be3227">
+      <Description>Screen gate: isTrue(/1095As/*/policyIsActiveInDec) and isFalse(/1095As/*/hasDecCoverageMonth).</Description>
+      <Derived>
+        <All>
+          <All>
+            <IsComplete>
+              <Dependency path="../policyIsActiveInDec" />
+            </IsComplete>
+            <Dependency path="../policyIsActiveInDec" />
+          </All>
+          <All>
+            <IsComplete>
+              <Dependency path="../hasDecCoverageMonth" />
+            </IsComplete>
+            <Not>
+              <Dependency path="../hasDecCoverageMonth" />
+            </Not>
           </All>
         </All>
       </Derived>
@@ -9852,6 +13456,54 @@
       </Derived>
     </Fact>
 
+    <Fact path="/flowGateb6d2c6e0">
+      <Description>Screen gate: isTrue(/ptcDependentTpDidNotEnrollSelfOrOthers).</Description>
+      <Derived>
+        <All>
+          <IsComplete>
+            <Dependency path="/ptcDependentTpDidNotEnrollSelfOrOthers" />
+          </IsComplete>
+          <Dependency path="/ptcDependentTpDidNotEnrollSelfOrOthers" />
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGated3bd2988">
+      <Description>Screen gate: isTrue(/ptcDependentTpIsClaimedDidEnrollSelfAndNotOthers).</Description>
+      <Derived>
+        <All>
+          <IsComplete>
+            <Dependency path="/ptcDependentTpIsClaimedDidEnrollSelfAndNotOthers" />
+          </IsComplete>
+          <Dependency path="/ptcDependentTpIsClaimedDidEnrollSelfAndNotOthers" />
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGate3bb0936f">
+      <Description>Screen gate: isTrue(/ptcDependentTpIsClaimedDidEnrollSelfAndOthersAndPartOfDifferentTaxFamily).</Description>
+      <Derived>
+        <All>
+          <IsComplete>
+            <Dependency path="/ptcDependentTpIsClaimedDidEnrollSelfAndOthersAndPartOfDifferentTaxFamily" />
+          </IsComplete>
+          <Dependency path="/ptcDependentTpIsClaimedDidEnrollSelfAndOthersAndPartOfDifferentTaxFamily" />
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGate55fe7e1e">
+      <Description>Screen gate: isTrue(/ptcDependentTpDidNotEnrollSelfAndEnrolledOthersWhoIsPartOfDifferentTaxFamily).</Description>
+      <Derived>
+        <All>
+          <IsComplete>
+            <Dependency path="/ptcDependentTpDidNotEnrollSelfAndEnrolledOthersWhoIsPartOfDifferentTaxFamily" />
+          </IsComplete>
+          <Dependency path="/ptcDependentTpDidNotEnrollSelfAndEnrolledOthersWhoIsPartOfDifferentTaxFamily" />
+        </All>
+      </Derived>
+    </Fact>
+
     <Fact path="/flowGate085e3bf6">
       <Description>Screen gate: isTrue(/hasPotentialCredits) and isTrue(/maybeEligibleForPtc) and isTrue(/ptcNotQualifiedNoAptc).</Description>
       <Derived>
@@ -9900,6 +13552,18 @@
             </IsComplete>
             <Dependency path="/ptcNotQualifiedHasAptc" />
           </All>
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGatee22de8b9">
+      <Description>Screen gate: isTrue(/isRepaymentLimitationIsActive).</Description>
+      <Derived>
+        <All>
+          <IsComplete>
+            <Dependency path="/isRepaymentLimitationIsActive" />
+          </IsComplete>
+          <Dependency path="/isRepaymentLimitationIsActive" />
         </All>
       </Derived>
     </Fact>
@@ -10230,6 +13894,34 @@
             </IsComplete>
             <Dependency path="/knockoutCdccWorksheetA" />
           </All>
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGateb27c3825">
+      <Description>Screen gate: isFalse(/cdccClaimedCreditForPriorYearExpenses).</Description>
+      <Derived>
+        <All>
+          <IsComplete>
+            <Dependency path="/cdccClaimedCreditForPriorYearExpenses" />
+          </IsComplete>
+          <Not>
+            <Dependency path="/cdccClaimedCreditForPriorYearExpenses" />
+          </Not>
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGate41e69ce2">
+      <Description>Screen gate: isFalse(/cdccClaimedMaxCreditForPriorTaxYear).</Description>
+      <Derived>
+        <All>
+          <IsComplete>
+            <Dependency path="/cdccClaimedMaxCreditForPriorTaxYear" />
+          </IsComplete>
+          <Not>
+            <Dependency path="/cdccClaimedMaxCreditForPriorTaxYear" />
+          </Not>
         </All>
       </Derived>
     </Fact>
@@ -10678,6 +14370,42 @@
             </IsComplete>
             <Dependency path="/showSpecialEarnedIncomeKnockoutFlowInCredits" />
           </All>
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGate24755617">
+      <Description>Screen gate: isTrue(/isStudentOnly).</Description>
+      <Derived>
+        <All>
+          <IsComplete>
+            <Dependency path="/isStudentOnly" />
+          </IsComplete>
+          <Dependency path="/isStudentOnly" />
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGate6805141d">
+      <Description>Screen gate: isTrue(/isDisabledOnly).</Description>
+      <Derived>
+        <All>
+          <IsComplete>
+            <Dependency path="/isDisabledOnly" />
+          </IsComplete>
+          <Dependency path="/isDisabledOnly" />
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGate0eb20e5f">
+      <Description>Screen gate: isTrue(/isStudentAndDisabled).</Description>
+      <Derived>
+        <All>
+          <IsComplete>
+            <Dependency path="/isStudentAndDisabled" />
+          </IsComplete>
+          <Dependency path="/isStudentAndDisabled" />
         </All>
       </Derived>
     </Fact>
@@ -11426,6 +15154,18 @@
       </Derived>
     </Fact>
 
+    <Fact path="/flowGate6d26da24">
+      <Description>Screen gate: isTrue(/cdccNonDepQpTinsSavedNotZero).</Description>
+      <Derived>
+        <All>
+          <IsComplete>
+            <Dependency path="/cdccNonDepQpTinsSavedNotZero" />
+          </IsComplete>
+          <Dependency path="/cdccNonDepQpTinsSavedNotZero" />
+        </All>
+      </Derived>
+    </Fact>
+
     <Fact path="/flowGate655b8d99">
       <Description>Screen gate: isTrue(/hasPotentialCredits) and isTrue(/maybeEligibleForCdcc) and isTrue(/showCdccNondependentQpTinPin).</Description>
       <Derived>
@@ -11840,6 +15580,84 @@
       </Derived>
     </Fact>
 
+    <Fact path="/flowGate44e625b9">
+      <Description>Screen gate: isFalseOrIncomplete(/secondaryFiler/isMaybeQualifiedforEdcThroughDisability) and isTrue(/primaryFiler/isMaybeQualifiedforEdcThroughDisability).</Description>
+      <Derived>
+        <All>
+          <Any>
+            <Not>
+              <IsComplete>
+                <Dependency path="/secondaryFiler/isMaybeQualifiedforEdcThroughDisability" />
+              </IsComplete>
+            </Not>
+            <Not>
+              <Dependency path="/secondaryFiler/isMaybeQualifiedforEdcThroughDisability" />
+            </Not>
+          </Any>
+          <All>
+            <IsComplete>
+              <Dependency path="/primaryFiler/isMaybeQualifiedforEdcThroughDisability" />
+            </IsComplete>
+            <Dependency path="/primaryFiler/isMaybeQualifiedforEdcThroughDisability" />
+          </All>
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGatea010ff67">
+      <Description>Screen gate: isTrue(/secondaryFiler/isMaybeQualifiedforEdcThroughDisability) and isFalse(/primaryFiler/isMaybeQualifiedforEdcThroughDisability) and isTrue(/isFilingStatusMFJ).</Description>
+      <Derived>
+        <All>
+          <All>
+            <IsComplete>
+              <Dependency path="/secondaryFiler/isMaybeQualifiedforEdcThroughDisability" />
+            </IsComplete>
+            <Dependency path="/secondaryFiler/isMaybeQualifiedforEdcThroughDisability" />
+          </All>
+          <All>
+            <IsComplete>
+              <Dependency path="/primaryFiler/isMaybeQualifiedforEdcThroughDisability" />
+            </IsComplete>
+            <Not>
+              <Dependency path="/primaryFiler/isMaybeQualifiedforEdcThroughDisability" />
+            </Not>
+          </All>
+          <All>
+            <IsComplete>
+              <Dependency path="/isFilingStatusMFJ" />
+            </IsComplete>
+            <Dependency path="/isFilingStatusMFJ" />
+          </All>
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGate85b4426b">
+      <Description>Screen gate: isTrue(/primaryFiler/isMaybeQualifiedforEdcThroughDisability) and isTrue(/secondaryFiler/isMaybeQualifiedforEdcThroughDisability) and isTrue(/isFilingStatusMFJ).</Description>
+      <Derived>
+        <All>
+          <All>
+            <IsComplete>
+              <Dependency path="/primaryFiler/isMaybeQualifiedforEdcThroughDisability" />
+            </IsComplete>
+            <Dependency path="/primaryFiler/isMaybeQualifiedforEdcThroughDisability" />
+          </All>
+          <All>
+            <IsComplete>
+              <Dependency path="/secondaryFiler/isMaybeQualifiedforEdcThroughDisability" />
+            </IsComplete>
+            <Dependency path="/secondaryFiler/isMaybeQualifiedforEdcThroughDisability" />
+          </All>
+          <All>
+            <IsComplete>
+              <Dependency path="/isFilingStatusMFJ" />
+            </IsComplete>
+            <Dependency path="/isFilingStatusMFJ" />
+          </All>
+        </All>
+      </Derived>
+    </Fact>
+
     <Fact path="/filers/*/flowGate5f1f5b6c">
       <Description>Screen gate: isTrue(/hasPotentialCredits) and isTrue(/maybeEligibleForCreditForElderlyAndDisabled) and isTrue(/qualifiedForCreditForElderlyAndDisabled) and isFalse(/filers/*/hasPhysicianStatementBothDisabledAndWillNotImprove).</Description>
       <Derived>
@@ -12046,6 +15864,42 @@
       </Derived>
     </Fact>
 
+    <Fact path="/flowGate9aed76e8">
+      <Description>Screen gate: isTrue(/onlyPrimaryFilerEligibleForSaversCredit).</Description>
+      <Derived>
+        <All>
+          <IsComplete>
+            <Dependency path="/onlyPrimaryFilerEligibleForSaversCredit" />
+          </IsComplete>
+          <Dependency path="/onlyPrimaryFilerEligibleForSaversCredit" />
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGate76876e3b">
+      <Description>Screen gate: isTrue(/onlySecondaryFilerEligibleForSaversCredit).</Description>
+      <Derived>
+        <All>
+          <IsComplete>
+            <Dependency path="/onlySecondaryFilerEligibleForSaversCredit" />
+          </IsComplete>
+          <Dependency path="/onlySecondaryFilerEligibleForSaversCredit" />
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGatee5c5a393">
+      <Description>Screen gate: isTrue(/bothFilersEligibleForSaversCredit).</Description>
+      <Derived>
+        <All>
+          <IsComplete>
+            <Dependency path="/bothFilersEligibleForSaversCredit" />
+          </IsComplete>
+          <Dependency path="/bothFilersEligibleForSaversCredit" />
+        </All>
+      </Derived>
+    </Fact>
+
     <Fact path="/flowGatec978ed98">
       <Description>Screen gate: isTrue(/hasPotentialCredits) and isTrue(/qualifiedForSaverCredit) and isTrue(/meetsOneDollarCombinedCreditLimit).</Description>
       <Derived>
@@ -12094,6 +15948,30 @@
             </IsComplete>
             <Dependency path="/flowShowSaversEligibleScreen" />
           </All>
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGate34406311">
+      <Description>Screen gate: isTrue(/onlySecondaryFilerQualifiedForSaversCredit).</Description>
+      <Derived>
+        <All>
+          <IsComplete>
+            <Dependency path="/onlySecondaryFilerQualifiedForSaversCredit" />
+          </IsComplete>
+          <Dependency path="/onlySecondaryFilerQualifiedForSaversCredit" />
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGatecfe5d4d2">
+      <Description>Screen gate: isTrue(/onlyPrimaryFilerQualifiedForSaversCredit).</Description>
+      <Derived>
+        <All>
+          <IsComplete>
+            <Dependency path="/onlyPrimaryFilerQualifiedForSaversCredit" />
+          </IsComplete>
+          <Dependency path="/onlyPrimaryFilerQualifiedForSaversCredit" />
         </All>
       </Derived>
     </Fact>
@@ -12932,6 +16810,32 @@
       </Derived>
     </Fact>
 
+    <Fact path="/flowGate813b52b7">
+      <Description>Screen gate: isTrue(/maybeEligibleForEitcWithQc).</Description>
+      <Derived>
+        <All>
+          <IsComplete>
+            <Dependency path="/maybeEligibleForEitcWithQc" />
+          </IsComplete>
+          <Dependency path="/maybeEligibleForEitcWithQc" />
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGate0a26f73c">
+      <Description>Screen gate: isFalse(/maybeEligibleForEitcWithQc).</Description>
+      <Derived>
+        <All>
+          <IsComplete>
+            <Dependency path="/maybeEligibleForEitcWithQc" />
+          </IsComplete>
+          <Not>
+            <Dependency path="/maybeEligibleForEitcWithQc" />
+          </Not>
+        </All>
+      </Derived>
+    </Fact>
+
     <Fact path="/flowGatea10d1561">
       <Description>Screen gate: isTrue(/hasPotentialCredits) and isTrue(/maybeEligibleForEitc) and isTrue(/eitcQualified) and isTrue(/form8862RequiredAndHasQualifyingChildren).</Description>
       <Derived>
@@ -13200,6 +17104,32 @@
       </Derived>
     </Fact>
 
+    <Fact path="/flowGate353a68b3">
+      <Description>Screen gate: isTrue(/isEITCAmountWithPrimaryCombatPayGreaterThanWithoutCombatPay).</Description>
+      <Derived>
+        <All>
+          <IsComplete>
+            <Dependency path="/isEITCAmountWithPrimaryCombatPayGreaterThanWithoutCombatPay" />
+          </IsComplete>
+          <Dependency path="/isEITCAmountWithPrimaryCombatPayGreaterThanWithoutCombatPay" />
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGate3d3faf17">
+      <Description>Screen gate: isFalse(/isEITCAmountWithPrimaryCombatPayGreaterThanWithoutCombatPay).</Description>
+      <Derived>
+        <All>
+          <IsComplete>
+            <Dependency path="/isEITCAmountWithPrimaryCombatPayGreaterThanWithoutCombatPay" />
+          </IsComplete>
+          <Not>
+            <Dependency path="/isEITCAmountWithPrimaryCombatPayGreaterThanWithoutCombatPay" />
+          </Not>
+        </All>
+      </Derived>
+    </Fact>
+
     <Fact path="/flowGate8f93c45f">
       <Description>Screen gate: isTrue(/hasPotentialCredits) and isTrue(/maybeEligibleForEitc) and isTrue(/eitcQualified) and isTrue(/someFilerHasCombatPay) and isTrue(/onlyMFJSpouseHasCombatPay).</Description>
       <Derived>
@@ -13234,6 +17164,32 @@
             </IsComplete>
             <Dependency path="/onlyMFJSpouseHasCombatPay" />
           </All>
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGateeecac438">
+      <Description>Screen gate: isTrue(/isEITCAmountWithSecondaryCombatPayGreaterThanWithoutCombatPay).</Description>
+      <Derived>
+        <All>
+          <IsComplete>
+            <Dependency path="/isEITCAmountWithSecondaryCombatPayGreaterThanWithoutCombatPay" />
+          </IsComplete>
+          <Dependency path="/isEITCAmountWithSecondaryCombatPayGreaterThanWithoutCombatPay" />
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGated1bd0219">
+      <Description>Screen gate: isFalse(/isEITCAmountWithSecondaryCombatPayGreaterThanWithoutCombatPay).</Description>
+      <Derived>
+        <All>
+          <IsComplete>
+            <Dependency path="/isEITCAmountWithSecondaryCombatPayGreaterThanWithoutCombatPay" />
+          </IsComplete>
+          <Not>
+            <Dependency path="/isEITCAmountWithSecondaryCombatPayGreaterThanWithoutCombatPay" />
+          </Not>
         </All>
       </Derived>
     </Fact>
@@ -13276,6 +17232,54 @@
       </Derived>
     </Fact>
 
+    <Fact path="/flowGate52ebe9f8">
+      <Description>Screen gate: isTrue(/isCombatPayRecommendationUseBoth).</Description>
+      <Derived>
+        <All>
+          <IsComplete>
+            <Dependency path="/isCombatPayRecommendationUseBoth" />
+          </IsComplete>
+          <Dependency path="/isCombatPayRecommendationUseBoth" />
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGatea0fdc253">
+      <Description>Screen gate: isTrue(/isCombatPayRecommendationUsePrimaryNotSpouse).</Description>
+      <Derived>
+        <All>
+          <IsComplete>
+            <Dependency path="/isCombatPayRecommendationUsePrimaryNotSpouse" />
+          </IsComplete>
+          <Dependency path="/isCombatPayRecommendationUsePrimaryNotSpouse" />
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGateeeadca0e">
+      <Description>Screen gate: isTrue(/isCombatPayRecommendationUseSpouseNotPrimary).</Description>
+      <Derived>
+        <All>
+          <IsComplete>
+            <Dependency path="/isCombatPayRecommendationUseSpouseNotPrimary" />
+          </IsComplete>
+          <Dependency path="/isCombatPayRecommendationUseSpouseNotPrimary" />
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGate615d3db1">
+      <Description>Screen gate: isTrue(/isCombatPayRecommendationNoCombatPay).</Description>
+      <Derived>
+        <All>
+          <IsComplete>
+            <Dependency path="/isCombatPayRecommendationNoCombatPay" />
+          </IsComplete>
+          <Dependency path="/isCombatPayRecommendationNoCombatPay" />
+        </All>
+      </Derived>
+    </Fact>
+
     <Fact path="/flowGateea040d37">
       <Description>Screen gate: isTrue(/hasPotentialCredits) and isTrue(/maybeEligibleForEitc) and isTrue(/eitcQualified) and isTrue(/someFilerHasCombatPay).</Description>
       <Derived>
@@ -13308,6 +17312,110 @@
       </Derived>
     </Fact>
 
+    <Fact path="/flowGatee8557702">
+      <Description>Screen gate: isTrue(/onlyPrimaryFilerHasCombatPay) and isTrue(/isEITCAmountWithPrimaryCombatPayGreaterThanWithoutCombatPay).</Description>
+      <Derived>
+        <All>
+          <All>
+            <IsComplete>
+              <Dependency path="/onlyPrimaryFilerHasCombatPay" />
+            </IsComplete>
+            <Dependency path="/onlyPrimaryFilerHasCombatPay" />
+          </All>
+          <All>
+            <IsComplete>
+              <Dependency path="/isEITCAmountWithPrimaryCombatPayGreaterThanWithoutCombatPay" />
+            </IsComplete>
+            <Dependency path="/isEITCAmountWithPrimaryCombatPayGreaterThanWithoutCombatPay" />
+          </All>
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGatec62e063c">
+      <Description>Screen gate: isTrue(/onlyPrimaryFilerHasCombatPay) and isFalse(/isEITCAmountWithPrimaryCombatPayGreaterThanWithoutCombatPay).</Description>
+      <Derived>
+        <All>
+          <All>
+            <IsComplete>
+              <Dependency path="/onlyPrimaryFilerHasCombatPay" />
+            </IsComplete>
+            <Dependency path="/onlyPrimaryFilerHasCombatPay" />
+          </All>
+          <All>
+            <IsComplete>
+              <Dependency path="/isEITCAmountWithPrimaryCombatPayGreaterThanWithoutCombatPay" />
+            </IsComplete>
+            <Not>
+              <Dependency path="/isEITCAmountWithPrimaryCombatPayGreaterThanWithoutCombatPay" />
+            </Not>
+          </All>
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGateeefde13b">
+      <Description>Screen gate: isTrue(/onlyMFJSpouseHasCombatPay) and isTrue(/isEITCAmountWithSecondaryCombatPayGreaterThanWithoutCombatPay).</Description>
+      <Derived>
+        <All>
+          <All>
+            <IsComplete>
+              <Dependency path="/onlyMFJSpouseHasCombatPay" />
+            </IsComplete>
+            <Dependency path="/onlyMFJSpouseHasCombatPay" />
+          </All>
+          <All>
+            <IsComplete>
+              <Dependency path="/isEITCAmountWithSecondaryCombatPayGreaterThanWithoutCombatPay" />
+            </IsComplete>
+            <Dependency path="/isEITCAmountWithSecondaryCombatPayGreaterThanWithoutCombatPay" />
+          </All>
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGatefe5717ff">
+      <Description>Screen gate: isTrue(/onlyMFJSpouseHasCombatPay) and isFalse(/isEITCAmountWithSecondaryCombatPayGreaterThanWithoutCombatPay).</Description>
+      <Derived>
+        <All>
+          <All>
+            <IsComplete>
+              <Dependency path="/onlyMFJSpouseHasCombatPay" />
+            </IsComplete>
+            <Dependency path="/onlyMFJSpouseHasCombatPay" />
+          </All>
+          <All>
+            <IsComplete>
+              <Dependency path="/isEITCAmountWithSecondaryCombatPayGreaterThanWithoutCombatPay" />
+            </IsComplete>
+            <Not>
+              <Dependency path="/isEITCAmountWithSecondaryCombatPayGreaterThanWithoutCombatPay" />
+            </Not>
+          </All>
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGatebd8b1cd7">
+      <Description>Screen gate: isTrue(/bothFilersHasCombatPay) and isTrue(/isCombatPayRecommendationNoCombatPay).</Description>
+      <Derived>
+        <All>
+          <All>
+            <IsComplete>
+              <Dependency path="/bothFilersHasCombatPay" />
+            </IsComplete>
+            <Dependency path="/bothFilersHasCombatPay" />
+          </All>
+          <All>
+            <IsComplete>
+              <Dependency path="/isCombatPayRecommendationNoCombatPay" />
+            </IsComplete>
+            <Dependency path="/isCombatPayRecommendationNoCombatPay" />
+          </All>
+        </All>
+      </Derived>
+    </Fact>
+
     <Fact path="/flowGate15f38278">
       <Description>Screen gate: isTrue(/hasPotentialCredits) and isTrue(/creditsSectionComplete) and isTrue(/hasQualifiedForAtLeastOneCredit).</Description>
       <Derived>
@@ -13329,6 +17437,52 @@
               <Dependency path="/hasQualifiedForAtLeastOneCredit" />
             </IsComplete>
             <Dependency path="/hasQualifiedForAtLeastOneCredit" />
+          </All>
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGate474a7210">
+      <Description>Screen gate: isTrue(/qualifiedForNonrefundableCredit).</Description>
+      <Derived>
+        <All>
+          <IsComplete>
+            <Dependency path="/qualifiedForNonrefundableCredit" />
+          </IsComplete>
+          <Dependency path="/qualifiedForNonrefundableCredit" />
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGate9bd56fb5">
+      <Description>Screen gate: isTrue(/qualifiedForRefundableCredit).</Description>
+      <Derived>
+        <All>
+          <IsComplete>
+            <Dependency path="/qualifiedForRefundableCredit" />
+          </IsComplete>
+          <Dependency path="/qualifiedForRefundableCredit" />
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGatecd58ba0c">
+      <Description>Screen gate: isFalse(/isMFJDependent) and isTrue(/hasBeenDisqualifiedForAtLeastOneCredit).</Description>
+      <Derived>
+        <All>
+          <All>
+            <IsComplete>
+              <Dependency path="/isMFJDependent" />
+            </IsComplete>
+            <Not>
+              <Dependency path="/isMFJDependent" />
+            </Not>
+          </All>
+          <All>
+            <IsComplete>
+              <Dependency path="/hasBeenDisqualifiedForAtLeastOneCredit" />
+            </IsComplete>
+            <Dependency path="/hasBeenDisqualifiedForAtLeastOneCredit" />
           </All>
         </All>
       </Derived>
@@ -13412,6 +17566,34 @@
       </Derived>
     </Fact>
 
+    <Fact path="/flowGateb14913f3">
+      <Description>Screen gate: isTrue(/mayBenefitFromFilingStateTaxes).</Description>
+      <Derived>
+        <All>
+          <IsComplete>
+            <Dependency path="/mayBenefitFromFilingStateTaxes" />
+          </IsComplete>
+          <Dependency path="/mayBenefitFromFilingStateTaxes" />
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGate67bee344">
+      <Description>Screen gate: isFalseOrIncomplete(/mayBenefitFromFilingStateTaxes).</Description>
+      <Derived>
+        <Any>
+          <Not>
+            <IsComplete>
+              <Dependency path="/mayBenefitFromFilingStateTaxes" />
+            </IsComplete>
+          </Not>
+          <Not>
+            <Dependency path="/mayBenefitFromFilingStateTaxes" />
+          </Not>
+        </Any>
+      </Derived>
+    </Fact>
+
     <Fact path="/flowGatea0f10afe">
       <Description>Screen gate: isTrue(/paidEstimatedTaxesOrFromLastYear).</Description>
       <Derived>
@@ -13484,6 +17666,32 @@
       </Derived>
     </Fact>
 
+    <Fact path="/flowGate0525130f">
+      <Description>Screen gate: isTrue(/someTPPaidEstimatedTaxesWithFormerSpouse).</Description>
+      <Derived>
+        <All>
+          <IsComplete>
+            <Dependency path="/someTPPaidEstimatedTaxesWithFormerSpouse" />
+          </IsComplete>
+          <Dependency path="/someTPPaidEstimatedTaxesWithFormerSpouse" />
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGateeebb104a">
+      <Description>Screen gate: isFalse(/dueRefund).</Description>
+      <Derived>
+        <All>
+          <IsComplete>
+            <Dependency path="/dueRefund" />
+          </IsComplete>
+          <Not>
+            <Dependency path="/dueRefund" />
+          </Not>
+        </All>
+      </Derived>
+    </Fact>
+
     <Fact path="/flowGate1d1a103f">
       <Description>Screen gate: isTrue(/dueRefund).</Description>
       <Derived>
@@ -13492,6 +17700,56 @@
             <Dependency path="/dueRefund" />
           </IsComplete>
           <Dependency path="/dueRefund" />
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGate89020cd5">
+      <Description>Screen gate: isTrue(/owesBalance).</Description>
+      <Derived>
+        <All>
+          <IsComplete>
+            <Dependency path="/owesBalance" />
+          </IsComplete>
+          <Dependency path="/owesBalance" />
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGated5a725fc">
+      <Description>Screen gate: isTrue(/zeroBalance).</Description>
+      <Derived>
+        <All>
+          <IsComplete>
+            <Dependency path="/zeroBalance" />
+          </IsComplete>
+          <Dependency path="/zeroBalance" />
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGatefb0aec07">
+      <Description>Screen gate: isFalse(/zeroBalance).</Description>
+      <Derived>
+        <All>
+          <IsComplete>
+            <Dependency path="/zeroBalance" />
+          </IsComplete>
+          <Not>
+            <Dependency path="/zeroBalance" />
+          </Not>
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGate1c992cb3">
+      <Description>Screen gate: isTrue(/owesPtc).</Description>
+      <Derived>
+        <All>
+          <IsComplete>
+            <Dependency path="/owesPtc" />
+          </IsComplete>
+          <Dependency path="/owesPtc" />
         </All>
       </Derived>
     </Fact>
@@ -13538,15 +17796,45 @@
       </Derived>
     </Fact>
 
-    <Fact path="/flowGate89020cd5">
-      <Description>Screen gate: isTrue(/owesBalance).</Description>
+    <Fact path="/flowGatec19d5a97">
+      <Description>Screen gate: isTrue(/refundViaAch).</Description>
       <Derived>
         <All>
           <IsComplete>
-            <Dependency path="/owesBalance" />
+            <Dependency path="/refundViaAch" />
           </IsComplete>
-          <Dependency path="/owesBalance" />
+          <Dependency path="/refundViaAch" />
         </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGate6fdc98fa">
+      <Description>Screen gate: isFalse(/refundViaAch).</Description>
+      <Derived>
+        <All>
+          <IsComplete>
+            <Dependency path="/refundViaAch" />
+          </IsComplete>
+          <Not>
+            <Dependency path="/refundViaAch" />
+          </Not>
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGate60f7690c">
+      <Description>Screen gate: isFalseOrIncomplete(/isPaperPath).</Description>
+      <Derived>
+        <Any>
+          <Not>
+            <IsComplete>
+              <Dependency path="/isPaperPath" />
+            </IsComplete>
+          </Not>
+          <Not>
+            <Dependency path="/isPaperPath" />
+          </Not>
+        </Any>
       </Derived>
     </Fact>
 
@@ -13600,6 +17888,80 @@
       </Derived>
     </Fact>
 
+    <Fact path="/flowGatea1dc44b6">
+      <Description>Screen gate: isTrueOrIncomplete(/payViaAch).</Description>
+      <Derived>
+        <Any>
+          <Not>
+            <IsComplete>
+              <Dependency path="/payViaAch" />
+            </IsComplete>
+          </Not>
+          <Dependency path="/payViaAch" />
+        </Any>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGateb6c3ca46">
+      <Description>Screen gate: isTrue(/isPaperPathDueToMissingIpPin) and isTrueAndComplete(/isPaperPathAndNoPaymentChoiceOrWasAutocorrected).</Description>
+      <Derived>
+        <All>
+          <All>
+            <IsComplete>
+              <Dependency path="/isPaperPathDueToMissingIpPin" />
+            </IsComplete>
+            <Dependency path="/isPaperPathDueToMissingIpPin" />
+          </All>
+          <All>
+            <IsComplete>
+              <Dependency path="/isPaperPathAndNoPaymentChoiceOrWasAutocorrected" />
+            </IsComplete>
+            <Dependency path="/isPaperPathAndNoPaymentChoiceOrWasAutocorrected" />
+          </All>
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGate6b028468">
+      <Description>Screen gate: isTrue(/cannotFindPinOrAgi) and isTrueAndComplete(/isPaperPathAndNoPaymentChoiceOrWasAutocorrected).</Description>
+      <Derived>
+        <All>
+          <All>
+            <IsComplete>
+              <Dependency path="/cannotFindPinOrAgi" />
+            </IsComplete>
+            <Dependency path="/cannotFindPinOrAgi" />
+          </All>
+          <All>
+            <IsComplete>
+              <Dependency path="/isPaperPathAndNoPaymentChoiceOrWasAutocorrected" />
+            </IsComplete>
+            <Dependency path="/isPaperPathAndNoPaymentChoiceOrWasAutocorrected" />
+          </All>
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGate3ad38b9d">
+      <Description>Screen gate: isTrue(/spouseCannotFindPinOrAgi) and isTrueAndComplete(/isPaperPathAndNoPaymentChoiceOrWasAutocorrected).</Description>
+      <Derived>
+        <All>
+          <All>
+            <IsComplete>
+              <Dependency path="/spouseCannotFindPinOrAgi" />
+            </IsComplete>
+            <Dependency path="/spouseCannotFindPinOrAgi" />
+          </All>
+          <All>
+            <IsComplete>
+              <Dependency path="/isPaperPathAndNoPaymentChoiceOrWasAutocorrected" />
+            </IsComplete>
+            <Dependency path="/isPaperPathAndNoPaymentChoiceOrWasAutocorrected" />
+          </All>
+        </All>
+      </Derived>
+    </Fact>
+
     <Fact path="/flowGate770df59e">
       <Description>Screen gate: isTrue(/owesBalance) and isFalseOrIncomplete(/isPaperPathAndHasSeenPaymentPaperPathAssertion).</Description>
       <Derived>
@@ -13620,6 +17982,18 @@
               <Dependency path="/isPaperPathAndHasSeenPaymentPaperPathAssertion" />
             </Not>
           </Any>
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGate6cf0e69d">
+      <Description>Screen gate: isTrue(/isPaperPath).</Description>
+      <Derived>
+        <All>
+          <IsComplete>
+            <Dependency path="/isPaperPath" />
+          </IsComplete>
+          <Dependency path="/isPaperPath" />
         </All>
       </Derived>
     </Fact>
@@ -13654,6 +18028,34 @@
       </Derived>
     </Fact>
 
+    <Fact path="/flowGate7e8efd45">
+      <Description>Screen gate: isFalseOrIncomplete(/achPaymentDateMustBeToday).</Description>
+      <Derived>
+        <Any>
+          <Not>
+            <IsComplete>
+              <Dependency path="/achPaymentDateMustBeToday" />
+            </IsComplete>
+          </Not>
+          <Not>
+            <Dependency path="/achPaymentDateMustBeToday" />
+          </Not>
+        </Any>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGate218433a9">
+      <Description>Screen gate: isTrue(/achPaymentDateMustBeToday).</Description>
+      <Derived>
+        <All>
+          <IsComplete>
+            <Dependency path="/achPaymentDateMustBeToday" />
+          </IsComplete>
+          <Dependency path="/achPaymentDateMustBeToday" />
+        </All>
+      </Derived>
+    </Fact>
+
     <Fact path="/flowGatec0944b37">
       <Description>Screen gate: isTrue(/owesBalance) and isFalseOrIncomplete(/isPaperPathAndHasSeenPaymentPaperPathAssertion) and isFalse(/payViaAch).</Description>
       <Derived>
@@ -13681,6 +18083,120 @@
             <Not>
               <Dependency path="/payViaAch" />
             </Not>
+          </All>
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGatebf975a17">
+      <Description>Screen gate: isTrue(/payViaAch).</Description>
+      <Derived>
+        <All>
+          <IsComplete>
+            <Dependency path="/payViaAch" />
+          </IsComplete>
+          <Dependency path="/payViaAch" />
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGatecd1f9f5d">
+      <Description>Screen gate: isFalse(/payViaAch).</Description>
+      <Derived>
+        <All>
+          <IsComplete>
+            <Dependency path="/payViaAch" />
+          </IsComplete>
+          <Not>
+            <Dependency path="/payViaAch" />
+          </Not>
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGate0f92e406">
+      <Description>Screen gate: isFalse(/isFilingStatusMFJ) and isFalse(/totalTaxIsHigherThanPresidentialCampaignDesignationAmount).</Description>
+      <Derived>
+        <All>
+          <All>
+            <IsComplete>
+              <Dependency path="/isFilingStatusMFJ" />
+            </IsComplete>
+            <Not>
+              <Dependency path="/isFilingStatusMFJ" />
+            </Not>
+          </All>
+          <All>
+            <IsComplete>
+              <Dependency path="/totalTaxIsHigherThanPresidentialCampaignDesignationAmount" />
+            </IsComplete>
+            <Not>
+              <Dependency path="/totalTaxIsHigherThanPresidentialCampaignDesignationAmount" />
+            </Not>
+          </All>
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGatec0d7af05">
+      <Description>Screen gate: isFalse(/isFilingStatusMFJ) and isTrue(/totalTaxIsHigherThanPresidentialCampaignDesignationAmount).</Description>
+      <Derived>
+        <All>
+          <All>
+            <IsComplete>
+              <Dependency path="/isFilingStatusMFJ" />
+            </IsComplete>
+            <Not>
+              <Dependency path="/isFilingStatusMFJ" />
+            </Not>
+          </All>
+          <All>
+            <IsComplete>
+              <Dependency path="/totalTaxIsHigherThanPresidentialCampaignDesignationAmount" />
+            </IsComplete>
+            <Dependency path="/totalTaxIsHigherThanPresidentialCampaignDesignationAmount" />
+          </All>
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGatebf74cc82">
+      <Description>Screen gate: isTrue(/isFilingStatusMFJ) and isFalse(/totalTaxIsHigherThanPresidentialCampaignDesignationAmount).</Description>
+      <Derived>
+        <All>
+          <All>
+            <IsComplete>
+              <Dependency path="/isFilingStatusMFJ" />
+            </IsComplete>
+            <Dependency path="/isFilingStatusMFJ" />
+          </All>
+          <All>
+            <IsComplete>
+              <Dependency path="/totalTaxIsHigherThanPresidentialCampaignDesignationAmount" />
+            </IsComplete>
+            <Not>
+              <Dependency path="/totalTaxIsHigherThanPresidentialCampaignDesignationAmount" />
+            </Not>
+          </All>
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGated3b41506">
+      <Description>Screen gate: isTrue(/isFilingStatusMFJ) and isTrue(/totalTaxIsHigherThanPresidentialCampaignDesignationAmount).</Description>
+      <Derived>
+        <All>
+          <All>
+            <IsComplete>
+              <Dependency path="/isFilingStatusMFJ" />
+            </IsComplete>
+            <Dependency path="/isFilingStatusMFJ" />
+          </All>
+          <All>
+            <IsComplete>
+              <Dependency path="/totalTaxIsHigherThanPresidentialCampaignDesignationAmount" />
+            </IsComplete>
+            <Dependency path="/totalTaxIsHigherThanPresidentialCampaignDesignationAmount" />
           </All>
         </All>
       </Derived>
@@ -14028,6 +18544,84 @@
       </Derived>
     </Fact>
 
+    <Fact path="/flowGatefaeec0a5">
+      <Description>Screen gate: isTrue(/owesBalance) and isTrue(/payViaAch).</Description>
+      <Derived>
+        <All>
+          <All>
+            <IsComplete>
+              <Dependency path="/owesBalance" />
+            </IsComplete>
+            <Dependency path="/owesBalance" />
+          </All>
+          <All>
+            <IsComplete>
+              <Dependency path="/payViaAch" />
+            </IsComplete>
+            <Dependency path="/payViaAch" />
+          </All>
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGate7b18acfe">
+      <Description>Screen gate: isTrue(/owesBalance) and isFalse(/payViaAch) and isFalse(/isAfterTaxDay).</Description>
+      <Derived>
+        <All>
+          <All>
+            <IsComplete>
+              <Dependency path="/owesBalance" />
+            </IsComplete>
+            <Dependency path="/owesBalance" />
+          </All>
+          <All>
+            <IsComplete>
+              <Dependency path="/payViaAch" />
+            </IsComplete>
+            <Not>
+              <Dependency path="/payViaAch" />
+            </Not>
+          </All>
+          <All>
+            <IsComplete>
+              <Dependency path="/isAfterTaxDay" />
+            </IsComplete>
+            <Not>
+              <Dependency path="/isAfterTaxDay" />
+            </Not>
+          </All>
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGatea12a0f4e">
+      <Description>Screen gate: isTrue(/owesBalance) and isFalse(/payViaAch) and isTrue(/isAfterTaxDay).</Description>
+      <Derived>
+        <All>
+          <All>
+            <IsComplete>
+              <Dependency path="/owesBalance" />
+            </IsComplete>
+            <Dependency path="/owesBalance" />
+          </All>
+          <All>
+            <IsComplete>
+              <Dependency path="/payViaAch" />
+            </IsComplete>
+            <Not>
+              <Dependency path="/payViaAch" />
+            </Not>
+          </All>
+          <All>
+            <IsComplete>
+              <Dependency path="/isAfterTaxDay" />
+            </IsComplete>
+            <Dependency path="/isAfterTaxDay" />
+          </All>
+        </All>
+      </Derived>
+    </Fact>
+
     <Fact path="/flowGate64c67cdc">
       <Description>Screen gate: isTrue(/spouseCannotFindPinOrAgi).</Description>
       <Derived>
@@ -14052,16 +18646,72 @@
       </Derived>
     </Fact>
 
-    <Fact path="/flowGateaecf3df1">
-      <Description>Screen gate: isFalse(/isFilingStatusMFJ).</Description>
+    <Fact path="/flowGatea9da6849">
+      <Description>Screen gate: isFalse(/dueRefund) and isFalse(/zeroBalance).</Description>
+      <Derived>
+        <All>
+          <All>
+            <IsComplete>
+              <Dependency path="/dueRefund" />
+            </IsComplete>
+            <Not>
+              <Dependency path="/dueRefund" />
+            </Not>
+          </All>
+          <All>
+            <IsComplete>
+              <Dependency path="/zeroBalance" />
+            </IsComplete>
+            <Not>
+              <Dependency path="/zeroBalance" />
+            </Not>
+          </All>
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGate38ad7107">
+      <Description>Screen gate: isTrue(/dueRefund) and isFalse(/zeroBalance).</Description>
+      <Derived>
+        <All>
+          <All>
+            <IsComplete>
+              <Dependency path="/dueRefund" />
+            </IsComplete>
+            <Dependency path="/dueRefund" />
+          </All>
+          <All>
+            <IsComplete>
+              <Dependency path="/zeroBalance" />
+            </IsComplete>
+            <Not>
+              <Dependency path="/zeroBalance" />
+            </Not>
+          </All>
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGateeb628514">
+      <Description>Screen gate: isTrue(/isUsingBankAccountToPay).</Description>
       <Derived>
         <All>
           <IsComplete>
-            <Dependency path="/isFilingStatusMFJ" />
+            <Dependency path="/isUsingBankAccountToPay" />
           </IsComplete>
-          <Not>
-            <Dependency path="/isFilingStatusMFJ" />
-          </Not>
+          <Dependency path="/isUsingBankAccountToPay" />
+        </All>
+      </Derived>
+    </Fact>
+
+    <Fact path="/flowGateef150804">
+      <Description>Screen gate: isTrue(/isResubmitting).</Description>
+      <Derived>
+        <All>
+          <IsComplete>
+            <Dependency path="/isResubmitting" />
+          </IsComplete>
+          <Dependency path="/isResubmitting" />
         </All>
       </Derived>
     </Fact>

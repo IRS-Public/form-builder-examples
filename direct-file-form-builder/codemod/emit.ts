@@ -32,8 +32,12 @@
  *     make transpile   (or: node codemod/emit.ts [flow-config.json] [target resources dir])
  */
 import { writeFileSync, mkdirSync, readFileSync, readdirSync, unlinkSync } from 'fs';
-import { resolve, join } from 'path';
-import { GateSet, renderGateFacts, type RawScreenCondition, type ScreenGate } from './gates.ts';
+import { dirname, resolve, join } from 'path';
+import { ALWAYS_TRUE_PATH, GateSet, renderGateFacts, type RawScreenCondition, type ScreenGate } from './gates.ts';
+import { FactTypes } from './fact-types.ts';
+import type { Block, ContentReport, Inline, ModalDialog, ScreenContent } from './content.ts';
+import { renderCoverage } from './coverage.ts';
+import { plainText, renderBlocks, renderInline, renderModals, xmlAttr as attr, type RenderContext } from './render.ts';
 
 interface ExtractedScreen {
   route: string;
@@ -118,12 +122,28 @@ function declaredFactPaths(factsDir: string): Set<string> {
   return paths;
 }
 
-/** `/primaryFiler/x` is a `<Find>` over `/filers`, so the fact it reaches is declared as `/filers/*\/x`. */
-function dictionaryPath(path: string): string {
-  for (const alias of [`/primaryFiler/`, `/secondaryFiler/`]) {
-    if (path.startsWith(alias)) return `/filers/*/${path.slice(alias.length)}`;
+/**
+ * Whether the dictionary can reach a path — directly, or through a fact that stands for a collection
+ * item.
+ *
+ * `/primaryFiler/hasIpPin` is not declared anywhere: `/primaryFiler` is a `<Find>` over `/filers`,
+ * and what is declared is `/filers/*\/hasIpPin`. The same shape appears without the alias being at
+ * the root — `/formW2s/*\/filer/isPrimaryFiler` reads through `/formW2s/*\/filer`, and
+ * `/firstHohQP/isClaimedDependent` through `/firstHohQP`. So the rule is: a path is reachable if it
+ * is declared, or if some prefix of it is.
+ *
+ * That prefix rule is deliberately weaker than an exact match, and worth being honest about: a typo
+ * *after* a valid alias passes this check and fails in the Fact Graph instead. What this exists to
+ * catch is a path whose root does not exist at all, which is the failure that otherwise surfaces
+ * several frames from anything naming the flow condition that caused it.
+ */
+function isDeclared(path: string, declared: Set<string>): boolean {
+  if (declared.has(path)) return true;
+  const segments = path.split(`/`);
+  for (let end = segments.length - 1; end > 1; end--) {
+    if (declared.has(segments.slice(0, end).join(`/`))) return true;
   }
-  return path;
+  return false;
 }
 
 /**
@@ -168,19 +188,14 @@ function workspaceFactPaths(resourcesDir: string): string[] {
   return [...readFileSync(file, `utf8`).matchAll(/'(\/[A-Za-z][A-Za-z0-9]*)'/g)].map((m) => m[1]);
 }
 
-function xmlAttr(value: string): string {
-  return value.replace(/&/g, `&amp;`).replace(/</g, `&lt;`).replace(/>/g, `&gt;`).replace(/"/g, `&quot;`);
-}
+const xmlAttr = attr;
 
-function xmlText(value: string): string {
-  return value.replace(/&/g, `&amp;`).replace(/</g, `&lt;`).replace(/>/g, `&gt;`);
-}
-
-/** The component types on a screen, with repeats counted: `LimitingString ×3`. */
-function componentSummary(screen: ExtractedScreen): string {
-  const counts = new Map<string, number>();
-  for (const c of screen.content) counts.set(c.componentName, (counts.get(c.componentName) ?? 0) + 1);
-  return [...counts].map(([name, n]) => (n === 1 ? name : `${name} ×${n}`)).join(`, `);
+/** The content stage 4 resolved, keyed by screen route. Written beside flow-config.json. */
+interface Content {
+  screens: Record<string, ScreenContent>;
+  /** Direct File's short nav label per sub-subcategory route. See resolveContent in extract.ts. */
+  subSubcategoryTitles: Record<string, string>;
+  report: ContentReport;
 }
 
 interface Manifest {
@@ -190,7 +205,15 @@ interface Manifest {
   droppedPages: { page: string; because: string }[];
   /** Every content component type met, and how many screens carry it. Stage 4's worklist. */
   componentTypes: Record<string, number>;
-  /** Constructs stage 2 records rather than expresses, each with where it will be handled. */
+  /** What stage 4 could not resolve or could not express, with counts. */
+  content: {
+    missingKeys: number;
+    unhandledInline: Record<string, number>;
+    flattenedOptionLabels: number;
+    render: Record<string, number>;
+    screensWithoutContent: string[];
+  };
+  /** Constructs the transpiler records rather than expresses, each with where it will be handled. */
   deferred: Record<string, string>;
   gates: { total: number; rootScoped: number; collectionScoped: number; sharedByMoreThanOneScreen: number };
 }
@@ -303,6 +326,74 @@ function planLoops(extracted: Extracted): Map<string, LoopPlan> {
   return plans;
 }
 
+const WILDCARD = /^(\/[A-Za-z0-9]+)\/\*\//;
+
+/**
+ * Put every fact path in a screen's content into a scope the page can resolve.
+ *
+ * The rewrite is `gates.ts`'s `scopePath`, applied to the paths the content names rather than the
+ * paths its conditions do — and it is needed for the same reason. `configureCollectionIds` rewrites
+ * `/*\/` only inside an `<fg-collection>`; a wildcard path on a page with no collection has no item
+ * to resolve against. Direct File resolves those from the screen's `collectionContext`, which for
+ * all 52 of them is `/primaryFiler` or `/secondaryFiler` — `<Find>` facts returning one filer.
+ *
+ * Anything else is left alone and counted: leaving it is what makes the failure visible in the build
+ * rather than silently pointing at the wrong item.
+ */
+function rewritePaths(
+  blocks: Block[],
+  screen: ExtractedScreen,
+  loopCollection: string | null,
+  counts: Record<string, number>
+): Block[] {
+  const rewrite = (path: string): string => {
+    const match = WILDCARD.exec(path);
+    if (!match) return path;
+    // Inside a collection, any wildcard resolves: `configureCollectionIds` rewrites every `/*\/` on
+    // the cloned item regardless of which collection names it, and a derived collection's ids are
+    // the underlying collection's — which is what makes `/filers/*\/x` correct inside
+    // `<fg-collection path="/filersWithHsa">`.
+    if (loopCollection !== null) return path;
+    const filer = screen.collectionContext;
+    if (match[1] === `/filers` && (filer === `/primaryFiler` || filer === `/secondaryFiler`)) {
+      return path.replace(WILDCARD, `${filer}/`);
+    }
+    counts[`wildcardPathsWithNoItem`] = (counts[`wildcardPathsWithNoItem`] ?? 0) + 1;
+    return path;
+  };
+
+  const walk = (node: unknown): unknown => {
+    if (Array.isArray(node)) return node.map(walk);
+    if (node === null || typeof node !== `object`) return node;
+    const out: Record<string, unknown> = {};
+    for (const [key, value] of Object.entries(node)) {
+      out[key] = key === `path` || key === `source` ? rewrite(value as string) : walk(value);
+    }
+    return out;
+  };
+  return walk(blocks) as Block[];
+}
+
+/**
+ * Mark a knockout screen's first alert as one.
+ *
+ * `knockout="true"` is what makes `<fg-alert>` block navigation, which is the whole of what Direct
+ * File's `isKnockout` plus its `KnockoutButton` did — the button only ever went back. The first alert
+ * is the message; a knockout screen with none keeps its content and simply does not block, which is
+ * counted rather than papered over.
+ */
+function withKnockout(blocks: Block[], isKnockout: boolean): Block[] {
+  if (!isKnockout) return blocks;
+  const first = blocks.findIndex((block) => block.k === `alert`);
+  if (first === -1) return blocks;
+  return blocks.map((block, i) => (i === first ? { ...block, knockout: true, type: `error` } : block)) as Block[];
+}
+
+/** Whether two runs of inline nodes say the same thing, for the heading-as-label case. */
+function sameInline(a: Inline[], b: Inline[]): boolean {
+  return JSON.stringify(a) === JSON.stringify(b);
+}
+
 /** `/cdccQualifyingPeople` → `cdcc qualifying people`. A placeholder; see `itemNameFor` in extract.ts. */
 function humanizeCollection(collectionName: string): string {
   return collectionName
@@ -312,7 +403,7 @@ function humanizeCollection(collectionName: string): string {
     .toLowerCase();
 }
 
-function emit(extracted: Extracted, resourcesDir: string) {
+function emit(extracted: Extracted, content: Content, resourcesDir: string) {
   const { screens, pages } = extracted;
 
   const loops = planLoops(extracted);
@@ -330,38 +421,120 @@ function emit(extracted: Extracted, resourcesDir: string) {
   const droppedPages: { page: string; because: string }[] = [];
   const componentTypes = new Map<string, number>();
   const knockouts: string[] = [];
+  let screensEmitted = 0;
+  const renderCounts: Record<string, number> = {};
+  /** Screen routes with no resolved content, which would be a stage-4 gap rather than an empty screen. */
+  const screensWithoutContent: string[] = [];
+  /**
+   * Screen route → the gate that decides whether it shows, for `verify-visibility.ts`.
+   *
+   * `null` is always shown, `false` is folded away in this port, a string is the gate fact's path.
+   * Written out because the check that the gates say what Direct File's conditions say cannot be
+   * made by reading the XML: it needs the mapping the emitter had while it was deciding.
+   */
+  const screenGates: Record<string, string | null | false> = {};
 
   /** subcategory route → the XML of its pages, in order. */
   const modules = new Map<string, string[]>();
+  /** Modals the current page's screens named, by id, so two screens share one dialog. */
+  let pageModals = new Map<string, ModalDialog>();
 
-  /** One screen as a `<div class="df-screen">`, or null if its conditions fold to false. */
+  /**
+   * One screen as a `<div class="df-screen">`, or null if its conditions fold to false.
+   *
+   * The div carries the screen's own gate; everything inside it is stage 4's content. A content
+   * declaration may carry conditions of its own on top of the screen's, and those become their own
+   * gate in the same scope — which is why the gate context is rebuilt here rather than passed down.
+   */
   function screenBlock(screen: ExtractedScreen, loopCollection: string | null, indent: string): string | null {
     for (const c of screen.content) componentTypes.set(c.componentName, (componentTypes.get(c.componentName) ?? 0) + 1);
 
-    const resolved: ScreenGate = gateSet.resolve(screen.conditions, {
+    const gateContext = {
       collectionContext: screen.collectionContext,
       loopCollection,
       screenRoute: screen.screenRoute,
-    });
+    };
+    const resolved: ScreenGate = gateSet.resolve(screen.conditions, gateContext);
+    screenGates[screen.screenRoute] =
+      resolved.kind === `never` ? false : resolved.kind === `always` ? null : resolved.gate.conditionPath;
     if (resolved.kind === `never`) return null;
     if (screen.isKnockout) knockouts.push(screen.screenRoute);
+
+    const context: RenderContext = {
+      gate: (conditions) => {
+        if (conditions.length === 0) return null;
+        const own = gateSet.resolve(conditions as RawScreenCondition[], { ...gateContext, recordDropped: false });
+        return own.kind === `never` ? false : own.kind === `always` ? null : own.gate.conditionPath;
+      },
+      alwaysTrue: () => gateSet.alwaysTrue(),
+      screenRoute: screen.screenRoute,
+      counts: renderCounts,
+    };
+
+    const resolvedContent = content.screens[screen.screenRoute];
+    if (resolvedContent === undefined) {
+      screensWithoutContent.push(screen.screenRoute);
+      return null;
+    }
+    for (const modal of resolvedContent.modals) if (!pageModals.has(modal.id)) pageModals.set(modal.id, modal);
+
+    const blocks = rewritePaths(withKnockout(resolvedContent.blocks, screen.isKnockout), screen, loopCollection, renderCounts);
+    screensEmitted += 1;
+    const body = [
+      ...renderSetActions(screen, indent, context),
+      ...renderBlocks(blocks, `${indent}  `, context),
+    ];
+
+    // The heading is dropped when the screen's only content is the one question that borrowed it —
+    // Direct File's `labelledBy: 'heading'`, where the heading *is* the label. Rendering both would
+    // ask the same thing twice.
+    const heading = resolvedContent.heading;
+    const borrowed = blocks.length === 1 && blocks[0].k === `set` && sameInline(blocks[0].question, heading ?? []);
+    const headingXml =
+      heading === null || borrowed ? [] : [`${indent}  <h2>${renderInline(heading)}</h2>`];
 
     const gateAttrs =
       resolved.kind === `gate` ? ` condition="${xmlAttr(resolved.gate.conditionPath)}" operator="isTrue"` : ``;
     const classes = screen.isKnockout ? `df-screen df-knockout` : `df-screen`;
+    const inner = [...headingXml, ...body];
+    if (inner.length === 0) return null;
 
-    return (
-      `${indent}<div class="${classes}"${gateAttrs}>\n` +
-      `${indent}  <h2>${xmlText(screen.route)}</h2>\n` +
-      `${indent}  <p>${xmlText(componentSummary(screen))}</p>\n` +
-      `${indent}</div>`
-    );
+    return `${indent}<div class="${classes}"${gateAttrs}>\n${inner.join(`\n`)}\n${indent}</div>`;
+  }
+
+  /**
+   * `<SetFactAction>`, as `<fg-apply source>`.
+   *
+   * `source` is a fact path, or one of two names that are not facts: `df.language` (the UI language,
+   * which this port does not write into the graph) and `emptyCollection` (a literal the flow has no
+   * way to spell). Both are counted and skipped. An action with conditions of its own is emitted
+   * unconditionally when the screen has no gate to add them to — see `applyConditionsDropped`.
+   */
+  function renderSetActions(screen: ExtractedScreen, indent: string, context: RenderContext): string[] {
+    const out: string[] = [];
+    for (const raw of screen.setActions as { path: string; source: string; condition?: unknown; conditions?: unknown[] }[]) {
+      if (!raw.source.startsWith(`/`)) {
+        renderCounts[`setActionsWithoutAFactSource`] = (renderCounts[`setActionsWithoutAFactSource`] ?? 0) + 1;
+        continue;
+      }
+      const own = [...(raw.condition === undefined ? [] : [raw.condition]), ...(raw.conditions ?? [])];
+      if (own.length > 0) {
+        const gate = context.gate(own);
+        if (gate === false) continue;
+        if (gate !== null) {
+          renderCounts[`applyConditionsDropped`] = (renderCounts[`applyConditionsDropped`] ?? 0) + 1;
+        }
+      }
+      out.push(`${indent}  <fg-apply path="${xmlAttr(raw.path)}" source="${xmlAttr(raw.source)}"/>`);
+    }
+    return out;
   }
 
   for (const [i, page] of pages.entries()) {
     const anchored = anchors.get(i) ?? null;
     // Absorbed and not the anchor: these screens are emitted inside the anchor's collection.
     if (absorbed.has(i) && !anchored) continue;
+    pageModals = new Map();
 
     // The hub's own screens sit above the collection; an auto-iterating loop's anchor *is* a loop
     // page, so it has none of its own.
@@ -392,15 +565,38 @@ function emit(extracted: Extracted, resourcesDir: string) {
     const body = [...blocks, collection].filter((part) => part.length > 0).join(`\n`);
     if (body.length === 0) {
       droppedPages.push({ page: page.route, because: `every screen on it folded away` });
+      pageModals = new Map();
       continue;
     }
 
     const route = stripFlow(page.route);
-    const title = humanize(route.split(`/`).pop() ?? route);
+    // The title, in the order it is worth having.
+    //
+    // Direct File's own sub-subcategory label first — "Your basic information", the words its side
+    // nav uses — because a page is one sub-subcategory's worth of screens and that label is what
+    // names it. Then the first screen's heading, which is the sentence Direct File shows on arrival
+    // and the only name a page with no sub-subcategory has. Then the route segment, humanized.
+    //
+    // Fourteen sub-subcategories were cut into two pages each, because their screens are not
+    // contiguous in the flow, and both halves take the same label. That is what Direct File's nav
+    // shows too: the label names the topic, not the page.
+    const firstHeading = content.screens[screens[page.screenIndices[0]].screenRoute]?.heading ?? null;
+    const label = page.subSubcategoryRoute === null ? undefined : content.subSubcategoryTitles[page.subSubcategoryRoute];
+    const title =
+      label ?? (firstHeading === null ? humanize(route.split(`/`).pop() ?? route) : plainText(firstHeading));
+
+    const modals = renderModals([...pageModals.values()], `    `, {
+      gate: () => null,
+      alwaysTrue: () => gateSet.alwaysTrue(),
+      screenRoute: page.route,
+      counts: renderCounts,
+    });
+    pageModals = new Map();
 
     const xml =
       `  <page title="${xmlAttr(title)}" route="${xmlAttr(route)}">\n` +
       `    <section>\n${body}\n    </section>\n` +
+      (modals.length > 0 ? `${modals.join(`\n`)}\n` : ``) +
       `  </page>`;
 
     const slug = moduleSlug(page.subcategoryRoute);
@@ -458,7 +654,7 @@ function emit(extracted: Extracted, resourcesDir: string) {
   const unknown: string[] = [];
   for (const gate of gates) {
     for (const condition of gate.conditions) {
-      if (!declared.has(dictionaryPath(condition.path))) {
+      if (!isDeclared(condition.path, declared)) {
         unknown.push(`${condition.path} (${gate.factPath}, from ${gate.screens[0]})`);
       }
     }
@@ -470,7 +666,10 @@ function emit(extracted: Extracted, resourcesDir: string) {
     );
   }
 
-  writeFileSync(join(factsDir, GATES_FILE), renderGateFacts(gates));
+  // The dictionary, read for what each condition's fact holds. `gates.ts` needs it to write a
+  // truthiness test the Fact Graph accepts; see TRUTHINESS there for what each type turns into.
+  const factTypes = new FactTypes(factsDir, [GATES_FILE]);
+  writeFileSync(join(factsDir, GATES_FILE), renderGateFacts(gates, gateSet.needsAlwaysTrue, (p) => factTypes.kindOf(p)));
 
   // Two checks on files the transpiler does not own but whose contents it decides the shape of.
   // Both fail here, naming the key or the path, rather than shipping a page that reads wrong.
@@ -497,7 +696,7 @@ function emit(extracted: Extracted, resourcesDir: string) {
       `why, and what stage 4 still owes. An unmapped construct must never quietly vanish from 727 screens.`,
     counts: {
       screensIn: screens.length,
-      screensEmitted: screens.length - gateSet.dropped.length,
+      screensEmitted,
       pagesIn: pages.length,
       pagesEmitted,
       // Absorbed into a <fg-collection> on another page rather than dropped: the loop's screens are
@@ -511,21 +710,25 @@ function emit(extracted: Extracted, resourcesDir: string) {
     droppedScreens: gateSet.dropped,
     droppedPages,
     componentTypes: Object.fromEntries([...componentTypes].sort((a, b) => b[1] - a[1])),
+    content: {
+      missingKeys: content.report.missingKeys.length,
+      unhandledInline: content.report.unhandledInline,
+      flattenedOptionLabels: content.report.flattenedOptionLabels,
+      render: renderCounts,
+      screensWithoutContent,
+    },
     deferred: {
-      'screen content':
-        `Stage 4. Every screen currently renders its route and its component list; the 51 types in ` +
-        `componentTypes are the worklist.`,
-      'page titles': `Stage 4. Titles are the humanized route segment; the real one is the screen's Heading key.`,
-      'knockout screens':
-        `Stage 4. The ${knockouts.length} knockout screens are marked \`class="df-knockout"\` and gated ` +
-        `like any other; they become <fg-alert knockout="true"> once their content exists.`,
       'collection item names':
         `Stage 4, for ${[...anchors.values()].filter((p) => !p.itemName).length} of the ` +
         `${anchors.size} collections. The rest take the noun out of upstream's own Add control ` +
         `(\`fields.{collection}.controls.add\`). An auto-iterating loop has no such key, because ` +
         `upstream never names those items — it renders no list and no Add button over a derived ` +
         `collection — so those fall back to the humanized collection path and owe a real word.`,
-      setActions: `Stage 4. ${screens.filter((s) => s.setActions.length > 0).length} screens carry <SetFactAction>; <fg-apply> is the target.`,
+      'Spanish flow content':
+        `Not stage 4's, and not a script run. flow_es.yaml is keyed by flow_en.yaml, which the ` +
+        `scaffold regenerates from the emitted XML — so the keys exist only after a build. Direct ` +
+        `File's own es.yaml has the translations, keyed the same way its en.yaml is; what is ` +
+        `missing is the step that re-keys them. See docs/PORTING.md.`,
     },
     gates: {
       total: gates.length,
@@ -535,16 +738,25 @@ function emit(extracted: Extracted, resourcesDir: string) {
     },
   };
   writeFileSync(join(import.meta.dirname, `manifest.json`), JSON.stringify(manifest, null, 2) + `\n`);
+  writeFileSync(join(import.meta.dirname, `screen-gates.json`), JSON.stringify(screenGates, null, 2) + `\n`);
+  // Stage 5's readable half. The manifest is what a script diffs; this is what a reviewer reads.
+  writeFileSync(join(import.meta.dirname, `component-coverage.md`), renderCoverage(content.report, screens.length));
 
   return manifest;
 }
 
 const configPath = resolve(process.argv[2] ?? join(import.meta.dirname, `flow-config.json`));
 const resourcesDir = resolve(process.argv[3] ?? join(import.meta.dirname, `../src/main/resources/direct-file`));
-const manifest = emit(JSON.parse(readFileSync(configPath, `utf8`)) as Extracted, resourcesDir);
+const contentPath = join(dirname(configPath), `content.json`);
+const manifest = emit(
+  JSON.parse(readFileSync(configPath, `utf8`)) as Extracted,
+  JSON.parse(readFileSync(contentPath, `utf8`)) as Content,
+  resourcesDir
+);
 
 console.log(`wrote ${resourcesDir}/flow/ and facts/flowGates.xml`);
 for (const [name, count] of Object.entries(manifest.counts)) console.log(`  ${name.padEnd(20)} ${count}`);
 console.log(`  gates                ${manifest.gates.total} (${manifest.gates.collectionScoped} collection-scoped)`);
 console.log(`  dropped screens      ${manifest.droppedScreens.length}`);
 console.log(`  dropped pages        ${manifest.droppedPages.length}`);
+for (const [name, count] of Object.entries(manifest.content.render)) console.log(`  ${name.padEnd(20)} ${count}`);

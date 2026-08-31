@@ -4,367 +4,1369 @@
      Corrections belong in the transpiler, so the port stays reproducible against an upstream
      that is still moving. See codemod/README.md. -->
 <FlowConfig>
-  <page title="Spouse intro" route="/you-and-your-family/spouse/spouse-intro">
+  <page title="In this section, we ask questions to see if you were considered married for tax purposes in ." route="/you-and-your-family/spouse/spouse-intro">
     <section>
       <div class="df-screen">
-        <h2>spouse-intro</h2>
-        <p>ContextHeading, Heading, IntroContent, DFModal, SaveAndOrContinueButton</p>
+        <h2>In this section, we ask questions to see if you were considered married for tax purposes in <fg-show path="/taxYear"/>.</h2>
+        <p class="df-context-heading">Spouse</p>
+        <p>Marital status is the first step in determining what <strong>filing status</strong> you qualify to use this year.</p>
+        <p><modal-link for="modal-info-info-you-and-your-family-about-you-spouse-intro-difference-marital-and-filin-2a95bce4">What’s the difference between marital status and filing status?</modal-link></p>
       </div>
     </section>
+    <modal-dialog id="modal-info-info-you-and-your-family-about-you-spouse-intro-difference-marital-and-filin-2a95bce4">
+      <modal-heading>What’s the difference between marital status and filing status?</modal-heading>
+      <modal-content>
+        <p>Filing status and marital status are different things, but they’re related. Marital status is just one thing that helps you know which filing status you can use.</p>
+        <p><strong>Marital status</strong> describes the relationship that you have with another person. On your federal tax return, we ask if you are:</p>
+        <ul>
+          <li>Divorced or legally separated (determined by state law)</li>
+          <li>Married</li>
+          <li>Never married (single)</li>
+          <li>Widowed</li>
+        </ul>
+        <p><strong>Filing status</strong> is a choice you make on your federal tax return that impacts your tax rate and if you can get certain tax benefits. The filing statuses you may qualify for are:</p>
+        <ul>
+          <li>Single</li>
+          <li>Married Filing Separately</li>
+          <li>Married Filing Jointly</li>
+          <li>Head of Household</li>
+          <li>Qualifying Surviving Spouse</li>
+        </ul>
+        <p>Each filing status has its own qualification rules and can change the amount you get back or owe.</p>
+        <p><a href="$t(commonUrls.determiningFileStatus)" target="_blank">There’s more to determining filing status than being married or single. </a></p>
+      </modal-content>
+    </modal-dialog>
   </page>
 
   <page title="Your marital status" route="/you-and-your-family/spouse/your-marital-status">
     <section>
       <div class="df-screen">
-        <h2>spouse-marital-status</h2>
-        <p>DFAlert, Heading, InfoDisplay, DFModal, Enum, SaveAndOrContinueButton</p>
+        <h2>What was your marital status on December 31, <fg-show path="/taxYear"/>?</h2>
+        <fg-alert alert-key="/flow/you-and-your-family/spouse/spouse-marital-status" alert-type="warning" condition="/flowGate4ddc79e0" operator="isTrue">
+          <heading>What if I change my answer?</heading>
+          <p>This question helps us determine what filing statuses you’re eligible for. If you change your answer, your filing status could change. We’ll let you know if that happens.</p>
+        </fg-alert>
+        <p>Your marital status on the last day of the <fg-show path="/taxYear"/> tax year is your marital status for the entire tax year. Follow your state law to determine whether you were divorced or legally separated on that day.</p>
+        <p>If your spouse died in <fg-show path="/taxYear"/> or before and you didn’t remarry in <fg-show path="/taxYear"/>, answer <strong>Widowed</strong>.</p>
+        <p><modal-link for="modal-info-info-you-and-your-family-spouse-considered-married-linkmodal1">How does the IRS define being married?</modal-link></p>
+        <fg-set path="/maritalStatus">
+          <question>What was your marital status on December 31, <fg-show path="/taxYear"/>?</question>
+          <input type="enum" options-path="/maritalStatusOptions">
+            <option value="single">Never married (single)</option>
+            <option value="married">Married</option>
+            <option value="divorced">Divorced or legally separated</option>
+            <option value="widowed">Widowed</option>
+          </input>
+        </fg-set>
       </div>
       <div class="df-screen" condition="/flowGate1b52fed8" operator="isTrue">
-        <h2>registered-domestic-partner</h2>
-        <p>Heading, InfoDisplay, DFModal, Boolean, SaveAndOrContinueButton</p>
+        <h2>At any time in <fg-show path="/taxYear"/>, were you in a registered domestic partnership subject to community property laws?</h2>
+        <p>Registered domestic partners aren’t married under state law. Therefore, they’re not married for federal tax purposes either.</p>
+        <p><modal-link for="modal-info-info-you-and-your-family-spouse-what-are-community-property-laws-linkmodal1">What are community property laws?</modal-link></p>
+        <fg-set path="/inRegisteredDomesticPartnership">
+          <question>At any time in <fg-show path="/taxYear"/>, were you in a registered domestic partnership subject to community property laws?</question>
+          <input type="boolean"/>
+        </fg-set>
       </div>
       <div class="df-screen df-knockout" condition="/flowGate1a7cbe46" operator="isTrue">
-        <h2>registered-domestic-partner-ko</h2>
-        <p>IconDisplay, Heading, InfoDisplay, DFAlert, KnockoutButton</p>
+        <h2>Direct File doesn’t have the tax forms you need yet.</h2>
+        <p>Because you’re in a registered domestic partnership in <fg-show path="/filerResidenceAndIncomeState"/>, which is a community property state, you’re subject to community property laws. This means you’ll need to file Form 8958, which Direct File doesn’t support yet. Refer to <a href="https://www.irs.gov/publications/p555" target="_blank">Publication 555</a> for more information.</p>
+        <fg-alert alert-key="/flow/you-and-your-family/spouse/registered-domestic-partner-ko" alert-type="error" knockout="true" condition="/flowAlwaysTrue" operator="isTrue">
+          <heading><a href="https://www.irs.gov/filing/individuals/how-to-file" target="_blank">Find other ways to file your federal taxes.</a></heading>
+        </fg-alert>
       </div>
       <div class="df-screen" condition="/flowGateb3b267d8" operator="isTrue">
-        <h2>spouse-year-of-death</h2>
-        <p>DFAlert, Heading, InfoDisplay, Enum, SaveAndOrContinueButton</p>
+        <h2>What year did your spouse die?</h2>
+        <fg-alert alert-key="/flow/you-and-your-family/spouse/spouse-year-of-death" alert-type="warning" condition="/flowGate4ddc79e0" operator="isTrue">
+          <heading>What if I change my answer?</heading>
+          <p>This question helps us determine what filing statuses you’re eligible for. If you change your answer, your filing status could change. We’ll let you know if that happens.</p>
+        </fg-alert>
+        <p>We ask about the year because it impacts which filing status you qualify for.</p>
+        <fg-set path="/yearOfSpouseDeath">
+          <question>What year did your spouse die?</question>
+          <input type="enum" options-path="/yearOfSpouseDeathOptions">
+            <option value="taxYear"></option>
+            <option value="taxYearMinusOne"></option>
+            <option value="taxYearMinusTwo"></option>
+            <option value="beforeTaxYearMinusTwo">before</option>
+          </input>
+        </fg-set>
       </div>
       <div class="df-screen" condition="/flowGatebd567f3e" operator="isTrue">
-        <h2>spouse-widowed-entitled-mfj</h2>
-        <p>Heading, InfoDisplay, DFModal, Boolean, SaveAndOrContinueButton</p>
+        <h2>Did you qualify to file jointly with your spouse in the year they died?</h2>
+        <p>Answer <strong>Yes</strong> if you qualified to file jointly that year, even if you didn’t do so.</p>
+        <p><modal-link for="modal-info-info-you-and-your-family-spouse-how-to-know-eligible-file-jointly-linkmodal1">How do I know if I was eligible to file jointly with my spouse in the year they died?</modal-link></p>
+        <fg-set path="/canFileJointlyYearOfSpouseDeath">
+          <question>Did you qualify to file jointly with your spouse in the year they died?</question>
+          <input type="boolean"/>
+        </fg-set>
       </div>
     </section>
+    <modal-dialog id="modal-info-info-you-and-your-family-spouse-considered-married-linkmodal1">
+      <modal-heading>How does the IRS define being married?</modal-heading>
+      <modal-content>
+        <p>Many long-term partnerships are like marriage. For tax purposes, here’s what is and isn’t considered married.</p>
+        <p>You’re considered married if you’re:</p>
+        <ul>
+          <li>Married and living together</li>
+          <li>Living together in a common law marriage that’s recognized in your state or in the state where you entered into the common law marriage</li>
+          <li>Married and living apart but not legally separated under a decree of divorce or separate maintenance</li>
+          <li>Separated under an interlocutory (not final) decree of divorce</li>
+        </ul>
+        <p>You’re not considered married if you:</p>
+        <ul>
+          <li>Are in a registered domestic partnership</li>
+          <li>Are in a civil union</li>
+          <li>Obtained a final decree of divorce or separate maintenance by December 31, <fg-show path="/taxYear"/>.</li>
+          <li>Have a court decree of annulment (this also applies to past tax years as the marriage never existed)</li>
+        </ul>
+        <p><strong>What if I remarried during the tax year?</strong><br/>If you’re married to someone on December 31, <fg-show path="/taxYear"/>, then you’re considered married to them for the entire tax year.</p>
+        <p><strong>What if my spouse died?</strong><br/>If your spouse died during the tax year, you’re considered married to your deceased spouse for the entire year unless you remarried in that same year. If your spouse died in <fg-show path="/taxYear"/> or before and you didn’t remarry in <fg-show path="/taxYear"/>, answer <strong>Widowed</strong>.</p>
+        <p><strong>What if my spouse died and I remarried in the same tax year?</strong><br/>If your spouse died and you got remarried in the same tax year, you’re considered married to a different spouse. You must file a separate or joint tax return with that spouse.</p>
+        <p>Keep in mind that someone still needs to file a final federal tax return for your spouse who died. Even though you remarried, their marital status is still Married for tax purposes. Their filing status is Married Filing Separately because you are filing a federal tax return with a different spouse.</p>
+        <p><a href="https://www.irs.gov/publications/p501#en_US_2024_publink1000220722" target="_blank">Learn more about marital status.</a></p>
+      </modal-content>
+    </modal-dialog>
+    <modal-dialog id="modal-info-info-you-and-your-family-spouse-what-are-community-property-laws-linkmodal1">
+      <modal-heading>What are community property laws?</modal-heading>
+      <modal-content>
+        <p>Registered domestic partners who live in <fg-show path="/filerResidenceAndIncomeState"/> must generally follow state community property laws and report half of their combined community income.</p>
+        <p>Generally, community property in a registered domestic partnership is property:</p>
+        <ul>
+          <li>That you, your registered domestic partner, or both acquire during your registered domestic partnership while living in a community property state</li>
+          <li>That you and your registered domestic partner agreed to convert from separate to community property</li>
+          <li>That can’t be identified as separate property</li>
+        </ul>
+        <p>For more information, refer to <a href="https://www.irs.gov/publications/p555#f15103c9901" target="_blank">Table 1</a> in Publication 555.</p>
+      </modal-content>
+    </modal-dialog>
+    <modal-dialog id="modal-info-info-you-and-your-family-spouse-how-to-know-eligible-file-jointly-linkmodal1">
+      <modal-heading>How do I know if I was eligible to file jointly with my spouse in the year they died?</modal-heading>
+      <modal-content>
+        <p>Typically, taxpayers can use the <strong>Married Filing Jointly</strong> filing status if they’re considered married and agree to file a joint return.</p>
+        <p>In the year their spouse died, taxpayers are considered married to that spouse as long as they didn’t remarry by the end of the year.</p>
+        <p>Generally, taxpayers aren’t eligible to file a joint return with their spouse if either spouse is a nonresident. But if one spouse is a U.S. citizen or resident and the other is not, both spouses may <a href="https://www.irs.gov/publications/p519#en_US_2023_publink1000222193" target="_blank">choose to treat the nonresident spouse as a U.S. resident</a>. This is called a 6013(g) election.</p>
+      </modal-content>
+    </modal-dialog>
   </page>
 
-  <page title="Lived together or apart" route="/you-and-your-family/spouse/lived-together-or-apart">
+  <page title="Your living situation" route="/you-and-your-family/spouse/lived-together-or-apart">
     <section>
       <div class="df-screen" condition="/flowGatef69cf3b0" operator="isTrue">
-        <h2>spouse-live-together</h2>
-        <p>Heading, InfoDisplay, Boolean, SaveAndOrContinueButton</p>
+        <h2>Did you and your spouse live together all year in <fg-show path="/taxYear"/>?</h2>
+        <p>If you had temporary absences for things like school, vacation, work, illness, or military service, you’re still considered to be living together.</p>
+        <fg-set path="/livedTogetherAllYearWithSpouse">
+          <question>Did you and your spouse live together all year in <fg-show path="/taxYear"/>?</question>
+          <input type="boolean">
+            <option value="true">Yes, we lived together all year</option>
+            <option value="false">No, we didn’t live together all year</option>
+          </input>
+        </fg-set>
       </div>
       <div class="df-screen" condition="/flowGate188eb1c3" operator="isTrue">
-        <h2>spouse-live-together-duration</h2>
-        <p>Heading, InfoDisplay, Enum, SaveAndOrContinueButton</p>
+        <h2>How long did you and your spouse live together in <fg-show path="/taxYear"/>?</h2>
+        <p>If you had temporary absences for things like school, vacation, work, illness, or military service, you’re still considered to be living together.</p>
+        <fg-set path="/spouseLivedTogetherMonths">
+          <question>How long did you and your spouse live together in <fg-show path="/taxYear"/>?</question>
+          <input type="enum" options-path="/spouseLivedTogetherMonthsOptions">
+            <option value="livedApartAllYear">We didn’t live together at all in</option>
+            <option value="livedTogetherSixMonthsOrLess">We lived together for half the year or less ( days or less)</option>
+            <option value="livedTogetherMoreThanSixMonths">We lived together for more than half the year (more than days)</option>
+          </input>
+        </fg-set>
       </div>
       <div class="df-screen" condition="/flowGateef9f737b" operator="isTrue">
-        <h2>spouse-apart-last-6-mo</h2>
-        <p>Heading, InfoDisplay, Boolean, SaveAndOrContinueButton</p>
+        <h2>Did you and your spouse live apart for the last 6 months (July through December) of <fg-show path="/taxYear"/>?</h2>
+        <p>Temporary absences for things like school, vacation, work, illness, or military service don’t count.</p>
+        <fg-set path="/writableLivedApartLastSixMonths">
+          <question>Did you and your spouse live apart for the last 6 months (July through December) of <fg-show path="/taxYear"/>?</question>
+          <input type="boolean"/>
+        </fg-set>
       </div>
       <div class="df-screen" condition="/flowGateb0e5dcd2" operator="isTrue">
-        <h2>spouse-living-apart-sep-agreement-last-day</h2>
-        <p>Heading, Boolean, SaveAndOrContinueButton</p>
+        <fg-set path="/writableSeparationAgreement">
+          <question>On December 31, <fg-show path="/taxYear"/>, were you living apart and did you have a written separation agreement or decree that requires one spouse to make payments for the support or maintenance of the other spouse?</question>
+          <input type="boolean">
+            <option value="true">Yes, we were living apart and had a written separation agreement or decree</option>
+            <option value="false">No, we were not living apart and/or we did not have a written separation agreement or decree</option>
+          </input>
+        </fg-set>
       </div>
     </section>
   </page>
 
-  <page title="Spouse citizenship or residency" route="/you-and-your-family/spouse/spouse-citizenship-or-residency">
+  <page title="Spouse’s citizenship or residency" route="/you-and-your-family/spouse/spouse-citizenship-or-residency">
     <section>
       <div class="df-screen" condition="/flowGatef69cf3b0" operator="isTrue">
-        <h2>spouse-citizenship</h2>
-        <p>Heading, DFModal, Boolean, SaveAndOrContinueButton</p>
+        <h2>Was your spouse a U.S. citizen for all of <fg-show path="/taxYear"/>?</h2>
+        <p><modal-link for="modal-info-info-you-and-your-family-spouse-why-citizenship-linkmodal1">Why do we ask about citizenship?</modal-link></p>
+        <fg-set path="/secondaryFiler/isUsCitizenFullYear">
+          <question>Was your spouse a U.S. citizen for all of <fg-show path="/taxYear"/>?</question>
+          <input type="boolean"/>
+        </fg-set>
       </div>
       <div class="df-screen" condition="/flowGate3a39b647" operator="isTrue">
-        <h2>spouse-citizen-by-end-ty</h2>
-        <p>Heading, DFModal, InfoDisplay, Boolean, SaveAndOrContinueButton</p>
+        <h2>In <fg-show path="/taxYear"/>, did your spouse start the year with U.S. resident status and end the year with U.S. citizen status?</h2>
+        <p><modal-link for="modal-info-info-you-and-your-family-what-is-us-resident-linkmodal1">What does it mean to be a U.S. resident?</modal-link></p>
+        <p>Review the rules for <a href="https://www.irs.gov/individuals/international-taxpayers/residency-starting-and-ending-dates" target="_blank">residency starting dates</a> to understand when your spouse’s tax residency began.</p>
+        <p>Answer <strong>no</strong> if your spouse was a <a href="https://www.irs.gov/individuals/international-taxpayers/taxation-of-dual-status-individuals" target="_blank">nonresident for any part of the year</a> or is claiming <a href="https://www.irs.gov/individuals/international-taxpayers/tax-treaties" target="_blank">income tax treaty</a> benefits as a resident of another country.</p>
+        <fg-set path="/secondaryFiler/writableCitizenAtEndOfTaxYear">
+          <question>In <fg-show path="/taxYear"/>, did your spouse start the year with U.S. resident status and end the year with U.S. citizen status?</question>
+          <input type="boolean"/>
+        </fg-set>
       </div>
       <div class="df-screen" condition="/flowGate7200f3d9" operator="isTrue">
-        <h2>spouse-residency</h2>
-        <p>Heading, DFModal ×2, InfoDisplay, Boolean, SaveAndOrContinueButton</p>
+        <h2>For tax purposes, was your spouse a U.S. resident for all of <fg-show path="/taxYear"/>?</h2>
+        <p><modal-link for="modal-info-info-you-and-your-family-what-is-us-resident-linkmodal1">What does it mean to be a U.S. resident?</modal-link></p>
+        <p>Answer <strong>yes</strong> if your spouse has an <modal-link for="modal-info-info-you-and-your-family-spouse-an-election-linkmodal1">active IRS election</modal-link> to be treated as a resident for tax purposes that was made in <fg-show path="/lastTaxYear"/> or before.</p>
+        <p>Answer <strong>no</strong> if your spouse was a <a href="https://www.irs.gov/individuals/international-taxpayers/taxation-of-dual-status-individuals" target="_blank">nonresident for any part of the year</a>.</p>
+        <fg-set path="/secondaryFiler/writableIsNoncitizenResidentFullYear">
+          <question>For tax purposes, was your spouse a U.S. resident for all of <fg-show path="/taxYear"/>?</question>
+          <input type="boolean"/>
+        </fg-set>
       </div>
       <div class="df-screen" condition="/flowGate0cd9651d" operator="isTrue">
-        <h2>spouse-national</h2>
-        <p>Heading, DFModal, Boolean, SaveAndOrContinueButton</p>
+        <h2>Was your spouse a U.S. national for all of <fg-show path="/taxYear"/>?</h2>
+        <p><modal-link for="modal-info-info-you-and-your-family-what-is-a-national-linkmodal1">What does it mean to be a U.S. national?</modal-link></p>
+        <fg-set path="/secondaryFiler/writableIsNational">
+          <question>Was your spouse a U.S. national for all of <fg-show path="/taxYear"/>?</question>
+          <input type="boolean"/>
+        </fg-set>
       </div>
     </section>
+    <modal-dialog id="modal-info-info-you-and-your-family-spouse-why-citizenship-linkmodal1">
+      <modal-heading>Why do we ask about your spouse’s citizenship?</modal-heading>
+      <modal-content>
+        <p>Federal income tax responsibilities and procedures can differ depending on whether or not you’re a U.S. citizen.</p>
+        <p>To ensure you submit the correct tax information, we need to know <a href="https://www.irs.gov/individuals/international-taxpayers/tax-information-and-responsibilities-for-new-immigrants-to-the-united-states" target="_blank">your spouse’s citizenship status</a></p>
+      </modal-content>
+    </modal-dialog>
+    <modal-dialog id="modal-info-info-you-and-your-family-what-is-us-resident-linkmodal1">
+      <modal-heading>What does it mean to be a U.S. resident?</modal-heading>
+      <modal-content>
+        <p>A U.S. resident’s income is generally subject to tax in the same manner as a U.S. citizen. <a href="https://www.irs.gov/individuals/international-taxpayers/determining-an-individuals-tax-residency-status" target="_blank">Learn about tax residency status.</a></p>
+        <p>For tax purposes, you’re a U.S. resident if either of these apply to you:</p>
+        <ul>
+          <li>You meet the green card test or the substantial presence test for the calendar year (January 1 – December 31). Review the rules for <a href="https://www.irs.gov/individuals/international-taxpayers/residency-starting-and-ending-dates" target="_blank">residency starting dates for these tests</a> to understand when your tax residency began.</li>
+          <li>You have an active election with the IRS to treat a nonresident spouse as a resident for tax
+purposes.</li>
+        </ul>
+        <p>Direct File only supports an election of this kind for taxpayers who in <fg-show path="/lastTaxYear"/> (or before) <a href="https://www.irs.gov/individuals/international-taxpayers/nonresident-spouse" target="_blank">filed a joint return with an attachment stating their choice</a> to treat the nonresident spouse as a resident for tax purposes.</p>
+        <p><strong>What if I’m a U.S. resident and a resident of another country?</strong><br/>If you are a resident of both the United States and another country under each country’s tax laws, you are a dual resident taxpayer.</p>
+        <p>Dual resident taxpayers may be able to claim benefits under an <a href="https://www.irs.gov/individuals/international-taxpayers/tax-treaties" target="_blank">income tax treaty</a>. However, Direct File doesn’t currently support federal tax return filings for dual resident taxpayers. If you are a dual resident taxpayer, you will need to file your federal tax return using another method to claim tax treaty benefits.</p>
+        <p>To claim treaty benefits as a resident of the other country, you must file a federal tax return using <a href="https://www.irs.gov/forms-pubs/about-form-1040-nr" target="_blank">Form 1040NR</a> and attach <a href="https://www.irs.gov/forms-pubs/about-form-8833" target="_blank">Form 8833</a>.</p>
+      </modal-content>
+    </modal-dialog>
+    <modal-dialog id="modal-info-info-you-and-your-family-spouse-an-election-linkmodal1">
+      <modal-heading>An election to be treated as a resident for tax purposes</modal-heading>
+      <modal-content>
+        <p>If a <a href="https://www.irs.gov/individuals/international-taxpayers/taxation-of-nonresident-aliens" target="_blank">nonresident</a> is married to a U.S. citizen or <a href="https://www.irs.gov/publications/p519#en_US_2023_publink1000222118" target="_blank">U.S. resident</a>, the spouses can elect to have IRS treat the nonresident spouse as a resident for tax purposes.</p>
+        <p>Direct File only supports an election of this kind for taxpayers who in <fg-show path="/lastTaxYear"/> (or before) <a href="https://www.irs.gov/individuals/international-taxpayers/nonresident-spouse" target="_blank">filed a joint return with an attachment stating their choice</a> to treat the nonresident spouse as a resident for tax purposes.</p>
+        <p>Under this option, IRS treats the nonresident spouse as a resident starting in the tax year in which the spouses first file their choice. In the following years, unless the election has been <a href="https://www.irs.gov/publications/p519#en_US_2023_publink1000222198" target="_blank">suspended or ended</a>, IRS will automatically treat the nonresident spouse as a U.S. resident for tax purposes.</p>
+        <p><a href="https://www.irs.gov/publications/p519#en_US_2023_publink1000222193" target="_blank">Learn more about a nonresident spouse treated as a U.S. resident.</a></p>
+        <p><strong>Making the choice</strong><br/><a href="https://www.irs.gov/publications/p519#en_US_2023_publink1000222196" target="_blank">To make this election with the IRS</a>, spouses must attach a signed statement to their joint federal tax return. Direct File doesn’t yet support attachments and can’t be used to file this choice with IRS. To make this choice, <a href="https://www.irs.gov/filing/individuals/how-to-file" target="_blank">find other ways to file your federal taxes</a>.</p>
+        <p><strong>If spouses have already filed this election</strong><br/>Spouses can use Direct File to file their federal tax return if both of these statements are true:</p>
+        <ul>
+          <li>The spouses filed this election with IRS in a past tax year</li>
+          <li>The election is still active (not <a href="https://www.irs.gov/publications/p519#en_US_2023_publink1000222198" target="_blank">suspended or ended</a>)</li>
+        </ul>
+      </modal-content>
+    </modal-dialog>
+    <modal-dialog id="modal-info-info-you-and-your-family-what-is-a-national-linkmodal1">
+      <modal-heading>What does it mean to be a U.S. national?</modal-heading>
+      <modal-content>
+        <p>A U.S. national is someone who owes their allegiance to the United States but is not a U.S. citizen. This includes</p>
+        <ul>
+          <li>people born on American Samoa and Swains Island</li>
+          <li>people born of a parent or parents who are non-citizen nationals who meet certain physical presence
+or residence requirements</li>
+          <li>certain inhabitants of the Northern Mariana Islands who opted for non-citizen national status.</li>
+        </ul>
+        <p><strong>U.S. nationals and taxes</strong><br/>Depending on the situation, a U.S. national may need to file a U.S. tax return only, a territory tax return only, or both. Generally, this depends on whether the person is a <a href="https://www.irs.gov/publications/p570#en_US_2023_publink1000221159" target="_blank">bona fide resident</a> of the territory.</p>
+        <p>Direct File supports people filing a U.S. tax return and may be used by U.S. nationals who are full-year U.S. residents for tax purposes.</p>
+        <p><a href="https://www.irs.gov/publications/p570" target="_blank">Learn about tax filing for people from U.S. territories.</a></p>
+      </modal-content>
+    </modal-dialog>
   </page>
 
-  <page title="Filing status" route="/you-and-your-family/spouse/filing-status">
+  <page title="Your filing status" route="/you-and-your-family/spouse/filing-status">
     <section>
       <div class="df-screen" condition="/flowGate89201935" operator="isTrue">
-        <h2>filing-status-choice-a</h2>
-        <p>IconDisplay, Heading, InfoDisplay, DFModal ×2, Enum, SaveAndOrContinueButton</p>
+        <h2>Based on your answers, you qualify for more than one filing status.</h2>
+        <p>Choose a filing status now or see if you qualify for Head of Household filing status. You can still change this before submitting your federal tax return.</p>
+        <p><modal-link for="modal-info-info-you-and-your-family-spouse-learn-about-filing-status-i-may-qualify-for--5370e100">Learn more about the filing statuses I may qualify for</modal-link></p>
+        <p><modal-link for="modal-info-info-you-and-your-family-spouse-what-to-consider-when-mfj-or-mfs-linkmodal1">What should I consider when deciding to file jointly or file separately?</modal-link></p>
+        <fg-set path="/filingStatusChoice">
+          <question>Based on your answers, you qualify for more than one filing status.</question>
+          <input type="enum" options-path="/filingStatusInitialOptions">
+            <option value="wantsMarriedFilingJointly">Use Married Filing Jointly filing status</option>
+            <option value="wantsMarriedFilingSeparately">Use Married Filing Separately filing status</option>
+            <option value="wantsToSeeIfTheyQualifyHeadOfHousehold">See if I qualify for Head of Household filing status</option>
+          </input>
+        </fg-set>
       </div>
       <div class="df-screen" condition="/flowGate8b44cc81" operator="isTrue">
-        <h2>filing-status-choice-b</h2>
-        <p>IconDisplay, Heading, InfoDisplay, DFAlert, Enum, SaveAndOrContinueButton</p>
+        <h2>You and your spouse qualify to use the Married Filing Jointly or Married Filing Separately filing statuses.</h2>
+        <p>You qualify for both because you were <fg-show path="/maritalStatus"/> on the last day of <fg-show path="/taxYear"/>.</p>
+        <p>Choose your filing status now. This choice is important because it will impact how much money you get back or owe.</p>
+        <fg-alert alert-key="/flow/you-and-your-family/spouse/filing-status-choice-b" alert-type="info" condition="/flowAlwaysTrue" operator="isTrue">
+          <heading>Married Filing Jointly filing status is generally more advantageous.</heading>
+          <p>If you and your spouse file a joint return, your tax may be lower than your combined tax for other filing statuses. This means you’ll probably get more money back or owe less. However, there are other factors to consider.</p>
+          <p><modal-link for="modal-info-info-you-and-your-family-spouse-mfj-more-advantageous-modal-linkmodal1">What should I consider when deciding to file jointly or file separately?</modal-link></p>
+        </fg-alert>
+        <fg-set path="/filingStatusChoice">
+          <question>You and your spouse qualify to use the Married Filing Jointly or Married Filing Separately filing statuses.</question>
+          <input type="enum" options-path="/filingStatusInitialOptions">
+            <option value="wantsMarriedFilingJointly">Use Married Filing Jointly filing status</option>
+            <option value="wantsMarriedFilingSeparately">Use Married Filing Separately filing status</option>
+            <option value="wantsToSeeIfTheyQualifyHeadOfHousehold">See if I qualify for Head of Household filing status</option>
+          </input>
+        </fg-set>
       </div>
     </section>
+    <modal-dialog id="modal-info-info-you-and-your-family-spouse-learn-about-filing-status-i-may-qualify-for--5370e100">
+      <modal-heading>Learn more about the filing statuses I may qualify for</modal-heading>
+      <modal-content>
+        <p>Some taxpayers are eligible for more than one filing status. Your filing status is important because it determines your income tax rate. It can also change your <a href="https://www.irs.gov/taxtopics/tc551" target="_blank">standard deduction</a> and your ability to claim certain credits.</p>
+        <p><strong>Filing statuses available to married taxpayers</strong></p>
+        <p>Generally, married taxpayers can use the Married Filing Jointly or Married Filing Separately filing statuses.</p>
+        <p>Married taxpayers may also be able to use the Head of Household filing status if they’re considered unmarried for tax purposes and have a qualifying person that meets all of the requirements for that filing status. Learn more about the <a href="https://www.irs.gov/publications/p501#en_US_2024_publink1000220775" target="_blank">requirements for Head of Household filing status.</a></p>
+        <p><strong>Comparing tax rates</strong></p>
+        <p>Your filing status helps determine your tax rate. A lower tax rate generally means that less of your income is taxed.</p>
+        <p>Tax rates are usually the lowest for the Married Filing Jointly filing status. If you qualify for the Head of Household and Married Filing Separately filing status, the tax rate for Married Filing Jointly is still usually the lowest.</p>
+        <p>Tax rates for the Head of Household filing status are usually lower than tax rates for the Married Filing Separately filing status.</p>
+        <p><strong>Other considerations</strong></p>
+        <p>There are factors other than tax rates to consider when picking a filing status. Go back and open the "What should I consider when deciding to file jointly or file separately?" link to learn more.</p>
+      </modal-content>
+    </modal-dialog>
+    <modal-dialog id="modal-info-info-you-and-your-family-spouse-what-to-consider-when-mfj-or-mfs-linkmodal1">
+      <modal-heading>What should I consider when deciding to file jointly or file separately?</modal-heading>
+      <modal-content>
+        <p>Here are a few things that can help you decide if it’s better to file jointly (using Married Filing Jointly filing status) or file separately (using Married Filing Separately filing status).</p>
+        <p><strong>Taxes on your income</strong></p>
+        <p>If you and your spouse decide to file jointly, your tax may be lower than your combined tax if you file separately. This means you’ll probably get more money back or owe less.</p>
+        <p>This is because the <a href="https://www.irs.gov/taxtopics/tc551" target="_blank">standard deduction</a> and tax brackets change when two people combine their income and expenses on a joint return. You can file a joint return even if one of you had no income or deductions.</p>
+        <p>However, filing separately can sometimes mean you pay less tax. For example, if you have high medical expenses, you may be able to deduct more of those expenses. This is because when you file separately, you’re reporting less income, which may qualify you to deduct more.</p>
+        <p><strong>Eligibility for tax benefits</strong></p>
+        <p>If you file a separate return, some credits and deductions aren’t available or can be reduced. For example, taxpayers filing separate returns are generally not eligible for the Earned Income Tax Credit (EITC) unless they have a qualifying child and are separated from their spouse. Taxpayers filing separate returns will also pay tax on more of their social security benefits.</p>
+        <p><strong>Tax responsibility</strong></p>
+        <p>If you and your spouse decide to file a joint return and one spouse doesn’t pay the tax due, the other may have to. Or, if one spouse doesn’t report the correct tax, both spouses may be responsible for any additional taxes assessed by the IRS. One spouse may be held responsible for all the tax due even if all the income was earned by the other spouse.</p>
+        <p>You may want to file separately if:</p>
+        <ul>
+          <li>You believe your spouse isn’t reporting all of their income</li>
+          <li>You don’t want to be responsible for any taxes due if your spouse doesn’t have enough tax withheld or doesn’t pay enough estimated tax</li>
+        </ul>
+        <p><strong>Outstanding liabilities</strong></p>
+        <p>If you and your spouse decide to file a joint return, all or part of your portion of the refund can be applied (offset) to your spouse’s legally enforceable past-due federal tax, state income tax, state unemployment compensation debts, child support, or a federal nontax debt, such as a student loan. If this happens, you can file <a href="https://www.irs.gov/forms-pubs/about-form-8379" target="_blank">Form 8379</a> to claim injured spouse relief to get back your share of the joint refund.</p>
+      </modal-content>
+    </modal-dialog>
+    <modal-dialog id="modal-info-info-you-and-your-family-spouse-mfj-more-advantageous-modal-linkmodal1">
+      <modal-heading>What should I consider when deciding to file jointly or file separately?</modal-heading>
+      <modal-content>
+        <p>Here are a few things that can help you decide if it’s better to file jointly (using Married Filing Jointly filing status) or file separately (using Married Filing Separately filing status).</p>
+        <p><strong>Taxes on your income</strong></p>
+        <p>If you and your spouse decide to file jointly, your tax may be lower than your combined tax if you file separately. This means you’ll probably get more money back or owe less.</p>
+        <p>This is because the <a href="https://www.irs.gov/taxtopics/tc551" target="_blank">standard deduction</a> and tax brackets change when two people combine their income and expenses on a joint return. You can file a joint return even if one of you had no income or deductions.</p>
+        <p>However, filing separately can sometimes mean you pay less tax. For example, if you have high medical expenses, you may be able to deduct more of those expenses. This is because when you file separately, you’re reporting less income, which may qualify you to deduct more.</p>
+        <p><strong>Eligibility for tax benefits</strong></p>
+        <p>If you file a separate return, some credits and deductions aren’t available or can be reduced. For example, taxpayers filing separate returns are generally not eligible for the Earned Income Tax Credit (EITC) unless they have a qualifying child and are separated from their spouse. Taxpayers filing separate returns will also pay tax on more of their social security benefits.</p>
+        <p><strong>Tax responsibility</strong></p>
+        <p>If you and your spouse decide to file a joint return and one spouse doesn’t pay the tax due, the other may have to. Or, if one spouse doesn’t report the correct tax, both spouses may be responsible for any additional taxes assessed by the IRS. One spouse may be held responsible for all the tax due even if all the income was earned by the other spouse.</p>
+        <p>You may want to file separately if:</p>
+        <ul>
+          <li>You believe your spouse isn’t reporting all of their income</li>
+          <li>You don’t want to be responsible for any taxes due if your spouse doesn’t have enough tax withheld or doesn’t pay enough estimated tax</li>
+        </ul>
+        <p><strong>Outstanding liabilities</strong></p>
+        <p>If you and your spouse decide to file a joint return, all or part of your portion of the refund can be applied (offset) to your spouse’s legally enforceable past-due federal tax, state income tax, state unemployment compensation debts, child support, or a federal nontax debt, such as a student loan. If this happens, you can file <a href="https://www.irs.gov/forms-pubs/about-form-8379" target="_blank">Form 8379</a> to claim injured spouse relief to get back your share of the joint refund.</p>
+      </modal-content>
+    </modal-dialog>
   </page>
 
-  <page title="Community property ko go back" route="/you-and-your-family/spouse/community-property-ko-go-back">
+  <page title="Direct File doesn’t have the tax forms you need yet." route="/you-and-your-family/spouse/community-property-ko-go-back">
     <section>
       <div class="df-screen df-knockout" condition="/flowGate3ae00c5f" operator="isTrue">
-        <h2>community-property-ko-go-back</h2>
-        <p>IconDisplay, Heading, InfoDisplay, DFAlert, KnockoutButton</p>
+        <h2>Direct File doesn’t have the tax forms you need yet.</h2>
+        <p>Because you lived in <fg-show path="/filerResidenceAndIncomeState"/>, which is a community property state, and you’re not filing a joint return with your spouse, you’re subject to community property laws. You may need to file Form 8958, which Direct File doesn’t support yet.</p>
+        <fg-alert alert-key="/flow/you-and-your-family/spouse/community-property-ko-go-back" alert-type="error" knockout="true" condition="/flowAlwaysTrue" operator="isTrue">
+          <heading>If you want to continue filing your taxes with Direct File, you can go back and change your filing status to Married Filing Jointly.</heading>
+          <p>Otherwise, you’ll need to <a href="https://www.irs.gov/filing/individuals/how-to-file" target="_blank">find other ways to file your federal taxes</a></p>
+        </fg-alert>
       </div>
       <div class="df-screen" condition="/flowGated0cb5186" operator="isTrue">
-        <h2>add-spouse-a</h2>
-        <p>ContextHeading, Heading, InfoDisplay, SaveAndOrContinueButton</p>
+        <h2>You chose to use Married Filing Jointly filing status.</h2>
+        <p class="df-context-heading">Your spouse</p>
+        <p>To file a joint federal tax return for you and your spouse, you’ll need to add your spouse to your tax return.</p>
       </div>
     </section>
   </page>
 
-  <page title="Spouse state residency and income" route="/you-and-your-family/spouse/spouse-state-residency-and-income">
+  <page title="Spouse’s state residency and income" route="/you-and-your-family/spouse/spouse-state-residency-and-income">
     <section>
       <div class="df-screen" condition="/flowGated0cb5186" operator="isTrue">
-        <h2>spouse-state-residency-scope</h2>
-        <p>Heading, InfoDisplay, Enum, SaveAndOrContinueButton</p>
+        <h2>You said you lived in <fg-show path="/filerResidenceAndIncomeState"/> all of <fg-show path="/taxYear"/>.<br/> Where did your spouse live for all of <fg-show path="/taxYear"/>?</h2>
+        <p>We ask this because you and your spouse need to live in the same state for all of <fg-show path="/taxYear"/> to file your federal tax return with Direct File.</p>
+        <fg-set path="/spouseLivesInTPState">
+          <question>You said you lived in <fg-show path="/filerResidenceAndIncomeState"/> all of <fg-show path="/taxYear"/>.<br/> Where did your spouse live for all of <fg-show path="/taxYear"/>?</question>
+          <input type="enum" options-path="/spouseScopedStateOptions">
+            <option value="sameState">My spouse lived in for all of .</option>
+            <option value="moreThanOne">My spouse lived in more than one state in .</option>
+            <option value="noneOfTheAbove">None of these options.</option>
+          </input>
+        </fg-set>
       </div>
       <div class="df-screen" condition="/flowGate8505ea88" operator="isTrue">
-        <h2>spouse-state-income-form</h2>
-        <p>Heading, DFModal, Enum, SaveAndOrContinueButton</p>
+        <h2>If your spouse has any Forms W-2 for <fg-show path="/taxYear"/>, do any of them list a state other than <fg-show path="/filerResidenceAndIncomeState"/> in <strong>box 15</strong>?</h2>
+        <p><modal-link for="modal-info-info-you-and-your-family-spouse-supported-income-linkmodal1">Why are we being asked about states listed in box 15?</modal-link></p>
+        <fg-set path="/spouseW2And1099IntInScopedState">
+          <question>If your spouse has any Forms W-2 for <fg-show path="/taxYear"/>, do any of them list a state other than <fg-show path="/filerResidenceAndIncomeState"/> in <strong>box 15</strong>?</question>
+          <input type="enum" options-path="/spouseW2And1099IntStateOptions">
+            <option value="anotherState">Yes, box 15 lists another state besides</option>
+            <option value="onlySame">No, box 15 lists only or is blank</option>
+            <option value="noForms">My spouse won’t have Forms W-2 for</option>
+          </input>
+        </fg-set>
       </div>
       <div class="df-screen" condition="/flowGatec416bbff" operator="isTrue">
-        <h2>spouse-pfd-income</h2>
-        <p>Heading, InfoDisplay, Boolean, SaveAndOrContinueButton</p>
+        <h2>In <fg-show path="/taxYear"/>, did your spouse receive an Alaska Permanent Fund Dividend (PFD)?</h2>
+        <p>The PFD is reported on a Form-1099 MISC. The payer will be listed as the State of Alaska.</p>
+        <fg-set path="/spouseReceivedAlaskaPfd">
+          <question>In <fg-show path="/taxYear"/>, did your spouse receive an Alaska Permanent Fund Dividend (PFD)?</question>
+          <input type="boolean">
+            <option value="true">Yes, my spouse received a PFD from Alaska</option>
+            <option value="false">No, my spouse didn’t receive a PFD from Alaska</option>
+          </input>
+        </fg-set>
       </div>
       <div class="df-screen df-knockout" condition="/flowGateadcfef4f" operator="isTrue">
-        <h2>spouse-state-income-scope-ko</h2>
-        <p>IconDisplay, Heading ×2, DFAlert, KnockoutButton</p>
+        <h2>Based on where you lived or earned income in <fg-show path="/taxYear"/>, Direct File doesn’t contain the forms and information you need to help you file your taxes yet.</h2>
+        <fg-alert alert-key="/flow/you-and-your-family/spouse/spouse-state-income-scope-ko" alert-type="error" knockout="true" condition="/flowAlwaysTrue" operator="isTrue">
+          <heading><a href="https://www.irs.gov/filing/individuals/how-to-file" target="_blank">Find other ways to file your federal taxes.</a></heading>
+        </fg-alert>
+      </div>
+    </section>
+    <modal-dialog id="modal-info-info-you-and-your-family-spouse-supported-income-linkmodal1">
+      <modal-heading>Why are we being asked about states listed in box 15?</modal-heading>
+      <modal-content>
+        <p><strong>Box 15</strong> on Form W-2 lists states where taxes were withheld.</p>
+        <p>Sometimes, employers will incorrectly withhold state taxes in the state where their address is, even though you don’t live or work there. If there is a different state listed in <strong>box 15</strong> than <fg-show path="/filerResidenceAndIncomeState"/>, you and your spouse will have to file an additional form, which Direct File doesn’t support yet.</p>
+      </modal-content>
+    </modal-dialog>
+  </page>
+
+  <page title="Thanks for your confirmation. is supported by Direct File. Let’s continue." route="/you-and-your-family/spouse/spouse-you-state-scope-confirm">
+    <section>
+      <div class="df-screen" condition="/flowGated0cb5186" operator="isTrue">
+        <h2>Thanks for your confirmation. <fg-show path="/filerResidenceAndIncomeState"/> is supported by Direct File.<br/><br/>Let’s continue.</h2>
+      </div>
+      <div class="df-screen" condition="/flowGated0cb5186" operator="isTrue">
+        <h2>To add your spouse, we’ll need some information about them.</h2>
+        <p>We’ll ask for details including:</p>
+        <ul>
+          <li>Your spouse’s basic information, including their name and date of birth</li>
+          <li>Your spouse’s Social Security number (SSN) or Individual Taxpayer Identification Number (ITIN)</li>
+          <li>If your spouse can be claimed by another taxpayer as a dependent</li>
+        </ul>
       </div>
     </section>
   </page>
 
-  <page title="Spouse you state scope confirm" route="/you-and-your-family/spouse/spouse-you-state-scope-confirm">
+  <page title="Spouse’s basic information" route="/you-and-your-family/spouse/spouse-mfj-basic-info">
     <section>
       <div class="df-screen" condition="/flowGated0cb5186" operator="isTrue">
-        <h2>spouse-you-state-scope-confirm</h2>
-        <p>Heading, SaveAndOrContinueButton</p>
-      </div>
-      <div class="df-screen" condition="/flowGated0cb5186" operator="isTrue">
-        <h2>spouse-mfj-intro</h2>
-        <p>Heading, InfoDisplay, SaveAndOrContinueButton</p>
-      </div>
-    </section>
-  </page>
-
-  <page title="Spouse mfj basic info" route="/you-and-your-family/spouse/spouse-mfj-basic-info">
-    <section>
-      <div class="df-screen" condition="/flowGated0cb5186" operator="isTrue">
-        <h2>spouse-mfj-basic-info</h2>
-        <p>MefAlert ×2, Heading, InfoDisplay, DFModal ×3, LimitingString ×4, Enum, DatePicker ×2, GenericString, SaveAndOrContinueButton</p>
+        <h2>Let’s start with some basic information about your spouse.</h2>
+        <p>Fill in their name as it’s written on their Social Security card or Individual Taxpayer Identification Number (ITIN) paperwork. Using a different name could lead to delays in processing your federal tax return.</p>
+        <p><modal-link for="modal-info-info-you-and-your-family-spouse-what-if-legal-name-changed-linkmodal1">What if they changed their legal name last tax year?</modal-link></p>
+        <fg-set path="/secondaryFiler/firstName">
+          <question>First name</question>
+          <input type="text"/>
+        </fg-set>
+        <fg-set path="/secondaryFiler/writableMiddleInitial">
+          <question>Middle initial</question>
+          <input type="text"/>
+        </fg-set>
+        <fg-set path="/secondaryFiler/lastName">
+          <question>Last name</question>
+          <input type="text"/>
+        </fg-set>
+        <fg-set path="/secondaryFiler/writableSuffix">
+          <question>Suffix</question>
+          <input type="enum" options-path="/suffixOptions">
+            <option value="Sr">Sr</option>
+            <option value="Jr">Jr</option>
+            <option value="I">I</option>
+            <option value="II">II</option>
+            <option value="III">III</option>
+            <option value="IV">IV</option>
+            <option value="V">V</option>
+            <option value="VI">VI</option>
+            <option value="VII">VII</option>
+            <option value="VIII">VIII</option>
+            <option value="IX">IX</option>
+            <option value="X">X</option>
+          </input>
+        </fg-set>
+        <fg-set path="/secondaryFiler/dateOfBirth">
+          <question>Date of birth</question>
+          <input type="date"/>
+        </fg-set>
+        <fg-set path="/secondaryFilerDateOfDeath" if-true="/flowGate001603c1">
+          <question>Date of death</question>
+          <input type="date"/>
+        </fg-set>
+        <p condition="/flowGate001603c1" operator="isTrue"><modal-link for="modal-info-info-you-and-your-family-spouse-why-ask-spouses-age-linkmodal1">Why do we ask about your spouse’s age?</modal-link></p>
+        <fg-set path="/secondaryFiler/occupation">
+          <question>Occupation</question>
+          <input type="text"/>
+        </fg-set>
+        <p><modal-link for="modal-info-info-you-and-your-family-spouse-what-occupation-linkmodal1">What do I enter for occupation?</modal-link></p>
       </div>
       <div class="df-screen df-knockout" condition="/flowGate29615176" operator="isTrue">
-        <h2>spouse-age-ko</h2>
-        <p>IconDisplay, Heading, DFAlert, KnockoutButton</p>
+        <h2>Direct File doesn’t yet support filing for taxpayers who were under 16 years old at the end of <fg-show path="/taxYear"/>.</h2>
+        <fg-alert alert-key="/flow/you-and-your-family/spouse/spouse-age-ko" alert-type="error" knockout="true" condition="/flowAlwaysTrue" operator="isTrue">
+          <heading><a href="https://www.irs.gov/filing/individuals/how-to-file" target="_blank">Find other ways to file your federal taxes.</a></heading>
+        </fg-alert>
       </div>
     </section>
+    <modal-dialog id="modal-info-info-you-and-your-family-spouse-what-if-legal-name-changed-linkmodal1">
+      <modal-heading>What if they changed their legal name last tax year?</modal-heading>
+      <modal-content>
+        <p>They will need to <a href="https://www.ssa.gov/personal-record/change-name" target="_blank">report their legal name change</a> to the Social Security Administration (SSA), if they haven’t done so already. SSA will update their record and mail them a free replacement card.</p>
+        <p>The name and Social Security number used on a federal tax return must match what’s on their Social Security card. If they don’t match, there could be delays in processing your tax return and issuing any refunds.</p>
+        <p>What if their name changed since getting their ITIN?</p>
+        <p>If they have an Individual Taxpayer Identification Number (ITIN), they’ll need to report their legal name change to the IRS at the address listed under "Where do I file my Form W-7/W-7(SP)?" in the <a href="https://www.irs.gov/instructions/iw7#en_US_202311_publink54092gd0e709" target="_blank">Form W-7 Instructions</a>.</p>
+        <p>They’ll need to submit documentation to support their legal name change, such as a copy of their marriage license, divorce certificate, or other official court-related documents validating the name change.</p>
+      </modal-content>
+    </modal-dialog>
+    <modal-dialog id="modal-info-info-you-and-your-family-spouse-why-ask-spouses-age-linkmodal1">
+      <modal-heading>Why do we ask about your spouse’s age?</modal-heading>
+      <modal-content>
+        <p>If your spouse was age 65 or older when they died, then the standard deduction amount is higher.</p>
+      </modal-content>
+    </modal-dialog>
+    <modal-dialog id="modal-info-info-you-and-your-family-spouse-what-occupation-linkmodal1">
+      <modal-heading>What do I enter for occupation?</modal-heading>
+      <modal-content>
+        <p>An occupation is the job, profession, or main activity that they spend time on.</p>
+        <p>Enter a type of profession (like carpenter or teacher) or a job title.</p>
+        <p>Occupation can also describe their working situation, like:</p>
+        <ul>
+          <li>Stay at home parent</li>
+          <li>Retiree</li>
+          <li>Student</li>
+          <li>Unemployed</li>
+        </ul>
+        <p>If they have multiple occupations, enter the one from which they earned most of their income.</p>
+      </modal-content>
+    </modal-dialog>
   </page>
 
-  <page title="Spouse mfj tax id" route="/you-and-your-family/spouse/spouse-mfj-tax-id">
+  <page title="Spouse’s tax identification" route="/you-and-your-family/spouse/spouse-mfj-tax-id">
     <section>
       <div class="df-screen" condition="/flowGated0cb5186" operator="isTrue">
-        <h2>spouse-mfj-tax-id</h2>
-        <p>Heading, TaxReturnAlert, MefAlert, InfoDisplay, DFModal, Tin, SaveAndOrContinueButton</p>
+        <h2>What’s <fg-show path="/secondaryFiler/firstName"/>’s Social Security number?</h2>
+        <p>They can use either one of these:</p>
+        <ul>
+          <li>A Social Security number (SSN)</li>
+          <li>Individual Taxpayer Identification Number (ITIN) issued by the IRS</li>
+        </ul>
+        <p><modal-link for="modal-info-info-you-and-your-family-spouse-dont-know-or-have-ssn-itin-linkmodal1">What if I don’t have or know their SSN or ITIN?</modal-link></p>
+        <fg-set path="/secondaryFiler/tin">
+          <question>Enter their 9-digit SSN or ITIN</question>
+          <input type="tin"/>
+        </fg-set>
       </div>
       <div class="df-screen" condition="/flowGatea57f1072" operator="isTrue">
-        <h2>spouse-mfj-ssn-valid-for-work</h2>
-        <p>Heading, DFModal ×2, Enum, SaveAndOrContinueButton</p>
+        <h2>If <fg-show path="/secondaryFiler/firstName"/> has a work restriction listed on their Social Security card, what does it say?</h2>
+        <p><modal-link for="modal-info-info-you-and-your-family-ssn-valid-for-work-where-linkmodal1">Where are these work restrictions listed on a Social Security card?</modal-link></p>
+        <p><modal-link for="modal-info-info-you-and-your-family-ssn-valid-for-work-needs-to-be-updated-spouse-linkmodal1">What if their card has a work restriction listed, but it needs to be updated?</modal-link></p>
+        <fg-set path="/secondaryFilerSsnEmploymentValidity">
+          <question>If <fg-show path="/secondaryFiler/firstName"/> has a work restriction listed on their Social Security card, what does it say?</question>
+          <input type="enum" options-path="/ssnEmploymentValidityOptions">
+            <option value="neither">The card doesn’t list a work restriction</option>
+            <option value="notValid">It says "Not valid for employment"</option>
+            <option value="validOnlyWithDhsAuthorization">It says "Valid for work with DHS authorization," and they still have authorization to work</option>
+            <option value="validOnlyWithDhsAuthorizationExpired">It says "Valid for work with DHS authorization," but their authorization expired</option>
+          </input>
+        </fg-set>
       </div>
     </section>
+    <modal-dialog id="modal-info-info-you-and-your-family-spouse-dont-know-or-have-ssn-itin-linkmodal1">
+      <modal-heading>What if I don’t have or know their SSN or ITIN?</modal-heading>
+      <modal-content>
+        <p>You will need your spouse’s Social Security number or ITIN to continue this federal tax return. If your spouse doesn’t have one, find out <a href="https://www.irs.gov/individuals/how-do-i-apply-for-an-itin" target="_blank">how to apply for an ITIN</a>.</p>
+      </modal-content>
+    </modal-dialog>
+    <modal-dialog id="modal-info-info-you-and-your-family-ssn-valid-for-work-where-linkmodal1">
+      <modal-heading>Where are these work restrictions listed on a Social Security card?</modal-heading>
+      <modal-content>
+        <p>The Social Security Administration issues 3 types of Social Security cards. All cards include the person’s name and Social Security number.</p>
+        <p>For people who aren’t U.S. citizens or lawful permanent residents, there may be a restriction listed <strong>on the front</strong> of their Social Security card.</p>
+        <p>There are 2 types of restrictions:</p>
+        <ul>
+          <li>Valid for work only with DHS authorization</li>
+          <li>Not valid for employment</li>
+        </ul>
+        <p>For more details, <a href="https://www.ssa.gov/ssnumber/cards.htm" target="_blank">visit the Social Security Administration’s website.</a></p>
+      </modal-content>
+    </modal-dialog>
+    <modal-dialog id="modal-info-info-you-and-your-family-ssn-valid-for-work-needs-to-be-updated-spouse-linkmodal1">
+      <modal-heading>What if their card has a work restriction listed, but it needs to be updated?</modal-heading>
+      <modal-content>
+        <p>If "Not valid for employment" is printed on their Social Security card and their immigration status has changed so that they’re now a U.S. citizen or permanent resident, they should ask the Social Security Administration for a new Social Security card.</p>
+      </modal-content>
+    </modal-dialog>
   </page>
 
-  <page title="Spouse ssn federal benefits" route="/you-and-your-family/spouse/spouse-ssn-federal-benefits">
+  <page title="Spouse’s federal benefits" route="/you-and-your-family/spouse/spouse-ssn-federal-benefits">
     <section>
       <div class="df-screen" condition="/flowGateaf0ea4ea" operator="isTrue">
-        <h2>spouse-mfj-ssn-federal-benefits</h2>
-        <p>Heading, Boolean, SaveAndOrContinueButton</p>
+        <fg-set path="/secondaryFiler/writableHasSSNOnlyForBenefits">
+          <question>Did <fg-show path="/secondaryFiler/firstName"/> get a Social Security number only to apply for or get a federally funded benefit, like Medicaid?</question>
+          <input type="boolean">
+            <option value="true">Yes, <fg-show path="/secondaryFiler/firstName"/> got a Social Security number only to apply for or get a federally funded benefit</option>
+            <option value="false">No, <fg-show path="/secondaryFiler/firstName"/> didn’t get a Social Security number only to apply for or get a federally funded benefit</option>
+          </input>
+        </fg-set>
       </div>
     </section>
   </page>
 
-  <page title="Spouse ip pin" route="/you-and-your-family/spouse/spouse-ip-pin">
+  <page title="Spouse’s Identity Protection (IP) PIN" route="/you-and-your-family/spouse/spouse-ip-pin">
     <section>
       <div class="df-screen" condition="/flowGated0cb5186" operator="isTrue">
-        <h2>spouse-mfj-ip-pin-choice</h2>
-        <p>MefAlert ×2, Heading, DFModal, InfoDisplay, Boolean, SaveAndOrContinueButton</p>
+        <h2>Has the IRS provided <fg-show path="/filers/*/firstName"/> with an Identity Protection (IP) PIN?</h2>
+        <p><modal-link for="modal-info-info-ip-pin-choice-what-linkmodal1">What is an IP PIN?</modal-link></p>
+        <p>Only some individuals have IP PINs. They’re assigned by the IRS each year as extra security against tax-related identity theft.</p>
+        <fg-set path="/secondaryFiler/hasIpPin">
+          <question>Has the IRS provided <fg-show path="/secondaryFiler/firstName"/> with an Identity Protection (IP) PIN?</question>
+          <input type="boolean"/>
+        </fg-set>
       </div>
       <div class="df-screen" condition="/flowGateeea3c674" operator="isTrue">
-        <h2>spouse-mfj-ip-pin-ready</h2>
-        <p>TaxReturnAlert, MefAlert ×2, Heading, HelpLink, Boolean, SaveAndOrContinueButton</p>
+        <h2>Are you ready to enter their Identity Protection (IP) PIN?</h2>
+        <p>The IRS issues new IP PINs each year.<br/><a href="https://www.irs.gov/identity-theft-fraud-scams/retrieve-your-ip-pin" target="_blank">Look up their current IP PIN.</a></p>
+        <fg-set path="/secondaryFiler/flowSpouseIpPinReady">
+          <question>Are you ready to enter their Identity Protection (IP) PIN?</question>
+          <input type="boolean">
+            <option value="true">Yes, I have their IP PIN</option>
+            <option value="false">No, I’m not able to retrieve it now</option>
+          </input>
+        </fg-set>
       </div>
       <div class="df-screen" condition="/flowGateed59acdd" operator="isTrue">
-        <h2>spouse-mfj-ip-pin-not-ready</h2>
-        <p>Heading, DFAlert, SaveAndOrContinueButton</p>
+        <h2>In order to file your tax return electronically, you’ll need <fg-show path="/filers/*/firstName"/>’s Identity Protection (IP) PIN.</h2>
+        <fg-alert alert-key="/flow/you-and-your-family/spouse/spouse-mfj-ip-pin-not-ready" alert-type="warning" condition="/flowAlwaysTrue" operator="isTrue">
+          <heading><strong>You can file your federal taxes only as a paper tax return.</strong></heading>
+          <p>You said <fg-show path="/secondaryFiler/firstName"/> has an IRS-assigned IP PIN that you’re unable to retrieve at this time.</p>
+          <p>You can file your taxes only as a paper tax return because you’re missing an Identity Protection PIN (IP PIN).</p>
+          <p>Paper returns can take up to 6 weeks to process.</p>
+          <p>You need an IP PIN to confirm <fg-show path="/secondaryFiler/firstName"/>’s identity. If they have an IP PIN but can’t find it, you won’t be able to file your tax return electronically.</p>
+          <p>Try following <a href="https://www.irs.gov/identity-theft-fraud-scams/retrieve-your-ip-pin" target="_blank">these instructions</a> to get your IP PIN. Once you have the IP PIN you’re looking for, add it to Direct File.</p>
+          <p>If you need assistance, chat with customer support.</p>
+        </fg-alert>
       </div>
       <div class="df-screen" condition="/flowGate69816567" operator="isTrue">
-        <h2>spouse-mfj-ip-pin-input</h2>
-        <p>MefAlert ×2, Heading, IpPin, SaveAndOrContinueButton</p>
+        <h2>Enter the 6-digit Identity Protection (IP) PIN for <fg-show path="/filers/*/firstName"/>.</h2>
+        <fg-set path="/secondaryFiler/identityPin">
+          <question>IP PIN (Required)</question>
+          <input type="ip-pin"/>
+        </fg-set>
       </div>
     </section>
+    <modal-dialog id="modal-info-info-ip-pin-choice-what-linkmodal1">
+      <modal-heading>What is an Identity Protection (IP) PIN?</modal-heading>
+      <modal-content>
+        <p>The <a href="https://www.irs.gov/identity-theft-fraud-scams/get-an-identity-protection-pin" target="_blank">IRS IP PIN</a> is a 6-digit number assigned to eligible individuals to help prevent the misuse of their Social Security number or Individual Taxpayer Identification Number on fraudulent federal income tax returns. A new IP PIN will be generated each year.</p>
+        <p>If the IRS assigned you (or anyone on your tax return) an IP PIN, you must use it to confirm your identity on any return filed during the current calendar year. This includes current year returns as well as any delinquent tax returns.</p>
+        <p>If you don’t already have an IP PIN, you may <a href="https://www.irs.gov/identity-theft-fraud-scams/get-an-identity-protection-pin" target="_blank">get an IP PIN</a> as a proactive step to protect yourself from tax-related identity theft.</p>
+      </modal-content>
+    </modal-dialog>
   </page>
 
-  <page title="Spouse life circumstances" route="/you-and-your-family/spouse/spouse-life-circumstances">
+  <page title="Spouse’s life circumstances" route="/you-and-your-family/spouse/spouse-life-circumstances">
     <section>
       <div class="df-screen" condition="/flowGated0cb5186" operator="isTrue">
-        <h2>spouse-mfj-blind</h2>
-        <p>Heading, InfoDisplay, DFModal ×2, Boolean, SaveAndOrContinueButton</p>
+        <h2>On the last day of <fg-show path="/taxYear"/>, was <fg-show path="/secondaryFiler/firstName"/> blind?</h2>
+        <p condition="/flowGate001603c1" operator="isTrue">If your spouse died before the end of the year and was blind before death, answer <strong>yes</strong>.</p>
+        <p><modal-link for="modal-info-info-you-and-your-family-spouse-blind-defined-linkmodal1">How is blindness defined?</modal-link></p>
+        <p><modal-link for="modal-info-info-you-and-your-family-spouse-why-ask-blind-linkmodal1">Why do we ask if your spouse is blind?</modal-link></p>
+        <fg-set path="/secondaryFiler/isBlind">
+          <question>On the last day of <fg-show path="/taxYear"/>, was <fg-show path="/secondaryFiler/firstName"/> blind?</question>
+          <input type="boolean"/>
+        </fg-set>
       </div>
       <div class="df-screen" condition="/flowGated0cb5186" operator="isTrue">
-        <h2>spouse-mfj-self-care</h2>
-        <p>Heading, DFModal, Boolean, SaveAndOrContinueButton</p>
+        <h2>For any part of <fg-show path="/taxYear"/>, did <fg-show path="/secondaryFiler/firstName"/> have a physical or mental condition that made them unable to care for themselves?</h2>
+        <p>The physical or mental condition could be permanent or temporary, and it should be serious enough that they needed either:</p>
+        <ul>
+          <li>Help to dress, clean, or feed themselves</li>
+          <li>Constant care to keep themselves or others safe</li>
+        </ul>
+        <p><modal-link for="modal-sharedmodalforwhyaskifunabletocare">Why do we ask if they’re unable to care for themselves?</modal-link></p>
+        <p><modal-link for="modal-sharedmodaldotheyneedrecords">Do we need to have records to show that they’re unable to care for themselves?</modal-link></p>
+        <fg-set path="/secondaryFiler/isDisabled">
+          <question>For any part of <fg-show path="/taxYear"/>, did <fg-show path="/secondaryFiler/firstName"/> have a physical or mental condition that made them unable to care for themselves?</question>
+          <input type="boolean">
+            <option value="true">Yes</option>
+            <option value="false">No</option>
+          </input>
+        </fg-set>
       </div>
       <div class="df-screen" condition="/flowGated0cb5186" operator="isTrue">
-        <h2>spouse-mfj-ft-student</h2>
-        <p>Heading, DFModal, Boolean, SaveAndOrContinueButton</p>
+        <h2>Was <fg-show path="/secondaryFiler/firstName"/> a full-time student in <fg-show path="/taxYear"/>?</h2>
+        <p><modal-link for="modal-info-info-you-and-your-family-dependents-add-person-student-full-time-linkmodal1">What’s considered full time?</modal-link></p>
+        <fg-set path="/secondaryFiler/isStudent">
+          <question>Was <fg-show path="/secondaryFiler/firstName"/> a full-time student in <fg-show path="/taxYear"/>?</question>
+          <input type="boolean">
+            <option value="true">Yes</option>
+            <option value="false">No</option>
+          </input>
+        </fg-set>
       </div>
     </section>
+    <modal-dialog id="modal-info-info-you-and-your-family-spouse-blind-defined-linkmodal1">
+      <modal-heading>How is blindness defined?</modal-heading>
+      <modal-content>
+        <p>For tax purposes, you are considered blind if one of these applies:</p>
+        <ul>
+          <li>You don’t have any eyesight.</li>
+          <li>You can’t see better than 20/200 in your better eye with glasses or contact lenses.</li>
+          <li>Your field of vision is 20 degrees or less.</li>
+        </ul>
+        <p>Answer <strong>Yes</strong> to this question if one of these circumstances applies to your spouse at the end of the tax year.</p>
+        <p>If your spouse isn’t totally blind, they must get a certified statement from an eye doctor stating that one of these is true:</p>
+        <ol>
+          <li>They can’t see better than 20/200 in the better eye with glasses or contact lenses.</li>
+          <li>Their field of vision is 20 degrees or less.</li>
+        </ol>
+        <p>If their eye condition isn’t likely to improve beyond these limits, the statement should include this fact. Keep the statement in your records. You won’t need to attach it to your federal tax return, but the IRS may need to see it later.</p>
+        <p>If their vision can be corrected beyond these limits only by contact lenses that your spouse can wear only briefly because of pain, infection, or ulcers, your spouse can take the higher standard deduction for blindness if they otherwise qualify. In that case, select <strong>Yes</strong> for this question. Otherwise, answer <strong>No.</strong></p>
+        <p><a href="https://www.irs.gov/publications/p501#en_US_2024_publink1000221059" target="_blank">More information is in IRS’s Publication 501.</a></p>
+      </modal-content>
+    </modal-dialog>
+    <modal-dialog id="modal-info-info-you-and-your-family-spouse-why-ask-blind-linkmodal1">
+      <modal-heading>Why do we ask if your spouse is blind?</modal-heading>
+      <modal-content>
+        <p>If your spouse was blind on the last day of <fg-show path="/taxYear"/>, then the <a href="https://www.irs.gov/taxtopics/tc551" target="_blank">standard deduction</a> amount is higher.</p>
+      </modal-content>
+    </modal-dialog>
+    <modal-dialog id="modal-sharedmodalforwhyaskifunabletocare">
+      <modal-heading>Why do we ask if they’re unable to care for themselves?</modal-heading>
+      <modal-content>
+        <p>We ask about a person’s ability to care for themselves to figure out if they qualify for certain tax benefits. For example, this information is used to determine if someone is a qualifying person for the <a href="https://www.irs.gov/taxtopics/tc602" target="_blank">Child and Dependent Care Credit (CDCC)</a>.</p>
+        <p>The CDCC is a tax benefit that helps taxpayers who paid for the care of a family or household member while working or looking for work.</p>
+        <p>As you complete your federal tax return, we’ll ask questions to check if the CDCC applies to you.</p>
+        <p><a href="https://www.irs.gov/publications/p503#en_US_2023_publink1000203267" target="_blank">Learn more about who is a qualifying person for the CDCC</a>.</p>
+      </modal-content>
+    </modal-dialog>
+    <modal-dialog id="modal-sharedmodaldotheyneedrecords">
+      <modal-heading>Do we need to have records to show that they’re unable to care for themselves?</modal-heading>
+      <modal-content>
+        <p>You won’t be asked to send any records with your federal tax return, but the IRS may ask for records later.</p>
+        <p>If you’re asked for records, you’ll need something that documents the length and nature of the physical or mental condition. For example:</p>
+        <ul>
+          <li>A doctor’s note</li>
+          <li>Medical records or diagnoses</li>
+          <li>Records of an accident</li>
+        </ul>
+      </modal-content>
+    </modal-dialog>
+    <modal-dialog id="modal-info-info-you-and-your-family-dependents-add-person-student-full-time-linkmodal1">
+      <modal-heading>What’s considered full time?</modal-heading>
+      <modal-content>
+        <p>A full-time student is someone who meets their school’s full-time attendance requirements for 5 months in a calendar year. The 5 months don’t have to be consecutive. Also, the 5 months don’t have to be 5 full months. For example, a student starting a semester mid-January and graduating mid-May attends the school for 5 months.</p>
+        <p>The student must go to a school with:</p>
+        <ul>
+          <li>A regular teaching staff</li>
+          <li>A course of study</li>
+          <li>An enrolled student body</li>
+        </ul>
+        <p>A school includes:</p>
+        <ul>
+          <li>High schools</li>
+          <li>Colleges</li>
+          <li>Universities</li>
+          <li>Technical, trade, and mechanical schools</li>
+          <li>Full-time, on-farm training courses offered through a school or a state, county, or local government agency</li>
+        </ul>
+        <p>A school doesn’t include:</p>
+        <ul>
+          <li>On-the-job training courses</li>
+          <li>Correspondence schools</li>
+          <li>Organizations offering only internet courses</li>
+        </ul>
+      </modal-content>
+    </modal-dialog>
   </page>
 
   <page title="Taxpayer dependency status" route="/you-and-your-family/spouse/taxpayer-dependency-status">
     <section>
       <div class="df-screen" condition="/flowGated0cb5186" operator="isTrue">
-        <h2>spouse-mfj-could-be-claimed</h2>
-        <p>Heading, DFModal, InfoDisplay, Boolean, SaveAndOrContinueButton</p>
+        <h2>Could anyone claim <fg-show path="/secondaryFiler/firstName"/> as a dependent on their <fg-show path="/taxYear"/> federal tax return?</h2>
+        <p><modal-link for="modal-info-info-you-and-your-family-spouse-how-do-i-know-spouse-dependent-linkmodal1">How do I know if my spouse could be a dependent?</modal-link></p>
+        <p>If you or your spouse paid for more than half your spouse’s support for the year, answer <strong>No</strong>.</p>
+        <fg-set path="/secondaryFiler/canBeClaimed">
+          <question>Could anyone claim <fg-show path="/secondaryFiler/firstName"/> as a dependent on their <fg-show path="/taxYear"/> federal tax return?</question>
+          <input type="boolean"/>
+        </fg-set>
       </div>
       <div class="df-screen" condition="/flowGate2bd7279c" operator="isTrue">
-        <h2>spouse-mfj-spouse-filing-requirement</h2>
-        <p>Heading, HelpLink, Boolean, SaveAndOrContinueButton</p>
+        <h2>Are you or <fg-show path="/secondaryFiler/firstName"/> required to file a <fg-show path="/taxYear"/> federal tax return?</h2>
+        <p><a href="https://www.irs.gov/help/ita/do-i-need-to-file-a-tax-return" target="_blank">How do we know if we’re required to file a tax return?</a></p>
+        <fg-set path="/MFJRequiredToFile">
+          <question>Are you or <fg-show path="/secondaryFiler/firstName"/> required to file a <fg-show path="/taxYear"/> federal tax return?</question>
+          <input type="boolean">
+            <option value="true">Yes, at least one of us is required to file a <fg-show path="/taxYear"/> federal tax return</option>
+            <option value="false">No, neither of us are required to file a <fg-show path="/taxYear"/> federal tax return</option>
+          </input>
+        </fg-set>
       </div>
       <div class="df-screen" condition="/flowGate49eb8fe1" operator="isTrue">
-        <h2>spouse-mfj-dep-tp-intro</h2>
-        <p>Heading, InfoDisplay ×2, DFModal, SaveAndOrContinueButton</p>
+        <h2>You can choose if you want to file as dependent taxpayers.</h2>
+        <p>You said that someone else can claim you or <fg-show path="/secondaryFiler/firstName"/> as a dependent.</p>
+        <p>You also chose to use the Married Filing Jointly filing status. This means that you <strong>get to choose if you want to file your federal tax return as dependent taxpayers or not.</strong> If you use a different filing status, you don’t get this choice.</p>
+        <p><strong>Option A</strong></p>
+        <p><strong>Prepare your federal tax return as dependent taxpayers.</strong> If you choose this, another taxpayer can claim you or <fg-show path="/secondaryFiler/firstName"/> as dependents on their federal tax return.</p>
+        <p>This option stops you from claiming:</p>
+        <ul>
+          <li>Dependents</li>
+          <li>Tax credits</li>
+        </ul>
+        <p>This option only lets you get back money you paid toward taxes.</p>
+        <p><modal-link for="modal-info-info-you-and-your-family-spouse-spouse-mfj-dep-tp-intro-what-if-enrolled-mhp-824f5be9">What if we enrolled ourselves or someone else in a qualified Marketplace health plan? </modal-link></p>
+        <p><strong>Option B</strong></p>
+        <p><strong>Don’t prepare your federal tax return as dependent taxpayers.</strong> If you choose this, no one else can claim you or <fg-show path="/secondaryFiler/firstName"/> as dependents on their federal tax return.</p>
+        <p>This lets you claim any tax benefit you’re eligible for, including:</p>
+        <ul>
+          <li>Dependents, if you have any</li>
+          <li>Tax credits, if you qualify</li>
+        </ul>
       </div>
       <div class="df-screen" condition="/flowGate49eb8fe1" operator="isTrue">
-        <h2>spouse-mfj-refund-only</h2>
-        <p>TaxReturnAlert, Heading, InfoDisplay, DFModal, Boolean, SaveAndOrContinueButton</p>
+        <h2>Do you and <fg-show path="/secondaryFiler/firstName"/> want the opportunity to claim tax benefits on this federal tax return?</h2>
+        <p>By asking you this, we’re helping you choose if you want to prepare your federal tax return as dependent taxpayers or not.</p>
+        <p><modal-link for="modal-info-info-you-and-your-family-spouse-impact-claimed-as-dependents-linkmodal1">How does this choice impact my federal tax return and the people who can claim us as dependents?</modal-link></p>
+        <fg-set path="/MFJDependentsFilingForCredits">
+          <question>Do you and <fg-show path="/secondaryFiler/firstName"/> want the opportunity to claim tax benefits on this federal tax return?</question>
+          <input type="boolean">
+            <option value="true">Yes, <strong>we want the opportunity to claim tax benefits</strong> like dependents, tax credits, and other deductions we may qualify for <strong>and we don’t want anyone else to be able to claim us as dependents</strong></option>
+            <option value="false">No, we <strong>don’t want the opportunity to claim tax benefits</strong> like dependents, tax credits, and other deductions <strong>because we want to let another taxpayer claim us as dependents</strong></option>
+          </input>
+        </fg-set>
       </div>
       <div class="df-screen" condition="/flowGate5234eb96" operator="isTrue">
-        <h2>spouse-mfj-will-be-claimed</h2>
-        <p>Heading, InfoDisplay, Boolean, SaveAndOrContinueButton</p>
+        <h2>Is anyone claiming <fg-show path="/secondaryFiler/firstName"/> as a dependent on their <fg-show path="/taxYear"/> federal tax return?</h2>
+        <p>If someone is claiming <fg-show path="/secondaryFiler/firstName"/> as a dependent, you won’t qualify to claim dependents of your own or certain deductions, and will have limited eligibility for tax credits.</p>
+        <fg-set path="/secondaryFiler/willBeClaimed">
+          <question>Is anyone claiming <fg-show path="/secondaryFiler/firstName"/> as a dependent on their <fg-show path="/taxYear"/> federal tax return?</question>
+          <input type="boolean"/>
+        </fg-set>
       </div>
       <div class="df-screen" condition="/flowGateb34c1ea1" operator="isTrue">
-        <h2>mfjd-breather</h2>
-        <p>Heading, DFModal, SaveAndOrContinueButton</p>
+        <h2>We need to ask a few questions to confirm that you can prepare your federal tax return as dependent taxpayers.</h2>
+        <p><modal-link for="modal-info-info-you-and-your-family-spouse-what-is-a-dependent-linkmodal1">What’s a dependent taxpayer?</modal-link></p>
       </div>
       <div class="df-screen" condition="/flowGateb34c1ea1" operator="isTrue">
-        <h2>mfjd-marketplace-plan</h2>
-        <p>Heading, InfoDisplay, DFModal ×3, Boolean, SaveAndOrContinueButton</p>
+        <h2>Did you or <fg-show path="/secondaryFiler/firstName"/> enroll yourselves or anyone else in a qualified Marketplace health plan in <fg-show path="/taxYear"/>?</h2>
+        <p>You should receive a Form 1095-A for anyone enrolled in a qualified health plan.</p>
+        <p>Answer <strong>Yes</strong> if enrolled for at least one month in <fg-show path="/taxYear"/>.</p>
+        <p><modal-link for="modal-sharedmodalforwhatisqualifiedmarketplaceplan">What’s a qualified Marketplace health plan?</modal-link></p>
+        <p condition="/flowGateaf08d616" operator="isTrue"><modal-link for="modal-info-info-credits-and-deductions-credits-find-1095-a-with-state-plan-linkmodal1">Where can I find Form 1095-A?</modal-link></p>
+        <p condition="/flowGate9840b715" operator="isTrue"><modal-link for="modal-info-info-credits-and-deductions-credits-find-1095-a-without-state-plan-linkmodal1">Where can I find Form 1095-A?</modal-link></p>
+        <fg-set path="/MFJDepedentsEnrolledMarketplacePlan">
+          <question>Did you or <fg-show path="/secondaryFiler/firstName"/> enroll yourselves or anyone else in a qualified Marketplace health plan in <fg-show path="/taxYear"/>?</question>
+          <input type="boolean"/>
+        </fg-set>
       </div>
       <div class="df-screen" condition="/flowGatedc7192a3" operator="isTrue">
-        <h2>mfjd-aptc-paid</h2>
-        <p>Heading, DFModal, Boolean, SaveAndOrContinueButton</p>
+        <h2>Were advance payments of the Premium Tax Credit (PTC) made to help pay for a qualified Marketplace health plan for anyone you or <fg-show path="/secondaryFiler/firstName"/> enrolled, including yourselves?</h2>
+        <p>If <modal-link for="modal-sharedmodalaptc">advance payments of PTC</modal-link> were made, the amounts will appear on Form 1095-A, Part III, column C.</p>
+        <fg-set path="/advancedPTCPaymentsMade">
+          <question>Were advance payments of the Premium Tax Credit (PTC) made to help pay for a qualified Marketplace health plan for anyone you or <fg-show path="/secondaryFiler/firstName"/> enrolled, including yourselves?</question>
+          <input type="boolean"/>
+        </fg-set>
       </div>
       <div class="df-screen" condition="/flowGateb00254ad" operator="isTrue">
-        <h2>mfjd-ok-1</h2>
-        <p>Heading, SaveAndOrContinueButton</p>
+        <h2>You can continue preparing your federal tax return as dependent taxpayers.</h2>
       </div>
       <div class="df-screen" condition="/flowGate6b779118" operator="isTrue">
-        <h2>mfjd-enrollees</h2>
-        <p>Heading, DFModal, MultiEnum, SaveAndOrContinueButton</p>
+        <h2>Who did you or your spouse enroll in a qualified Marketplace health plan with advance payments of the Premium Tax Credit (PTC)?</h2>
+        <p>You should receive a Form 1095-A for anyone enrolled in a qualified health plan. If <modal-link for="modal-sharedmodalaptc">advance payments of PTC</modal-link> were made, the amounts will appear on Form 1095-A, Part III, column C.</p>
+        <fg-set path="/mfjdEnrollees">
+          <question>Select all the people that apply</question>
+          <input type="multi-enum" options-path="/mfjdEnrolleesOptions">
+            <option value="primary">Me</option>
+            <option value="secondary"></option>
+            <option value="someoneElseThatPrimaryOrSecondaryEnrolled">Someone else that or I enrolled</option>
+          </input>
+        </fg-set>
       </div>
       <div class="df-screen" condition="/flowGate0f77ca1d" operator="isTrue">
-        <h2>mfjd-other-tax-family</h2>
-        <p>Heading, DFModal ×2, InfoDisplay, Boolean, SaveAndOrContinueButton</p>
+        <h2>You said you or <fg-show path="/secondaryFiler/firstName"/> enrolled someone else in a qualified Marketplace health plan and advance payments of the Premium Tax Credit (PTC) were made to help pay for their coverage. Were they part of a different tax family?</h2>
+        <p><modal-link for="modal-info-info-credits-and-deductions-credits-what-is-tax-family-linkmodal1">What’s a tax family?</modal-link></p>
+        <p>Answer <strong>Yes</strong> if:</p>
+        <ul>
+          <li>They filed their own federal tax return and no one claimed them as a dependent, <strong>or</strong></li>
+          <li>They were claimed as a dependent by another taxpayer</li>
+        </ul>
+        <p><modal-link for="modal-info-info-credits-and-deductions-credits-what-if-enrolled-more-than-one-linkmodal1">What if we enrolled more than one other person?</modal-link></p>
+        <fg-set path="/mfjdOtherTaxFamily">
+          <question>You said you or <fg-show path="/secondaryFiler/firstName"/> enrolled someone else in a qualified Marketplace health plan and advance payments of the Premium Tax Credit (PTC) were made to help pay for their coverage. Were they part of a different tax family?</question>
+          <input type="boolean"/>
+        </fg-set>
       </div>
       <div class="df-screen" condition="/flowGate133dc53b" operator="isTrue">
-        <h2>mfjd-switch-not-dependent-tp</h2>
-        <p>Heading, InfoDisplay ×4, SaveAndOrContinueButton</p>
+        <h2>You can’t prepare your federal tax return as dependent taxpayers.</h2>
+        <fg-apply path="/showMFJDChoiceBDynamic" source="/flowFalse"/>
+        <p condition="/flowGatec4a7358c" operator="isTrue">You were enrolled in a qualified Marketplace health plan with advance payments of the Premium Tax Credit (PTC), and no one is claiming you as a dependent. This means you’re responsible for reconciling your advance payments of PTC on this tax return.</p>
+        <p condition="/flowGate655814cf" operator="isTrue"><fg-show path="/secondaryFiler/firstName"/> was enrolled in a qualified Marketplace health plan with advance payments of the Premium Tax Credit (PTC), and no one is claiming them as a dependent. Their advance payments of PTC must be reconciled on this tax return.</p>
+        <p condition="/flowGate1ceaf817" operator="isTrue">You and <fg-show path="/secondaryFiler/firstName"/> were enrolled in qualified Marketplace health plans with advance payments of the Premium Tax Credit (PTC), and no one is claiming you as dependents. This means you’re responsible for reconciling your advance payments of PTC on this tax return.</p>
+        <p condition="/flowGateff5da3e6" operator="isTrue">You said you or <fg-show path="/secondaryFiler/firstName"/> enrolled someone else in a qualified Marketplace health plan and there were advance payments of the Premium Tax Credit (PTC) made for their Marketplace coverage. Since they’re not part of a different tax family, this means you’re responsible for reconciling their advance payments of PTC.</p>
       </div>
       <div class="df-screen" condition="/flowGate07eb899d" operator="isTrue">
-        <h2>mfjd-ok-2</h2>
-        <p>Heading, SaveAndOrContinueButton</p>
+        <h2>You can continue preparing your federal tax return as dependent taxpayers.</h2>
       </div>
       <div class="df-screen" condition="/flowGatea4bfabb9" operator="isTrue">
-        <h2>mfjd-ok-form-not-required</h2>
-        <p>Heading, InfoDisplay ×4, SaveAndOrContinueButton</p>
+        <h2>You can continue preparing your federal tax return as dependent taxpayers.</h2>
+        <p condition="/flowGatea151f844" operator="isTrue">The person claiming you as a dependent is responsible for reconciling advance payments of the Premium Tax Credit (PTC) for you.</p>
+        <p condition="/flowGated874b609" operator="isTrue">The person claiming <fg-show path="/secondaryFiler/firstName"/> as a dependent is responsible for reconciling advance payments of the Premium Tax Credit (PTC) for you.</p>
+        <p condition="/flowGate52cdce2c" operator="isTrue">The person claiming you and <fg-show path="/secondaryFiler/firstName"/> as a dependent is responsible for reconciling advance payments of the Premium Tax Credit (PTC) for you.</p>
+        <p>The person claiming you or <fg-show path="/secondaryFiler/firstName"/> will need copies of any Forms 1095-A.</p>
       </div>
       <div class="df-screen" condition="/flowGateed0069fb" operator="isTrue">
-        <h2>mfj-dependent-choice-a</h2>
-        <p>IconDisplay, Heading, InfoDisplay, SaveAndOrContinueButton</p>
+        <h2>You chose to be considered a dependent taxpayer when we calculate your tax benefits on this tax return.</h2>
+        <p>As dependent taxpayers, you and your spouse:</p>
+        <ul>
+          <li>Don’t qualify to claim dependents of your own</li>
+          <li>Have limited eligibility for tax credits</li>
+        </ul>
+        <p><strong>It’s your choice because you are filing jointly with your spouse</strong><br/>If you don’t want to be considered a dependent taxpayer and want to claim more tax benefits instead, you can still change your mind before submitting your tax return.</p>
       </div>
       <div class="df-screen" condition="/flowGatef6cab51e" operator="isTrue">
-        <h2>mfj-dependent-choice-b</h2>
-        <p>IconDisplay, Heading, InfoDisplay ×2, DFAlert, SaveAndOrContinueButton</p>
+        <h2>Based on your choice, you won’t be considered a dependent taxpayer as we calculate your tax benefits on this tax return.</h2>
+        <p>You and your spouse don’t qualify as anyone’s dependent when you do both these things:</p>
+        <ul>
+          <li>Claim dependents or credits</li>
+          <li>File a <fg-show path="/taxYear"/> tax return using the married filing jointly filing status</li>
+        </ul>
+        <p condition="/flowGate14f86db4" operator="isTrue"><strong>It’s your choice because you are filing jointly with your spouse</strong><br/>You can still change your mind and choose to file as a dependent taxpayer before submitting your tax return. If you change your mind, you can still file a tax return for a refund of money you paid towards taxes.</p>
+        <fg-alert alert-key="/flow/you-and-your-family/spouse/mfj-dependent-choice-b" alert-type="error" condition="/flowGate2b228556" operator="isTrue">
+          <heading>You can’t be claimed as a dependent</heading>
+          <p>No one will be able to claim you as a dependent because you said you and <fg-show path="/secondaryFiler/firstName"/> want the opportunity to claim tax benefits like dependents, tax credits, and other deductions you may qualify for and don’t want anyone else to be able to claim you as dependents.</p>
+          <p><strong>You told us earlier that someone is claiming you as a dependent, but no one is able to claim you. </strong></p>
+          <p>If someone has already filed their federal tax return claiming you as a dependent, they’ll need to file an amended return to remove you as a dependent.</p>
+          <p>If you or <fg-show path="/secondaryFiler/firstName"/> would like to be claimed as a dependent, <a href="/flow/you-and-your-family/spouse/spouse-mfj-refund-only?reviewMode=true" target="_blank">you can update your choice</a>.</p>
+        </fg-alert>
       </div>
     </section>
+    <modal-dialog id="modal-info-info-you-and-your-family-spouse-how-do-i-know-spouse-dependent-linkmodal1">
+      <modal-heading>How do I know if my spouse could be a dependent?</modal-heading>
+      <modal-content>
+        <p>You can’t claim your spouse as a dependent, even if they relied on you financially.</p>
+        <p>If your spouse relied on someone else (other than you) for support in <fg-show path="/taxYear"/>, the other person might be able to claim your spouse as a dependent on their federal tax return.</p>
+        <p>There are a few factors that determine whether someone can claim your spouse as a dependent, including:</p>
+        <ul>
+          <li>Your spouse’s relationship to that person</li>
+          <li>How much they supported your spouse, financially and in other ways</li>
+          <li>If your spouse lived with them and for how long</li>
+        </ul>
+        <p>Review Table 5 in <a href="https://www.irs.gov/publications/p501#en_US_2024_publink1000196863" target="_blank">IRS Publication 501</a> to determine if someone else might be able to claim your spouse.</p>
+        <p>Keep in mind that your spouse <strong>isn’t</strong> someone else’s dependent if your spouse paid for more than half of their own support (or if you did).</p>
+      </modal-content>
+    </modal-dialog>
+    <modal-dialog id="modal-info-info-you-and-your-family-spouse-spouse-mfj-dep-tp-intro-what-if-enrolled-mhp-824f5be9">
+      <modal-heading>What if we enrolled ourselves or someone else in a qualified Marketplace health plan?</modal-heading>
+      <modal-content>
+        <p>You can’t prepare your federal tax return as dependent taxpayers if:</p>
+        <ul>
+          <li>You or <fg-show path="/secondaryFiler/firstName"/> enrolled anyone (including yourselves) in a qualified health plan for which advance payments of the Premium Tax Credit (PTC) were made, <strong>and</strong></li>
+          <li>The individuals you or <fg-show path="/secondaryFiler/firstName"/> enrolled in the qualified health plan are not included in another tax family</li>
+        </ul>
+        <p><a href="https://www.irs.gov/instructions/i8962#en_US_2024_publink100036295" target="_blank">Learn more about qualified health plans.</a></p>
+        <p>A person is part of someone else’s tax family if:</p>
+        <ul>
+          <li>They file a federal tax return for <fg-show path="/taxYear"/> and aren’t claimed as a dependent on someone else’s tax return, or</li>
+          <li>Someone other than you or your spouse claims them as a dependent on their <fg-show path="/taxYear"/> tax return</li>
+        </ul>
+        <p><a href="https://www.irs.gov/instructions/i8962#en_US_2024_publink100013175" target="_blank">Learn more about tax families and the PTC.</a></p>
+      </modal-content>
+    </modal-dialog>
+    <modal-dialog id="modal-info-info-you-and-your-family-spouse-impact-claimed-as-dependents-linkmodal1">
+      <modal-heading>How does this choice impact my federal tax return and the people who can claim us as dependents?</modal-heading>
+      <modal-content>
+        <p>Dependent taxpayers can’t claim as many tax benefits on their federal tax returns.</p>
+        <p>You and your spouse are eligible for and chose the <strong>Married Filing Jointly</strong> filing status. When you use this filing status, you get to choose whether or not you want to be considered dependent taxpayers.</p>
+        <p><strong>Option A</strong><br/><strong>Prepare your federal tax return as dependent taxpayers.</strong> If you choose this, another taxpayer can claim you or <fg-show path="/secondaryFiler/firstName"/> as dependents on their federal tax return.</p>
+        <p>This option stops you from claiming:</p>
+        <ul>
+          <li>Dependents</li>
+          <li>Tax credits</li>
+        </ul>
+        <p>This option only lets you get back money you paid toward taxes.</p>
+        <p><strong>Option B</strong><br/><strong>Prepare your federal tax return as independent taxpayers.</strong> If you choose this, no one else can claim you or <fg-show path="/secondaryFiler/firstName"/> as dependents on their federal tax return.</p>
+        <p>This lets you claim any tax benefit you’re eligible for, including:</p>
+        <ul>
+          <li>Dependents, if you have any</li>
+          <li>Tax credits, if you qualify</li>
+        </ul>
+        <p><a href="https://www.irs.gov/publications/p501#en_US_2024_publink1000220877" target="_blank">Learn more about the rules for claiming someone who files a joint tax return</a></p>
+      </modal-content>
+    </modal-dialog>
+    <modal-dialog id="modal-info-info-you-and-your-family-spouse-what-is-a-dependent-linkmodal1">
+      <modal-heading>What’s a dependent taxpayer?</modal-heading>
+      <modal-content>
+        <p>Dependent taxpayers can’t claim as many tax benefits on their federal tax returns.</p>
+        <p><strong>As dependent taxpayers</strong>, another taxpayer can claim you or <fg-show path="/secondaryFiler/firstName"/> as dependents on their federal tax return.</p>
+        <p>You can’t claim:</p>
+        <ul>
+          <li>Dependents</li>
+          <li>Tax credits</li>
+        </ul>
+        <p>You can get back money you paid toward taxes.</p>
+        <p><a href="https://www.irs.gov/publications/p501#en_US_2022_publink1000220877" target="_blank">Learn more about the rules for claiming someone who files a joint tax return</a></p>
+      </modal-content>
+    </modal-dialog>
+    <modal-dialog id="modal-sharedmodalforwhatisqualifiedmarketplaceplan">
+      <modal-heading>What’s a qualified Marketplace health plan?</modal-heading>
+      <modal-content>
+        <p>For the purposes of the Premium Tax Credit (PTC), a qualified health plan is purchased through HealthCare.gov or a state Marketplace or exchange.</p>
+        <p>Health plans that may qualify for the PTC:</p>
+        <ul>
+          <li>Most plans from HealthCare.gov</li>
+          <li>Most plans from a state Marketplace or exchange</li>
+        </ul>
+        <p>Health plans that <strong>don’t</strong> qualify for the PTC:</p>
+        <ul>
+          <li>Plans provided through your employer</li>
+          <li>Catastrophic health plans and dental plans purchased through HealthCare.gov or a state Marketplace or exchange</li>
+          <li>Plans purchased through the Small Business Health Options Program (SHOP)</li>
+          <li>State Medicaid plans and plans provided through the Children’s Health Insurance Program (CHIP)</li>
+        </ul>
+        <p>If you, your spouse (who you’re filing jointly with), or any of your dependents were enrolled in a qualified health plan in <fg-show path="/taxYear"/>, you should receive a Form 1095-A from the Marketplace. If you have a Form 1095-B or 1095-C, those aren’t related to Marketplace health plans.</p>
+        <p><a href="https://www.irs.gov/instructions/i8962#en_US_2024_publink100036295" target="_blank">Learn more about qualified Marketplace health plans.</a></p>
+      </modal-content>
+    </modal-dialog>
+    <modal-dialog id="modal-info-info-credits-and-deductions-credits-find-1095-a-with-state-plan-linkmodal1">
+      <modal-heading>Where can I find Form 1095-A?</modal-heading>
+      <modal-content>
+        <p>The Marketplace sends Form 1095-A, Health Insurance Marketplace Statement to people enrolled in qualified Marketplace health plans.</p>
+        <p>The Marketplace should mail or electronically provide the form before January 31, <fg-show path="/nextTaxYear"/>. If you don’t receive a Form 1095-A, or need to request a copy, then log in to your Marketplace account to download the form or contact your Marketplace for help.</p>
+        <p>If you got coverage through HealthCare.gov and set up an account, you can <a href="$t(commonUrls.form1095A)" target="_blank">download Form 1095-A from your HealthCare.gov account.</a></p>
+        <p>If you got coverage through a state Marketplace like <a href="$t(commonUrls.marketplaceInState)" target="_blank"><fg-show path="/stateMarketplaceName"/></a>, visit their website to download or request a Form 1095-A.</p>
+        <p>Your Forms 1095-A will also be available in your <a href="$t(commonUrls.irsOnlineAcct)" target="_blank">IRS Online Account </a> when the IRS receives them.</p>
+        <p>If someone else enrolled you, your spouse (who you’re filing jointly with), or a dependent, then a Form 1095-A may be sent to the person who completed the enrollment. You’ll need to check with them to get a copy.</p>
+        <p><a href="$t(commonUrls.form1095A)" target="_blank">Learn more about Form 1095-A.</a></p>
+      </modal-content>
+    </modal-dialog>
+    <modal-dialog id="modal-info-info-credits-and-deductions-credits-find-1095-a-without-state-plan-linkmodal1">
+      <modal-heading>Where can I find Form 1095-A?</modal-heading>
+      <modal-content>
+        <p>The Marketplace sends Form 1095-A, Health Insurance Marketplace Statement to people enrolled in qualified Marketplace health plans.</p>
+        <p>The Marketplace should mail or electronically provide the form before January 31, <fg-show path="/nextTaxYear"/>. If you don’t receive a Form 1095-A, or need to request a copy, then log in to your Marketplace account to download the form or contact your Marketplace for help.</p>
+        <p>If you got coverage through HealthCare.gov and set up an account, you can <a href="$t(commonUrls.form1095A)" target="_blank">download Form 1095-A from your HealthCare.gov account.</a></p>
+        <p>If you got coverage through a state Marketplace, <a href="$t(commonUrls.marketplaceInState)" target="_blank">visit the state Marketplace website</a> to download or request a Form 1095-A.</p>
+        <p>Your Forms 1095-A will also be available in your <a href="$t(commonUrls.irsOnlineAcct)" target="_blank">IRS Online Account </a> when the IRS receives them.</p>
+        <p>If someone else enrolled you, your spouse (who you’re filing jointly with), or a dependent, then a Form 1095-A may be sent to the person who completed the enrollment. You’ll need to check with them to get a copy.</p>
+        <p><a href="$t(commonUrls.form1095A)" target="_blank">Learn more about Form 1095-A.</a></p>
+      </modal-content>
+    </modal-dialog>
+    <modal-dialog id="modal-sharedmodalaptc">
+      <modal-heading>What are advance payments of Premium Tax Credit (PTC)?</modal-heading>
+      <modal-content>
+        <p>When you enroll in a qualified Marketplace health plan, you estimate your expected income and family size for the year of coverage. Based on this information, the Marketplace estimates the amount of monthly PTC you’ll be allowed for the year of coverage. You can then decide to use any amount of PTC  in advance to lower your monthly health insurance premiums.</p>
+        <p>Most people who qualify for the PTC choose to get it in advance to help pay their monthly health insurance premiums throughout the year.</p>
+        <p>These advance payments of PTC are made by the Marketplace directly to the insurance provider on a person’s behalf.</p>
+        <p>Advance payments are sometimes referred to as a "subsidy," "tax credit," or "APTC."</p>
+        <p><a href="https://www.irs.gov/instructions/i8962#en_US_2024_publink100013850" target="_blank">Learn more about advance payments of PTC</a>.</p>
+      </modal-content>
+    </modal-dialog>
+    <modal-dialog id="modal-info-info-credits-and-deductions-credits-what-is-tax-family-linkmodal1">
+      <modal-heading>What’s a tax family?</modal-heading>
+      <modal-content>
+        <p>For the purposes of the Premium Tax Credit (PTC), a tax family may include:</p>
+        <p><strong>You</strong>:</p>
+        <ul>
+          <li>If you file a federal tax return for <fg-show path="/taxYear"/> and you can’t be claimed as a dependent on someone else’s <fg-show path="/taxYear"/> tax return</li>
+        </ul>
+        <p><strong>Your spouse</strong>:</p>
+        <ul>
+          <li>If you and your spouse file a joint return for <fg-show path="/taxYear"/> and your spouse can’t be claimed as a dependent on someone else’s <fg-show path="/taxYear"/> tax return</li>
+        </ul>
+        <p><strong>Your dependents</strong>:</p>
+        <ul>
+          <li>As long as you claim them on your <fg-show path="/taxYear"/> tax return</li>
+        </ul>
+        <p><a href="https://www.irs.gov/instructions/i8962#en_US_2024_publink100013175" target="_blank">Learn more about tax families and the PTC</a></p>
+      </modal-content>
+    </modal-dialog>
+    <modal-dialog id="modal-info-info-credits-and-deductions-credits-what-if-enrolled-more-than-one-linkmodal1">
+      <modal-heading>What if we enrolled more than one other person?</modal-heading>
+      <modal-content>
+        <p>If you and your spouse enrolled more than one other person in a qualified Marketplace health plan, answer <strong>Yes</strong> if everyone you enrolled:</p>
+        <ul>
+          <li>Filed their own federal tax return and was not claimed as a dependent, <strong>or</strong></li>
+          <li>Was claimed as a dependent by another taxpayer</li>
+        </ul>
+      </modal-content>
+    </modal-dialog>
   </page>
 
-  <page title="Add spouse b" route="/you-and-your-family/spouse/add-spouse-b">
+  <page title="You chose to use Married Filing Separately filing status." route="/you-and-your-family/spouse/add-spouse-b">
     <section>
       <div class="df-screen" condition="/flowGatee772e9a4" operator="isTrue">
-        <h2>add-spouse-b</h2>
-        <p>ContextHeading, Heading, InfoDisplay, SaveAndOrContinueButton</p>
+        <h2>You chose to use Married Filing Separately filing status.</h2>
+        <p class="df-context-heading">Your spouse</p>
+        <p>Even though you’re filing a separate federal tax return, we still need some information about your spouse.</p>
       </div>
       <div class="df-screen" condition="/flowGatee772e9a4" operator="isTrue">
-        <h2>mfs-spouse-data-intro</h2>
-        <p>Heading, InfoDisplay, SaveAndOrContinueButton</p>
+        <h2>We’ll need some information about your spouse.</h2>
+        <p>We’ll ask for details including:</p>
+        <ul>
+          <li>Their name</li>
+          <li>Their Social Security number (SSN) or Individual Taxpayer Identification Number (ITIN)</li>
+          <li>Their plans to itemize deductions on their federal tax return or take the standard deduction</li>
+        </ul>
       </div>
     </section>
   </page>
 
-  <page title="Spouse separate return" route="/you-and-your-family/spouse/spouse-separate-return">
+  <page title="Spouse’s separate tax return" route="/you-and-your-family/spouse/spouse-separate-return">
     <section>
       <div class="df-screen" condition="/flowGatee32350ce" operator="isTrue">
-        <h2>mfs-spouse-filing-a-return-living</h2>
-        <p>Heading, Boolean ×2, SaveAndOrContinueButton</p>
+        <fg-set path="/MFSLivingSpouseFilingReturn">
+          <question>Is your spouse filing a <fg-show path="/taxYear"/> federal tax return?</question>
+          <input type="boolean"/>
+        </fg-set>
       </div>
       <div class="df-screen" condition="/flowGate7557f225" operator="isTrue">
-        <h2>mfs-spouse-filing-a-return-widowed</h2>
-        <p>Heading, Boolean ×2, SaveAndOrContinueButton</p>
+        <fg-set path="/MFSDeceasedSpouseFilingReturn">
+          <question>Will a <fg-show path="/taxYear"/> federal tax return be filed for your spouse?</question>
+          <input type="boolean"/>
+        </fg-set>
       </div>
       <div class="df-screen" condition="/flowGatef4773b70" operator="isTrue">
-        <h2>mfs-spouse-itemizing</h2>
-        <p>Heading, InfoDisplay, DFModal, Boolean, SaveAndOrContinueButton</p>
+        <h2>Is your spouse itemizing deductions on their <fg-show path="/taxYear"/> federal tax return?</h2>
+        <p>If your spouse itemizes deductions on their federal tax return when filing separately from you, it means you cannot take the standard deduction on your own federal tax return.</p>
+        <p><modal-link for="modal-info-info-you-and-your-family-spouse-itemizing-difference-linkmodal1">What’s the difference between the standard deduction and itemizing?</modal-link></p>
+        <fg-set path="/spouseItemizes">
+          <question>Is your spouse itemizing deductions on their <fg-show path="/taxYear"/> federal tax return?</question>
+          <input type="boolean"/>
+        </fg-set>
       </div>
       <div class="df-screen df-knockout" condition="/flowGated7580962" operator="isTrue">
-        <h2>mfs-spouse-itemizing-ko</h2>
-        <p>IconDisplay, Heading, InfoDisplay, DFModal, DFAlert, KnockoutButton</p>
+        <h2>Direct File doesn’t have the tax forms you need yet.</h2>
+        <p>If you and your spouse file separate federal tax returns and one of you itemizes deductions, then the other person must also itemize deductions.</p>
+        <p>You said your spouse is itemizing deductions, so you don’t qualify to take the standard deduction on your federal tax return.</p>
+        <p>Additionally, you can’t itemize deductions in Direct File because it doesn’t support the forms you need.</p>
+        <p><modal-link for="modal-info-info-you-and-your-family-spouse-itemizing-difference-linkmodal1">What’s the difference between the standard deduction and itemizing?</modal-link></p>
+        <fg-alert alert-key="/flow/you-and-your-family/spouse/mfs-spouse-itemizing-ko" alert-type="error" knockout="true" condition="/flowAlwaysTrue" operator="isTrue">
+          <heading>We don’t support itemizing yet, but other tax services do. <a href="https://www.irs.gov/filing/individuals/how-to-file" target="_blank">Find other ways to file your federal taxes.</a></heading>
+        </fg-alert>
       </div>
     </section>
+    <modal-dialog id="modal-info-info-you-and-your-family-spouse-itemizing-difference-linkmodal1">
+      <modal-heading>What’s the difference between the standard deduction and itemizing?</modal-heading>
+      <modal-content>
+        <p>Deductions reduce how much of your income gets taxed. When you itemize deductions, you individually list each allowed expense and then reduce your taxable income by the total. The standard deduction is an alternative that allows you to reduce your taxable income by a set amount, without listing expenses.</p>
+        <p>For many taxpayers the standard deduction amount is higher than the amount they’d get by itemizing. But when your individual deductions total more than the amount of the standard deduction, it’s more advantageous to itemize.</p>
+        <p>In tax year <fg-show path="/taxYear"/>, the standard deduction amount for married couples filing jointly is at least <fg-show path="/MFJStandardDeduction"/>, and at least <fg-show path="/singleOrMFSStandardDeduction"/> for each filing separately. The amount is higher if one or both spouses are age 65 and older and/or blind at the end of the tax year.</p>
+      </modal-content>
+    </modal-dialog>
   </page>
 
-  <page title="Mfs spouse name" route="/you-and-your-family/spouse/mfs-spouse-name">
+  <page title="Spouse’s basic information" route="/you-and-your-family/spouse/mfs-spouse-name">
     <section>
       <div class="df-screen" condition="/flowGatee772e9a4" operator="isTrue">
-        <h2>mfs-spouse-name</h2>
-        <p>Heading, LimitingString ×4, SaveAndOrContinueButton</p>
+        <h2>To file your federal tax return separately, we need your <strong>spouse’s</strong> name.</h2>
+        <fg-set path="/secondaryFiler/firstName">
+          <question>First name</question>
+          <input type="text"/>
+        </fg-set>
+        <fg-set path="/secondaryFiler/writableMiddleInitial">
+          <question>Middle initial</question>
+          <input type="text"/>
+        </fg-set>
+        <fg-set path="/secondaryFiler/lastName">
+          <question>Last name</question>
+          <input type="text"/>
+        </fg-set>
       </div>
     </section>
   </page>
 
-  <page title="Mfs spouse nr tin" route="/you-and-your-family/spouse/mfs-spouse-nr-tin">
+  <page title="Spouse’s tax identification" route="/you-and-your-family/spouse/mfs-spouse-nr-tin">
     <section>
       <div class="df-screen" condition="/flowGate140f98d6" operator="isTrue">
-        <h2>mfs-spouse-nr-tin</h2>
-        <p>Heading, InfoDisplay, DFModal, Boolean, SaveAndOrContinueButton</p>
+        <h2>Does <fg-show path="/secondaryFiler/firstName"/> have a Social Security number or Individual Taxpayer Identification Number?</h2>
+        <p>People who are required to file a federal tax return need a Social Security number (SSN) or Individual Taxpayer Identification Number (ITIN). If your spouse isn’t required to file a federal tax return, then they aren’t required to have an SSN or ITIN.</p>
+        <p><modal-link for="modal-info-info-you-and-your-family-spouse-who-needs-to-file-tax-return-linkmodal1">Who needs to file a federal tax return?</modal-link></p>
+        <fg-set path="/MFSSpouseHasNRTIN">
+          <question>Does <fg-show path="/secondaryFiler/firstName"/> have a Social Security number or Individual Taxpayer Identification Number?</question>
+          <input type="boolean">
+            <option value="true">Yes, they have an SSN or ITIN</option>
+            <option value="false">No, they’re not required to have one</option>
+          </input>
+        </fg-set>
       </div>
       <div class="df-screen" condition="/flowGate2eb8f5a5" operator="isTrue">
-        <h2>mfs-breather-spouse-nr-tin</h2>
-        <p>Heading, InfoDisplay, DFModal ×2, DFAlert, SaveAndOrContinueButton</p>
+        <h2>You won’t be able to file your <fg-show path="/filerResidenceAndIncomeState"/> state tax return electronically.</h2>
+        <p>You said that your spouse <strong>isn’t required</strong> to have a Social Security number (SSN) or an Individual Taxpayer Identification Number (ITIN).</p>
+        <p><fg-show path="/filerResidenceAndIncomeState"/> doesn’t allow <strong>Married Filing Separately</strong> taxpayers to electronically file their state tax return when one spouse doesn’t have an SSN or ITIN.</p>
+        <p>You can continue using Direct File to file your <strong>federal</strong> tax return electronically, but you’ll need to file your <fg-show path="/filerResidenceAndIncomeState"/> <strong>state</strong> taxes as a paper tax return.</p>
+        <p condition="/flowGate7142c1b6" operator="isTrue"><modal-link for="modal-info-info-you-and-your-family-spouse-nrtin-breather-how-to-file-paper-md-linkmodal1">How do I file my Maryland state taxes as a paper tax return?</modal-link></p>
+        <p condition="/flowGate328e898c" operator="isTrue"><modal-link for="modal-info-info-you-and-your-family-spouse-nrtin-breather-how-to-file-paper-nc-linkmodal1">How do I file my North Carolina state taxes as a paper tax return?</modal-link></p>
+        <fg-alert alert-key="/flow/you-and-your-family/spouse/mfs-breather-spouse-nr-tin" alert-type="info" condition="/flowAlwaysTrue" operator="isTrue">
+          <heading>For help filing your federal and state tax returns, <a href="https://www.irs.gov/filing/individuals/how-to-file" target="_blank">find other ways to file your federal taxes.</a></heading>
+        </fg-alert>
       </div>
       <div class="df-screen" condition="/flowGate74ca6bd9" operator="isTrue">
-        <h2>mfs-spouse-tax-id</h2>
-        <p>Heading, TaxReturnAlert, InfoDisplay, DFModal, Tin, SaveAndOrContinueButton</p>
+        <h2>What’s <fg-show path="/secondaryFiler/firstName"/>’s Social Security number?</h2>
+        <p>They can use either one of these:</p>
+        <ul>
+          <li>A Social Security number (SSN)</li>
+          <li>Individual Taxpayer Identification Number (ITIN) issued by the IRS</li>
+        </ul>
+        <p><modal-link for="modal-info-info-you-and-your-family-spouse-dont-know-or-have-ssn-itin-linkmodal1">What if I don’t have or know their SSN or ITIN?</modal-link></p>
+        <fg-set path="/secondaryFiler/tin">
+          <question>Enter their 9-digit SSN or ITIN</question>
+          <input type="tin"/>
+        </fg-set>
       </div>
     </section>
+    <modal-dialog id="modal-info-info-you-and-your-family-spouse-who-needs-to-file-tax-return-linkmodal1">
+      <modal-heading>Who needs to file a federal tax return?</modal-heading>
+      <modal-content>
+        <p>Most U.S. citizens and permanent residents who work in the United States need to file a federal tax return if they had more than a certain amount of gross income (the taxable income you receive in the form of money, goods, property, and services). The amount is different for the different filing statuses.</p>
+        <p>For Married Filing Separately: people with gross income over <fg-show path="/MFSFilingThresholdAmount"/> during <fg-show path="/taxYear"/> are required to file a federal tax return.</p>
+        <p><a href="https://www.irs.gov/individuals/check-if-you-need-to-file-a-tax-return" target="_blank">Learn more about filing requirements</a></p>
+      </modal-content>
+    </modal-dialog>
+    <modal-dialog id="modal-info-info-you-and-your-family-spouse-nrtin-breather-how-to-file-paper-md-linkmodal1">
+      <modal-heading><strong>How do I file my <fg-show path="/filerResidenceAndIncomeState"/> state taxes as a paper tax return?</strong></modal-heading>
+      <modal-content>
+        <p>You have <a href="https://www.fileyourstatetaxes.org/en/md/faq/what_are_my_other_state_filing_options_this_year_46" target="_blank">options for filing your state taxes</a> as a paper tax return. You can:</p>
+        <ul>
+          <li>File for free with help from <a href="https://www.irs.gov/individuals/free-tax-return-preparation-for-qualifying-taxpayers" target="_blank">IRS-certified VITA volunteers</a></li>
+          <li>File for free with help from the Comptroller of Maryland’s <a href="https://www.marylandtaxes.gov/individual/tax-assistance/free-tax-prep.php" target="_blank">Free Income Tax Preparation service</a></li>
+          <li>File with certain companies or services that offer state-only tax filing (fees may apply)</li>
+          <li>Fill out the forms yourself and mail them in</li>
+        </ul>
+        <p><strong>For help filing your federal and state tax returns,</strong> <a href="https://www.irs.gov/filing/individuals/how-to-file" target="_blank">find other ways to file your federal taxes.</a></p>
+      </modal-content>
+    </modal-dialog>
+    <modal-dialog id="modal-info-info-you-and-your-family-spouse-nrtin-breather-how-to-file-paper-nc-linkmodal1">
+      <modal-heading><strong>How do I file my <fg-show path="/filerResidenceAndIncomeState"/> state taxes as a paper tax return?</strong></modal-heading>
+      <modal-content>
+        <p>You have <a href="https://www.fileyourstatetaxes.org/en/nc/faq/what_are_my_other_state_filing_options_this_year" target="_blank">options for filing your state taxes</a> as a paper tax return. You can:</p>
+        <ul>
+          <li>File for free with help from <a href="https://www.irs.gov/individuals/free-tax-return-preparation-for-qualifying-taxpayers" target="_blank">IRS-certified VITA volunteers</a></li>
+          <li>File with certain companies or services that offer state-only tax filing (fees may apply)</li>
+          <li>Fill out the forms yourself and mail them in</li>
+        </ul>
+        <p><strong>For help filing your federal and state tax returns,</strong> <a href="https://www.irs.gov/filing/individuals/how-to-file" target="_blank">find other ways to file your federal taxes.</a></p>
+      </modal-content>
+    </modal-dialog>
+    <modal-dialog id="modal-info-info-you-and-your-family-spouse-dont-know-or-have-ssn-itin-linkmodal1">
+      <modal-heading>What if I don’t have or know their SSN or ITIN?</modal-heading>
+      <modal-content>
+        <p>You will need your spouse’s Social Security number or ITIN to continue this federal tax return. If your spouse doesn’t have one, find out <a href="https://www.irs.gov/individuals/how-do-i-apply-for-an-itin" target="_blank">how to apply for an ITIN</a>.</p>
+      </modal-content>
+    </modal-dialog>
   </page>
 
-  <page title="Spouse taxpayer dependency status" route="/you-and-your-family/spouse/spouse-taxpayer-dependency-status">
+  <page title="Spouse’s taxpayer dependency status" route="/you-and-your-family/spouse/spouse-taxpayer-dependency-status">
     <section>
       <div class="df-screen" condition="/flowGate54bac3fd" operator="isTrue">
-        <h2>mfs-spouse-gross-income</h2>
-        <p>Heading, InfoDisplay, HelpLink, Boolean, SaveAndOrContinueButton</p>
+        <h2>Did <fg-show path="/secondaryFiler/firstName"/> have any gross income in <fg-show path="/taxYear"/>?</h2>
+        <p>Gross income is all the taxable income you receive in the form of money, goods, property, and services.</p>
+        <p><a href="https://www.irs.gov/publications/p501#en_US_2024_publink1000220691" target="_blank">Learn more about gross income</a></p>
+        <fg-set path="/MFSSpouseHasGrossIncome">
+          <question>Did <fg-show path="/secondaryFiler/firstName"/> have any gross income in <fg-show path="/taxYear"/>?</question>
+          <input type="boolean"/>
+        </fg-set>
       </div>
       <div class="df-screen" condition="/flowGate75f4aa4c" operator="isTrue">
-        <h2>mfs-spouse-could-be-claimed</h2>
-        <p>Heading, DFModal, InfoDisplay, Boolean, SaveAndOrContinueButton</p>
+        <h2>Could anyone claim <fg-show path="/secondaryFiler/firstName"/> as a dependent on their <fg-show path="/taxYear"/> federal tax return?</h2>
+        <p><modal-link for="modal-info-info-you-and-your-family-spouse-how-do-i-know-spouse-dependent-linkmodal1">How do I know if my spouse could be a dependent?</modal-link></p>
+        <p>If you or your spouse paid for more than half your spouse’s support for the year, answer <strong>No</strong>.</p>
+        <fg-set path="/secondaryFiler/canBeClaimed">
+          <question>Could anyone claim <fg-show path="/secondaryFiler/firstName"/> as a dependent on their <fg-show path="/taxYear"/> federal tax return?</question>
+          <input type="boolean"/>
+        </fg-set>
       </div>
     </section>
+    <modal-dialog id="modal-info-info-you-and-your-family-spouse-how-do-i-know-spouse-dependent-linkmodal1">
+      <modal-heading>How do I know if my spouse could be a dependent?</modal-heading>
+      <modal-content>
+        <p>You can’t claim your spouse as a dependent, even if they relied on you financially.</p>
+        <p>If your spouse relied on someone else (other than you) for support in <fg-show path="/taxYear"/>, the other person might be able to claim your spouse as a dependent on their federal tax return.</p>
+        <p>There are a few factors that determine whether someone can claim your spouse as a dependent, including:</p>
+        <ul>
+          <li>Your spouse’s relationship to that person</li>
+          <li>How much they supported your spouse, financially and in other ways</li>
+          <li>If your spouse lived with them and for how long</li>
+        </ul>
+        <p>Review Table 5 in <a href="https://www.irs.gov/publications/p501#en_US_2024_publink1000196863" target="_blank">IRS Publication 501</a> to determine if someone else might be able to claim your spouse.</p>
+        <p>Keep in mind that your spouse <strong>isn’t</strong> someone else’s dependent if your spouse paid for more than half of their own support (or if you did).</p>
+      </modal-content>
+    </modal-dialog>
   </page>
 
-  <page title="Spouse age vision" route="/you-and-your-family/spouse/spouse-age-vision">
+  <page title="Spouse’s age and vision" route="/you-and-your-family/spouse/spouse-age-vision">
     <section>
       <div class="df-screen" condition="/flowGatec1566a73" operator="isTrue">
-        <h2>mfs-spouse-age</h2>
-        <p>Heading, InfoDisplay ×2, DFModal, Boolean, SaveAndOrContinueButton</p>
+        <h2>Did your spouse reach age 65 by the end of <fg-show path="/taxYear"/>?</h2>
+        <p>People aged 65 or older can claim an additional standard deduction amount. For this purpose, a person is considered age 65 on the day before their 65th birthday. For example, if your spouse was born on January 1, <fg-show path="/64yearsBeforeTaxYear"/>, your spouse would be considered age 65 on December 31, <fg-show path="/taxYear"/>.</p>
+        <p condition="/flowGate001603c1" operator="isTrue">If your spouse was age 65 before they died, answer <strong>Yes</strong>.</p>
+        <p><modal-link for="modal-info-info-you-and-your-family-spouse-why-ask-spouses-age-linkmodal1">Why do we ask about your spouse’s age?</modal-link></p>
+        <fg-set path="/MFSSpouse65OrOlder">
+          <question>Did your spouse reach age 65 by the end of <fg-show path="/taxYear"/>?</question>
+          <input type="boolean"/>
+        </fg-set>
       </div>
       <div class="df-screen" condition="/flowGatec1566a73" operator="isTrue">
-        <h2>mfs-spouse-blind</h2>
-        <p>Heading, InfoDisplay, DFModal ×2, Boolean, SaveAndOrContinueButton</p>
+        <h2>On the last day of <fg-show path="/taxYear"/>, was <fg-show path="/secondaryFiler/firstName"/> blind?</h2>
+        <p condition="/flowGate001603c1" operator="isTrue">If your spouse died before the end of the year and was blind before death, answer <strong>yes</strong>.</p>
+        <p><modal-link for="modal-info-info-you-and-your-family-spouse-why-ask-blind-linkmodal1">Why do we ask if your spouse is blind?</modal-link></p>
+        <p><modal-link for="modal-info-info-you-and-your-family-spouse-blind-defined-linkmodal1">How is blindness defined?</modal-link></p>
+        <fg-set path="/secondaryFiler/isBlind">
+          <question>On the last day of <fg-show path="/taxYear"/>, was <fg-show path="/secondaryFiler/firstName"/> blind?</question>
+          <input type="boolean"/>
+        </fg-set>
       </div>
     </section>
+    <modal-dialog id="modal-info-info-you-and-your-family-spouse-why-ask-spouses-age-linkmodal1">
+      <modal-heading>Why do we ask about your spouse’s age?</modal-heading>
+      <modal-content>
+        <p>If your spouse was age 65 or older when they died, then the standard deduction amount is higher.</p>
+      </modal-content>
+    </modal-dialog>
+    <modal-dialog id="modal-info-info-you-and-your-family-spouse-why-ask-blind-linkmodal1">
+      <modal-heading>Why do we ask if your spouse is blind?</modal-heading>
+      <modal-content>
+        <p>If your spouse was blind on the last day of <fg-show path="/taxYear"/>, then the <a href="https://www.irs.gov/taxtopics/tc551" target="_blank">standard deduction</a> amount is higher.</p>
+      </modal-content>
+    </modal-dialog>
+    <modal-dialog id="modal-info-info-you-and-your-family-spouse-blind-defined-linkmodal1">
+      <modal-heading>How is blindness defined?</modal-heading>
+      <modal-content>
+        <p>For tax purposes, you are considered blind if one of these applies:</p>
+        <ul>
+          <li>You don’t have any eyesight.</li>
+          <li>You can’t see better than 20/200 in your better eye with glasses or contact lenses.</li>
+          <li>Your field of vision is 20 degrees or less.</li>
+        </ul>
+        <p>Answer <strong>Yes</strong> to this question if one of these circumstances applies to your spouse at the end of the tax year.</p>
+        <p>If your spouse isn’t totally blind, they must get a certified statement from an eye doctor stating that one of these is true:</p>
+        <ol>
+          <li>They can’t see better than 20/200 in the better eye with glasses or contact lenses.</li>
+          <li>Their field of vision is 20 degrees or less.</li>
+        </ol>
+        <p>If their eye condition isn’t likely to improve beyond these limits, the statement should include this fact. Keep the statement in your records. You won’t need to attach it to your federal tax return, but the IRS may need to see it later.</p>
+        <p>If their vision can be corrected beyond these limits only by contact lenses that your spouse can wear only briefly because of pain, infection, or ulcers, your spouse can take the higher standard deduction for blindness if they otherwise qualify. In that case, select <strong>Yes</strong> for this question. Otherwise, answer <strong>No.</strong></p>
+        <p><a href="https://www.irs.gov/publications/p501#en_US_2024_publink1000221059" target="_blank">More information is in IRS’s Publication 501.</a></p>
+      </modal-content>
+    </modal-dialog>
   </page>
 </FlowConfig>

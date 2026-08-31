@@ -4,26 +4,91 @@
      Corrections belong in the transpiler, so the port stays reproducible against an upstream
      that is still moving. See codemod/README.md. -->
 <FlowConfig>
-  <page title="Pfd loop intro" route="/income/alaska-pfd/pfd-loop-intro">
+  <page title="Alaska Permanent Fund Dividend (PFD)" route="/income/alaska-pfd/pfd-loop-intro">
     <section>
       <div class="df-screen">
-        <h2>pfd-loop-intro</h2>
-        <p>ContextHeading, Heading ×3, InfoDisplay, DFModal ×4, DFAlert, CollectionItemManager</p>
+        <h2>Alaska Permanent Fund Dividend (PFD)</h2>
+        <p class="df-context-heading" condition="/flowGate47202dcf" operator="isTrue">Alaska Permanent Fund Dividend (PFD)</p>
+        <p condition="/flowGated3a234f4" operator="isTrue">Add any PFD received from Alaska. This dividend is reported on a Form 1099-MISC.</p>
+        <p condition="/flowGated0002a27" operator="isTrue"><modal-link for="modal-info-info-income-pfd-report-child-pfd-income-linkmodal1">I have a child’s PFD from Alaska. Why can’t I report it in Direct File?</modal-link></p>
+        <p condition="/flowGateaecf3df1" operator="isTrue"><modal-link for="modal-info-info-income-pfd-report-if-garnished-modal-linkmodal1">Do I need to report my PFD from Alaska if it’s garnished?</modal-link></p>
+        <p condition="/flowGate980b4142" operator="isTrue"><modal-link for="modal-info-info-income-pfd-report-if-garnished-modal-mfj-linkmodal1">Do I need to report my or my spouse’s PFD from Alaska if it’s garnished?</modal-link></p>
+        <fg-alert alert-key="/flow/income/alaska-pfd/pfd-loop-intro" alert-type="info" condition="/flowGated0002a27" operator="isTrue">
+          <heading>There are some types of income on the Form 1099-MISC that you won’t be able to report using Direct File. If you have these types of income, you’ll need to file using another tool.</heading>
+          <p><modal-link for="modal-info-info-income-pfd-supported-income-alert-modal-linkmodal1">What Form 1099-MISC income types aren’t yet supported in Direct File?</modal-link></p>
+        </fg-alert>
+        <p condition="/flowGated3a234f4" operator="isTrue"><modal-link for="modal-info-info-income-pfd-supported-income-alert-modal-linkmodal1">What Form 1099-MISC income types aren’t yet supported in Direct File?</modal-link></p>
       </div>
-      <fg-collection path="/form1099Miscs" item-name="PFD" determiner="another">
+      <fg-collection path="/form1099Miscs" item-name="PFD" determiner="another" if-true="/flowGate980b4142">
         <div class="df-screen" condition="/flowGate980b4142" operator="isTrue">
-          <h2>pfd-add-whose-1099</h2>
-          <p>TaxReturnAlert, Heading, DFModal, CollectionItemReference, GenericString, SaveAndOrContinueButton</p>
+          <h2>Whose Alaska Permanent Fund Dividend (PFD) is it?</h2>
+          <p><modal-link for="modal-info-info-income-pfd-report-child-pfd-income-linkmodal1">I have a child’s PFD from Alaska. Why can’t I report it in Direct File?</modal-link></p>
         </div>
         <div class="df-screen">
-          <h2>pfd-add-box-3</h2>
-          <p>Heading, InfoDisplay, Dollar, SaveAndOrContinueButton</p>
+          <h2>Enter the amount listed in other income in <strong>box 3</strong>.</h2>
+          <fg-apply path="/alaskaPfd1099s/*/writableOtherIncome" source="/form1099Miscs/*/writableOtherIncome"/>
+          <p>The <fg-show path="/taxYear"/> Permanent Fund Dividend amount is <fg-show path="/alaskaPfdAmount"/>. This amount includes the Alaska dividend distribution of <fg-show path="/alaskaPfdAmountDividendPortion"/> and a one-time energy relief payment of <fg-show path="/alaskaPfdAmountEnergyReliefPaymentPortion"/>.</p>
+          <p>The entire <fg-show path="/alaskaPfdAmount"/> is taxable for federal income tax purposes.</p>
+          <fg-set path="/form1099Miscs/*/writableOtherIncome">
+            <question><strong>Box 3</strong> - Other income</question>
+            <input type="dollar"/>
+          </fg-set>
         </div>
         <div class="df-screen">
-          <h2>pfd-add-box-4</h2>
-          <p>Heading, InfoDisplay ×2, Dollar, DFModal, SaveAndOrContinueButton</p>
+          <h2>Enter the federal income tax withheld in <strong>box 4</strong>.</h2>
+          <fg-apply path="/form1099Miscs/*/payer" source="/apfForm1099MiscPayer"/>
+          <fg-apply path="/form1099Miscs/*/payer/tin" source="/apfForm1099MiscPayerEin"/>
+          <fg-apply path="/form1099Miscs/*/hasSeenLastAvailableScreen" source="/flowTrue"/>
+          <p>If box 4 is blank, leave it blank here, too.</p>
+          <fg-set path="/form1099Miscs/*/writableFederalWithholding">
+            <question><strong>Box 4</strong> - Federal income tax withheld</question>
+            <input type="dollar"/>
+          </fg-set>
+          <p>You can skip any other information listed on the PFD.</p>
+          <p><modal-link for="modal-info-info-income-pfd-why-are-we-skipping-other-info-modal-linkmodal1">Why are we skipping other information on the PFD?</modal-link></p>
         </div>
       </fg-collection>
     </section>
+    <modal-dialog id="modal-info-info-income-pfd-report-child-pfd-income-linkmodal1">
+      <modal-heading>I have a child’s Permanent Fund Dividend (PFD) from Alaska. Why can’t I report it in Direct File?</modal-heading>
+      <modal-content>
+        <p>The <fg-show path="/taxYear"/> PFD is for <fg-show path="/alaskaPfdAmount"/>. Because this amount is more than $1,300, a child’s PFD is taxable as unearned income.</p>
+        <p>Direct File doesn’t currently support <a href="https://www.irs.gov/taxtopics/tc553" target="_blank">reporting children’s unearned income</a>.</p>
+        <p>You’ll need to file using another tool. You must report all of your income to the IRS, even if you’re not able to do so with Direct File.</p>
+        <p><a href="https://www.irs.gov/filing/individuals/how-to-file" target="_blank">Find other ways to file your federal taxes</a>.</p>
+      </modal-content>
+    </modal-dialog>
+    <modal-dialog id="modal-info-info-income-pfd-report-if-garnished-modal-linkmodal1">
+      <modal-heading>Do I need to report my Permanent Fund Dividend (PFD) from Alaska if it’s garnished?</modal-heading>
+      <modal-content>
+        <p>Even if part or all of the PFD was garnished, the entire amount of the dividend must be reported as taxable income.</p>
+        <p><a href="https://pfd.alaska.gov/payments/tax-information" target="_blank">Learn more about tax  reporting requirements for the PFD.</a></p>
+      </modal-content>
+    </modal-dialog>
+    <modal-dialog id="modal-info-info-income-pfd-report-if-garnished-modal-mfj-linkmodal1">
+      <modal-heading>Do I need to report my or my spouse’s Permanent Fund Dividend (PFD) from Alaska if it’s garnished?</modal-heading>
+      <modal-content>
+        <p>Even if part or all of the PFD was garnished, the entire amount of the dividend must be reported as taxable income.</p>
+        <p><a href="https://pfd.alaska.gov/payments/tax-information" target="_blank">Learn more about tax  reporting requirements for the PFD.</a></p>
+      </modal-content>
+    </modal-dialog>
+    <modal-dialog id="modal-info-info-income-pfd-supported-income-alert-modal-linkmodal1">
+      <modal-heading>What Form 1099-MISC income types aren’t yet supported in Direct File?</modal-heading>
+      <modal-content>
+        <p>In Direct File, you can report Form 1099-MISC as long as it’s the Alaska Permanent Fund Dividend (PFD).</p>
+        <p>The Form 1099-MISC is used to report many types of payments, but Direct File only supports the PFD payments listed in box 3 and any federal income tax withheld from the PFD in box 4.</p>
+        <p>Reporting other types of income requires filing additional forms and information that Direct File doesn’t currently support.</p>
+        <p>If you received money from any of these other sources, you’ll need to file using another tool.</p>
+        <p><a href="https://www.irs.gov/filing/individuals/how-to-file" target="_blank">Find other ways to file your federal taxes</a></p>
+      </modal-content>
+    </modal-dialog>
+    <modal-dialog id="modal-info-info-income-pfd-why-are-we-skipping-other-info-modal-linkmodal1">
+      <modal-heading>Why are we skipping other information on the Alaska Permanent Fund Dividend (PFD)?</modal-heading>
+      <modal-content>
+        <p>Your PFD reported on Form 1099-MISC may have additional information listed on it, but we don’t need those boxes to calculate your taxes.</p>
+        <p>Direct File only supports the standard deduction. If you want to take itemized deductions for withholdings related to any charitable, Alaska 529 Plan, or education raffle contributions, then you’ll need to file using another tool.</p>
+        <p><a href="https://www.irs.gov/filing/individuals/how-to-file" target="_blank">Find other ways to file your federal taxes</a>.</p>
+      </modal-content>
+    </modal-dialog>
   </page>
 </FlowConfig>

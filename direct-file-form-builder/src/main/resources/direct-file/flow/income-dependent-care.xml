@@ -4,187 +4,599 @@
      Corrections belong in the transpiler, so the port stays reproducible against an upstream
      that is still moving. See codemod/README.md. -->
 <FlowConfig>
-  <page title="Dep care intro" route="/income/dependent-care/dep-care-intro">
+  <page title="Dependent care benefits" route="/income/dependent-care/dep-care-intro">
     <section>
       <div class="df-screen">
-        <h2>dep-care-intro</h2>
-        <p>Heading, InfoDisplay ×5, DFModal, SaveAndOrContinueButton</p>
+        <h2>Dependent care benefits</h2>
+        <p condition="/flowGate0c2233b8" operator="isTrue">Based on your earlier answers, we know that you didn’t get any employer-provided dependent care benefits in <fg-show path="/taxYear"/>.</p>
+        <p condition="/flowGate0c2233b8" operator="isTrue">In this section, we’ll ask some questions about dependent care benefits you may have gotten before <fg-show path="/taxYear"/> and figure out if any of those benefits are taxable. We’ll also ask some questions to make sure any dependent care expenses you had are supported in Direct File.</p>
+        <p condition="/flowGated83fb2b5" operator="isTrue">Based on your earlier answers, we know that you and <fg-show path="/secondaryFiler/firstName"/> didn’t get any employer-provided dependent care benefits in <fg-show path="/taxYear"/>.</p>
+        <p condition="/flowGated83fb2b5" operator="isTrue">In this section, we’ll ask some questions about dependent care benefits you may have gotten before <fg-show path="/taxYear"/> and figure out if any of those benefits are taxable. We’ll also ask some questions to make sure any dependent care expenses you had are supported in Direct File.</p>
+        <p condition="/flowGatebe8c9ea4" operator="isTrue">Based on your earlier answers, we know that you and <fg-show path="/secondaryFiler/firstName"/> didn’t get any employer-provided dependent care benefits in <fg-show path="/taxYear"/>.</p>
+        <p condition="/flowGatebe8c9ea4" operator="isTrue">In this section, we’ll ask some questions about dependent care benefits you may have gotten before <fg-show path="/taxYear"/> and figure out if any of those benefits are taxable. We’ll also ask some questions to make sure any dependent care expenses you had are supported in Direct File.</p>
+        <p condition="/flowGatec86cb4c2" operator="isTrue">Based on your earlier answers, we know that you got <fg-show path="/cdccDependentCareBenefitsAmount"/> in employer-provided dependent care benefits in <fg-show path="/taxYear"/>.</p>
+        <p condition="/flowGatec86cb4c2" operator="isTrue">In this section, we’ll ask some questions to figure out if any of those benefits are taxable in <fg-show path="/taxYear"/>. We’ll also ask some questions to make sure your dependent care expenses are supported in Direct File.</p>
+        <p condition="/flowGatea3d0d2ab" operator="isTrue">Based on your earlier answers, we know that <fg-show path="/secondaryFiler/firstName"/> got <fg-show path="/cdccDependentCareBenefitsAmount"/> in employer-provided dependent care benefits in <fg-show path="/taxYear"/>.</p>
+        <p condition="/flowGatea3d0d2ab" operator="isTrue">In this section, we’ll ask some questions to figure out if any of those benefits are taxable in <fg-show path="/taxYear"/>. We’ll also ask some questions to make sure your dependent care expenses are supported in Direct File.</p>
+        <p><modal-link for="modal-info-info-income-dependent-care-dependent-care-intro-what-are-dependent-care-bene-9ac7a6d5">What are dependent care benefits?</modal-link></p>
       </div>
     </section>
+    <modal-dialog id="modal-info-info-income-dependent-care-dependent-care-intro-what-are-dependent-care-bene-9ac7a6d5">
+      <modal-heading>What are dependent care benefits?</modal-heading>
+      <modal-content>
+        <p>Dependent care benefits are provided by an employer and used to care for dependents, such as young children and family members with disabilities.</p>
+        <p>Dependent care benefits can include:</p>
+        <ol>
+          <li>Pre-tax contributions you made under a dependent care flexible spending arrangement (FSA)</li>
+          <li>Amounts your employer paid directly to either you or your care provider for the care of a qualifying person while you work or look for work</li>
+          <li>The fair market value of care in a daycare facility provided or sponsored by your employer</li>
+        </ol>
+        <p>When you get dependent care benefits from your employer, they’re tax-free. But, in some cases you may need to pay taxes on these benefits later when you file your taxes.</p>
+        <p><a href="https://www.irs.gov/publications/p503#en_US_2023_publink1000203344" target="_blank">Learn more about dependent care benefits</a></p>
+      </modal-content>
+    </modal-dialog>
   </page>
 
-  <page title="Dep care benefits" route="/income/dependent-care/dep-care-benefits">
+  <page title="Dependent care benefits" route="/income/dependent-care/dep-care-benefits">
     <section>
       <div class="df-screen">
-        <h2>household-employee-check-benefits</h2>
-        <p>Heading ×2, DFModal, InfoDisplay, Boolean, SaveAndOrContinueButton</p>
+        <h2>In <fg-show path="/taxYear"/>, did you have a household employee who came to your home to provide child or dependent care?</h2>
+        <p><modal-link for="modal-sharedmodalhouseholdemployeewhyask">We ask this because if you had a household employee</modal-link>, you may need to pay employment taxes and file Schedule H (Form 1040) with your federal tax return. Direct File doesn’t yet support this.</p>
+        <p>They may be a household employee if:</p>
+        <ul>
+          <li>They come to your home and you control what work is done and how it’s done</li>
+          <li>You hired them and pay them directly (even if they were recommended by an agency)</li>
+          <li>You have an Employer Identification Number (EIN) and provided them with a Form W-2</li>
+        </ul>
+        <p>They may <strong>not</strong> be a household employee if:</p>
+        <ul>
+          <li>They provide the care from their own home or place of business</li>
+          <li>You pay an agency to place them in your home and the agency controls what work is done and how it’s done</li>
+        </ul>
+        <p><a href="$t(commonUrls.householdEmployees)" target="_blank">Learn more about who’s considered a household employee.</a></p>
+        <fg-set path="/flowKnockoutHouseholdEmployee">
+          <question>In <fg-show path="/taxYear"/>, did you have a household employee who came to your home to provide child or dependent care?</question>
+          <input type="boolean"/>
+        </fg-set>
       </div>
       <div class="df-screen df-knockout" condition="/flowGateae4700b6" operator="isTrue">
-        <h2>household-employee-ko-benefits</h2>
-        <p>IconDisplay, Heading, InfoDisplay ×2, DFAlert, KnockoutButton</p>
+        <h2>Direct File doesn’t have the tax forms you need yet.</h2>
+        <p>You said you paid a household employee for dependent care expenses. If you hired a household employee in <fg-show path="/taxYear"/>, you may need to pay employment taxes, which requires forms that Direct File doesn’t support yet.</p>
+        <p><a href="$t(commonUrls.householdEmployees)" target="_blank">Learn more about who’s considered a household employee.</a></p>
+        <fg-alert alert-key="/flow/income/dependent-care/household-employee-ko-benefits" alert-type="error" knockout="true" condition="/flowAlwaysTrue" operator="isTrue">
+          <heading><a href="https://www.irs.gov/filing/individuals/how-to-file" target="_blank">Find other ways to file your federal taxes.</a></heading>
+        </fg-alert>
       </div>
       <div class="df-screen">
-        <h2>add-dep-care-carry-forward-prior-year-a</h2>
-        <p>Heading ×2, InfoDisplay ×2, Boolean, SaveAndOrContinueButton</p>
+        <h2>Did you or <fg-show path="/secondaryFiler/firstName"/> get any dependent care benefits in <fg-show path="/lastTaxYear"/> that you carried forward and used before March 15, <fg-show path="/taxYear"/>?</h2>
+        <p condition="/flowGate980b4142" operator="isTrue">This is any unused amount from <fg-show path="/lastTaxYear"/> that your or <fg-show path="/secondaryFiler/firstName"/>’s employer allowed you to carry forward to <fg-show path="/taxYear"/> and use before March 15, <fg-show path="/taxYear"/>.</p>
+        <p condition="/flowGateaecf3df1" operator="isTrue">This is any unused amount from <fg-show path="/lastTaxYear"/> that your employer allowed you to carry forward to <fg-show path="/taxYear"/> and use before March 15, <fg-show path="/taxYear"/>.</p>
+        <fg-set path="/hasCdccCarryoverAmountFromPriorTaxYear">
+          <question>Did you or <fg-show path="/secondaryFiler/firstName"/> get any dependent care benefits in <fg-show path="/lastTaxYear"/> that you carried forward and used before March 15, <fg-show path="/taxYear"/>?</question>
+          <input type="boolean"/>
+        </fg-set>
       </div>
       <div class="df-screen" condition="/flowGatea55ebde3" operator="isTrue">
-        <h2>add-dep-care-carry-forward-prior-year-b</h2>
-        <p>Heading ×2, Dollar, SaveAndOrContinueButton</p>
+        <h2>Enter the amount of dependent care benefits that you and <fg-show path="/secondaryFiler/firstName"/> carried forward from <fg-show path="/lastTaxYear"/> and used before March 15, <fg-show path="/taxYear"/>.</h2>
+        <fg-set path="/writableCdccCarryoverAmountFromPriorTaxYear">
+          <question>Amount carried forward to <fg-show path="/taxYear"/> and used before March 15, <fg-show path="/taxYear"/></question>
+          <input type="dollar"/>
+        </fg-set>
       </div>
       <div class="df-screen" condition="/flowGatef34b0bad" operator="isTrue">
-        <h2>add-dep-care-carry-forward-next-year-a</h2>
-        <p>Heading ×2, DFModal, Boolean, SaveAndOrContinueButton</p>
+        <h2>In <fg-show path="/taxYear"/>, did you or <fg-show path="/secondaryFiler/firstName"/> get any dependent care benefits and then either forfeit those benefits or carry them forward to <fg-show path="/nextTaxYear"/>?</h2>
+        <p><modal-link for="modal-sharedmodalforfeitcarryforward">What does it mean to forfeit or carry forward dependent care benefits?</modal-link></p>
+        <fg-set path="/writableHasCdccForfeitedCredits">
+          <question>In <fg-show path="/taxYear"/>, did you or <fg-show path="/secondaryFiler/firstName"/> get any dependent care benefits and then either forfeit those benefits or carry them forward to <fg-show path="/nextTaxYear"/>?</question>
+          <input type="boolean"/>
+        </fg-set>
       </div>
       <div class="df-screen" condition="/flowGate5f6bace6" operator="isTrue">
-        <h2>add-dep-care-carry-forward-next-year-b</h2>
-        <p>Heading ×2, DFModal, Dollar, SaveAndOrContinueButton</p>
+        <h2>Enter the amount of dependent care benefits that you and <fg-show path="/secondaryFiler/firstName"/> forfeited in <fg-show path="/taxYear"/> or carried forward from <fg-show path="/taxYear"/> to <fg-show path="/nextTaxYear"/>.</h2>
+        <p><modal-link for="modal-sharedmodalforfeitcarryforward">What does it mean to forfeit or carry forward dependent care benefits?</modal-link></p>
+        <fg-set path="/writableCdccForfeitedCredits">
+          <question>Amount forfeited in <fg-show path="/taxYear"/> or carried forward from <fg-show path="/taxYear"/> to <fg-show path="/nextTaxYear"/></question>
+          <input type="dollar"/>
+        </fg-set>
       </div>
       <div class="df-screen" condition="/flowGate1f3491d9" operator="isTrue">
-        <h2>dep-care-mfj-dep-taxpayers</h2>
-        <p>Heading, InfoDisplay, InternalLink, SaveAndOrContinueButton</p>
+        <h2>You don’t qualify to exclude any of your dependent care benefits from tax because you and <fg-show path="/secondaryFiler/firstName"/> agreed that another taxpayer could claim you or <fg-show path="/secondaryFiler/firstName"/> as a dependent.</h2>
+        <p>This means that you’re only filing your tax return for a refund of money you paid towards taxes.</p>
+        <p>If you want the opportunity to exclude some of your dependent care benefits from tax, you can go back to the <a href="/you-and-your-family/spouse/spouse-mfj-refund-only" target="_blank">Spouse</a> section and update your answer.</p>
       </div>
     </section>
+    <modal-dialog id="modal-sharedmodalhouseholdemployeewhyask">
+      <modal-heading>Why do we ask about household employees?</modal-heading>
+      <modal-content>
+        <p>If you hired a household employee in <fg-show path="/taxYear"/>, you may need to pay employment taxes and file Schedule H (Form 1040) with your federal tax return. You’ll also need an Employer Identification Number (EIN).</p>
+        <p>Direct File doesn’t support Schedule H (Form 1040) yet, so if you must pay employment taxes, you’ll need to <a href="$t(commonUrls.otherWaysToFile)" target="_blank">find another way to file your federal taxes.</a></p>
+        <p><a href="$t(commonUrls.householdEmployees)" target="_blank">Learn more about who’s considered a household employee.</a></p>
+      </modal-content>
+    </modal-dialog>
+    <modal-dialog id="modal-sharedmodalforfeitcarryforward">
+      <modal-heading>What does it mean to forfeit or carry forward dependent care benefits?</modal-heading>
+      <modal-content>
+        <p>If you had an employer-provided dependent care plan, your employer set aside an amount to cover your <fg-show path="/taxYear"/> dependent care expenses.</p>
+        <p>A forfeited amount is any amount that your employer set aside, but that you didn’t use on qualified dependent care expenses in <fg-show path="/taxYear"/>. Forfeited amounts don’t include amounts you expect to receive in the future.</p>
+        <p>An amount that was carried forward includes unused dependent care benefits from <fg-show path="/taxYear"/> that your employer allowed you to carry forward and use during the grace period in <fg-show path="/nextTaxYear"/>, which ends on March 15, <fg-show path="/nextTaxYear"/>.</p>
+        <p><a href="https://www.irs.gov/instructions/i2441#en_US_2023_publink1000106361" target="_blank">Learn more about forfeiting and carrying forward dependent care benefits</a></p>
+      </modal-content>
+    </modal-dialog>
   </page>
 
-  <page title="Dep care expenses" route="/income/dependent-care/dep-care-expenses">
+  <page title="Dependent care expenses" route="/income/dependent-care/dep-care-expenses">
     <section>
       <div class="df-screen" condition="/flowGatee63269e7" operator="isTrue">
-        <h2>add-dep-care-max-exclusion-tp1</h2>
-        <p>TaxReturnAlert, Heading ×5, InfoDisplay, Dollar, SaveAndOrContinueButton</p>
+        <h2>What’s the maximum amount of dependent care benefits that your employer allows you to exclude from your income in <fg-show path="/taxYear"/>?</h2>
+        <p>The maximum amount you can exclude by law is <fg-show path="/cdccMaximumExclusion"/>, but some employers have limits below that. If you’re not sure, check with your employer.</p>
+        <fg-set path="/writablePrimaryFilerDependentCarePlanMaximum">
+          <question>Maximum amount you can exclude for <fg-show path="/taxYear"/></question>
+          <input type="dollar"/>
+        </fg-set>
       </div>
       <div class="df-screen" condition="/flowGate16c5e5e5" operator="isTrue">
-        <h2>add-dep-care-max-exclusion-tp2</h2>
-        <p>TaxReturnAlert, Heading, InfoDisplay, Dollar, SaveAndOrContinueButton</p>
+        <h2>What’s the maximum amount of dependent care benefits that <fg-show path="/secondaryFiler/firstName"/>’s employer allows them to exclude from their income in <fg-show path="/taxYear"/>?</h2>
+        <p>The maximum amount you can exclude by law is <fg-show path="/cdccMaximumExclusion"/>, but some employers have limits below that. If you’re not sure, check with your employer.</p>
+        <fg-set path="/writableSecondaryFilerDependentCarePlanMaximum">
+          <question>Maximum amount they can exclude for <fg-show path="/taxYear"/></question>
+          <input type="dollar"/>
+        </fg-set>
       </div>
       <div class="df-screen" condition="/flowGate56b8c809" operator="isTrue">
-        <h2>zero-qp-zero-qe</h2>
-        <p>Heading, InfoDisplay ×2, InternalLink, SaveAndOrContinueButton</p>
+        <h2>You don’t have any qualifying people for dependent care expenses.</h2>
+        <p>To exclude your employer-provided dependent care benefits from tax, you must have qualifying expenses paid for the care of a qualifying person. Since you don’t have any qualifying people, you won’t be able to exclude any of your dependent care benefits from tax.</p>
+        <p>If you need to add a family or household member to your tax return, go back to the <a href="/data-view/flow/you-and-your-family/dependents" target="_blank">Family and household section</a>.</p>
+        <p><a href="https://www.irs.gov/publications/p503#en_US_2023_publink1000203267" target="_blank">Who is a qualifying person for dependent care expenses?</a></p>
       </div>
       <div class="df-screen" condition="/flowGatee3a11678" operator="isTrue">
-        <h2>add-dep-care-expenses</h2>
-        <p>Heading ×2, InfoDisplay ×5, ConditionalList ×2, DFModal, Dollar, SaveAndOrContinueButton</p>
+        <h2>In <fg-show path="/taxYear"/>, what were your total qualified expenses for dependent care?</h2>
+        <p condition="/flowGate17d54661" operator="isTrue">Enter any qualified expenses that you had in <fg-show path="/taxYear"/> for the care of your qualifying people:</p>
+        <p condition="/flowGate11dc9ee6" operator="isTrue">Enter any qualifying expenses that you and <fg-show path="/secondaryFiler/firstName"/> had in <fg-show path="/taxYear"/> for the care of your qualifying people:</p>
+        <p condition="/flowGatee9fe3970" operator="isTrue">Enter any qualified expenses that you had in <fg-show path="/taxYear"/> for the care of your qualifying person:</p>
+        <p condition="/flowGateb915ffe8" operator="isTrue">Enter any qualifying expenses that you and <fg-show path="/secondaryFiler/firstName"/> had in <fg-show path="/taxYear"/> for the care of your qualifying person:</p>
+        <ul>
+          <li><fg-show path="/filers/*/fullName"/></li>
+          <li><fg-show path="/familyAndHousehold/*/fullName"/></li>
+        </ul>
+        <p>It doesn’t matter if the expenses were paid for in <fg-show path="/taxYear"/>, as long as the care was provided in <fg-show path="/taxYear"/>.</p>
+        <p condition="/flowGate45c01479" operator="isTrue">Don’t include:</p>
+        <ul condition="/flowGate45c01479" operator="isTrue">
+          <li>Expenses paid to care for <fg-show path="/familyAndHousehold/*/firstName"/> after they turned 13</li>
+          <li>Expenses paid to care for <fg-show path="/filers/*/firstName"/> on any days when they were able to physically or mentally care for themselves</li>
+          <li>Expenses paid to care for <fg-show path="/familyAndHousehold/*/firstName"/> on any days when they were able to physically or mentally care for themselves</li>
+          <li>Expenses paid to care for <fg-show path="/familyAndHousehold/*/firstName"/> on any days when they were able to physically or mentally care for themselves after turning age 13</li>
+        </ul>
+        <p><modal-link for="modal-sharedmodalcdccexpenses">What are qualified dependent care expenses?</modal-link></p>
+        <fg-set path="/writableCdccTotalQualifiedDependentCareExpenses">
+          <question><fg-show path="/taxYear"/> Qualified expenses</question>
+          <input type="dollar"/>
+        </fg-set>
       </div>
     </section>
+    <modal-dialog id="modal-sharedmodalcdccexpenses">
+      <modal-heading>What are qualified dependent care expenses?</modal-heading>
+      <modal-content>
+        <p>Qualified expenses include amounts paid for the care of a qualifying person while you (or your spouse if you’re filing jointly) worked or looked for work. The main purpose of the care must be for the qualifying person’s well-being and protection.</p>
+        <p>Qualified expenses must be paid to a qualified care provider. According to the IRS, a qualified care provider cannot be:</p>
+        <ul>
+          <li>Your dependent</li>
+          <li>Your spouse (at any time in <fg-show path="/taxYear"/>)</li>
+          <li>The parent of your qualifying child</li>
+          <li>Your biological child, adopted child, stepchild, or foster child unless they were age 19 or older by the end of <fg-show path="/taxYear"/></li>
+        </ul>
+        <p>Some expenses that may qualify:</p>
+        <ul>
+          <li>Household services that are at least partly for the care of a qualifying person and that are needed to run a home, like the services of a cook, maid, babysitter, housekeeper, or cleaning person</li>
+          <li>Expenses for a child in nursery school, preschool, or similar programs for children below kindergarten level</li>
+          <li>Expenses for before- or after-school care of a child in kindergarten or a higher grade</li>
+          <li>Expenses for day camp</li>
+          <li>Expenses for a dependent care center that complies with state and local regulations</li>
+          <li>Fees paid to an agency to get care provider services</li>
+          <li>Deposits and application fees paid to an agency or preschool (as long as they weren’t forfeited)</li>
+        </ul>
+        <p>Some expenses that don’t qualify:</p>
+        <ul>
+          <li>Expenses to attend kindergarten or a higher grade</li>
+          <li>Summer school and tutoring programs</li>
+          <li>Overnight camps</li>
+          <li>Expenses for food, lodging, clothing, education, entertainment, unless they were related to the care of the qualifying person and can’t be separated from the total cost</li>
+          <li>Child support payments</li>
+        </ul>
+        <p>This is not a complete list. Refer to <a href="https://www.irs.gov/publications/p503#en_US_2023_publink1000203314:~:text=through%20the%20Internet.-,Are%20These%20Work%2DRelated%20Expenses%3F,-Child%20and%20dependent" target="_blank">Publication 503</a> to learn more about which expenses qualify.</p>
+      </modal-content>
+    </modal-dialog>
   </page>
 
-  <page title="Dep care combat pay" route="/income/dependent-care/dep-care-combat-pay">
+  <page title="Combat pay and dependent care benefits" route="/income/dependent-care/dep-care-combat-pay">
     <section>
       <div class="df-screen" condition="/flowGate22d45e69" operator="isTrue">
-        <h2>dep-care-combat-pay</h2>
-        <p>Heading ×3, DFAlert, SaveAndOrContinueAndSetFactButton ×2, InternalLink</p>
+        <h2>It looks like you earned <fg-show path="/primaryFilerCombatPay"/> in nontaxable combat pay.</h2>
+        <fg-alert alert-key="/flow/income/dependent-care/dep-care-combat-pay" alert-type="success" condition="/flowAlwaysTrue" operator="isTrue">
+          <heading>It looks like you earned <fg-show path="/primaryFilerCombatPay"/> in nontaxable combat pay.</heading>
+          <p condition="/flowGatef2d2f40c" operator="isTrue"><strong>Less of your benefits may be taxed</strong> if you include all of your combat pay in your earned income. You can choose another option, but this means more of your benefits could be taxed.</p>
+          <p condition="/flowGate9aa0be30" operator="isTrue"><strong>Less of your benefits may be taxed</strong> if you include all of your and <fg-show path="/secondaryFiler/firstName"/>’s combat pay in your earned income. You can choose another option, but this means more of your benefits could be taxed.</p>
+          <p><modal-link for="modal-info-info-income-dependent-care-combat-pay-modal-linkmodal1">How does including combat pay affect your taxable dependent care benefits?</modal-link></p>
+        </fg-alert>
+        <p><a href="/income/dependent-care/dep-care-combat-pay-change" target="_blank">Choose another option</a></p>
       </div>
       <div class="df-screen" condition="/flowGate22d45e69" operator="isTrue">
-        <h2>dep-care-combat-pay-change</h2>
-        <p>Heading ×3, DFAlert, Enum, SaveAndOrContinueButton</p>
+        <h2>Do you want to include your nontaxable combat pay in your earned income when calculating how much of your dependent care benefits are taxable?</h2>
+        <fg-alert alert-key="/flow/income/dependent-care/dep-care-combat-pay-change" alert-type="success" condition="/flowAlwaysTrue" operator="isTrue">
+          <heading>Do you want to include your nontaxable combat pay in your earned income when calculating how much of your dependent care benefits are taxable?</heading>
+          <p condition="/flowGatef2d2f40c" operator="isTrue"><strong>Less of your benefits may be taxed</strong> if you include all of your combat pay in your earned income. You can choose another option, but this means more of your benefits could be taxed.</p>
+          <p condition="/flowGate9aa0be30" operator="isTrue"><strong>Less of your benefits may be taxed</strong> if you include all of your and <fg-show path="/secondaryFiler/firstName"/>’s combat pay in your earned income. You can choose another option, but this means more of your benefits could be taxed.</p>
+          <p><modal-link for="modal-info-info-income-dependent-care-combat-pay-modal-linkmodal1">How does including combat pay affect your taxable dependent care benefits?</modal-link></p>
+        </fg-alert>
+        <fg-set path="/cdccCombatPayElectionForBenefits">
+          <question>Do you want to include your nontaxable combat pay in your earned income when calculating how much of your dependent care benefits are taxable?</question>
+          <input type="enum" options-path="/combatPayOptions">
+            <option value="useSpouseCombatPay">Include all combat pay</option>
+            <option value="usePrimaryCombatPay">Include all combat pay</option>
+            <option value="useBothCombatPay">Include all of my and ’s combat pay</option>
+            <option value="usePrimaryNotSpouseCombatPay">Include all of my combat pay and exclude all of ’s combat pay</option>
+            <option value="useSpouseNotPrimaryCombatPay">Include all of ’s combat pay and exclude all of my combat pay</option>
+            <option value="noCombatPay">Exclude all combat pay</option>
+          </input>
+        </fg-set>
       </div>
       <div class="df-screen" condition="/flowGate5309547a" operator="isTrue">
-        <h2>earned-income-rule-breather-benefits</h2>
-        <p>ContextHeading, Heading, InfoDisplay ×6, DFModal, SaveAndOrContinueButton</p>
+        <h2>We need more information to make sure Direct File can support your tax situation.</h2>
+        <p class="df-context-heading" condition="/flowGatef9137ab5" operator="isTrue">Child and Dependent Care Credit</p>
+        <p condition="/flowGate36159f20" operator="isTrue">People who made under a certain amount of money while they were full-time students may be able to lower the amount of their taxable dependent care benefits. Direct File doesn’t yet support this tax situation.</p>
+        <p condition="/flowGate36159f20" operator="isTrue">We need to find out if this applies to you or <fg-show path="/secondaryFiler/firstName"/> to see if you can continue using Direct File.</p>
+        <p condition="/flowGate2e363a61" operator="isTrue">People who made under a certain amount of money while they were physically or mentally unable to care for themselves may be able to lower the amount of their taxable dependent care benefits. Direct File doesn’t yet support this tax situation.</p>
+        <p condition="/flowGate2e363a61" operator="isTrue">We need to find out if this applies to you or <fg-show path="/secondaryFiler/firstName"/> to see if you can continue using Direct File.</p>
+        <p condition="/flowGate16c3bcba" operator="isTrue">People who made under a certain amount of money while they were full-time students or physically or mentally unable to care for themselves may be able to lower the amount of their taxable dependent care benefits. Direct File doesn’t yet support this tax situation.</p>
+        <p condition="/flowGate16c3bcba" operator="isTrue">We need to find out if this applies to you or <fg-show path="/secondaryFiler/firstName"/> to see if you can continue using Direct File.</p>
+        <p condition="/flowGate6d1d69cb" operator="isTrue">People who made under a certain amount of money while they were full-time students may be able to lower the amount of their taxable dependent care benefits. Direct File doesn’t yet support this tax situation.</p>
+        <p condition="/flowGate6d1d69cb" operator="isTrue">We need to find out if this applies to you to see if you can continue using Direct File.</p>
+        <p condition="/flowGatee1c26cf2" operator="isTrue">People who made under a certain amount of money while they were physically or mentally unable to care for themselves may be able to lower the amount of their taxable dependent care benefits. Direct File doesn’t yet support this tax situation.</p>
+        <p condition="/flowGatee1c26cf2" operator="isTrue">We need to find out if this applies to you to see if you can continue using Direct File.</p>
+        <p condition="/flowGatef0a32786" operator="isTrue">People who made under a certain amount of money while they were full-time students or physically or mentally unable to care for themselves may be able to lower the amount of their taxable dependent care benefits. Direct File doesn’t yet support this tax situation.</p>
+        <p condition="/flowGatef0a32786" operator="isTrue">We need to find out if this applies to you to see if you can continue using Direct File.</p>
+        <p><modal-link for="modal-info-info-income-dependent-care-earned-income-rule-breather-which-situation-chang-c126c285">Which tax situations may lower the amount of taxable dependent care benefits?</modal-link></p>
       </div>
       <div class="df-screen" condition="/flowGate0c910626" operator="isTrue">
-        <h2>earned-income-rule-tp1-benefits</h2>
-        <p>ContextHeading, Heading ×3, DFModal, Boolean, SaveAndOrContinueButton</p>
+        <h2>In any of the months when you were a full-time student, did you make <fg-show path="/specialMonthlyIncomeForStudentOrDisabled"/> or less?</h2>
+        <p class="df-context-heading" condition="/flowGatef9137ab5" operator="isTrue">Child and Dependent Care Credit</p>
+        <p><modal-link for="modal-info-info-income-dependent-care-earned-income-rule-tp1-why-ask-if-made-under-bene-fa0d5be2">Why are we asking if you made under a certain amount?</modal-link></p>
+        <fg-set path="/primaryFilerMadeLessThanDisabledOrStudentMonthlyIncome">
+          <question>In any of the months when you were a full-time student, did you make <fg-show path="/specialMonthlyIncomeForStudentOrDisabled"/> or less?</question>
+          <input type="boolean"/>
+        </fg-set>
       </div>
       <div class="df-screen" condition="/flowGate31ca7529" operator="isTrue">
-        <h2>earned-income-rule-tp2-benefits</h2>
-        <p>ContextHeading, Heading ×3, DFModal, Boolean, SaveAndOrContinueButton</p>
+        <h2>In any of the months when <fg-show path="/secondaryFiler/firstName"/> was a full-time student, did they make <fg-show path="/specialMonthlyIncomeForStudentOrDisabled"/> or less?</h2>
+        <p class="df-context-heading" condition="/flowGatef9137ab5" operator="isTrue">Child and Dependent Care Credit</p>
+        <p><modal-link for="modal-info-info-income-dependent-care-earned-income-rule-tp1-why-ask-if-made-under-bene-fa0d5be2">Why are we asking if you made under a certain amount?</modal-link></p>
+        <fg-set path="/secondaryFilerMadeLessThanDisabledOrStudentMonthlyIncome">
+          <question>In any of the months when <fg-show path="/secondaryFiler/firstName"/> was a full-time student, did they make <fg-show path="/specialMonthlyIncomeForStudentOrDisabled"/> or less?</question>
+          <input type="boolean"/>
+        </fg-set>
       </div>
       <div class="df-screen df-knockout" condition="/flowGatee337e4f7" operator="isTrue">
-        <h2>earned-income-rule-ko-benefits</h2>
-        <p>IconDisplay, Heading, InfoDisplay, DFModal, DFAlert, KnockoutButton</p>
+        <h2>Direct File only supports certain tax situations.</h2>
+        <p>Based on your answers, you qualify to lower the amount of your dependent care benefits that are taxed. Direct File doesn’t support this tax situation yet.</p>
+        <p><modal-link for="modal-info-info-income-dependent-care-earned-income-rule-breather-which-situation-chang-c126c285">Which tax situations may lower the amount of taxable dependent care benefits?</modal-link></p>
+        <fg-alert alert-key="/flow/income/dependent-care/earned-income-rule-ko-benefits" alert-type="error" knockout="true" condition="/flowAlwaysTrue" operator="isTrue">
+          <heading><a href="https://www.irs.gov/filing/individuals/how-to-file" target="_blank">Find other ways to file your federal taxes.</a></heading>
+        </fg-alert>
       </div>
       <div class="df-screen" condition="/flowGateb456f055" operator="isTrue">
-        <h2>earned-income-rule-result-benefits</h2>
-        <p>ContextHeading, Heading ×2, DFModal, SaveAndOrContinueButton</p>
+        <h2>You can continue using Direct File to file your federal tax return.<br/> <br/>Based on how much money you and <fg-show path="/secondaryFiler/firstName"/> made, you won’t be able to lower the amount of your dependent care benefits that are taxed.</h2>
+        <p class="df-context-heading" condition="/flowGatef9137ab5" operator="isTrue">Child and Dependent Care Credit</p>
+        <p><modal-link for="modal-info-info-income-dependent-care-earned-income-rule-breather-which-situation-chang-c126c285">Which tax situations may lower the amount of taxable dependent care benefits?</modal-link></p>
       </div>
       <div class="df-screen" condition="/flowGate030078b5" operator="isTrue">
-        <h2>mfs-earned-income</h2>
-        <p>Heading, InfoDisplay, DFModal, Boolean, SaveAndOrContinueButton</p>
+        <h2>Do you know <fg-show path="/secondaryFiler/firstName"/>’s earned income for <fg-show path="/taxYear"/>?</h2>
+        <p>We need to know <fg-show path="/secondaryFiler/firstName"/>’s earned income in <fg-show path="/taxYear"/> to figure out if you can exclude any dependent care benefits from tax.</p>
+        <p>If you can’t get their earned income, then we’ll need to assume their earned income is $0. This means that you won’t be able to exclude any of your dependent care benefits from tax this year.</p>
+        <p><modal-link for="modal-info-info-income-dependent-care-what-is-earned-income-modal-linkmodal1">What’s earned income?</modal-link></p>
+        <fg-set path="/hasMfjSpouseEarnedIncome">
+          <question>Do you know <fg-show path="/secondaryFiler/firstName"/>’s earned income for <fg-show path="/taxYear"/>?</question>
+          <input type="boolean">
+            <option value="true">Yes, I know their earned income</option>
+            <option value="false">No, I don’t know their earned income</option>
+          </input>
+        </fg-set>
       </div>
       <div class="df-screen" condition="/flowGatedd253a1f" operator="isTrue">
-        <h2>mfs-earned-income-enter</h2>
-        <p>Heading, InfoDisplay, DFModal, Dollar, SaveAndOrContinueButton</p>
+        <h2>Enter <fg-show path="/secondaryFiler/firstName"/>’s earned income in <fg-show path="/taxYear"/>.</h2>
+        <p>We need to know <fg-show path="/secondaryFiler/firstName"/>’s earned income in <fg-show path="/taxYear"/> to figure out if you can exclude any dependent care benefits from tax.</p>
+        <p>If you can’t get their earned income, then we’ll need to assume their earned income is $0. This means that you won’t be able to exclude any of your dependent care benefits from tax this year.</p>
+        <p><modal-link for="modal-info-info-income-dependent-care-what-is-earned-income-modal-linkmodal1">What’s earned income?</modal-link></p>
+        <fg-set path="/writableMfsSpouseEarnedIncome">
+          <question><fg-show path="/secondaryFiler/firstName"/> earned income in <fg-show path="/taxYear"/></question>
+          <input type="dollar"/>
+        </fg-set>
       </div>
     </section>
+    <modal-dialog id="modal-info-info-income-dependent-care-combat-pay-modal-linkmodal1">
+      <modal-heading>How does including combat pay affect your taxable dependent care benefits?</modal-heading>
+      <modal-content>
+        <p>Including combat pay in your earned income can help reduce the amount of your dependent care benefits that are taxed.</p>
+        <p>If you decide to include combat pay in your earned income, this will only be used to calculate how much of your dependent care benefits are taxed. It can only be helpful, and will never lead to more of your benefits being taxed.</p>
+      </modal-content>
+    </modal-dialog>
+    <modal-dialog id="modal-info-info-income-dependent-care-earned-income-rule-breather-which-situation-chang-c126c285">
+      <modal-heading>Which tax situations may lower the amount of taxable dependent care benefits?</modal-heading>
+      <modal-content>
+        <p>To figure how much of your dependent care benefits are taxable, the IRS allows one or both taxpayers to be treated as having earned income for any month that they are:</p>
+        <ul>
+          <li>Full-time students</li>
+          <li>Physically or mentally unable to care for themselves</li>
+        </ul>
+        <p>For every month that they’re a full-time student or unable to care for themselves, they can be treated as having up to $250 in earned income if they have one qualifying person, and up to $500 in earned income if they have two or more qualifying people. This could mean that less of their benefits will be taxed.</p>
+        <p><a href="https://www.irs.gov/publications/p503#en_US_2023_publink1000203287" target="_blank">Learn more about the rule for student-spouse or spouse not able to care for self. </a></p>
+      </modal-content>
+    </modal-dialog>
+    <modal-dialog id="modal-info-info-income-dependent-care-earned-income-rule-tp1-why-ask-if-made-under-bene-fa0d5be2">
+      <modal-heading>Why are we asking if you made under a certain amount?</modal-heading>
+      <modal-content>
+        <p>To figure how much of your dependent care benefits are taxable, the IRS allows one or both taxpayers to be treated as having earned income for any month that they are:</p>
+        <ul>
+          <li>Full-time students</li>
+          <li>Physically or mentally unable to care for themselves</li>
+        </ul>
+        <p>For every month that they’re a full-time student or unable to care for themselves, they can be treated as having up to $250 in earned income if they have one qualifying person, and up to $500 in earned income if they have two or more qualifying people. This could mean that less of their benefits will be taxed.</p>
+        <p><a href="https://www.irs.gov/publications/p503#en_US_2023_publink1000203287" target="_blank">Learn more about the rule for student-spouse or spouse not able to care for self. </a></p>
+      </modal-content>
+    </modal-dialog>
+    <modal-dialog id="modal-info-info-income-dependent-care-what-is-earned-income-modal-linkmodal1">
+      <modal-heading>What’s earned income?</modal-heading>
+      <modal-content>
+        <p>The IRS uses earned income to figure out how much of your dependent care benefits can be excluded from tax. When used for this purpose, the IRS defines earned income as:</p>
+        <ul>
+          <li>Total amount from Form 1040 line 1z</li>
+          <li>Nontaxable combat pay</li>
+        </ul>
+        <p>Earned income includes other kinds of income too, but they’re not supported in Direct File this year.</p>
+        <p>Refer to <a href="https://www.irs.gov/instructions/i2441#en_US_2023_publink100077779:~:text= by%20your%20employer.-,Lines%204%20and%205,-If%20filing%20jointly" target="_blank">Instructions for Form 2441 (lines 4 and 5)</a> for more information on how to calculate earned income for the purposes of excluding dependent care benefits from tax.</p>
+      </modal-content>
+    </modal-dialog>
   </page>
 
-  <page title="Dep care exclusion outcomes" route="/income/dependent-care/dep-care-exclusion-outcomes">
+  <page title="Your taxable dependent care benefits" route="/income/dependent-care/dep-care-exclusion-outcomes">
     <section>
       <div class="df-screen">
-        <h2>dep-care-exclusion-outcome</h2>
-        <p>Heading ×3, DFModal, InfoDisplay, SaveAndOrContinueButton</p>
+        <h2>Based on your answers <fg-show path="/cdccTaxableBenefits"/> of your dependent care benefits are taxable in <fg-show path="/taxYear"/>.</h2>
+        <p><modal-link for="modal-info-info-income-dependent-care-how-are-taxable-dependent-care-benefits-calculate-20de3514">How were my taxable dependent care benefits calculated?</modal-link></p>
+        <p condition="/flowGatea7406c0f" operator="isTrue">If you update information about your marital status, family and household, or income, it may change your amount of taxable benefits. We’ll let you know if that happens.</p>
       </div>
     </section>
+    <modal-dialog id="modal-info-info-income-dependent-care-how-are-taxable-dependent-care-benefits-calculate-20de3514">
+      <modal-heading>How were my taxable dependent care benefits calculated?</modal-heading>
+      <modal-content>
+        <p>When you get dependent care benefits from your employer, they’re tax-free. But, in some cases you may need to pay taxes on these benefits later when you file your federal taxes.</p>
+        <p>We used <a href="https://www.irs.gov/instructions/i2441#en_US_2023_publink1000106357" target="_blank">Form 2441 Part III</a> to calculate how much of your dependent care benefits are taxable.</p>
+        <p>The taxable amount depends on:</p>
+        <ul>
+          <li>The total amount of dependent care benefits you received</li>
+          <li>Any amount you carried over from <fg-show path="/lastTaxYear"/> and used in <fg-show path="/taxYear"/></li>
+          <li>Any amount you forfeited or carried forward to <fg-show path="/nextTaxYear"/></li>
+          <li>The number of qualifying people you have</li>
+          <li>Your total qualified expenses</li>
+          <li>Your earned income</li>
+        </ul>
+      </modal-content>
+    </modal-dialog>
   </page>
 
   <page title="Care providers" route="/income/dependent-care/care-providers">
     <section>
       <div class="df-screen" condition="/flowGate8b03a50f" operator="isTrue">
-        <h2>provider-collection-hub</h2>
-        <p>ContextHeading, TaxReturnAlert, Heading ×3, InfoDisplay ×4, ConditionalList, CollectionItemManager</p>
+        <h2>Let’s get some information about the qualified care providers you used to care for your qualifying person</h2>
+        <p condition="/flowGate21dd38a2" operator="isTrue">Add any qualified care providers you used to care for your qualifying person in <fg-show path="/taxYear"/>:</p>
+        <p condition="/flowGate02317df8" operator="isTrue">Add any qualified care providers you used to care for your qualifying people in <fg-show path="/taxYear"/>:</p>
+        <ul>
+          <li><strong><fg-show path="/familyAndHousehold/*/fullName"/></strong></li>
+          <li><strong><fg-show path="/filers/*/fullName"/></strong></li>
+        </ul>
+        <p condition="/flowGatee7da1a9d" operator="isTrue">According to the IRS, a qualified care provider <strong>cannot</strong> be:</p>
+        <ul condition="/flowGatee7da1a9d" operator="isTrue">
+          <li>Your dependent</li>
+          <li>Your spouse (at any time in <fg-show path="/taxYear"/>)</li>
+          <li>Parent of your biological child, adopted child, stepchild, or foster child who was under age 13 on January 1, <fg-show path="/taxYear"/></li>
+          <li>Your biological child, adopted child, stepchild, or foster child unless they were age 19 or older by the end of <fg-show path="/taxYear"/></li>
+        </ul>
+        <p condition="/flowGate03a4409b" operator="isTrue">According to the IRS, a qualified care provider <strong>cannot</strong> be:</p>
+        <ul condition="/flowGate03a4409b" operator="isTrue">
+          <li>Your dependent</li>
+          <li>Your spouse (at any time in <fg-show path="/taxYear"/>)</li>
+          <li>Your biological child, adopted child, stepchild, or foster child unless they were age 19 or older by the end of <fg-show path="/taxYear"/></li>
+        </ul>
       </div>
       <fg-collection path="/cdccCareProviders" item-name="care provider" determiner="another" if-true="/flowGate8b03a50f">
         <div class="df-screen" condition="/flowGate8b03a50f" operator="isTrue">
-          <h2>provider-bus-or-indiv</h2>
-          <p>ContextHeading, Heading, InfoDisplay, Boolean, SaveAndOrContinueButton</p>
+          <h2>What kind of care provider is it?</h2>
+          <p>If you’re not sure, check with the provider.</p>
+          <fg-set path="/cdccCareProviders/*/writableIsOrganization">
+            <question>What kind of care provider is it?</question>
+            <input type="boolean">
+              <option value="true">Business or organization</option>
+              <option value="false">Individual</option>
+            </input>
+          </fg-set>
         </div>
         <div class="df-screen" condition="/flowGate470040fd" operator="isTrue">
-          <h2>provider-employer</h2>
-          <p>ContextHeading, Heading ×2, InfoDisplay ×2, Boolean, SaveAndOrContinueButton</p>
+          <h2>Did your employer supply the care, either at work or by hiring a care provider directly?</h2>
+          <p condition="/flowGateaecf3df1" operator="isTrue">Answer <strong>yes</strong> if your employer supplied the care, either at work or by hiring a care provider directly.</p>
+          <p condition="/flowGate980b4142" operator="isTrue">Answer <strong>yes</strong> if yours and <fg-show path="/secondaryFiler/firstName"/>’s employer supplied the care, either at work or by hiring a care provider directly.</p>
+          <fg-set path="/cdccCareProviders/*/isEmployerFurnished">
+            <question>Did your employer supply the care, either at work or by hiring a care provider directly?</question>
+            <input type="boolean"/>
+          </fg-set>
         </div>
         <div class="df-screen" condition="/cdccCareProviders/*/flowGateca1b11e6" operator="isTrue">
-          <h2>provider-employer-check-multiple</h2>
-          <p>ContextHeading, Heading, InfoDisplay, ConditionalList, Boolean, SaveAndOrContinueButton</p>
+          <h2>Was the care supplied by one of these employers, either at work or by hiring a care provider directly?</h2>
+          <p>Employers you worked for in <fg-show path="/taxYear"/>:</p>
+          <ul>
+            <li><fg-show path="/formW2s/*/employerName"/></li>
+          </ul>
+          <fg-set path="/cdccCareProviders/*/hasW2Employer">
+            <question>Was the care supplied by one of these employers, either at work or by hiring a care provider directly?</question>
+            <input type="boolean">
+              <option value="true">Yes</option>
+              <option value="false">No</option>
+            </input>
+          </fg-set>
         </div>
         <div class="df-screen" condition="/cdccCareProviders/*/flowGate246822b8" operator="isTrue">
-          <h2>provider-employer-selection</h2>
-          <p>ContextHeading, Heading, CollectionItemReference, SaveAndOrContinueButton</p>
+          <h2>Which employer supplied the care?</h2>
         </div>
         <div class="df-screen" condition="/cdccCareProviders/*/flowGate1adfa5b3" operator="isTrue">
-          <h2>provider-employer-check-single</h2>
-          <p>ContextHeading, Heading, Boolean, SaveAndOrContinueButton</p>
+          <h2>Was the care supplied by <fg-show path="/oneAndOnlyW2/employerName"/>?</h2>
+          <fg-set path="/cdccCareProviders/*/hasW2Employer">
+            <question>Was the care supplied by <fg-show path="/oneAndOnlyW2/employerName"/>?</question>
+            <input type="boolean">
+              <option value="true">Yes</option>
+              <option value="false">No</option>
+            </input>
+          </fg-set>
         </div>
         <div class="df-screen" condition="/cdccCareProviders/*/flowGatef7f9df82" operator="isTrue">
-          <h2>provider-employer-add-new</h2>
-          <p>ContextHeading, Heading ×2, ConditionalList, InternalLink ×3</p>
+          <h2><fg-show path="/oneAndOnlyW2/employerName"/> was the only employer you entered in the Jobs section.</h2>
+          <ul condition="/flowGate150ff010" operator="isTrue">
+            <li><fg-show path="/formW2s/*/employerName"/></li>
+          </ul>
+          <p condition="/flowGatefda9c18b" operator="isTrue">If a different employer supplied the care for your qualifying person, go back to the <a href="/data-view/flow/income/jobs" target="_blank">Jobs</a> section and add the Form W-2 from that employer.</p>
+          <p condition="/flowGate2a421880" operator="isTrue">If a different employer supplied the care for your qualifying people, go back to the <a href="/data-view/flow/income/jobs" target="_blank">Jobs</a> section and add the Form W-2 from that employer.</p>
+          <p><a href="/data-view/flow/income/jobs" target="_blank">Go to Jobs section</a></p>
         </div>
         <div class="df-screen" condition="/cdccCareProviders/*/flowGate47b00cf4" operator="isTrue">
-          <h2>provider-name</h2>
-          <p>ContextHeading, Heading, Hint, LimitingString ×3, SaveAndOrContinueButton</p>
+          <h2>What’s the care provider’s name?</h2>
+          <p class="usa-hint" condition="/cdccCareProviders/*/flowGatec5b71da7" operator="isTrue">If your employer supplied the care either at work or by hiring a care provider directly, enter your employer’s name.</p>
+          <fg-set path="/cdccCareProviders/*/writableOrganizationName" if-true="/cdccCareProviders/*/flowGate1d807635">
+            <question>Care provider name</question>
+            <input type="text"/>
+          </fg-set>
+          <fg-set path="/cdccCareProviders/*/writableFirstName" if-true="/cdccCareProviders/*/flowGate7fb68767">
+            <question>First name</question>
+            <input type="text"/>
+          </fg-set>
+          <fg-set path="/cdccCareProviders/*/writableLastName" if-true="/cdccCareProviders/*/flowGate7fb68767">
+            <question>Last name</question>
+            <input type="text"/>
+          </fg-set>
         </div>
         <div class="df-screen" condition="/cdccCareProviders/*/flowGate47b00cf4" operator="isTrue">
-          <h2>provider-address</h2>
-          <p>ContextHeading, Heading, Hint, Address, SaveAndOrContinueButton</p>
+          <h2>What’s <fg-show path="/cdccCareProviders/*/displayName"/>’s mailing address?</h2>
+          <p class="usa-hint" condition="/cdccCareProviders/*/flowGatec46a5c29" operator="isTrue">If your employer supplied the care either at work or by hiring a care provider directly, enter your employer’s address.</p>
+          <fg-set path="/cdccCareProviders/*/writableAddress">
+            <question>What’s <fg-show path="/cdccCareProviders/*/displayName"/>’s mailing address?</question>
+            <hint><modal-link for="modal-info-info-why-cant-i-change-country-linkmodal1">Why can’t I change the country?</modal-link></hint>
+            <input type="address"/>
+          </fg-set>
         </div>
         <div class="df-screen" condition="/cdccCareProviders/*/flowGate1c7ccb70" operator="isTrue">
-          <h2>provider-tax-exempt</h2>
-          <p>ContextHeading, Heading, InfoDisplay, Boolean, SaveAndOrContinueButton</p>
+          <h2>Is <fg-show path="/cdccCareProviders/*/organizationName"/> a tax-exempt organization?</h2>
+          <p>Some care providers, like churches and schools, are exempt from from federal income tax and don’t need an employer identification number.</p>
+          <p>If you’re not sure if your care provider is a tax-exempt organization, <a href="https://www.irs.gov/charities-non-profits/search-for-tax-exempt-organizations" target="_blank">check online</a> or ask your care provider.</p>
+          <fg-set path="/cdccCareProviders/*/writableIsTaxExempt">
+            <question>Is <fg-show path="/cdccCareProviders/*/organizationName"/> a tax-exempt organization?</question>
+            <input type="boolean"/>
+          </fg-set>
         </div>
         <div class="df-screen" condition="/cdccCareProviders/*/flowGate6c2aa16e" operator="isTrue">
-          <h2>tin-ein-check</h2>
-          <p>ContextHeading, Heading ×2, DFModal ×2, Boolean, SaveAndOrContinueButton</p>
+          <h2>Do you have <fg-show path="/cdccCareProviders/*/displayName"/>’s Employer Identification Number (EIN)?</h2>
+          <p condition="/cdccCareProviders/*/flowGate1d807635" operator="isTrue"><modal-link for="modal-info-info-credits-and-deductions-care-providers-what-is-ein-linkmodal1">What’s an EIN?</modal-link></p>
+          <p condition="/cdccCareProviders/*/flowGate7fb68767" operator="isTrue"><modal-link for="modal-info-info-credits-and-deductions-care-providers-what-is-ssn-itin-linkmodal1">What’s a SSN or ITIN?</modal-link></p>
+          <fg-set path="/cdccCareProviders/*/hasTinOrEin">
+            <question>Do you have <fg-show path="/cdccCareProviders/*/displayName"/>’s Employer Identification Number (EIN)?</question>
+            <input type="boolean"/>
+          </fg-set>
         </div>
         <div class="df-screen" condition="/cdccCareProviders/*/flowGate5a12d02f" operator="isTrue">
-          <h2>tin-missing-reason</h2>
-          <p>ContextHeading, Heading ×2, MultiEnum ×2, SaveAndOrContinueButton</p>
+          <h2>Check with <fg-show path="/cdccCareProviders/*/displayName"/> and ask for their Employer Identification Number (EIN).<br/> <br/>If you still can’t get this information, then let the IRS know why.</h2>
+          <fg-set path="/cdccCareProviders/*/writableDueDiligence" if-true="/cdccCareProviders/*/flowGate1d807635">
+            <question>Select all that apply</question>
+            <input type="multi-enum" options-path="/cdccDueDiligenceOptions">
+              <option value="providerMovedAndFilerUnableToFindThem">The provider moved and I can’t get in touch with them to request their EIN</option>
+              <option value="providerRefusedToProvideTIN">I asked, but the provider won’t give me their EIN</option>
+            </input>
+          </fg-set>
+          <fg-set path="/cdccCareProviders/*/writableDueDiligence" if-true="/cdccCareProviders/*/flowGate7fb68767">
+            <question>Select all that apply</question>
+            <input type="multi-enum" options-path="/cdccDueDiligenceOptions">
+              <option value="providerMovedAndFilerUnableToFindThem">The provider moved and I can’t get in touch with them to request their SSN or ITIN</option>
+              <option value="providerRefusedToProvideTIN">I asked, but the provider won’t give me their SSN or ITIN</option>
+            </input>
+          </fg-set>
         </div>
         <div class="df-screen" condition="/cdccCareProviders/*/flowGate5a12d02f" operator="isTrue">
-          <h2>provider-due-diligence</h2>
-          <p>ContextHeading, Heading ×2, ConditionalList, SaveAndOrContinueButton</p>
+          <h2>Because you can’t get your care provider’s Social Security number (SSN) or Individual Taxpayer Identification Number (ITIN), the IRS may ask you for more information about the care provider.</h2>
+          <p class="df-context-heading">Child and Dependent Care Credit</p>
+          <p>To be prepared, <a href="https://www.irs.gov/publications/p503#en_US_2023_publink1000203328" target="_blank">try to find these documents and keep them for your records:</a></p>
+          <ul>
+            <li>The provider’s <a href="https://www.irs.gov/forms-pubs/about-form-w-10" target="_blank">Form W-10</a></li>
+            <li>A copy of the provider’s Social Security Card</li>
+            <li>A copy of a statement from your employer-provided dependent care benefits plan</li>
+            <li>A recently printed letter, document, or invoice that shows the provider’s name, address, and SSN or ITIN</li>
+            <li>A recently printed letter, document, or invoice that shows the provider’s name, address, and EIN</li>
+          </ul>
         </div>
         <div class="df-screen" condition="/cdccCareProviders/*/flowGate64140370" operator="isTrue">
-          <h2>provider-ein</h2>
-          <p>ContextHeading, Heading, InfoDisplay, Ein, SaveAndOrContinueButton</p>
+          <h2>What’s <fg-show path="/cdccCareProviders/*/organizationName"/>’s Employer Identification Number (EIN)?</h2>
+          <p><a href="https://www.irs.gov/businesses/small-businesses-self-employed/employer-id-numbers#:~:text=An%20Employer%20identification%20number%20(EIN,now%20you%20may%20apply%20online." target="_blank">What’s an Employer Identification Number?</a></p>
+          <fg-set path="/cdccCareProviders/*/writableEin">
+            <question>Enter the care provider’s 9-digit EIN</question>
+            <input type="ein"/>
+          </fg-set>
         </div>
         <div class="df-screen" condition="/cdccCareProviders/*/flowGate93400468" operator="isTrue">
-          <h2>provider-tin</h2>
-          <p>ContextHeading, Heading, InfoDisplay, Tin, SaveAndOrContinueButton</p>
+          <h2>What’s <fg-show path="/cdccCareProviders/*/displayName"/>’s Taxpayer Identification Number?</h2>
+          <p>You can use either one of these:</p>
+          <ul>
+            <li>Social Security number (SSN)</li>
+            <li>Individual Tax Identification Number (ITIN) issued by the IRS</li>
+          </ul>
+          <fg-set path="/cdccCareProviders/*/writableTin">
+            <question>Enter the care provider’s 9-digit SSN or ITIN</question>
+            <input type="tin"/>
+          </fg-set>
         </div>
         <div class="df-screen" condition="/cdccCareProviders/*/flowGate47b00cf4" operator="isTrue">
-          <h2>provider-qp-expenses</h2>
-          <p>ContextHeading, Heading ×2, InfoDisplay ×4, Dollar, SaveAndOrContinueButton</p>
+          <h2>Enter the total amount you paid to <fg-show path="/cdccCareProviders/*/displayName"/> in <fg-show path="/taxYear"/> for the care of your qualifying person.</h2>
+          <p condition="/flowGate97740136" operator="isTrue">Include in the total:</p>
+          <ul condition="/flowGate97740136" operator="isTrue">
+            <li>Amounts paid to the provider in <fg-show path="/taxYear"/>, even if the care wasn’t provided in <fg-show path="/taxYear"/></li>
+          </ul>
+          <p condition="/flowGatea7406c0f" operator="isTrue">Include in the total:</p>
+          <ul condition="/flowGatea7406c0f" operator="isTrue">
+            <li>Amounts paid to the provider in <fg-show path="/taxYear"/>, even if the care wasn’t provided in <fg-show path="/taxYear"/></li>
+            <li>Amounts your employer paid to a third party on your behalf. (Don’t reduce this amount by any reimbursement you received)</li>
+          </ul>
+          <p condition="/flowGate4ee14f84" operator="isTrue">Don’t include expenses paid to care for your qualifying person after they turned 13, unless they were unable to care for themselves because of a physical or mental disability.</p>
+          <p condition="/flowGate80a4f320" operator="isTrue">Don’t include expenses paid to care for your qualifying people after they turned 13, unless they were unable to care for themselves because of a physical or mental disability.</p>
+          <fg-set path="/cdccCareProviders/*/writableAmountPaidForCare">
+            <question>Total amount paid to <fg-show path="/cdccCareProviders/*/displayName"/> in <fg-show path="/taxYear"/></question>
+            <input type="dollar"/>
+          </fg-set>
         </div>
       </fg-collection>
     </section>
+    <modal-dialog id="modal-info-info-why-cant-i-change-country-linkmodal1">
+      <modal-heading>Why can’t I change the country?</modal-heading>
+      <modal-content>
+        <p>Currently, Direct File only supports mailing written communications and refunds from the IRS to addresses in the United States.</p>
+        <p>If you must use an address outside the U.S., you’ll need to file using another product. <a href="https://www.irs.gov/filing/individuals/how-to-file" target="_blank">Learn more about your filing options.</a></p>
+      </modal-content>
+    </modal-dialog>
+    <modal-dialog id="modal-info-info-credits-and-deductions-care-providers-what-is-ein-linkmodal1">
+      <modal-heading>What’s an Employer Identification Number (EIN)?</modal-heading>
+      <modal-content>
+        <p>An Employer Identification Number (EIN) is also known as a federal tax identification number, and is used to identify a business entity.</p>
+        <p>EINs are 9-digit numbers.</p>
+        <p><a href="https://www.irs.gov/businesses/small-businesses-self-employed/employer-id-numbers#:~:text=An%20Employer%20identification%20number%20(EIN,now%20you%20may%20apply%20online." target="_blank">Learn more about EINs</a></p>
+      </modal-content>
+    </modal-dialog>
+    <modal-dialog id="modal-info-info-credits-and-deductions-care-providers-what-is-ssn-itin-linkmodal1">
+      <modal-heading>What’s a Social Security number (SSN) or Individual Taxpayer Identification Number (ITIN)?</modal-heading>
+      <modal-content>
+        <p>A Social Security number (SSN) is a unique identifier issued by the Social Security Administration.</p>
+        <p>An Individual Tax Identification Number (ITIN) is a type of tax ID number issued by the IRS.</p>
+        <p>SSNs and ITINs are 9-digit numbers.</p>
+      </modal-content>
+    </modal-dialog>
   </page>
 </FlowConfig>

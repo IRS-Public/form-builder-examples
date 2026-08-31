@@ -165,11 +165,12 @@ operator (so `isTrue`, so false here), and `create-new-self-select-pin`, whose c
 `isEssarSigningPath`. The page `your-taxes/other-preferences/create-self-select-pin` had nothing
 else on it. Nothing else is dropped, and a screen that vanishes for any other reason is a bug.
 
-### Still placeholders after this stage
+### Placeholders this stage left, and what replaced them
 
-Every screen renders its route as an `<h2>` and its component list as a `<p>`; page titles are the
-humanized route segment. Stage 4 replaces both. `manifest.json`'s `deferred` block names each one
-and the stage that owes it, so nothing here is quietly permanent.
+Every screen rendered its route as an `<h2>` and its component list as a `<p>`, and a page title was
+the humanized route segment. Stage 4 replaced all three. What `manifest.json`'s `deferred` block
+still names is the honest remainder: item names for 8 of the 19 collections, and Spanish flow
+content.
 
 Collection loops were the one open *design* question here rather than a to-do. Stage 7 settled it.
 
@@ -217,11 +218,39 @@ here is real and belongs in this table, not in a workaround.
 ### Conditions on facts that are not Boolean
 
 `!!get` is JavaScript truthiness, so a Direct File condition may name a fact of any type. The Fact
-Graph has no coercion — `<All>` rejects a non-Boolean child outright — so each one needs its
-comparison written out. There is exactly one, `/claimedDependentsCount`, which expands to
-`<GreaterThan>` against `<Int>0</Int>`; it is a `<Count>` and cannot be negative, so `> 0` and
-`!= 0` agree. A new one upstream fails the Scala build with *"all children of `<All>` must be
-BooleanNodes"*, which is what points back at the table in `gates.ts`.
+Graph has no coercion — `<All>` rejects a non-Boolean child outright, from inside
+`All.fromDerivedConfig` with nothing in the message naming the gate — so each one needs its
+comparison written out. Of the 618 distinct condition paths, 604 are Boolean, 1 is an `Int` and 13
+are not.
+
+The type comes out of the dictionary rather than out of a table someone maintains: `fact-types.ts`
+indexes every `<Fact path>` in `facts/*.xml`, classifies it by its head element, and follows the two
+heads that only forward — `<Dependency>`, and `<Switch>` through its first `<Then>`. It also resolves
+the paths that are not declared verbatim, which is most of them: `/primaryFiler/hasIpPin` reads
+through a `<Find>` over `/filers` to `/filers/*/hasIpPin`, `/formW2s/*/filer/isPrimaryFiler` through
+a `<CollectionItem collection="/filers">`, `/firstHohQP/isClaimedDependent` through an `<IndexOf>`,
+and `/primaryFiler/tin/isSSN` through a member the engine's `TinNode` synthesizes rather than a fact
+at all.
+
+| Kind | Truthiness test | Why |
+|---|---|---|
+| `boolean` | the dependency itself | |
+| `int` | `<NotEqual>` against `<Int>0</Int>` | a bare JS number, so `0` is falsy — sign included, so no assumption about the fact's range |
+| `object` | `<IsComplete>` alone | a `Dollar`, `Day`, `Enum` or collection item crosses into JavaScript as an opaque Scala object, and an object is always truthy, so upstream's `!!get` on one *is* "has a value" |
+| `string`, `numeric` | throws | see below |
+
+The `object` row is the one that looks like a shortcut and is not. `interest.xml`'s five
+bond-premium accordions are conditioned on Dollar facts that default to `<Dollar>0</Dollar>`, and
+upstream they show whenever the 1099-INT is complete — `!!` of a Scala object is `true`, zero
+included. The expansion reproduces that rather than the "is it nonzero" the condition looks like it
+wants. It also collapses to the `<IsComplete>` the expansion already emits for totality, so those
+gates are one element rather than an `<All>` of the same thing twice.
+
+`string` and `numeric` throw rather than guess. A JS string is falsy when empty and there is no
+length CompNode to say that with; `<Add>` is an `Int` over Ints and a `Dollar` over Dollars, and
+picking the wrong one turns a zero total into `true` silently. Neither is reachable from any
+condition today, and if one becomes reachable the answer is a line in `gates.ts`'s `TRUTHINESS`
+rather than a default.
 
 ### The conditions that are not facts
 
@@ -344,11 +373,125 @@ hubs have one; the rest are unconditional, and get no attribute rather than a va
 ## Stage 4 — content
 
 The largest piece, and better supported than it looks. Keys are explicit (`i18nKey` on every content
-component), the key contract is already computed by `src/locales/flowLocaleHelpers.ts`'s
-`getExpected*Keys` functions, and the body-tree and named-link grammars have working
-implementations in `packages/df-common`'s `contentGenerator.tsx` and `packages/df-i18n`'s
-`CommonTranslation`. **Import those rather than reimplementing them** — they are what upstream's own
-locale-parity tests run on, so a key this cannot find is a key upstream would also have flagged.
+component), and the body-tree and named-link grammars have working implementations in
+`packages/df-common`'s `contentGenerator.tsx` and `packages/df-i18n`'s `CommonTranslation`. Those are
+**imported rather than reimplemented** — they are what upstream's own locale-parity tests run on, so
+a key this cannot find is a key upstream would also have flagged. It finds all of them: **0 missing
+keys** over 4,346 content declarations.
+
+### How the words are got at
+
+`generateContent` builds React elements and this never renders them. Walking the un-rendered tree
+gives the tag structure and the resolved subkeys together, which is what makes a body tree —
+`{ p: …, ul: { li: … } }` under one key — come out as blocks rather than as one flattened string.
+
+Two things had to be read out of upstream's own components rather than guessed at. Modal ids come
+from the tags in the launcher text, the way `DFModal.tsx`'s `extractTags` reads them, which is how a
+`sharedModalX` — referenced from a screen and defined once under the top-level `modals:` — is found
+at all. And `SummaryTable`'s rows are `{th, td}` pairs, `DFAlert`'s body is `alertText` with its
+heading at `alertText.heading`, and `iconLists` are flat line maps rather than body trees; each of
+those is `SummaryTable.tsx`, `getKeyValues` and `IconList.tsx` read and followed.
+
+Because these run under `vite-node`, everything that touches Direct File stays in `content.ts` and
+`components.ts`. `render.ts` and `emit.ts` import only *types* from them, so they still run under
+bare `node` — a value import across that line pulls `/src/locales/en.yaml` into a process that
+cannot resolve it, which is a failure worth recognising quickly.
+
+### Ids, and one Markdown-shaped constraint on them
+
+A modal's id is `modal-` plus the key that owns it plus the tag, capped at 96 characters with a hash
+of the whole when it does not fit. The cap is not cosmetic: every id becomes a mapping key in the
+generated `flow_en.yaml`, and past 128 characters the YAML printer switches to the explicit-key form
+(`? key` on its own line, then `: value`) which the parser that reads the file back rejects — so the
+build writes a file it cannot load, and the error surfaces on the *next* run pointing at a line that
+looks fine. Four of Direct File's `/info/credits-and-deductions/credits/eitc/...` keys are that long.
+`form-builder` now fails on an over-long key by name, so this is belt as well as braces.
+
+### Page titles
+
+A page's title is Direct File's own sub-subcategory label — "Your basic information", the words its
+side nav uses — for the 155 pages that have one, and the first screen's heading for the 48 that do
+not. 25 of those labels interpolate a fact (`{{/familyAndHousehold/*/firstName}}'s basic
+information`), and a Form Builder page title is a static attribute on `<page>`, so the interpolation
+is dropped and what is left is tidied and capitalised: "Basic information". That is a real
+difference from upstream, where the nav says the person's name.
+
+Fourteen sub-subcategories were cut into two pages each — their screens are not contiguous in the
+flow — and both halves take the same label, which is also what upstream's nav shows.
+
+## What the emitted flow needed the grammar to allow
+
+`flow/FlowConfig.rng` is app-owned, as it is in every application here, so it is widened rather than
+worked around. Four widenings came out of stage 4, each one Direct File writing something the seed
+grammar had not met:
+
+| Widened | Because |
+|---|---|
+| `<ol>` takes the `condition`/`operator` pair `<ul>` already had | a numbered list shown only under a condition |
+| `<p>` inside an alert body takes it too | an alert paragraph shown only under a condition |
+| an alert body may contain `<fg-detail>` | an accordion inside an alert |
+| `<fg-alert>` needs no body | many Direct File alerts are a heading and nothing else |
+
+The last of those is a form-builder change as well as a grammar one: its parser rejected an element
+with no children to parse, which for `<fg-alert>` is a complete alert. It now passes
+`required = false`, and form-builder's own seed grammar says `zeroOrMore` too.
+
+## The parity gate
+
+`make transpile-verify` runs two checks, and between them they are the port's whole claim.
+
+The first is the ordering one above. The second, `verify-visibility.ts`, asks the other half: does a
+screen show for exactly the taxpayers it shows for upstream?
+
+    scenarios              161
+    screen/item decisions  89329
+    agreements             88428
+    known differences      901  (7 screens, see KNOWN in this file)
+    unexpected             0
+
+For each of the backend's 161 scenarios it builds the fact graph the way upstream's own snapshot test
+does — `setupFactGraph`, same seeding of `/filers`, `/email` and the primary filer's TIN — loads that
+same state into a graph over *this* application's dictionary, and then, for every screen at every
+item of its collection, asks both sides: does `screen.conditions.every(evaluate)` pass, and is the
+gate fact true?
+
+**Not through a browser.** The plan called for Playwright over the generated pages; this answers the
+same question through four fewer layers, each of which has its own reasons to differ. What is being
+checked is stage 3's claim — that a synthesized Boolean fact says what an ANDed list of Direct File
+conditions says — and both sides of that are functions of a fact graph.
+
+`isAvailable` is deliberately not reused. It is `conditions` *and* "an auto-iterating loop has
+members", and the second half is `<fg-collection>`'s job here rather than the gate's: a loop over an
+empty collection renders no items, so no screen inside it exists to be hidden.
+
+### The 7 screens that differ, and why
+
+Six are the one approximation stage 3 documents, seen from the other end. Direct File's `isTrue` is
+`fact.hasValue && !!fact.get`, and `hasValue` is **true for a placeholder** — a value the dictionary
+supplies until the taxpayer answers. The Fact Graph has `IsComplete`, which is false for one, and no
+`HasValue` CompNode at all. So a screen gated on a fact that currently holds its placeholder shows
+upstream and hides here. All six are exactly that shape, four of them on the W-2 loop.
+
+Closing it means adding a `HasValue` CompNode to `fact-graph` — `Result.hasValue` already exists —
+*and* re-deciding how `<All>` short-circuits over a placeholder, which is what currently makes these
+gates total. That is a change to the gate scheme rather than a patch, and it has deliberately not
+been made from here.
+
+The seventh is `create-new-self-select-pin`, gated on `isEssarSigningPath`, which is a build flag
+rather than a fact. This port has no e-signature path, so it folds to its "off" branch and the screen
+is not emitted at all.
+
+`KNOWN` in `verify-visibility.ts` lists all seven with their reasons, and the check fails on anything
+else — including on a screen in `KNOWN` that has come back into line, so a stale entry cannot hide a
+later regression.
+
+### One engine defect it found
+
+A fact graph holding a `Pin` or an `IpPin` could not be deserialized: `Pin.apply(String)` called
+`parseString`, which called `Pin.apply(String)`, and the derived `ReadWriter` constructs through
+`apply`. Construction went through `new` everywhere in the engine and never noticed. In an
+application it means answering the self-select PIN or an IP PIN and reloading the page. Fixed in
+`fact-graph` with a round-trip test on both types.
 
 ## Two checks on files the transpiler does not own
 
@@ -366,13 +509,28 @@ headings are read out of the YAML as text rather than parsed: the block is four 
 scalars this repo writes itself, and pulling in a YAML dependency for it would be the only one in
 here.
 
-## Stage 5 — a coverage manifest, not a silent pass
+## Stage 5 — a coverage report, not a silent pass
 
-`codemod/manifest.json` is regenerated with every emit. It records the counts, every screen and page
-dropped and why, every content component type met with the number of screens carrying it, and a
-`deferred` block naming each construct stage 2 records rather than expresses and the stage that owes
-it. An unhandled construct must never quietly vanish from 727 screens.
+Two files, regenerated with every emit.
 
-Today it is a report. Once stage 4 lands it gains teeth: an unmapped component type fails the run
-unless it is on the out-of-scope allowlist, and the 51 types with their dispositions move into
-`component-coverage.md` beside this file.
+`codemod/manifest.json` records the counts, every screen and page dropped and why, every content
+component type met with the number of declarations carrying it, and a `deferred` block naming each
+construct a stage records rather than expresses and the stage that owes it. Its diff is how you
+notice that an upstream change silently removed twenty screens.
+
+`codemod/component-coverage.md` is the readable half: all 51 component types Direct File's flow
+declares, grouped into *expressed*, *drawn by something else*, *out of scope* and *real gaps*, with
+what each becomes and how many declarations took that route. A type can appear twice — `Address` has
+8 real questions and 1 marked `displayOnlyOn: 'data-view'` — because the dispositions are counted per
+declaration rather than overwritten per type. Recording only the last one had said the address input
+was never rendered, which is the kind of claim a coverage file must not make.
+
+**The pass is enforced in code, not by the file.** `ComponentMapper.blocks` throws on a component
+type that is in none of its tables, naming the type and the screen, and the emit fails. So every row
+in `component-coverage.md` is a decision that exists in `components.ts`, and an unhandled construct
+cannot quietly vanish from 727 screens. Adding a type upstream means adding it to one of
+`RENDERED_ELSEWHERE`, `OUT_OF_SCOPE`, `NOT_EXPRESSIBLE`, `INPUT_TYPES` or the `switch` — the build
+says which.
+
+The one remaining `NOT_EXPRESSIBLE` entry is `CollectionItemReference` (13 declarations): it binds a
+fact whose value is a collection item, and no `<input type>` writes one.

@@ -4,82 +4,233 @@
      Corrections belong in the transpiler, so the port stays reproducible against an upstream
      that is still moving. See codemod/README.md. -->
 <FlowConfig>
-  <page title="Unemployment loop intro" route="/income/unemployment/unemployment-loop-intro">
+  <page title="Unemployment compensation" route="/income/unemployment/unemployment-loop-intro">
     <section>
       <div class="df-screen">
-        <h2>unemployment-loop-intro</h2>
-        <p>ContextHeading, Heading ×3, DFModal ×3, DFAlert, CollectionItemManager</p>
+        <h2>Unemployment compensation</h2>
+        <p class="df-context-heading" condition="/flowGateef8c36b6" operator="isTrue">Unemployment compensation</p>
+        <p>Add any <modal-link for="modal-info-info-income-unemployment-unemployment-loop-intro-linkmodal1">Forms 1099-G</modal-link> received in <fg-show path="/taxYear"/> for unemployment compensation from <fg-show path="/filerResidenceAndIncomeState"/>.</p>
+        <fg-alert alert-key="/flow/income/unemployment/unemployment-loop-intro" alert-type="info" condition="/flowGateef8c36b6" operator="isTrue">
+          <heading>There are some types of income on the 1099-G that you won’t be able to report using Direct File. If you have these types of income, you’ll need to file using another tool.</heading>
+          <p><modal-link for="modal-info-info-income-unemployment-1099g-unsupported-income-types-alert-modal-linkmodal1">What 1099-G income types aren’t yet supported in Direct File?</modal-link></p>
+        </fg-alert>
+        <p condition="/flowGate20b43d0e" operator="isTrue"><modal-link for="modal-info-info-income-unemployment-1099g-unsupported-income-types-linkmodal1">What 1099-G income types aren’t yet supported in Direct File?</modal-link></p>
+        <p condition="/flowGate20b43d0e" operator="isTrue"><modal-link for="modal-info-info-income-unemployment-1099g-calculations-linkmodal1">How is unemployment compensation calculated?</modal-link></p>
       </div>
-      <fg-collection path="/form1099Gs" item-name="unemployment compensation" determiner="another">
+      <fg-collection path="/form1099Gs" item-name="unemployment compensation" determiner="another" if-true="/flowGateef8c36b6">
         <div class="df-screen">
-          <h2>add-1099-g</h2>
-          <p>Heading ×2, Boolean, SaveAndOrContinueButton</p>
+          <fg-apply path="/form1099Gs/*/filer" source="/primaryFiler"/>
+          <fg-set path="/form1099Gs/*/has1099">
+            <question>Did you receive a <modal-link for="modal-headings-heading-income-unemployment-add-1099-linkmodal1">1099-G</modal-link> for this unemployment compensation?</question>
+            <input type="boolean"/>
+          </fg-set>
         </div>
         <div class="df-screen" condition="/form1099Gs/*/flowGate1d90573a" operator="isTrue">
-          <h2>1099-g-add-whose</h2>
-          <p>TaxReturnAlert, Heading, CollectionItemReference, GenericString, SaveAndOrContinueButton</p>
+          <h2>Whose 1099-G is it?</h2>
         </div>
         <div class="df-screen" condition="/form1099Gs/*/flowGatef050ef4e" operator="isTrue">
-          <h2>1099-g-payer</h2>
-          <p>Heading, InfoDisplay, LimitingString, SaveAndOrContinueButton</p>
+          <h2>Enter the name of the payer.</h2>
+          <p>The payer is the government agency that made the payments. You can usually find the payer’s name near the top of the 1099-G.</p>
+          <fg-set path="/form1099Gs/*/payer">
+            <question>Payer name</question>
+            <input type="text"/>
+          </fg-set>
         </div>
         <div class="df-screen" condition="/form1099Gs/*/flowGatef050ef4e" operator="isTrue">
-          <h2>1099-g-amount</h2>
-          <p>Heading, Hint, Dollar, SaveAndOrContinueButton</p>
+          <h2>Enter the amount of unemployment compensation received in <fg-show path="/taxYear"/> from <strong>box 1</strong>.</h2>
+          <p class="usa-hint">Sometimes box 1 has a different label, but you can only report this income in Direct File if the label for box 1 is <strong>Unemployment compensation</strong>.</p>
+          <fg-set path="/form1099Gs/*/amount">
+            <question><strong>Box 1</strong> - Unemployment compensation</question>
+            <input type="dollar"/>
+          </fg-set>
         </div>
         <div class="df-screen" condition="/form1099Gs/*/flowGatef050ef4e" operator="isTrue">
-          <h2>1099-g-repay-options</h2>
-          <p>Heading ×2, InfoDisplay, Boolean, SaveAndOrContinueButton</p>
+          <h2>Did you make any repayments of unemployment compensation in <fg-show path="/taxYear"/>?</h2>
+          <p>Repayments happen if someone accidentally got paid too much unemployment compensation and had to pay some of it back.</p>
+          <p>This amount won’t appear on your 1099-G.</p>
+          <fg-set path="/form1099Gs/*/repaid">
+            <question>Did you make any repayments of unemployment compensation in <fg-show path="/taxYear"/>?</question>
+            <input type="boolean"/>
+          </fg-set>
         </div>
         <div class="df-screen" condition="/form1099Gs/*/flowGate54628ef0" operator="isTrue">
-          <h2>1099-g-repay-amount</h2>
-          <p>Heading, Dollar ×2, SaveAndOrContinueButton</p>
+          <h2>Enter the amount of unemployment compensation repaid this year.</h2>
+          <fg-set path="/form1099Gs/*/writableAmountPaidBackForBenefitsInTaxYear">
+            <question>Amount paid back this year for benefits received <strong>in</strong> <fg-show path="/taxYear"/></question>
+            <input type="dollar"/>
+          </fg-set>
+          <fg-set path="/form1099Gs/*/writableAmountPaidBackForBenefitsBeforeTaxYear">
+            <question>Amount paid back this year for benefits received <strong>before</strong> <fg-show path="/taxYear"/></question>
+            <input type="dollar"/>
+          </fg-set>
         </div>
         <div class="df-screen df-knockout" condition="/form1099Gs/*/flowGate7c8f373c" operator="isTrue">
-          <h2>1099-g-repay-knockout</h2>
-          <p>IconDisplay, Heading ×2, InfoDisplay ×2, DFAlert, KnockoutButton</p>
+          <h2>Direct File doesn’t yet support the amount of unemployment compensation you repaid in <fg-show path="/taxYear"/> that was received before <fg-show path="/taxYear"/>.</h2>
+          <p condition="/flowGateaecf3df1" operator="isTrue">You repaid <fg-show path="/totalAmountPaidBackForBenefitsBeforeTaxYear"/> of unemployment compensation that was received before <fg-show path="/taxYear"/>. This tool doesn’t yet support repayments of prior year unemployment compensation over <fg-show path="/maximumRepaymentUnemploymentCompensation"/>.</p>
+          <p condition="/flowGate980b4142" operator="isTrue">You or <fg-show path="/secondaryFiler/firstName"/> repaid <fg-show path="/totalAmountPaidBackForBenefitsBeforeTaxYear"/> of unemployment compensation that was received before <fg-show path="/taxYear"/>. This tool doesn’t yet support repayments of prior year unemployment compensation over <fg-show path="/maximumRepaymentUnemploymentCompensation"/>.</p>
+          <fg-alert alert-key="/flow/income/unemployment/1099-g-repay-knockout" alert-type="error" knockout="true" condition="/flowAlwaysTrue" operator="isTrue">
+            <heading><a href="https://www.irs.gov/filing/individuals/how-to-file" target="_blank">Find other ways to file your federal taxes.</a></heading>
+          </fg-alert>
         </div>
         <div class="df-screen" condition="/form1099Gs/*/flowGatef050ef4e" operator="isTrue">
-          <h2>1099-g-withholding</h2>
-          <p>Heading, InfoDisplay, Dollar, SaveAndOrContinueButton</p>
+          <h2>If there was any voluntary federal withholding on the unemployment compensation, enter the amount of federal income tax withheld from <strong>box 4</strong>.</h2>
+          <p>If box 4 is blank, leave it blank here, too.</p>
+          <fg-set path="/form1099Gs/*/writableFederalTaxWithheld">
+            <question><strong>Box 4</strong> - Federal income tax withheld</question>
+            <input type="dollar"/>
+          </fg-set>
         </div>
         <div class="df-screen" condition="/form1099Gs/*/flowGate2ee81957" operator="isTrue">
-          <h2>1099-g-payer-tin</h2>
-          <p>Heading, InfoDisplay, Ein, SaveAndOrContinueButton</p>
+          <h2>Enter the payer’s Taxpayer Identification Number (TIN).</h2>
+          <p>The payer’s TIN is sometimes called the payer’s Federal Identification Number or Fed. Id. No.</p>
+          <fg-set path="/form1099Gs/*/payer/tin">
+            <question>Payer’s TIN</question>
+            <input type="ein"/>
+          </fg-set>
         </div>
         <div class="df-screen" condition="/form1099Gs/*/flowGatef050ef4e" operator="isTrue">
-          <h2>1099-g-state-info</h2>
-          <p>Heading, InfoDisplay, Enum, GenericString, Dollar, SaveAndOrContinueButton</p>
+          <h2>Enter the state tax information from <strong> boxes 10a, 10b, and 11</strong></h2>
+          <fg-apply path="/form1099Gs/*/hasSeenLastAvailableScreen" source="/flowTrue"/>
+          <p>Be sure to fill out any boxes that have information listed on the Form 1099-G. If a box is blank, skip that specific box.</p>
+          <fg-set path="/form1099Gs/*/writableState">
+            <question><strong>Box 10a</strong> - State</question>
+            <input type="enum" options-path="/incomeFormStateOptions">
+              <option value="sameState"></option>
+              <option value="differentState">Another state</option>
+            </input>
+          </fg-set>
+          <fg-set path="/form1099Gs/*/writableStateIdNumber">
+            <question><strong>Box 10b</strong> - State identification no.</question>
+            <input type="text"/>
+          </fg-set>
+          <fg-set path="/form1099Gs/*/writableStateTaxWithheld">
+            <question><strong>Box 11</strong> - State income tax withheld</question>
+            <input type="dollar"/>
+          </fg-set>
         </div>
         <div class="df-screen df-knockout" condition="/form1099Gs/*/flowGate42685fcc" operator="isTrue">
-          <h2>1099-g-other-state-ko</h2>
-          <p>IconDisplay, Heading, InfoDisplay, DFAlert, KnockoutButton</p>
+          <h2>Direct File doesn’t support reporting unemployment compensation in all U.S. states and territories yet.</h2>
+          <p>You can only report unemployment compensation from <fg-show path="/filerResidenceAndIncomeState"/> within Direct File.</p>
+          <fg-alert alert-key="/flow/income/unemployment/1099-g-other-state-ko" alert-type="error" knockout="true" condition="/flowAlwaysTrue" operator="isTrue">
+            <heading><a href="https://www.irs.gov/filing/individuals/how-to-file" target="_blank">Find other ways to file your federal taxes.</a></heading>
+          </fg-alert>
         </div>
         <div class="df-screen" condition="/form1099Gs/*/flowGate57c474fc" operator="isTrue">
-          <h2>no-1099-g-add-whose</h2>
-          <p>Heading, CollectionItemReference, GenericString, SaveAndOrContinueButton</p>
+          <h2>Whose unemployment compensation is it?</h2>
         </div>
         <div class="df-screen" condition="/form1099Gs/*/flowGate57fc2e70" operator="isTrue">
-          <h2>no-1099-g-payer-name</h2>
-          <p>Heading, InfoDisplay, LimitingString, SaveAndOrContinueButton</p>
+          <h2>Enter the name of the payer.</h2>
+          <p>The payer is the government agency that made the payments.</p>
+          <fg-set path="/form1099Gs/*/payer">
+            <question>Payer name</question>
+            <input type="text"/>
+          </fg-set>
         </div>
         <div class="df-screen" condition="/form1099Gs/*/flowGate57fc2e70" operator="isTrue">
-          <h2>no-1099-g-amount</h2>
-          <p>Heading, Dollar, SaveAndOrContinueButton</p>
+          <h2>Enter the total amount of unemployment compensation received in <fg-show path="/taxYear"/>.</h2>
+          <fg-apply path="/form1099Gs/*/hasSeenLastAvailableScreen" source="/flowTrue"/>
+          <fg-set path="/form1099Gs/*/amount">
+            <question><strong>Box 1</strong> - Unemployment compensation</question>
+            <input type="dollar"/>
+          </fg-set>
         </div>
         <div class="df-screen" condition="/form1099Gs/*/flowGate57fc2e70" operator="isTrue">
-          <h2>no-1099-g-repay-options</h2>
-          <p>Heading ×2, InfoDisplay, Boolean, SaveAndOrContinueButton</p>
+          <h2>Did you make any repayments of unemployment compensation in <fg-show path="/taxYear"/>?</h2>
+          <p>Repayments happen if someone accidentally got paid too much unemployment compensation and had to pay some of it back.</p>
+          <fg-set path="/form1099Gs/*/repaid">
+            <question>Did you make any repayments of unemployment compensation in <fg-show path="/taxYear"/>?</question>
+            <input type="boolean"/>
+          </fg-set>
         </div>
         <div class="df-screen" condition="/form1099Gs/*/flowGate33814930" operator="isTrue">
-          <h2>no-1099-g-repay-amount</h2>
-          <p>Heading, Dollar ×2, SaveAndOrContinueButton</p>
+          <h2>Enter the amount of unemployment compensation repaid this year.</h2>
+          <fg-set path="/form1099Gs/*/writableAmountPaidBackForBenefitsInTaxYear">
+            <question>Amount paid back this year for benefits received <strong>in</strong> <fg-show path="/taxYear"/></question>
+            <input type="dollar"/>
+          </fg-set>
+          <fg-set path="/form1099Gs/*/writableAmountPaidBackForBenefitsBeforeTaxYear">
+            <question>Amount paid back this year for benefits received <strong>before</strong> <fg-show path="/taxYear"/></question>
+            <input type="dollar"/>
+          </fg-set>
         </div>
         <div class="df-screen df-knockout" condition="/form1099Gs/*/flowGateb9405d8d" operator="isTrue">
-          <h2>no-1099-g-repay-knockout</h2>
-          <p>IconDisplay, Heading ×2, InfoDisplay ×2, DFAlert, KnockoutButton</p>
+          <h2>Direct File doesn’t yet support the amount of unemployment compensation you repaid in <fg-show path="/taxYear"/> that was received before <fg-show path="/taxYear"/>.</h2>
+          <p condition="/flowGateaecf3df1" operator="isTrue">You repaid <fg-show path="/totalAmountPaidBackForBenefitsBeforeTaxYear"/> of unemployment compensation that was received before <fg-show path="/taxYear"/>. This tool doesn’t yet support repayments of prior year unemployment compensation over <fg-show path="/maximumRepaymentUnemploymentCompensation"/>.</p>
+          <p condition="/flowGate980b4142" operator="isTrue">You or <fg-show path="/secondaryFiler/firstName"/> repaid <fg-show path="/totalAmountPaidBackForBenefitsBeforeTaxYear"/> of unemployment compensation that was received before <fg-show path="/taxYear"/>. This tool doesn’t yet support repayments of prior year unemployment compensation over <fg-show path="/maximumRepaymentUnemploymentCompensation"/>.</p>
+          <fg-alert alert-key="/flow/income/unemployment/no-1099-g-repay-knockout" alert-type="error" knockout="true" condition="/flowAlwaysTrue" operator="isTrue">
+            <heading><a href="https://www.irs.gov/filing/individuals/how-to-file" target="_blank">Find other ways to file your federal taxes.</a></heading>
+          </fg-alert>
         </div>
       </fg-collection>
     </section>
+    <modal-dialog id="modal-info-info-income-unemployment-unemployment-loop-intro-linkmodal1">
+      <modal-heading>What’s a 1099-G?</modal-heading>
+      <modal-content>
+        <p>A 1099-G is used by federal, state, and local government agencies to report payments of unemployment compensation and other kinds of government payments.</p>
+        <p>Depending on the agency that issued it, 1099-G forms may look different, but they should all have the name "Certain Government Payments" on the form.</p>
+        <p><a href="https://www.irs.gov/pub/irs-pdf/f1099g.pdf" target="_blank">See an example 1099-G</a></p>
+        <p><strong>Who gets a 1099-G?</strong></p>
+        <p>Anyone who received <fg-show path="/minimumUnemploymentCompensation"/> or more in unemployment compensation in one tax year should get a 1099-G from their state unemployment agency reporting what was paid.</p>
+        <p>You may not get a 1099-G if the unemployment compensation was under <fg-show path="/minimumUnemploymentCompensation"/>, but you’re still required to report it.</p>
+        <p><strong>Missing 1099-Gs</strong></p>
+        <p>Most agencies provide a paper copy of a 1099-G by January 31 of each year. If you lost or never received your 1099-G, ask the agency that made the payments for a copy. If you still haven’t received the missing form(s) by the end of February, call the IRS at <fg-show path="/irsPhoneNumber"/> for help.</p>
+        <p><strong>Unexpected 1099-Gs</strong></p>
+        <p>If you get an unexpected 1099-G for unemployment compensation, it’s possible that someone may be using your information to fraudulently receive unemployment benefits.</p>
+        <p>If this happens, don’t include this on your federal tax return. Contact your state unemployment agency and request a corrected form showing $0 benefits received.</p>
+      </modal-content>
+    </modal-dialog>
+    <modal-dialog id="modal-info-info-income-unemployment-1099g-unsupported-income-types-alert-modal-linkmodal1">
+      <modal-heading>What 1099-G income types aren’t yet supported in Direct File?</modal-heading>
+      <modal-content>
+        <p>In Direct File, you can report unemployment compensation <strong>(box 1)</strong> as long as:</p>
+        <ul>
+          <li>It’s from <fg-show path="/filerResidenceAndIncomeState"/></li>
+          <li>The label for box 1 is <strong>Unemployment compensation</strong></li>
+        </ul>
+        <p>The 1099-G is used to report many types of government payments, but Direct File only supports payments of unemployment compensation shown in boxes 1 and 4.</p>
+        <p>Reporting other types of income requires filing additional forms and schedules that Direct File doesn’t currently support.</p>
+        <p>If you received money from any of these other sources, you’ll need to file your federal tax return using another tool. <a href="https://www.irs.gov/filing/individuals/how-to-file" target="_blank">Find other ways to file your federal taxes.</a></p>
+      </modal-content>
+    </modal-dialog>
+    <modal-dialog id="modal-info-info-income-unemployment-1099g-unsupported-income-types-linkmodal1">
+      <modal-heading>What 1099-G income types aren’t yet supported in Direct File?</modal-heading>
+      <modal-content>
+        <p>In Direct File, you can report unemployment compensation <strong>(box 1)</strong> as long as:</p>
+        <ul>
+          <li>It’s from <fg-show path="/filerResidenceAndIncomeState"/></li>
+          <li>The label for box 1 is <strong>Unemployment compensation</strong></li>
+        </ul>
+        <p>The 1099-G is used to report many types of government payments, but Direct File only supports payments of unemployment compensation shown in boxes 1 and 4.</p>
+        <p>Reporting other types of income requires filing additional forms and schedules that Direct File doesn’t currently support.</p>
+        <p>If you received money from any of these other sources, you’ll need to file your federal tax return using another tool. <a href="https://www.irs.gov/filing/individuals/how-to-file" target="_blank">Find other ways to file your federal taxes.</a></p>
+      </modal-content>
+    </modal-dialog>
+    <modal-dialog id="modal-info-info-income-unemployment-1099g-calculations-linkmodal1">
+      <modal-heading>How is unemployment compensation calculated?</modal-heading>
+      <modal-content>
+        <p>To calculate your unemployment compensation, we add the amounts from:</p>
+        <ul>
+          <li><strong>Box 1</strong> (Unemployment compensation) from any <strong>Forms 1099-G</strong> you reported</li>
+          <li>Any other <strong>unemployment compensation</strong> you reported</li>
+        </ul>
+        <p>And then we subtract any reported repayments made in <fg-show path="/taxYear"/> of amounts received in <fg-show path="/taxYear"/>.</p>
+      </modal-content>
+    </modal-dialog>
+    <modal-dialog id="modal-headings-heading-income-unemployment-add-1099-linkmodal1">
+      <modal-heading>What’s a 1099-G?</modal-heading>
+      <modal-content>
+        <p>A 1099-G is used by federal, state, and local government agencies to report payments of unemployment compensation and other kinds of government payments.</p>
+        <p>Depending on the agency that issued it, 1099-G forms may look different, but they should all have the name "Certain Government Payments" on the form.</p>
+        <p><a href="https://www.irs.gov/pub/irs-pdf/f1099g.pdf" target="_blank">See an example 1099-G</a></p>
+        <p><strong>Who gets a 1099-G?</strong></p>
+        <p>Anyone who received <fg-show path="/minimumUnemploymentCompensation"/> or more in unemployment compensation in one tax year should get a 1099-G from their state unemployment agency reporting what was paid.</p>
+        <p>You may not get a 1099-G if the unemployment compensation was under <fg-show path="/minimumUnemploymentCompensation"/>, but you’re still required to report it.</p>
+        <p><strong>Missing 1099-Gs</strong></p>
+        <p>Most agencies provide a paper copy of a 1099-G by January 31 of each year. If you lost or never received your 1099-G, ask the agency that made the payments for a copy. If you still haven’t received the missing form(s) by the end of February, call the IRS at <fg-show path="/irsPhoneNumber"/> for help.</p>
+        <p><strong>Unexpected 1099-Gs</strong></p>
+        <p>If you get an unexpected 1099-G for unemployment compensation, it’s possible that someone may be using your information to fraudulently receive unemployment benefits.</p>
+        <p>If this happens, don’t include this on your federal tax return. Contact your state unemployment agency and request a corrected form showing $0 benefits received.</p>
+      </modal-content>
+    </modal-dialog>
   </page>
 </FlowConfig>
