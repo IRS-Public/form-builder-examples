@@ -123,12 +123,7 @@
         <h2>provider-collection-hub</h2>
         <p>ContextHeading, TaxReturnAlert, Heading ×3, InfoDisplay ×4, ConditionalList, CollectionItemManager</p>
       </div>
-    </section>
-  </page>
-
-  <page title="Care providers info" route="/income/dependent-care/care-providers-info">
-    <section>
-      <fg-collection path="/cdccCareProviders" item-name="cdccCareProviders" determiner="another">
+      <fg-collection path="/cdccCareProviders" item-name="care provider" determiner="another" if-true="/flowGate8b03a50f">
         <div class="df-screen" condition="/flowGate8b03a50f" operator="isTrue">
           <h2>provider-bus-or-indiv</h2>
           <p>ContextHeading, Heading, InfoDisplay, Boolean, SaveAndOrContinueButton</p>
@@ -165,13 +160,6 @@
           <h2>provider-tax-exempt</h2>
           <p>ContextHeading, Heading, InfoDisplay, Boolean, SaveAndOrContinueButton</p>
         </div>
-      </fg-collection>
-    </section>
-  </page>
-
-  <page title="Care providers tax id" route="/income/dependent-care/care-providers-tax-id">
-    <section>
-      <fg-collection path="/cdccCareProviders" item-name="cdccCareProviders" determiner="another">
         <div class="df-screen" condition="/cdccCareProviders/*/flowGate6c2aa16e" operator="isTrue">
           <h2>tin-ein-check</h2>
           <p>ContextHeading, Heading ×2, DFModal ×2, Boolean, SaveAndOrContinueButton</p>
@@ -192,13 +180,6 @@
           <h2>provider-tin</h2>
           <p>ContextHeading, Heading, InfoDisplay, Tin, SaveAndOrContinueButton</p>
         </div>
-      </fg-collection>
-    </section>
-  </page>
-
-  <page title="Care providers amount paid" route="/income/dependent-care/care-providers-amount-paid">
-    <section>
-      <fg-collection path="/cdccCareProviders" item-name="cdccCareProviders" determiner="another">
         <div class="df-screen" condition="/cdccCareProviders/*/flowGate47b00cf4" operator="isTrue">
           <h2>provider-qp-expenses</h2>
           <p>ContextHeading, Heading ×2, InfoDisplay ×4, Dollar, SaveAndOrContinueButton</p>

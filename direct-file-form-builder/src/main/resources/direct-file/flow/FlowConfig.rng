@@ -42,13 +42,17 @@
             </attribute>
           </optional>
           <zeroOrMore>
+            <!-- A generated page is a run of screen divs, and a collection hub is that run followed
+                 by the <fg-collection> holding the loop's screens. A choice between the two shapes
+                 cannot express the mix, and an interleave cannot tell a screen div from the div in
+                 HtmlBlockContent — so: any number of either, in any order. -->
             <element name="section">
-              <choice>
-                <oneOrMore>
+              <zeroOrMore>
+                <choice>
                   <ref name="df-screen-module"/>
-                </oneOrMore>
-                <ref name="FlowConfigModuleContent"/>
-              </choice>
+                  <ref name="FlowConfigModuleContent"/>
+                </choice>
+              </zeroOrMore>
             </element>
           </zeroOrMore>
           <!-- Everything a page may carry after its sections, in any order: the modals its content
@@ -270,6 +274,17 @@
       <optional>
         <attribute name="seed-item-if-true">
           <data type="anyURI"/>
+        </attribute>
+      </optional>
+      <!-- A collection the taxpayer cannot change: no Add button, no per-item Remove. What a
+           <Derived> collection needs, since its membership is decided by another fact. The eight
+           auto-iterating loops are all of them. -->
+      <optional>
+        <attribute name="readonly">
+          <choice>
+            <value>true</value>
+            <value>false</value>
+          </choice>
         </attribute>
       </optional>
       <optional>

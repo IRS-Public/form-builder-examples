@@ -10,12 +10,7 @@
         <h2>int-income-loop-intro</h2>
         <p>Heading ×3, ContextHeading, IntroContent, ConditionalList, DFAlert, DFModal ×2, CollectionItemManager</p>
       </div>
-    </section>
-  </page>
-
-  <page title="Data import int ko" route="/income/interest/data-import-int-ko">
-    <section>
-      <fg-collection path="/interestReports" item-name="interestReports" determiner="another">
+      <fg-collection path="/interestReports" item-name="interest income" determiner="another">
         <div class="df-screen df-knockout" condition="/interestReports/*/flowGateb986cf12" operator="isTrue">
           <h2>data-import-int-ko</h2>
           <p>Heading, InfoDisplay ×2, DFAccordion ×9, DFAlert, KnockoutButton, SaveAndOrContinueButton ×2</p>
@@ -28,13 +23,6 @@
           <h2>data-import-refer-int-income</h2>
           <p>Heading, InfoDisplay, DFModal, SaveAndOrContinueButton</p>
         </div>
-      </fg-collection>
-    </section>
-  </page>
-
-  <page title="Add int income" route="/income/interest/add-int-income">
-    <section>
-      <fg-collection path="/interestReports" item-name="interestReports" determiner="another">
         <div class="df-screen">
           <h2>add-int-income</h2>
           <p>Heading ×2, DFModal, Boolean, SaveAndOrContinueButton</p>
@@ -55,13 +43,6 @@
           <h2>1099-int-facta-knockout</h2>
           <p>IconDisplay, Heading, DFAlert, KnockoutButton</p>
         </div>
-      </fg-collection>
-    </section>
-  </page>
-
-  <page title="1099 int add box 1" route="/income/interest/1099-int-add-box-1">
-    <section>
-      <fg-collection path="/interestReports" item-name="interestReports" determiner="another">
         <div class="df-screen" condition="/interestReports/*/flowGatefa7ef764" operator="isTrue">
           <h2>1099-int-add-box-1</h2>
           <p>Heading, InfoDisplay, Dollar, SaveAndOrContinueButton</p>
@@ -78,35 +59,14 @@
           <h2>1099-int-add-box-3</h2>
           <p>Heading, InfoDisplay, DFModal, Dollar ×2, SaveAndOrContinueButton</p>
         </div>
-      </fg-collection>
-    </section>
-  </page>
-
-  <page title="Int income tax withheld" route="/income/interest/int-income-tax-withheld">
-    <section>
-      <fg-collection path="/interestReports" item-name="interestReports" determiner="another">
         <div class="df-screen" condition="/interestReports/*/flowGatefa7ef764" operator="isTrue">
           <h2>1099-int-add-box-4</h2>
           <p>Heading, InfoDisplay, Dollar, DFModal, SaveAndOrContinueButton</p>
         </div>
-      </fg-collection>
-    </section>
-  </page>
-
-  <page title="Payer tin" route="/income/interest/payer-tin">
-    <section>
-      <fg-collection path="/interestReports" item-name="interestReports" determiner="another">
         <div class="df-screen" condition="/interestReports/*/flowGate418f7156" operator="isTrue">
           <h2>1099-int-add-payer-tin</h2>
           <p>Heading, Ein, SaveAndOrContinueButton</p>
         </div>
-      </fg-collection>
-    </section>
-  </page>
-
-  <page title="Foreign tax paid" route="/income/interest/foreign-tax-paid">
-    <section>
-      <fg-collection path="/interestReports" item-name="interestReports" determiner="another">
         <div class="df-screen" condition="/interestReports/*/flowGatefa7ef764" operator="isTrue">
           <h2>1099-int-add-box-6</h2>
           <p>Heading, InfoDisplay, Dollar, DFModal, SaveAndOrContinueButton</p>
@@ -115,13 +75,6 @@
           <h2>1099-int-box-6-knockout</h2>
           <p>IconDisplay, Heading, DFAlert, KnockoutButton</p>
         </div>
-      </fg-collection>
-    </section>
-  </page>
-
-  <page title="Int income tax exempt" route="/income/interest/int-income-tax-exempt">
-    <section>
-      <fg-collection path="/interestReports" item-name="interestReports" determiner="another">
         <div class="df-screen" condition="/interestReports/*/flowGatefa7ef764" operator="isTrue">
           <h2>1099-int-add-box-8</h2>
           <p>Heading, InfoDisplay, Dollar, SaveAndOrContinueButton</p>
@@ -130,13 +83,6 @@
           <h2>1099-int-box-8-ko</h2>
           <p>IconDisplay, Heading, DFAlert, KnockoutButton</p>
         </div>
-      </fg-collection>
-    </section>
-  </page>
-
-  <page title="Int income bonds" route="/income/interest/int-income-bonds">
-    <section>
-      <fg-collection path="/interestReports" item-name="interestReports" determiner="another">
         <div class="df-screen" condition="/interestReports/*/flowGatefa7ef764" operator="isTrue">
           <h2>1099-int-add-boxes-9-14</h2>
           <p>Heading, InfoDisplay, Dollar ×5, GenericString, SaveAndOrContinueButton</p>
@@ -145,13 +91,6 @@
           <h2>1099-int-boxes-9-13-knockout</h2>
           <p>IconDisplay, Heading, DFAlert, KnockoutButton</p>
         </div>
-      </fg-collection>
-    </section>
-  </page>
-
-  <page title="Int income state info" route="/income/interest/int-income-state-info">
-    <section>
-      <fg-collection path="/interestReports" item-name="interestReports" determiner="another">
         <div class="df-screen" condition="/interestReports/*/flowGatefa7ef764" operator="isTrue">
           <h2>1099-int-add-boxes-15-17</h2>
           <p>ContextHeading, Heading, InfoDisplay, Enum, GenericString, Dollar, SaveAndOrContinueButton</p>
@@ -164,13 +103,6 @@
           <h2>1099-int-other-state-knockout</h2>
           <p>IconDisplay, Heading, InfoDisplay, DFAlert, KnockoutButton</p>
         </div>
-      </fg-collection>
-    </section>
-  </page>
-
-  <page title="No 1099 int add whose" route="/income/interest/no-1099-int-add-whose">
-    <section>
-      <fg-collection path="/interestReports" item-name="interestReports" determiner="another">
         <div class="df-screen" condition="/interestReports/*/flowGate6d837efd" operator="isTrue">
           <h2>no-1099-int-add-whose</h2>
           <p>Heading, InfoDisplay, CollectionItemReference, GenericString, SaveAndOrContinueButton</p>
@@ -179,13 +111,6 @@
           <h2>no-1099-int-add-payer-name</h2>
           <p>Heading, InfoDisplay, LimitingString ×2, SaveAndOrContinueButton</p>
         </div>
-      </fg-collection>
-    </section>
-  </page>
-
-  <page title="No 1099 int taxable int" route="/income/interest/no-1099-int-taxable-int">
-    <section>
-      <fg-collection path="/interestReports" item-name="interestReports" determiner="another">
         <div class="df-screen" condition="/interestReports/*/flowGate09afd31a" operator="isTrue">
           <h2>no-1099-int-taxable-int</h2>
           <p>Heading, DFModal, Dollar, SaveAndOrContinueButton</p>

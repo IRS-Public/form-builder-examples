@@ -22,23 +22,11 @@
         <h2>add-person</h2>
         <p>MefAlert ×2, Heading, DFModal ×2, CollectionItemManager</p>
       </div>
-    </section>
-  </page>
-
-  <page title="Basic info" route="/you-and-your-family/dependents/basic-info">
-    <section>
-      <fg-collection path="/familyAndHousehold" item-name="familyAndHousehold" determiner="another">
+      <fg-collection path="/familyAndHousehold" item-name="person" determiner="another" if-true="/flowGate36c25615">
         <div class="df-screen" condition="/flowGate36c25615" operator="isTrue">
           <h2>add-person-basic-info</h2>
           <p>MefAlert ×5, Heading, InfoDisplay, DFModal, LimitingString ×3, Enum, GenericString, DatePicker, Boolean, SaveAndOrContinueButton</p>
         </div>
-      </fg-collection>
-    </section>
-  </page>
-
-  <page title="Relationship" route="/you-and-your-family/dependents/relationship">
-    <section>
-      <fg-collection path="/familyAndHousehold" item-name="familyAndHousehold" determiner="another">
         <div class="df-screen" condition="/flowGate36c25615" operator="isTrue">
           <h2>add-person-relationship-category</h2>
           <p>Heading ×2, InfoDisplay, DFModal ×2, Enum, SaveAndOrContinueButton</p>
@@ -59,13 +47,6 @@
           <h2>add-person-relationship-type-in-law</h2>
           <p>Heading, InfoDisplay, Enum, SaveAndOrContinueButton</p>
         </div>
-      </fg-collection>
-    </section>
-  </page>
-
-  <page title="Life circumstances" route="/you-and-your-family/dependents/life-circumstances">
-    <section>
-      <fg-collection path="/familyAndHousehold" item-name="familyAndHousehold" determiner="another">
         <div class="df-screen" condition="/familyAndHousehold/*/flowGateab505628" operator="isTrue">
           <h2>add-person-student</h2>
           <p>Heading, DFModal, Boolean, SaveAndOrContinueButton</p>
@@ -78,24 +59,10 @@
           <h2>add-person-self-care</h2>
           <p>Heading, DFModal, Boolean, SaveAndOrContinueButton</p>
         </div>
-      </fg-collection>
-    </section>
-  </page>
-
-  <page title="Add person lived with you" route="/you-and-your-family/dependents/add-person-lived-with-you">
-    <section>
-      <fg-collection path="/familyAndHousehold" item-name="familyAndHousehold" determiner="another">
         <div class="df-screen" condition="/flowGate36c25615" operator="isTrue">
           <h2>add-person-lived-with-you</h2>
           <p>Heading, InfoDisplay, DFModal, Enum, SaveAndOrContinueButton</p>
         </div>
-      </fg-collection>
-    </section>
-  </page>
-
-  <page title="Parents guardians" route="/you-and-your-family/dependents/parents-guardians">
-    <section>
-      <fg-collection path="/familyAndHousehold" item-name="familyAndHousehold" determiner="another">
         <div class="df-screen" condition="/familyAndHousehold/*/flowGate607852bf" operator="isTrue">
           <h2>add-person-another-parent-in-picture</h2>
           <p>Heading ×2, InfoDisplay, Boolean, SaveAndOrContinueButton</p>
@@ -176,13 +143,6 @@
           <h2>add-person-special-rule-other-eligible-tp-outcome</h2>
           <p>Heading, InfoDisplay ×2, SaveAndOrContinueButton</p>
         </div>
-      </fg-collection>
-    </section>
-  </page>
-
-  <page title="Add person lived with you in us" route="/you-and-your-family/dependents/add-person-lived-with-you-in-us">
-    <section>
-      <fg-collection path="/familyAndHousehold" item-name="familyAndHousehold" determiner="another">
         <div class="df-screen" condition="/familyAndHousehold/*/flowGate0e0c3787" operator="isTrue">
           <h2>add-person-lived-with-you-in-us</h2>
           <p>Heading, InfoDisplay, DFModal, Enum, SaveAndOrContinueButton</p>
@@ -195,13 +155,6 @@
           <h2>add-person-keeping-up-parents-home</h2>
           <p>Heading ×2, InfoDisplay ×2, DFModal, Boolean ×2, SaveAndOrContinueButton</p>
         </div>
-      </fg-collection>
-    </section>
-  </page>
-
-  <page title="Tax id" route="/you-and-your-family/dependents/tax-id">
-    <section>
-      <fg-collection path="/familyAndHousehold" item-name="familyAndHousehold" determiner="another">
         <div class="df-screen" condition="/familyAndHousehold/*/flowGatec91e56c6" operator="isTrue">
           <h2>add-person-tin</h2>
           <p>Heading, InfoDisplay, DFModal ×2, Enum, SaveAndOrContinueButton</p>
@@ -226,13 +179,6 @@
           <h2>add-person-acknowledge-tin</h2>
           <p>Heading, InfoDisplay, Tin, SaveAndOrContinueButton</p>
         </div>
-      </fg-collection>
-    </section>
-  </page>
-
-  <page title="Support" route="/you-and-your-family/dependents/support">
-    <section>
-      <fg-collection path="/familyAndHousehold" item-name="familyAndHousehold" determiner="another">
         <div class="df-screen" condition="/familyAndHousehold/*/flowGatee9e748b4" operator="isTrue">
           <h2>add-person-qc-support</h2>
           <p>Heading, InfoDisplay, Boolean, SaveAndOrContinueButton</p>
@@ -245,13 +191,6 @@
           <h2>add-person-qr-gross-income</h2>
           <p>Heading, InfoDisplay, DFModal, Boolean, SaveAndOrContinueButton</p>
         </div>
-      </fg-collection>
-    </section>
-  </page>
-
-  <page title="Marital status" route="/you-and-your-family/dependents/marital-status">
-    <section>
-      <fg-collection path="/familyAndHousehold" item-name="familyAndHousehold" determiner="another">
         <div class="df-screen" condition="/familyAndHousehold/*/flowGatec91e56c6" operator="isTrue">
           <h2>add-person-married</h2>
           <p>Heading, Boolean, SaveAndOrContinueButton</p>
@@ -268,13 +207,6 @@
           <h2>add-person-filing-for-refund-only</h2>
           <p>Heading, InfoDisplay, Boolean, SaveAndOrContinueButton</p>
         </div>
-      </fg-collection>
-    </section>
-  </page>
-
-  <page title="Citizenship" route="/you-and-your-family/dependents/citizenship">
-    <section>
-      <fg-collection path="/familyAndHousehold" item-name="familyAndHousehold" determiner="another">
         <div class="df-screen" condition="/familyAndHousehold/*/flowGatec91e56c6" operator="isTrue">
           <h2>add-person-us-citizen</h2>
           <p>Heading, DFModal, InfoDisplay, Boolean, SaveAndOrContinueButton</p>
@@ -291,13 +223,6 @@
           <h2>add-person-resident-mexico-canada</h2>
           <p>Heading, Boolean, SaveAndOrContinueButton</p>
         </div>
-      </fg-collection>
-    </section>
-  </page>
-
-  <page title="Qc of another" route="/you-and-your-family/dependents/qc-of-another">
-    <section>
-      <fg-collection path="/familyAndHousehold" item-name="familyAndHousehold" determiner="another">
         <div class="df-screen" condition="/familyAndHousehold/*/flowGateaeb51fdf" operator="isTrue">
           <h2>add-person-qc-of-another</h2>
           <p>Heading ×2, DFModal, Boolean, SaveAndOrContinueButton</p>
@@ -322,13 +247,6 @@
           <h2>add-person-qc-of-another-summary</h2>
           <p>Heading, InfoDisplay ×3, SaveAndOrContinueButton</p>
         </div>
-      </fg-collection>
-    </section>
-  </page>
-
-  <page title="Qualified qc of multiple tps" route="/you-and-your-family/dependents/qualified-qc-of-multiple-tps">
-    <section>
-      <fg-collection path="/familyAndHousehold" item-name="familyAndHousehold" determiner="another">
         <div class="df-screen" condition="/familyAndHousehold/*/flowGate6d15705a" operator="isTrue">
           <h2>qualified-qc-of-multiple-tps</h2>
           <p>IconDisplay, Heading, DFModal, InfoDisplay, SaveAndOrContinueButton</p>
@@ -385,13 +303,6 @@
           <h2>hoh-qp-input-tin</h2>
           <p>Heading, Tin, SaveAndOrContinueButton</p>
         </div>
-      </fg-collection>
-    </section>
-  </page>
-
-  <page title="Dependents qualifying child info unclaimed" route="/you-and-your-family/dependents/dependents-qualifying-child-info-unclaimed">
-    <section>
-      <fg-collection path="/familyAndHousehold" item-name="familyAndHousehold" determiner="another">
         <div class="df-screen" condition="/familyAndHousehold/*/flowGateb9c824fb" operator="isTrue">
           <h2>dependents-eitc-enter-tin</h2>
           <p>TaxReturnAlert ×3, Heading, Tin, SaveAndOrContinueButton</p>
@@ -412,13 +323,6 @@
           <h2>dependents-eitc-ip-pin-input</h2>
           <p>Heading, IpPin, SaveAndOrContinueButton</p>
         </div>
-      </fg-collection>
-    </section>
-  </page>
-
-  <page title="Not qualified" route="/you-and-your-family/dependents/not-qualified">
-    <section>
-      <fg-collection path="/familyAndHousehold" item-name="familyAndHousehold" determiner="another">
         <div class="df-screen" condition="/familyAndHousehold/*/flowGate56c696ad" operator="isTrue">
           <h2>not-qualified</h2>
           <p>Heading, InfoDisplay, ConditionalAccordion, SaveAndOrContinueButton</p>

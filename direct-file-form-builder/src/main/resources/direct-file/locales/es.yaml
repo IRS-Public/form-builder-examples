@@ -1,8 +1,10 @@
 # Spanish. Declare only the keys this application owns and wants translated; anything absent falls
 # through to the scaffold's own es.yaml, which already carries the chrome.
 #
-# The two apps this template came from differ in register — one writes "Ingresa", the other
-# "Ingrese" — which is exactly why the layering exists: pick yours here and inherit the rest.
+# The all-screens headings below are Direct File's own `checklist.*.heading` strings out of its
+# es.yaml, so they are real translations rather than seeded English. The workspace strings are not:
+# the workspace is developer chrome, and these are translated here so a Spanish-speaking author can
+# read the tool they work in.
 title:
   prefix: Direct File
   suffix: Servicio de Impuestos Internos
@@ -11,8 +13,31 @@ layout:
 
 all-screens:
   section:
-    about-you: Acerca de usted
-    results: Resultados
+    you-and-your-family-about-you: Acerca de ti
+    you-and-your-family-spouse: Cónyuge
+    you-and-your-family-dependents: Familia y hogar
+    you-and-your-family-filing-status: Estado civil tributario
+    income-income-sources: Fuentes de ingresos
+    income-jobs: Trabajos
+    income-unemployment: Compensación por desempleo
+    income-interest: Ingreso por intereses
+    income-alaska-pfd: Dividendo del Fondo Permanente de Alaska
+    income-dependent-care: Beneficios por cuidado de dependientes
+    income-hsa: Cuentas de ahorros para la salud
+    income-retirement-launch: Ingresos de jubiliación (Formulario 1099-R)
+    income-retirement: Ingresos de jubiliación (Formulario 1099-R)
+    income-social-security: Beneficios de Seguro Social (Formulario SSA-1099)
+    income-total-income-summary: Ingreso total
+    credits-and-deductions-deductions: Deducciones
+    credits-and-deductions-credits: Créditos
+    your-taxes-estimated-taxes-paid: Impuestos estimados pagados
+    your-taxes-amount: Cantidad
+    your-taxes-payment-method: Método de pago
+    your-taxes-other-preferences: Otras preferencias
+    complete-review: Revisar y confirmar
+    complete-sign-and-submit: Firma digital para la declaración del impuesto federal
+    complete-print-and-mail: Imprimir y enviar por correo
+    complete-submit: Enviar
     other: Otros
 
 workspace:
@@ -24,8 +49,29 @@ workspace:
     watchlist: Lista de seguimiento
     watchlist-description: Siga el valor de uno o más hechos mientras trabaja o carga escenarios.
   outcomes:
-    eligibility: Elegibilidad
+    return: Reembolso o cantidad adeudada
+    refund-due: Reembolso a favor
+    balance-owed: Saldo adeudado
+    income-and-tax: Ingresos e impuestos
+    payments-and-credits: Pagos y créditos
+    the-result: El resultado
+
+    eitc: Crédito Tributario por Ingreso del Trabajo
     qualifies: Califica
     does-not-qualify: No califica
-    the-questions: Las preguntas
-    the-test: La prueba
+    eitc-eligibility: Elegibilidad
+    eitc-amount: Cantidad
+
+    ctc-odc: Crédito Tributario por Hijos y Crédito por Otros Dependientes
+    ctc-odc-eligibility: Elegibilidad
+    ctc-odc-amount: Cantidad
+
+    cdcc: Crédito por Cuidado de Hijos y Dependientes
+    receiving: Recibe el crédito
+    not-receiving: No recibe el crédito
+    cdcc-eligibility: Elegibilidad
+    cdcc-amount: Cantidad
+
+    ptc: Crédito Tributario de Prima
+    ptc-eligibility: Elegibilidad
+    ptc-amount: Cantidad

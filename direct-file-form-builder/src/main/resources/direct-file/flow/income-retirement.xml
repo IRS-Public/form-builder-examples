@@ -10,12 +10,7 @@
         <h2>1099-r-loop-intro</h2>
         <p>ContextHeading, Heading ×3, DFModal ×4, DFAlert, CollectionItemManager</p>
       </div>
-    </section>
-  </page>
-
-  <page title="1099 r information" route="/income/retirement/1099-r-information">
-    <section>
-      <fg-collection path="/form1099Rs" item-name="form1099Rs" determiner="another">
+      <fg-collection path="/form1099Rs" item-name="Form 1099-R" determiner="another">
         <div class="df-screen">
           <h2>1099-r-nonstandard</h2>
           <p>Heading, InfoDisplay, Enum, SaveAndOrContinueButton</p>
@@ -40,24 +35,10 @@
           <h2>1099-r-add-recipient-address</h2>
           <p>Heading, InfoDisplay, DFModal, Address, SaveAndOrContinueButton</p>
         </div>
-      </fg-collection>
-    </section>
-  </page>
-
-  <page title="1099 r payer information" route="/income/retirement/1099-r-payer-information">
-    <section>
-      <fg-collection path="/form1099Rs" item-name="form1099Rs" determiner="another">
         <div class="df-screen">
           <h2>1099-r-add-payer-info</h2>
           <p>Heading, InfoDisplay, LimitingString ×2, Address, PhoneNumber, Ein, SaveAndOrContinueButton</p>
         </div>
-      </fg-collection>
-    </section>
-  </page>
-
-  <page title="1099 r box distribution" route="/income/retirement/1099-r-box-distribution">
-    <section>
-      <fg-collection path="/form1099Rs" item-name="form1099Rs" determiner="another">
         <div class="df-screen">
           <h2>1099-r-add-box-1</h2>
           <p>Heading, TaxReturnAlert, DFModal, Dollar, SaveAndOrContinueButton</p>
@@ -90,35 +71,14 @@
           <h2>1099-r-box-3-ko</h2>
           <p>IconDisplay, Heading, InfoDisplay, DFAlert, KnockoutButton</p>
         </div>
-      </fg-collection>
-    </section>
-  </page>
-
-  <page title="1099 r box federal income tax" route="/income/retirement/1099-r-box-federal-income-tax">
-    <section>
-      <fg-collection path="/form1099Rs" item-name="form1099Rs" determiner="another">
         <div class="df-screen">
           <h2>1099-r-add-box-4</h2>
           <p>Heading, InfoDisplay, Dollar, SaveAndOrContinueButton</p>
         </div>
-      </fg-collection>
-    </section>
-  </page>
-
-  <page title="1099 r box contributions" route="/income/retirement/1099-r-box-contributions">
-    <section>
-      <fg-collection path="/form1099Rs" item-name="form1099Rs" determiner="another">
         <div class="df-screen">
           <h2>1099-r-add-box-5</h2>
           <p>Heading, InfoDisplay, Dollar, SaveAndOrContinueButton</p>
         </div>
-      </fg-collection>
-    </section>
-  </page>
-
-  <page title="1099 r box net appreciation" route="/income/retirement/1099-r-box-net-appreciation">
-    <section>
-      <fg-collection path="/form1099Rs" item-name="form1099Rs" determiner="another">
         <div class="df-screen">
           <h2>1099-r-add-box-6</h2>
           <p>Heading, InfoDisplay, DFModal, Dollar, SaveAndOrContinueButton</p>
@@ -127,13 +87,6 @@
           <h2>1099-r-box-6-ko</h2>
           <p>IconDisplay, Heading, InfoDisplay, DFAlert, KnockoutButton</p>
         </div>
-      </fg-collection>
-    </section>
-  </page>
-
-  <page title="1099 r box distribution codes" route="/income/retirement/1099-r-box-distribution-codes">
-    <section>
-      <fg-collection path="/form1099Rs" item-name="form1099Rs" determiner="another">
         <div class="df-screen">
           <h2>retirement-add-box-7-checkbox</h2>
           <p>Heading, DFModal, Boolean, SaveAndOrContinueButton</p>
@@ -194,13 +147,6 @@
           <h2>1099-r-pso-knockout</h2>
           <p>IconDisplay, Heading, InfoDisplay, DFAlert, KnockoutButton</p>
         </div>
-      </fg-collection>
-    </section>
-  </page>
-
-  <page title="1099 r box other" route="/income/retirement/1099-r-box-other">
-    <section>
-      <fg-collection path="/form1099Rs" item-name="form1099Rs" determiner="another">
         <div class="df-screen">
           <h2>1099-r-add-box-8</h2>
           <p>Heading, InfoDisplay, Dollar, LimitingString, SaveAndOrContinueButton</p>
@@ -213,13 +159,6 @@
           <h2>1099-r-box-8-percentage-knockout</h2>
           <p>IconDisplay, Heading, InfoDisplay, DFAlert, KnockoutButton</p>
         </div>
-      </fg-collection>
-    </section>
-  </page>
-
-  <page title="1099 r box total distribution" route="/income/retirement/1099-r-box-total-distribution">
-    <section>
-      <fg-collection path="/form1099Rs" item-name="form1099Rs" determiner="another">
         <div class="df-screen">
           <h2>1099-r-add-box-9a</h2>
           <p>Heading, InfoDisplay, LimitingString, SaveAndOrContinueButton</p>
@@ -232,13 +171,6 @@
           <h2>1099-r-add-box-9b</h2>
           <p>Heading, InfoDisplay, Dollar, SaveAndOrContinueButton</p>
         </div>
-      </fg-collection>
-    </section>
-  </page>
-
-  <page title="1099 r box irr allocable" route="/income/retirement/1099-r-box-irr-allocable">
-    <section>
-      <fg-collection path="/form1099Rs" item-name="form1099Rs" determiner="another">
         <div class="df-screen">
           <h2>1099-r-add-box-10</h2>
           <p>Heading, InfoDisplay, DFModal, Dollar, SaveAndOrContinueButton</p>
@@ -247,24 +179,10 @@
           <h2>1099-r-box-10-knockout</h2>
           <p>IconDisplay, Heading, InfoDisplay, DFAlert, KnockoutButton</p>
         </div>
-      </fg-collection>
-    </section>
-  </page>
-
-  <page title="1099 r box roth contributions" route="/income/retirement/1099-r-box-roth-contributions">
-    <section>
-      <fg-collection path="/form1099Rs" item-name="form1099Rs" determiner="another">
         <div class="df-screen">
           <h2>1099-r-add-box-11</h2>
           <p>Heading, InfoDisplay, LimitingString, SaveAndOrContinueButton</p>
         </div>
-      </fg-collection>
-    </section>
-  </page>
-
-  <page title="1099 r box facta" route="/income/retirement/1099-r-box-facta">
-    <section>
-      <fg-collection path="/form1099Rs" item-name="form1099Rs" determiner="another">
         <div class="df-screen">
           <h2>1099-r-add-box-12</h2>
           <p>Heading, Boolean, SaveAndOrContinueButton</p>
@@ -273,13 +191,6 @@
           <h2>1099-r-box-12-knockout</h2>
           <p>IconDisplay, Heading, InfoDisplay, DFAlert, KnockoutButton</p>
         </div>
-      </fg-collection>
-    </section>
-  </page>
-
-  <page title="1099 r box 13 date of payment" route="/income/retirement/1099-r-box-13-date-of-payment">
-    <section>
-      <fg-collection path="/form1099Rs" item-name="form1099Rs" determiner="another">
         <div class="df-screen">
           <h2>1099-r-add-box-13</h2>
           <p>Heading, InfoDisplay, DatePicker, SaveAndOrContinueButton</p>
@@ -288,13 +199,6 @@
           <h2>1099-r-box-13-ko</h2>
           <p>IconDisplay, Heading, InfoDisplay, DFAlert, KnockoutButton</p>
         </div>
-      </fg-collection>
-    </section>
-  </page>
-
-  <page title="1099 r box state and local" route="/income/retirement/1099-r-box-state-and-local">
-    <section>
-      <fg-collection path="/form1099Rs" item-name="form1099Rs" determiner="another">
         <div class="df-screen">
           <h2>1099-r-add-box-14</h2>
           <p>Heading, TaxReturnAlert, InfoDisplay, DFModal, Dollar, SaveAndOrContinueButton</p>
@@ -319,13 +223,6 @@
           <h2>1099-r-state-local-tax-error</h2>
           <p>IconDisplay, Heading, DFAlert, KnockoutButton</p>
         </div>
-      </fg-collection>
-    </section>
-  </page>
-
-  <page title="1099 r account number" route="/income/retirement/1099-r-account-number">
-    <section>
-      <fg-collection path="/form1099Rs" item-name="form1099Rs" determiner="another">
         <div class="df-screen">
           <h2>1099-r-add-account-number</h2>
           <p>Heading, InfoDisplay, LimitingString, SaveAndOrContinueButton</p>

@@ -60,17 +60,21 @@ interface ExtractedPage {
   fromSplitSubSubcategory: boolean;
 }
 
+interface ExtractedLoop {
+  loopName: string;
+  itemName: string | null;
+  collectionName: string;
+  autoIterate: boolean;
+  isInner: boolean;
+}
+
 interface Extracted {
   counts: Record<string, number>;
   screens: ExtractedScreen[];
   pages: ExtractedPage[];
   categories: {
     route: string;
-    subcategories: {
-      route: string;
-      categoryRoute: string;
-      loops: { loopName: string; collectionName: string; autoIterate: boolean; isInner: boolean }[];
-    }[];
+    subcategories: { route: string; categoryRoute: string; loops: ExtractedLoop[] }[];
   }[];
 }
 
@@ -122,6 +126,48 @@ function dictionaryPath(path: string): string {
   return path;
 }
 
+/**
+ * The Browse All section headings the application declares, keyed by flow-module filename.
+ *
+ * `locales/en.yaml` is hand-written and the transpiler does not own it, so a subcategory that
+ * appears upstream would otherwise ship as a section headed `all-screens.section.income-whatever`
+ * on a page nobody re-reads. Read as text rather than parsed: the block is four levels of plain
+ * scalars this repo writes itself, and a YAML dependency for it would be the only one in here.
+ */
+function declaredSectionHeadings(resourcesDir: string): Set<string> {
+  const yaml = readFileSync(join(resourcesDir, `locales`, `en.yaml`), `utf8`).split(`\n`);
+  const start = yaml.findIndex((line) => line === `all-screens:`);
+  if (start === -1) throw new Error(`locales/en.yaml declares no all-screens: block`);
+
+  const keys = new Set<string>();
+  let inSection = false;
+  for (const line of yaml.slice(start + 1)) {
+    if (line.trim() !== `` && !line.startsWith(`  `)) break; // left the all-screens: block
+    if (line.trimEnd() === `  section:`) {
+      inSection = true;
+      continue;
+    }
+    if (!inSection) continue;
+    const match = /^ {4}([A-Za-z0-9-]+):/.exec(line);
+    if (match) keys.add(match[1]);
+    else if (line.trim() !== `` && !line.trimStart().startsWith(`#`)) inSection = false;
+  }
+  return keys;
+}
+
+/**
+ * Every fact path the workspace configuration names.
+ *
+ * The Outcome tracker's rows are fact paths in a `.js` file no compiler reads, so a fact upstream
+ * renames becomes a row that is permanently blank rather than an error. Matching bare `'/factName'`
+ * literals is enough: relative module specifiers start `../`, and the file has no other absolute
+ * single-segment strings.
+ */
+function workspaceFactPaths(resourcesDir: string): string[] {
+  const file = join(resourcesDir, `website-static`, `js`, `taxpert`, `direct-file-graph.js`);
+  return [...readFileSync(file, `utf8`).matchAll(/'(\/[A-Za-z][A-Za-z0-9]*)'/g)].map((m) => m[1]);
+}
+
 function xmlAttr(value: string): string {
   return value.replace(/&/g, `&amp;`).replace(/</g, `&lt;`).replace(/>/g, `&gt;`).replace(/"/g, `&quot;`);
 }
@@ -149,16 +195,135 @@ interface Manifest {
   gates: { total: number; rootScoped: number; collectionScoped: number; sharedByMoreThanOneScreen: number };
 }
 
+/**
+ * A loop, its pages, and the page the collection is emitted on.
+ *
+ * Direct File walks one collection item through many screens and returns to a hub to start the next.
+ * `<fg-collection>` inverts that: it clones one block of markup per item, all on one page. So a
+ * loop's pages collapse into a single `<fg-collection>`, and the whole question of *which* page it
+ * lands on is decided by whether the taxpayer can change the collection.
+ *
+ *   - **A loop the taxpayer fills in** (`autoIterate: false`, a `<Writable><Collection/>`) already
+ *     has a hub in Direct File: the screen carrying `CollectionItemManager`, which lists the items
+ *     and owns Add and Remove. That screen's page sits immediately before the loop's first page in
+ *     all eleven cases — checked below, not assumed — and it is where the collection goes. The hub's
+ *     own content stays above it, and the Add button appears exactly once, where upstream puts it.
+ *   - **A loop the taxpayer cannot change** (`autoIterate: true`) has no hub, because upstream never
+ *     renders a list or an Add button over a `<Derived><Filter>` collection — it walks the people
+ *     another answer already put there. Those eight get `readonly`, and land on their own first page.
+ *
+ * The collection is `path`ed at the loop's `collectionName` rather than a screen's
+ * `collectionContext`: for `benefits-care-providers` the loop name is a slug and only the loop knows
+ * it iterates `/cdccCareProviders`.
+ */
+interface LoopPlan extends ExtractedLoop {
+  /** Indices into `pages` of the loop's own pages, contiguous and in order. */
+  pageIndices: number[];
+  /** The page the `<fg-collection>` is emitted on: the hub, or the loop's own first page. */
+  anchorPage: number;
+  /** The hub screen's index in `screens`, so the collection can inherit its condition. */
+  hubScreen: number | null;
+}
+
+/**
+ * Match each loop to its pages and its anchor page, failing rather than guessing.
+ *
+ * Both facts this relies on are properties of upstream that could stop holding, so both are checked:
+ * a loop's pages are one contiguous run, and a manual loop's hub is the page immediately before it.
+ */
+function planLoops(extracted: Extracted): Map<string, LoopPlan> {
+  const { screens, pages } = extracted;
+
+  const declared = new Map<string, ExtractedLoop>();
+  for (const category of extracted.categories) {
+    for (const sub of category.subcategories) for (const loop of sub.loops) declared.set(loop.loopName, loop);
+  }
+
+  const pagesByLoop = new Map<string, number[]>();
+  pages.forEach((page, i) => {
+    if (page.loopName) {
+      if (!declared.has(page.loopName)) {
+        throw new Error(`page ${page.route} names loop ${page.loopName}, which no subcategory declares`);
+      }
+      if (!pagesByLoop.has(page.loopName)) pagesByLoop.set(page.loopName, []);
+      pagesByLoop.get(page.loopName)!.push(i);
+    }
+  });
+
+  /** The screen carrying this loop's `CollectionItemManager`, wherever it is. */
+  function hubScreenOf(loopName: string): number | null {
+    const found = screens.findIndex((s) =>
+      s.content.some(
+        (c) => c.componentName === `CollectionItemManager` && (c.props as { loopName?: string }).loopName === loopName
+      )
+    );
+    return found === -1 ? null : found;
+  }
+
+  const plans = new Map<string, LoopPlan>();
+  for (const [loopName, pageIndices] of pagesByLoop) {
+    const loop = declared.get(loopName)!;
+
+    const contiguous = pageIndices.every((v, i) => i === 0 || v === pageIndices[i - 1] + 1);
+    if (!contiguous) {
+      throw new Error(
+        `loop ${loopName} has pages ${pageIndices.join(`, `)}, which are not one run. Collapsing them into ` +
+          `one <fg-collection> would move the pages between them.`
+      );
+    }
+
+    const first = pageIndices[0];
+    const hubScreen = hubScreenOf(loopName);
+
+    if (loop.autoIterate) {
+      if (hubScreen !== null) {
+        throw new Error(
+          `loop ${loopName} auto-iterates ${loop.collectionName} but has a CollectionItemManager. A derived ` +
+            `collection cannot be added to, so it cannot have a hub — recheck what upstream changed.`
+        );
+      }
+      plans.set(loopName, { ...loop, pageIndices, anchorPage: first, hubScreen: null });
+      continue;
+    }
+
+    if (hubScreen === null) {
+      throw new Error(`loop ${loopName} iterates ${loop.collectionName} by hand but has no CollectionItemManager`);
+    }
+    const hubPage = pages.findIndex((p) => p.screenIndices.includes(hubScreen));
+    if (hubPage !== first - 1) {
+      throw new Error(
+        `loop ${loopName}'s hub is on page ${pages[hubPage]?.route} (${hubPage}) but its first loop page is ` +
+          `${pages[first].route} (${first}). The collection is emitted on the hub, which has to be the page ` +
+          `before it, or the loop's questions would move.`
+      );
+    }
+    plans.set(loopName, { ...loop, pageIndices, anchorPage: hubPage, hubScreen });
+  }
+
+  return plans;
+}
+
+/** `/cdccQualifyingPeople` → `cdcc qualifying people`. A placeholder; see `itemNameFor` in extract.ts. */
+function humanizeCollection(collectionName: string): string {
+  return collectionName
+    .replace(/^\//, ``)
+    .replace(/([A-Z]+)([A-Z][a-z])/g, `$1 $2`)
+    .replace(/([a-z0-9])([A-Z])/g, `$1 $2`)
+    .toLowerCase();
+}
+
 function emit(extracted: Extracted, resourcesDir: string) {
   const { screens, pages } = extracted;
 
-  // loopName → the collection it iterates. `screen.collectionLoop` carries the name but not the
-  // collection; only the subcategory tree has both.
-  const loopCollections = new Map<string, string>();
-  for (const category of extracted.categories) {
-    for (const sub of category.subcategories) {
-      for (const loop of sub.loops) loopCollections.set(loop.loopName, loop.collectionName);
-    }
+  const loops = planLoops(extracted);
+
+  /** page index → the loop whose `<fg-collection>` is emitted there. */
+  const anchors = new Map<number, LoopPlan>();
+  /** page indices whose screens are emitted inside a collection rather than as the page's own. */
+  const absorbed = new Map<number, LoopPlan>();
+  for (const plan of loops.values()) {
+    anchors.set(plan.anchorPage, plan);
+    for (const i of plan.pageIndices) absorbed.set(i, plan);
   }
 
   const gateSet = new GateSet();
@@ -169,50 +334,69 @@ function emit(extracted: Extracted, resourcesDir: string) {
   /** subcategory route → the XML of its pages, in order. */
   const modules = new Map<string, string[]>();
 
-  for (const page of pages) {
-    const pageScreens = page.screenIndices.map((i) => screens[i]);
-    const loopCollection = page.loopName ? (loopCollections.get(page.loopName) ?? null) : null;
-    if (page.loopName && !loopCollection) {
-      throw new Error(`page ${page.route} names loop ${page.loopName}, which no subcategory declares`);
+  /** One screen as a `<div class="df-screen">`, or null if its conditions fold to false. */
+  function screenBlock(screen: ExtractedScreen, loopCollection: string | null, indent: string): string | null {
+    for (const c of screen.content) componentTypes.set(c.componentName, (componentTypes.get(c.componentName) ?? 0) + 1);
+
+    const resolved: ScreenGate = gateSet.resolve(screen.conditions, {
+      collectionContext: screen.collectionContext,
+      loopCollection,
+      screenRoute: screen.screenRoute,
+    });
+    if (resolved.kind === `never`) return null;
+    if (screen.isKnockout) knockouts.push(screen.screenRoute);
+
+    const gateAttrs =
+      resolved.kind === `gate` ? ` condition="${xmlAttr(resolved.gate.conditionPath)}" operator="isTrue"` : ``;
+    const classes = screen.isKnockout ? `df-screen df-knockout` : `df-screen`;
+
+    return (
+      `${indent}<div class="${classes}"${gateAttrs}>\n` +
+      `${indent}  <h2>${xmlText(screen.route)}</h2>\n` +
+      `${indent}  <p>${xmlText(componentSummary(screen))}</p>\n` +
+      `${indent}</div>`
+    );
+  }
+
+  for (const [i, page] of pages.entries()) {
+    const anchored = anchors.get(i) ?? null;
+    // Absorbed and not the anchor: these screens are emitted inside the anchor's collection.
+    if (absorbed.has(i) && !anchored) continue;
+
+    // The hub's own screens sit above the collection; an auto-iterating loop's anchor *is* a loop
+    // page, so it has none of its own.
+    const ownScreens = absorbed.has(i) ? [] : page.screenIndices.map((j) => screens[j]);
+    const blocks = ownScreens.map((s) => screenBlock(s, null, `      `)).filter((b): b is string => b !== null);
+
+    let collection = ``;
+    if (anchored) {
+      const inner = anchored.pageIndices
+        .flatMap((j) => pages[j].screenIndices)
+        .map((j) => screenBlock(screens[j], anchored.collectionName, `        `))
+        .filter((b): b is string => b !== null);
+
+      if (inner.length > 0) {
+        // The collection shows exactly when its hub screen does. Every screen inside carries the same
+        // ancestor conditions already; this is what keeps the shell — the heading and the Add button —
+        // from standing on a page upstream would have skipped.
+        const hubGate = anchored.hubScreen === null ? null : gateSet.gateFor(screens[anchored.hubScreen].screenRoute);
+        const itemName = anchored.itemName ?? humanizeCollection(anchored.collectionName);
+        const attrs =
+          `path="${xmlAttr(anchored.collectionName)}" item-name="${xmlAttr(itemName)}"` +
+          (anchored.autoIterate ? ` readonly="true"` : ` determiner="another"`) +
+          (hubGate ? ` if-true="${xmlAttr(hubGate)}"` : ``);
+        collection = `      <fg-collection ${attrs}>\n${inner.join(`\n`)}\n      </fg-collection>`;
+      }
     }
 
-    const blocks: string[] = [];
-    for (const screen of pageScreens) {
-      for (const c of screen.content) componentTypes.set(c.componentName, (componentTypes.get(c.componentName) ?? 0) + 1);
-
-      const resolved: ScreenGate = gateSet.resolve(screen.conditions, {
-        collectionContext: screen.collectionContext,
-        loopCollection,
-        screenRoute: screen.screenRoute,
-      });
-      if (resolved.kind === `never`) continue;
-      if (screen.isKnockout) knockouts.push(screen.screenRoute);
-
-      const gateAttrs =
-        resolved.kind === `gate` ? ` condition="${xmlAttr(resolved.gate.conditionPath)}" operator="isTrue"` : ``;
-      const classes = screen.isKnockout ? `df-screen df-knockout` : `df-screen`;
-      const indent = loopCollection ? `        ` : `      `;
-
-      blocks.push(
-        `${indent}<div class="${classes}"${gateAttrs}>\n` +
-          `${indent}  <h2>${xmlText(screen.route)}</h2>\n` +
-          `${indent}  <p>${xmlText(componentSummary(screen))}</p>\n` +
-          `${indent}</div>`
-      );
-    }
-
-    if (blocks.length === 0) {
+    const body = [...blocks, collection].filter((part) => part.length > 0).join(`\n`);
+    if (body.length === 0) {
       droppedPages.push({ page: page.route, because: `every screen on it folded away` });
       continue;
     }
 
     const route = stripFlow(page.route);
     const title = humanize(route.split(`/`).pop() ?? route);
-    const body = loopCollection
-      ? `      <fg-collection path="${xmlAttr(loopCollection)}" item-name="${xmlAttr(
-          loopCollection.replace(/^\//, ``)
-        )}" determiner="another">\n${blocks.join(`\n`)}\n      </fg-collection>`
-      : blocks.join(`\n`);
 
     const xml =
       `  <page title="${xmlAttr(title)}" route="${xmlAttr(route)}">\n` +
@@ -223,6 +407,8 @@ function emit(extracted: Extracted, resourcesDir: string) {
     if (!modules.has(slug)) modules.set(slug, []);
     modules.get(slug)!.push(xml);
   }
+
+  const pagesEmitted = [...modules.values()].reduce((n, xs) => n + xs.length, 0);
 
   // Modules in flow order, which is the order the categories declare their subcategories.
   const moduleOrder: string[] = [];
@@ -286,6 +472,25 @@ function emit(extracted: Extracted, resourcesDir: string) {
 
   writeFileSync(join(factsDir, GATES_FILE), renderGateFacts(gates));
 
+  // Two checks on files the transpiler does not own but whose contents it decides the shape of.
+  // Both fail here, naming the key or the path, rather than shipping a page that reads wrong.
+  const headings = declaredSectionHeadings(resourcesDir);
+  const unheaded = moduleOrder.filter((slug) => !headings.has(slug));
+  if (unheaded.length > 0) {
+    throw new Error(
+      `${unheaded.length} flow module(s) have no Browse All heading. Add to locales/en.yaml (and ` +
+        `es.yaml) under all-screens.section:\n  ${unheaded.join(`\n  `)}`
+    );
+  }
+
+  const missingWorkspaceFacts = [...new Set(workspaceFactPaths(resourcesDir))].filter((p) => !declared.has(p));
+  if (missingWorkspaceFacts.length > 0) {
+    throw new Error(
+      `the workspace's determinations name ${missingWorkspaceFacts.length} fact(s) the dictionary does not ` +
+        `declare, so the Outcome tracker would show them blank forever:\n  ${missingWorkspaceFacts.join(`\n  `)}`
+    );
+  }
+
   const manifest: Manifest = {
     $comment:
       `GENERATED by src/scripts/to-form-builder. What the transpiler mapped, what it dropped and ` +
@@ -294,7 +499,12 @@ function emit(extracted: Extracted, resourcesDir: string) {
       screensIn: screens.length,
       screensEmitted: screens.length - gateSet.dropped.length,
       pagesIn: pages.length,
-      pagesEmitted: pages.length - droppedPages.length,
+      pagesEmitted,
+      // Absorbed into a <fg-collection> on another page rather than dropped: the loop's screens are
+      // all still here, and 11 of the 19 land on a hub page that already existed.
+      pagesAbsorbedIntoCollections: absorbed.size - anchors.size,
+      collections: [...anchors.values()].length,
+      readonlyCollections: [...anchors.values()].filter((p) => p.autoIterate).length,
       modules: moduleOrder.length,
       knockoutScreens: knockouts.length,
     },
@@ -310,13 +520,11 @@ function emit(extracted: Extracted, resourcesDir: string) {
         `Stage 4. The ${knockouts.length} knockout screens are marked \`class="df-knockout"\` and gated ` +
         `like any other; they become <fg-alert knockout="true"> once their content exists.`,
       'collection item names':
-        `Stage 7. <fg-collection item-name> is the collection's own path segment, which is a slug ` +
-        `rather than a word. The real name is a locale string.`,
-      'collection hubs':
-        `Stage 7, and the port's largest open question. Direct File walks a loop item across many ` +
-        `screens; Form Builder's <fg-collection> renders every item inline on one page. Each loop ` +
-        `page therefore carries its own <fg-collection> here, which resolves the /*\/ paths correctly ` +
-        `but shows the add/remove control more than once.`,
+        `Stage 4, for ${[...anchors.values()].filter((p) => !p.itemName).length} of the ` +
+        `${anchors.size} collections. The rest take the noun out of upstream's own Add control ` +
+        `(\`fields.{collection}.controls.add\`). An auto-iterating loop has no such key, because ` +
+        `upstream never names those items — it renders no list and no Add button over a derived ` +
+        `collection — so those fall back to the humanized collection path and owe a real word.`,
       setActions: `Stage 4. ${screens.filter((s) => s.setActions.length > 0).length} screens carry <SetFactAction>; <fg-apply> is the target.`,
     },
     gates: {

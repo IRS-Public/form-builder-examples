@@ -4,7 +4,10 @@
     "screensIn": 727,
     "screensEmitted": 713,
     "pagesIn": 218,
-    "pagesEmitted": 217,
+    "pagesEmitted": 138,
+    "pagesAbsorbedIntoCollections": 68,
+    "collections": 19,
+    "readonlyCollections": 8,
     "modules": 25,
     "knockoutScreens": 102
   },
@@ -129,8 +132,7 @@
     "screen content": "Stage 4. Every screen currently renders its route and its component list; the 51 types in componentTypes are the worklist.",
     "page titles": "Stage 4. Titles are the humanized route segment; the real one is the screen's Heading key.",
     "knockout screens": "Stage 4. The 102 knockout screens are marked `class=\"df-knockout\"` and gated like any other; they become <fg-alert knockout=\"true\"> once their content exists.",
-    "collection item names": "Stage 7. <fg-collection item-name> is the collection's own path segment, which is a slug rather than a word. The real name is a locale string.",
-    "collection hubs": "Stage 7, and the port's largest open question. Direct File walks a loop item across many screens; Form Builder's <fg-collection> renders every item inline on one page. Each loop page therefore carries its own <fg-collection> here, which resolves the /*/ paths correctly but shows the add/remove control more than once.",
+    "collection item names": "Stage 4, for 8 of the 19 collections. The rest take the noun out of upstream's own Add control (`fields.{collection}.controls.add`). An auto-iterating loop has no such key, because upstream never names those items — it renders no list and no Add button over a derived collection — so those fall back to the humanized collection path and owe a real word.",
     "setActions": "Stage 4. 45 screens carry <SetFactAction>; <fg-apply> is the target."
   },
   "gates": {

@@ -145,12 +145,7 @@
         <h2>1095-collection-hub</h2>
         <p>ContextHeading, TaxReturnAlert ×2, Heading, InfoDisplay ×4, DFModal ×3, CollectionItemManager</p>
       </div>
-    </section>
-  </page>
-
-  <page title="Policy details" route="/credits-and-deductions/credits/policy-details">
-    <section>
-      <fg-collection path="/1095As" item-name="1095As" determiner="another">
+      <fg-collection path="/1095As" item-name="Form 1095-A" determiner="another" if-true="/flowGate84b6a072">
         <div class="df-screen" condition="/flowGate84b6a072" operator="isTrue">
           <h2>policy-number</h2>
           <p>ContextHeading, Heading, InfoDisplay, LimitingString, SaveAndOrContinueButton</p>
@@ -183,13 +178,6 @@
           <h2>coverage-months</h2>
           <p>ContextHeading, Heading, ConditionalList, InfoDisplay, SaveAndOrContinueButton</p>
         </div>
-      </fg-collection>
-    </section>
-  </page>
-
-  <page title="Premiums and aptc" route="/credits-and-deductions/credits/premiums-and-aptc">
-    <section>
-      <fg-collection path="/1095As" item-name="1095As" determiner="another">
         <div class="df-screen" condition="/1095As/*/flowGatedf33966f" operator="isTrue">
           <h2>annual-monthly</h2>
           <p>ContextHeading, Heading, InfoDisplay, Boolean, SaveAndOrContinueButton</p>
@@ -359,7 +347,7 @@
 
   <page title="Qualifying person info qp" route="/credits-and-deductions/credits/qualifying-person-info-qp">
     <section>
-      <fg-collection path="/cdccQualifyingPeople" item-name="cdccQualifyingPeople" determiner="another">
+      <fg-collection path="/cdccQualifyingPeople" item-name="cdcc qualifying people" readonly="true">
         <div class="df-screen" condition="/flowGateed53932a" operator="isTrue">
           <h2>cdcc-qualified-expenses-qp</h2>
           <p>ContextHeading, Heading, DFModal, Boolean, SaveAndOrContinueButton</p>
@@ -386,7 +374,7 @@
 
   <page title="Qualifying person info qfiler" route="/credits-and-deductions/credits/qualifying-person-info-qfiler">
     <section>
-      <fg-collection path="/cdccQualifyingFilers" item-name="cdccQualifyingFilers" determiner="another">
+      <fg-collection path="/cdccQualifyingFilers" item-name="cdcc qualifying filers" readonly="true">
         <div class="df-screen" condition="/flowGate1ab0e71e" operator="isTrue">
           <h2>cdcc-qualified-expenses-qfiler</h2>
           <p>ContextHeading, Heading, DFModal, Boolean, SaveAndOrContinueButton</p>
@@ -460,12 +448,7 @@
         <h2>provider-collection-hub</h2>
         <p>ContextHeading, TaxReturnAlert, Heading ×3, InfoDisplay ×4, ConditionalList, CollectionItemManager</p>
       </div>
-    </section>
-  </page>
-
-  <page title="Care providers info" route="/credits-and-deductions/credits/care-providers-info">
-    <section>
-      <fg-collection path="/cdccCareProviders" item-name="cdccCareProviders" determiner="another">
+      <fg-collection path="/cdccCareProviders" item-name="care provider" determiner="another" if-true="/flowGate41d0e3bb">
         <div class="df-screen" condition="/flowGate41d0e3bb" operator="isTrue">
           <h2>provider-bus-or-indiv</h2>
           <p>ContextHeading, Heading, InfoDisplay, Boolean, SaveAndOrContinueButton</p>
@@ -502,13 +485,6 @@
           <h2>provider-tax-exempt</h2>
           <p>ContextHeading, Heading, InfoDisplay, Boolean, SaveAndOrContinueButton</p>
         </div>
-      </fg-collection>
-    </section>
-  </page>
-
-  <page title="Care providers tax id" route="/credits-and-deductions/credits/care-providers-tax-id">
-    <section>
-      <fg-collection path="/cdccCareProviders" item-name="cdccCareProviders" determiner="another">
         <div class="df-screen" condition="/cdccCareProviders/*/flowGate7a72d9c8" operator="isTrue">
           <h2>tin-ein-check</h2>
           <p>ContextHeading, Heading ×2, DFModal ×2, Boolean, SaveAndOrContinueButton</p>
@@ -529,13 +505,6 @@
           <h2>provider-tin</h2>
           <p>ContextHeading, Heading, InfoDisplay, Tin, SaveAndOrContinueButton</p>
         </div>
-      </fg-collection>
-    </section>
-  </page>
-
-  <page title="Care providers amount paid" route="/credits-and-deductions/credits/care-providers-amount-paid">
-    <section>
-      <fg-collection path="/cdccCareProviders" item-name="cdccCareProviders" determiner="another">
         <div class="df-screen" condition="/cdccCareProviders/*/flowGateb15c3f76" operator="isTrue">
           <h2>provider-qp-expenses</h2>
           <p>ContextHeading, Heading ×2, InfoDisplay ×4, Dollar, SaveAndOrContinueButton</p>
@@ -555,7 +524,7 @@
 
   <page title="Cdcc nondep qp info" route="/credits-and-deductions/credits/cdcc-nondep-qp-info">
     <section>
-      <fg-collection path="/cdccNonDependentQualifyingPeopleAssignedTins" item-name="cdccNonDependentQualifyingPeopleAssignedTins" determiner="another">
+      <fg-collection path="/cdccNonDependentQualifyingPeopleAssignedTins" item-name="cdcc non dependent qualifying people assigned tins" readonly="true">
         <div class="df-screen" condition="/flowGate655b8d99" operator="isTrue">
           <h2>cdcc-nondep-qp-enter-tin</h2>
           <p>ContextHeading, Heading, Tin, SaveAndOrContinueButton</p>
@@ -595,7 +564,7 @@
 
   <page title="Disability" route="/credits-and-deductions/credits/disability">
     <section>
-      <fg-collection path="/filersMaybeEligibleForDisability" item-name="filersMaybeEligibleForDisability" determiner="another">
+      <fg-collection path="/filersMaybeEligibleForDisability" item-name="filers maybe eligible for disability" readonly="true">
         <div class="df-screen" condition="/flowGate070b580f" operator="isTrue">
           <h2>edc-disability-intro-screen</h2>
           <p>ContextHeading, Heading ×2, SaveAndOrContinueButton</p>
@@ -657,7 +626,7 @@
 
   <page title="Edc physician statement" route="/credits-and-deductions/credits/edc-physician-statement">
     <section>
-      <fg-collection path="/filersQualifiedForEdcThroughDisability" item-name="filersQualifiedForEdcThroughDisability" determiner="another">
+      <fg-collection path="/filersQualifiedForEdcThroughDisability" item-name="filers qualified for edc through disability" readonly="true">
         <div class="df-screen" condition="/flowGatec92e7521" operator="isTrue">
           <h2>edc-physician-statement-previous-with-line-b</h2>
           <p>ContextHeading, Heading ×2, DFModal ×2, Boolean, SaveAndOrContinueButton</p>
@@ -903,7 +872,7 @@
 
   <page title="Eitc 8862 date of death" route="/credits-and-deductions/credits/eitc-8862-date-of-death">
     <section>
-      <fg-collection path="/deceasedEitcEligibleQcCollection" item-name="deceasedEitcEligibleQcCollection" determiner="another">
+      <fg-collection path="/deceasedEitcEligibleQcCollection" item-name="deceased eitc eligible qc collection" readonly="true">
         <div class="df-screen" condition="/flowGatea10d1561" operator="isTrue">
           <h2>eitc-8862-date-of-death</h2>
           <p>ContextHeading, Heading, DFModal, DatePicker, SaveAndOrContinueButton</p>
@@ -923,7 +892,7 @@
 
   <page title="Eitc enter tin" route="/credits-and-deductions/credits/eitc-enter-tin">
     <section>
-      <fg-collection path="/unclaimedEITCQcsWithTINsCollection" item-name="unclaimedEITCQcsWithTINsCollection" determiner="another">
+      <fg-collection path="/unclaimedEITCQcsWithTINsCollection" item-name="unclaimed eitc qcs with ti ns collection" readonly="true">
         <div class="df-screen" condition="/flowGate4a5ee8df" operator="isTrue">
           <h2>eitc-enter-tin</h2>
           <p>MefAlert, ContextHeading, Heading, Tin, SaveAndOrContinueButton</p>
@@ -936,35 +905,14 @@
           <h2>eitc-ip-pin-ready</h2>
           <p>TaxReturnAlert, ContextHeading, Heading, InfoDisplay, Boolean, SaveAndOrContinueButton</p>
         </div>
-      </fg-collection>
-    </section>
-  </page>
-
-  <page title="Eitc ip pin not ready" route="/credits-and-deductions/credits/eitc-ip-pin-not-ready">
-    <section>
-      <fg-collection path="/unclaimedEITCQcsWithTINsCollection" item-name="unclaimedEITCQcsWithTINsCollection" determiner="another">
         <div class="df-screen" condition="/familyAndHousehold/*/flowGate65296745" operator="isTrue">
           <h2>eitc-ip-pin-not-ready</h2>
           <p>ContextHeading, Heading, HelpLink, DFAlert, DFModal, SaveAndOrContinueButton</p>
         </div>
-      </fg-collection>
-    </section>
-  </page>
-
-  <page title="Eitc ip pin input" route="/credits-and-deductions/credits/eitc-ip-pin-input">
-    <section>
-      <fg-collection path="/unclaimedEITCQcsWithTINsCollection" item-name="unclaimedEITCQcsWithTINsCollection" determiner="another">
         <div class="df-screen" condition="/familyAndHousehold/*/flowGate7f49c94f" operator="isTrue">
           <h2>eitc-ip-pin-input</h2>
           <p>ContextHeading, Heading, IpPin, SaveAndOrContinueButton</p>
         </div>
-      </fg-collection>
-    </section>
-  </page>
-
-  <page title="Eitc qc confirmation" route="/credits-and-deductions/credits/eitc-qc-confirmation">
-    <section>
-      <fg-collection path="/unclaimedEITCQcsWithTINsCollection" item-name="unclaimedEITCQcsWithTINsCollection" determiner="another">
         <div class="df-screen" condition="/flowGate4a5ee8df" operator="isTrue">
           <h2>eitc-qc-confirmation</h2>
           <p>ContextHeading, Heading, SaveAndOrContinueButton</p>

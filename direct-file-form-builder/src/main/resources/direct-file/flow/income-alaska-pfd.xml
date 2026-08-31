@@ -10,12 +10,7 @@
         <h2>pfd-loop-intro</h2>
         <p>ContextHeading, Heading ×3, InfoDisplay, DFModal ×4, DFAlert, CollectionItemManager</p>
       </div>
-    </section>
-  </page>
-
-  <page title="Pfd basic info" route="/income/alaska-pfd/pfd-basic-info">
-    <section>
-      <fg-collection path="/form1099Miscs" item-name="form1099Miscs" determiner="another">
+      <fg-collection path="/form1099Miscs" item-name="PFD" determiner="another">
         <div class="df-screen" condition="/flowGate980b4142" operator="isTrue">
           <h2>pfd-add-whose-1099</h2>
           <p>TaxReturnAlert, Heading, DFModal, CollectionItemReference, GenericString, SaveAndOrContinueButton</p>

@@ -15,11 +15,42 @@ layout:
 
 # Section headings for the Browse All / Path Mode listing: one key per flow module, keyed by its
 # filename in flow/. Add a module to flow/index.xml, add its heading here — a missing one renders as
-# the key itself. `other` is the bucket for a page that belongs to no module at all.
+# the key itself, and `make transpile` fails rather than letting that ship.
+#
+# Every string below is Direct File's own `checklist.{subcategoryRoute}.heading`, because a flow
+# module here *is* one of its subcategories. They are copied rather than generated: the transpiler
+# owns flow/ and facts/flowGates.xml, and this is a hand-written file the port does not overwrite.
+#
+# `income-retirement-launch` and `income-retirement` deliberately read the same. Upstream writes the
+# first as `$t(checklist./flow/income/retirement.heading)` — one section entered from two places —
+# and inventing a distinguishing word here would be this port editorialising.
 all-screens:
   section:
-    about-you: About you
-    results: Results
+    you-and-your-family-about-you: About you
+    you-and-your-family-spouse: Spouse
+    you-and-your-family-dependents: Family and household
+    you-and-your-family-filing-status: Filing status
+    income-income-sources: Income sources
+    income-jobs: Jobs
+    income-unemployment: Unemployment compensation
+    income-interest: Interest income
+    income-alaska-pfd: Alaska Permanent Fund Dividend
+    income-dependent-care: Dependent care benefits
+    income-hsa: Health Savings Accounts
+    income-retirement-launch: Retirement income (Form 1099-R)
+    income-retirement: Retirement income (Form 1099-R)
+    income-social-security: Social Security benefits (Form SSA-1099)
+    income-total-income-summary: Total income
+    credits-and-deductions-deductions: Deductions
+    credits-and-deductions-credits: Credits
+    your-taxes-estimated-taxes-paid: Estimated taxes paid
+    your-taxes-amount: Amount
+    your-taxes-payment-method: Payment method
+    your-taxes-other-preferences: Other preferences
+    complete-review: Review and confirm
+    complete-sign-and-submit: Federal tax return digital signature
+    complete-print-and-mail: Print and mail
+    complete-submit: Submit
     other: Other
 
 # Everything the Taxpert workspace shows. Nothing below reaches a taxpayer — the workspace is only
@@ -33,9 +64,35 @@ workspace:
     outcome-tracker-description: Track the outcomes this application determines.
     watchlist: Watchlist
     watchlist-description: Track the value of one or more facts as you work or load scenarios.
+
+  # The five outcomes in website-static/js/taxpert/direct-file-graph.js, in the order they appear
+  # there. A return is one outcome — refund or balance owed — and each of the four credits that can
+  # move it is another, because "why is this number what it is" is the question the Outcome tracker
+  # exists to answer.
   outcomes:
-    eligibility: Eligibility
+    return: Refund or amount owed
+    refund-due: Refund due
+    balance-owed: Balance owed
+    income-and-tax: Income and tax
+    payments-and-credits: Payments and credits
+    the-result: The result
+
+    eitc: Earned Income Tax Credit
     qualifies: Qualifies
     does-not-qualify: Does not qualify
-    the-questions: The questions
-    the-test: The test
+    eitc-eligibility: Eligibility
+    eitc-amount: Amount
+
+    ctc-odc: Child Tax Credit and Credit for Other Dependents
+    ctc-odc-eligibility: Eligibility
+    ctc-odc-amount: Amount
+
+    cdcc: Child and Dependent Care Credit
+    receiving: Receiving the credit
+    not-receiving: Not receiving the credit
+    cdcc-eligibility: Eligibility
+    cdcc-amount: Amount
+
+    ptc: Premium Tax Credit
+    ptc-eligibility: Eligibility
+    ptc-amount: Amount

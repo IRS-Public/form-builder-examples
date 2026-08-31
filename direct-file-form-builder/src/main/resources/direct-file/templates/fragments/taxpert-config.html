@@ -32,12 +32,34 @@
         // The build's locale, key by key. The determinations take a lookup rather than the strings
         // themselves because an outcome chooses its key at runtime, from a fact value nobody knows
         // here.
+        // Every key directFileDeterminations() asks `t` for. A key missing here does not fail the
+        // build — it renders in the tracker as the unresolved-message marker, doubled question marks
+        // around the key and the locale — so the two lists are kept in step by reading them side by
+        // side. Spelling that marker out here would put it in the page, which is the same trap the
+        // header note about comments describes.
         const strings = new Map([
-            ['workspace.outcomes.eligibility', [[#{workspace.outcomes.eligibility}]]],
+            ['workspace.outcomes.return', [[#{workspace.outcomes.return}]]],
+            ['workspace.outcomes.refund-due', [[#{workspace.outcomes.refund-due}]]],
+            ['workspace.outcomes.balance-owed', [[#{workspace.outcomes.balance-owed}]]],
+            ['workspace.outcomes.income-and-tax', [[#{workspace.outcomes.income-and-tax}]]],
+            ['workspace.outcomes.payments-and-credits', [[#{workspace.outcomes.payments-and-credits}]]],
+            ['workspace.outcomes.the-result', [[#{workspace.outcomes.the-result}]]],
+            ['workspace.outcomes.eitc', [[#{workspace.outcomes.eitc}]]],
             ['workspace.outcomes.qualifies', [[#{workspace.outcomes.qualifies}]]],
             ['workspace.outcomes.does-not-qualify', [[#{workspace.outcomes.does-not-qualify}]]],
-            ['workspace.outcomes.the-questions', [[#{workspace.outcomes.the-questions}]]],
-            ['workspace.outcomes.the-test', [[#{workspace.outcomes.the-test}]]],
+            ['workspace.outcomes.eitc-eligibility', [[#{workspace.outcomes.eitc-eligibility}]]],
+            ['workspace.outcomes.eitc-amount', [[#{workspace.outcomes.eitc-amount}]]],
+            ['workspace.outcomes.ctc-odc', [[#{workspace.outcomes.ctc-odc}]]],
+            ['workspace.outcomes.ctc-odc-eligibility', [[#{workspace.outcomes.ctc-odc-eligibility}]]],
+            ['workspace.outcomes.ctc-odc-amount', [[#{workspace.outcomes.ctc-odc-amount}]]],
+            ['workspace.outcomes.cdcc', [[#{workspace.outcomes.cdcc}]]],
+            ['workspace.outcomes.receiving', [[#{workspace.outcomes.receiving}]]],
+            ['workspace.outcomes.not-receiving', [[#{workspace.outcomes.not-receiving}]]],
+            ['workspace.outcomes.cdcc-eligibility', [[#{workspace.outcomes.cdcc-eligibility}]]],
+            ['workspace.outcomes.cdcc-amount', [[#{workspace.outcomes.cdcc-amount}]]],
+            ['workspace.outcomes.ptc', [[#{workspace.outcomes.ptc}]]],
+            ['workspace.outcomes.ptc-eligibility', [[#{workspace.outcomes.ptc-eligibility}]]],
+            ['workspace.outcomes.ptc-amount', [[#{workspace.outcomes.ptc-amount}]]],
         ])
         const t = (key) => strings.get(key) ?? key
 
@@ -103,9 +125,8 @@
             },
 
             // The applications this workspace can be switched between — the "Applications" section
-            // of Workspace settings (the nav's gear). One entry, because a generated app starts out
-            // as the only one it knows about, and the section hides itself when there is nothing to
-            // switch to.
+            // of Workspace settings (the nav's gear). All four of this repo's applications, so the
+            // workspace carries over from any one of them to any other.
             //
             // Add a sibling by appending an entry with that app's own destinations. They have to be
             // written out: the workspace ships no notion of what 'browse-all' means as a URL, and an
@@ -132,6 +153,44 @@
                             ...((/*[[${flags.authorMode}]]*/ false) ? [
                                 { id: 'authoring-suite', label: 'Authoring Suite', href: /*[[|${basePath}/author/|]]*/ '' },
                             ] : []),
+                        ],
+                    },
+
+                    // The three siblings, by absolute URL and by the port each one's Makefile
+                    // declares — this app's server serves only this app, so a relative path to
+                    // another would 404. Their Authoring Suite entries are unconditional here, the
+                    // way theirs are for each other: this build cannot know what flags another
+                    // application was built with, and the alternative is offering nothing.
+                    {
+                        id: 'credit-assistant',
+                        label: 'EITC Assistant',
+                        destinations: [
+                            { id: 'product-experience', label: 'Product Experience', href: 'http://localhost:3003/app/eitc/' },
+                            { id: 'path-mode', label: 'Path Mode', href: 'http://localhost:3003/app/eitc/all-screens/?mode=path' },
+                            { id: 'browse-all', label: 'Browse All', href: 'http://localhost:3003/app/eitc/all-screens/' },
+                            { id: 'fact-explorer', label: 'Fact Explorer', href: 'http://localhost:5180/fact-explorer/credit-assistant' },
+                            { id: 'authoring-suite', label: 'Authoring Suite', href: 'http://localhost:3003/app/eitc/author/' },
+                        ],
+                    },
+                    {
+                        id: 'twe',
+                        label: 'Tax Withholding Estimator',
+                        destinations: [
+                            { id: 'product-experience', label: 'Product Experience', href: 'http://localhost:3000/app/tax-withholding-estimator/' },
+                            { id: 'path-mode', label: 'Path Mode', href: 'http://localhost:3000/app/tax-withholding-estimator/all-screens/?mode=path' },
+                            { id: 'browse-all', label: 'Browse All', href: 'http://localhost:3000/app/tax-withholding-estimator/all-screens/' },
+                            { id: 'fact-explorer', label: 'Fact Explorer', href: 'http://localhost:5180/fact-explorer/twe' },
+                        ],
+                    },
+                    {
+                        id: 'benefits-enrollment',
+                        label: 'Benefits Enrollment',
+                        destinations: [
+                            { id: 'product-experience', label: 'Product Experience', href: 'http://localhost:3006/app/benefits/' },
+                            { id: 'path-mode', label: 'Path Mode', href: 'http://localhost:3006/app/benefits/all-screens/?mode=path' },
+                            { id: 'browse-all', label: 'Browse All', href: 'http://localhost:3006/app/benefits/all-screens/' },
+                            { id: 'fact-explorer', label: 'Fact Explorer', href: 'http://localhost:5180/fact-explorer/benefits-enrollment' },
+                            { id: 'authoring-suite', label: 'Authoring Suite', href: 'http://localhost:3006/app/benefits/author/' },
                         ],
                     },
                 ],

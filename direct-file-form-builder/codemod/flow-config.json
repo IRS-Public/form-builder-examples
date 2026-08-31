@@ -66066,6 +66066,7 @@
           "loops": [
             {
               "loopName": "/familyAndHousehold",
+              "itemName": "person",
               "fullRoute": "/flow/you-and-your-family/dependents",
               "subcategoryRoute": "/flow/you-and-your-family/dependents",
               "collectionName": "/familyAndHousehold",
@@ -66288,6 +66289,7 @@
           "loops": [
             {
               "loopName": "/formW2s",
+              "itemName": "W-2",
               "fullRoute": "/flow/income/jobs",
               "subcategoryRoute": "/flow/income/jobs",
               "collectionName": "/formW2s",
@@ -66403,6 +66405,7 @@
           "loops": [
             {
               "loopName": "/form1099Gs",
+              "itemName": "unemployment compensation",
               "fullRoute": "/flow/income/unemployment",
               "subcategoryRoute": "/flow/income/unemployment",
               "collectionName": "/form1099Gs",
@@ -66478,6 +66481,7 @@
           "loops": [
             {
               "loopName": "/interestReports",
+              "itemName": "interest income",
               "fullRoute": "/flow/income/interest",
               "subcategoryRoute": "/flow/income/interest",
               "collectionName": "/interestReports",
@@ -66583,6 +66587,7 @@
           "loops": [
             {
               "loopName": "/form1099Miscs",
+              "itemName": "PFD",
               "fullRoute": "/flow/income/alaska-pfd",
               "subcategoryRoute": "/flow/income/alaska-pfd",
               "collectionName": "/form1099Miscs",
@@ -66669,6 +66674,7 @@
           "loops": [
             {
               "loopName": "benefits-care-providers",
+              "itemName": "care provider",
               "fullRoute": "/flow/income/dependent-care/care-providers",
               "subcategoryRoute": "/flow/income/dependent-care",
               "collectionName": "/cdccCareProviders",
@@ -66755,6 +66761,7 @@
           "loops": [
             {
               "loopName": "/filersWithHsa",
+              "itemName": null,
               "fullRoute": "/flow/income/hsa",
               "subcategoryRoute": "/flow/income/hsa",
               "collectionName": "/filersWithHsa",
@@ -66779,6 +66786,7 @@
             },
             {
               "loopName": "/hsaDistributions",
+              "itemName": "Form 1099-SA",
               "fullRoute": "/flow/income/hsa/distributions",
               "subcategoryRoute": "/flow/income/hsa",
               "collectionName": "/hsaDistributions",
@@ -66838,6 +66846,7 @@
           "loops": [
             {
               "loopName": "/form1099Rs",
+              "itemName": "Form 1099-R",
               "fullRoute": "/flow/income/retirement",
               "subcategoryRoute": "/flow/income/retirement",
               "collectionName": "/form1099Rs",
@@ -67013,6 +67022,7 @@
           "loops": [
             {
               "loopName": "/socialSecurityReports",
+              "itemName": "Social Security income",
               "fullRoute": "/flow/income/social-security",
               "subcategoryRoute": "/flow/income/social-security",
               "collectionName": "/socialSecurityReports",
@@ -67465,6 +67475,7 @@
           "loops": [
             {
               "loopName": "/1095As",
+              "itemName": "Form 1095-A",
               "fullRoute": "/flow/credits-and-deductions/credits/1095-a",
               "subcategoryRoute": "/flow/credits-and-deductions/credits",
               "collectionName": "/1095As",
@@ -67499,6 +67510,7 @@
             },
             {
               "loopName": "/cdccQualifyingPeople",
+              "itemName": null,
               "fullRoute": "/flow/credits-and-deductions/credits",
               "subcategoryRoute": "/flow/credits-and-deductions/credits",
               "collectionName": "/cdccQualifyingPeople",
@@ -67523,6 +67535,7 @@
             },
             {
               "loopName": "/cdccQualifyingFilers",
+              "itemName": null,
               "fullRoute": "/flow/credits-and-deductions/credits",
               "subcategoryRoute": "/flow/credits-and-deductions/credits",
               "collectionName": "/cdccQualifyingFilers",
@@ -67547,6 +67560,7 @@
             },
             {
               "loopName": "cdcc-care-providers",
+              "itemName": "care provider",
               "fullRoute": "/flow/credits-and-deductions/credits/care-providers",
               "subcategoryRoute": "/flow/credits-and-deductions/credits",
               "collectionName": "/cdccCareProviders",
@@ -67591,6 +67605,7 @@
             },
             {
               "loopName": "/cdccNonDependentQualifyingPeopleAssignedTins",
+              "itemName": null,
               "fullRoute": "/flow/credits-and-deductions/credits",
               "subcategoryRoute": "/flow/credits-and-deductions/credits",
               "collectionName": "/cdccNonDependentQualifyingPeopleAssignedTins",
@@ -67615,6 +67630,7 @@
             },
             {
               "loopName": "/filersMaybeEligibleForDisability",
+              "itemName": null,
               "fullRoute": "/flow/credits-and-deductions/credits",
               "subcategoryRoute": "/flow/credits-and-deductions/credits",
               "collectionName": "/filersMaybeEligibleForDisability",
@@ -67639,6 +67655,7 @@
             },
             {
               "loopName": "/filersQualifiedForEdcThroughDisability",
+              "itemName": null,
               "fullRoute": "/flow/credits-and-deductions/credits",
               "subcategoryRoute": "/flow/credits-and-deductions/credits",
               "collectionName": "/filersQualifiedForEdcThroughDisability",
@@ -67663,6 +67680,7 @@
             },
             {
               "loopName": "/deceasedEitcEligibleQcCollection",
+              "itemName": null,
               "fullRoute": "/flow/credits-and-deductions/credits",
               "subcategoryRoute": "/flow/credits-and-deductions/credits",
               "collectionName": "/deceasedEitcEligibleQcCollection",
@@ -67687,6 +67705,7 @@
             },
             {
               "loopName": "/unclaimedEITCQcsWithTINsCollection",
+              "itemName": null,
               "fullRoute": "/flow/credits-and-deductions/credits",
               "subcategoryRoute": "/flow/credits-and-deductions/credits",
               "collectionName": "/unclaimedEITCQcsWithTINsCollection",

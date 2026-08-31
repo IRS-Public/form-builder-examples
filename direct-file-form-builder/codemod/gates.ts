@@ -163,6 +163,19 @@ export class GateSet {
     return [...this.byCanonical.values()];
   }
 
+  /**
+   * The gate a screen already resolved to, or null if its conditions were empty.
+   *
+   * Only for reading a decision back: a collection inherits its hub screen's visibility, and the hub
+   * is a screen this has already been asked about. It never creates one.
+   */
+  gateFor(screenRoute: string): string | null {
+    for (const gate of this.byCanonical.values()) {
+      if (gate.screens.includes(screenRoute)) return gate.conditionPath;
+    }
+    return null;
+  }
+
   resolve(rawConditions: RawScreenCondition[], context: GateContext): ScreenGate {
     const normalized: NormalizedCondition[] = [];
 

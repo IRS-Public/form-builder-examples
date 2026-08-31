@@ -56,7 +56,7 @@
 
   <page title="Coverage and contributions" route="/income/hsa/coverage-and-contributions">
     <section>
-      <fg-collection path="/filersWithHsa" item-name="filersWithHsa" determiner="another">
+      <fg-collection path="/filersWithHsa" item-name="filers with hsa" readonly="true">
         <div class="df-screen" condition="/flowGatec93bc5c0" operator="isTrue">
           <h2>hsa-breather-about-you</h2>
           <p>Heading, InfoDisplay ×3, SaveAndOrContinueButton</p>
@@ -181,12 +181,7 @@
         <h2>hsa-distributions-loop</h2>
         <p>Heading ×3, InfoDisplay ×2, DFModal ×3, DFAlert, CollectionItemManager</p>
       </div>
-    </section>
-  </page>
-
-  <page title="Distribution info" route="/income/hsa/distribution-info">
-    <section>
-      <fg-collection path="/hsaDistributions" item-name="hsaDistributions" determiner="another">
+      <fg-collection path="/hsaDistributions" item-name="Form 1099-SA" determiner="another" if-true="/flowGate0f62113b">
         <div class="df-screen" condition="/flowGate91970fd3" operator="isTrue">
           <h2>hsa-whose-distribution</h2>
           <p>TaxReturnAlert ×2, Heading, CollectionItemReference, GenericString, SaveAndOrContinueButton</p>

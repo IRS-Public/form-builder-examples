@@ -10,78 +10,31 @@
         <h2>social-security-loop-intro</h2>
         <p>ContextHeading, Heading ×3, DFModal ×4, DFAlert, CollectionItemManager, InfoDisplay</p>
       </div>
-    </section>
-  </page>
-
-  <page title="Ssa whose" route="/income/social-security/ssa-whose">
-    <section>
-      <fg-collection path="/socialSecurityReports" item-name="socialSecurityReports" determiner="another">
+      <fg-collection path="/socialSecurityReports" item-name="Social Security income" determiner="another">
         <div class="df-screen" condition="/flowGate980b4142" operator="isTrue">
           <h2>ssa-whose</h2>
           <p>TaxReturnAlert, Heading, CollectionItemReference, GenericString, SaveAndOrContinueButton</p>
         </div>
-      </fg-collection>
-    </section>
-  </page>
-
-  <page title="Ssa 1099 box 5" route="/income/social-security/ssa-1099-box-5">
-    <section>
-      <fg-collection path="/socialSecurityReports" item-name="socialSecurityReports" determiner="another">
         <div class="df-screen">
           <h2>ssa-1099-box-5</h2>
           <p>Heading, InfoDisplay, Dollar, SaveAndOrContinueButton</p>
         </div>
-      </fg-collection>
-    </section>
-  </page>
-
-  <page title="Social security summary negative ko in flow" route="/income/social-security/social-security-summary-negative-ko-in-flow">
-    <section>
-      <fg-collection path="/socialSecurityReports" item-name="socialSecurityReports" determiner="another">
         <div class="df-screen df-knockout" condition="/flowGate5bd8b9df" operator="isTrue">
           <h2>social-security-summary-negative-ko-in-flow</h2>
           <p>IconDisplay, Heading, InfoDisplay ×2, DFAlert, KnockoutButton</p>
         </div>
-      </fg-collection>
-    </section>
-  </page>
-
-  <page title="Ssa 1099 box 6" route="/income/social-security/ssa-1099-box-6">
-    <section>
-      <fg-collection path="/socialSecurityReports" item-name="socialSecurityReports" determiner="another">
         <div class="df-screen">
           <h2>ssa-1099-box-6</h2>
           <p>Heading, InfoDisplay, Dollar, SaveAndOrContinueButton</p>
         </div>
-      </fg-collection>
-    </section>
-  </page>
-
-  <page title="Rrb whose" route="/income/social-security/rrb-whose">
-    <section>
-      <fg-collection path="/socialSecurityReports" item-name="socialSecurityReports" determiner="another">
         <div class="df-screen" condition="/socialSecurityReports/*/flowGate17f74843" operator="isTrue">
           <h2>rrb-whose</h2>
           <p>Heading, CollectionItemReference, GenericString, SaveAndOrContinueButton</p>
         </div>
-      </fg-collection>
-    </section>
-  </page>
-
-  <page title="Rrb 1099 box 5" route="/income/social-security/rrb-1099-box-5">
-    <section>
-      <fg-collection path="/socialSecurityReports" item-name="socialSecurityReports" determiner="another">
         <div class="df-screen" condition="/socialSecurityReports/*/flowGated7a08eb8" operator="isTrue">
           <h2>rrb-1099-box-5</h2>
           <p>Heading, InfoDisplay, Dollar, SaveAndOrContinueButton</p>
         </div>
-      </fg-collection>
-    </section>
-  </page>
-
-  <page title="Rrb 1099 box 10" route="/income/social-security/rrb-1099-box-10">
-    <section>
-      <fg-collection path="/socialSecurityReports" item-name="socialSecurityReports" determiner="another">
         <div class="df-screen" condition="/socialSecurityReports/*/flowGated7a08eb8" operator="isTrue">
           <h2>rrb-1099-box-10</h2>
           <p>Heading, InfoDisplay, Dollar, SaveAndOrContinueButton</p>

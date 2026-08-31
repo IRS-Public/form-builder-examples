@@ -134,9 +134,9 @@ questions are subtly out of order.
 |---|---|
 | `Category` (5) | nothing structural; Browse All groups by module, which is finer |
 | `Subcategory` (25) | one flow module file, its pages in run order |
-| run (217) | one `<page route="…">` |
+| run (218) | one `<page route="…">`, except for the 68 runs a collection absorbs |
 | `Screen` (713) | one `<div class="df-screen" condition="/flowGateXXXXXXXX" operator="isTrue">`, in run order inside its page |
-| `CollectionLoop` (19) | an `<fg-collection>` wrapping the screen divs of each of its pages |
+| `CollectionLoop` (19) | one `<fg-collection>` holding every screen of every page of that loop — see stage 7 |
 | `isKnockout` screen (102) | `class="df-screen df-knockout"`, awaiting stage 4's `<fg-alert knockout="true">` |
 
 The screen-as-conditional-div is the load-bearing choice: the flow runtime's
@@ -154,7 +154,9 @@ into Browse All. Browse All groups by flow module, so the 25 subcategories are i
 | | |
 |---|---|
 | screens emitted | 713 of 727 |
-| pages emitted | 217 of 218 |
+| pages emitted | 138 |
+| runs absorbed into a collection | 68 of 218 |
+| collections | 19, of which 8 are `readonly` |
 | modules | 25 |
 
 The 14 missing screens and the one missing page are the constant-folded ones below, listed
@@ -169,11 +171,7 @@ Every screen renders its route as an `<h2>` and its component list as a `<p>`; p
 humanized route segment. Stage 4 replaces both. `manifest.json`'s `deferred` block names each one
 and the stage that owes it, so nothing here is quietly permanent.
 
-The one that is a design question rather than a to-do: **a collection loop is one navigation in
-Direct File and one page per run here.** Direct File walks a loop item across many screens;
-`<fg-collection>` renders every item inline on one page. Each loop page therefore carries its own
-`<fg-collection>`, which resolves the `/*/` paths correctly and shows the add/remove control more
-than once. Settling that is stage 7's, not stage 2's.
+Collection loops were the one open *design* question here rather than a to-do. Stage 7 settled it.
 
 ## Stage 3 — conditions, as synthesized gate facts
 
@@ -264,6 +262,85 @@ something else, reporting the path, the gate and the screen it came from. Its fi
 some of its facts with single quotes, which is the kind of thing this check exists to make cheap to
 find.
 
+## Collection loops
+
+Plan step 7, and the port's last open *design* question rather than a to-do. Direct File walks one collection item through many screens and returns to a hub to start the next.
+`<fg-collection>` inverts that: it clones one block of markup per item, and every item is on one
+page. So a loop's pages collapse into a single collection, and the only real question is *which*
+page it lands on. The answer turns out not to be a matter of taste — it falls out of whether the
+taxpayer can change the collection at all.
+
+### Two kinds of loop, and the dictionary decides which
+
+| | `autoIterate: false` (11) | `autoIterate: true` (8) |
+|---|---|---|
+| The collection is | `<Writable><Collection/></Writable>` | `<Derived><Filter …>` over another collection |
+| Upstream renders | a hub screen: a list, an Add control, a Remove control | nothing of the kind — it walks the people another answer already put there |
+| So the collection goes on | that hub's page | the loop's own first page |
+| And is | editable | `readonly` |
+
+The dictionary is the authority here, not a naming convention. `/form1099Gs` is
+`<Writable><Collection/></Writable>` and the taxpayer types its rows in; `/cdccQualifyingPeople` is
+`<Filter path="/familyAndHousehold">` and its membership is decided by an answer given three
+sections earlier. An Add button on the second is not redundant, it is a crash: `addItem` writes the
+collection fact, and a derived fact does not accept a write.
+
+That is why stage 7 needed a library change rather than a transpiler trick.
+`<fg-collection readonly="true">` renders no Add button and no per-item Remove, and the parser
+refuses `determiner`, `disallow-empty`, `seed-item-if-true` and `add-item-if-true` beside it rather
+than accepting an attribute that would move nothing. It landed in `~/form-builder` with a spec of
+its own.
+
+benefits-enrollment's `review.xml` names a neighbouring gap — "there is no built-in element for
+'repeat this markup for each collection item, read-only'" — and `readonly` does **not** close it.
+The fields inside a readonly collection are still inputs; what goes away is the Add button and the
+Remove control. A read-only *display* of a collection is still missing, and that comment is still
+accurate.
+
+### Two facts about upstream, checked rather than assumed
+
+Both of these are properties of Direct File that could stop holding, so `planLoops` fails by name
+and route rather than guessing:
+
+- **A loop's pages are one contiguous run.** If they were not, collapsing them would move the pages
+  between them.
+- **A manual loop's hub is the page immediately before its first loop page.** True for all eleven.
+  The hub is found by its `CollectionItemManager`, not by position — position is then the assertion.
+
+A third is asserted the other way round: an auto-iterating loop that grows a `CollectionItemManager`
+fails too, because a derived collection with a hub means upstream changed something this reading
+depends on.
+
+### Reading a derived collection needs no special case
+
+The gates inside a `readonly` collection name the *underlying* collection —
+`/familyAndHousehold/*/flowGate7df6f8b9` inside `<fg-collection path="/cdccQualifyingPeople">` — and
+that is correct rather than a leak. `Fact.applyWildcard` follows the derived `CollectionNode`'s
+alias, so `getCollectionIds("/cdccQualifyingPeople")` returns the ids of the members that pass the
+filter, and those ids *are* `/familyAndHousehold` ids. `configureCollectionIds` then rewrites every
+attribute containing `/*/` regardless of which collection it names, so `/familyAndHousehold/*/x`
+resolves against the right item. Verified against the engine before the design was committed to.
+
+### The item's name comes from upstream's own Add button
+
+`<fg-collection item-name>` needs a noun: the library composes "Add another **W-2**" and the item
+heading "**W-2** #2" around it. Direct File already has the string — the hub's Add control is
+`fields.{collection}.controls.add`, "Add W-2" — so stage 1 reads `en.yaml` and takes the noun out of
+it. That gives `person`, `W-2`, `unemployment compensation`, `interest income`, `PFD`,
+`care provider`, `Form 1099-SA`, `Form 1099-R`, `Social Security income` and `Form 1095-A`.
+
+The eight `readonly` collections have no such key, and that is the same fact as everything above:
+upstream never names those items, because it renders no list and no Add button over one. They fall
+back to the humanized collection path (`cdcc qualifying people`) and are counted in
+`manifest.json`'s `deferred` block as owing a real word.
+
+### The collection inherits its hub's visibility
+
+Every screen inside a collection carries its own flattened conditions, so hiding is already right.
+The shell around them is not: a heading and an Add button would stand on a page Direct File would
+have skipped. So the collection takes the hub screen's gate as its own `if-true`. Five of the eleven
+hubs have one; the rest are unconditional, and get no attribute rather than a vacuous one.
+
 ## Stage 4 — content
 
 The largest piece, and better supported than it looks. Keys are explicit (`i18nKey` on every content
@@ -272,6 +349,22 @@ component), the key contract is already computed by `src/locales/flowLocaleHelpe
 implementations in `packages/df-common`'s `contentGenerator.tsx` and `packages/df-i18n`'s
 `CommonTranslation`. **Import those rather than reimplementing them** — they are what upstream's own
 locale-parity tests run on, so a key this cannot find is a key upstream would also have flagged.
+
+## Two checks on files the transpiler does not own
+
+`locales/en.yaml` and `website-static/js/taxpert/direct-file-graph.js` are hand-written — the
+transpiler owns `flow/` and `facts/flowGates.xml` and nothing else — but the flow decides what has
+to be in both of them, and neither failure mode is visible without looking:
+
+| The file says | Without a check |
+|---|---|
+| `all-screens.section.{module}` for each of the 25 flow modules | Browse All heads a section `all-screens.section.income-hsa` |
+| the Outcome tracker's fact paths | a row that is blank forever, because the fact was renamed upstream |
+
+So `make transpile` reads both and refuses to write, naming the module or the path. The section
+headings are read out of the YAML as text rather than parsed: the block is four levels of plain
+scalars this repo writes itself, and pulling in a YAML dependency for it would be the only one in
+here.
 
 ## Stage 5 — a coverage manifest, not a silent pass
 

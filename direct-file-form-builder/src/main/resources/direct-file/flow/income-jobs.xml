@@ -10,12 +10,7 @@
         <h2>jobs-loop-intro</h2>
         <p>ContextHeading, Heading ×3, DFModal ×4, DFAlert, CollectionItemManager</p>
       </div>
-    </section>
-  </page>
-
-  <page title="Jobs data import ko" route="/income/jobs/jobs-data-import-ko">
-    <section>
-      <fg-collection path="/formW2s" item-name="formW2s" determiner="another">
+      <fg-collection path="/formW2s" item-name="W-2" determiner="another">
         <div class="df-screen df-knockout" condition="/formW2s/*/flowGate7d13d8a7" operator="isTrue">
           <h2>jobs-data-import-ko</h2>
           <p>IconDisplay, Heading, InfoDisplay ×2, DFAccordion ×8, DFAlert, KnockoutButton, SaveAndOrContinueButton ×2</p>
@@ -28,13 +23,6 @@
           <h2>jobs-data-import-refer-W2</h2>
           <p>Heading, InfoDisplay, DFModal, SaveAndOrContinueButton</p>
         </div>
-      </fg-collection>
-    </section>
-  </page>
-
-  <page title="W 2 basic info" route="/income/jobs/w-2-basic-info">
-    <section>
-      <fg-collection path="/formW2s" item-name="formW2s" determiner="another">
         <div class="df-screen" condition="/formW2s/*/flowGateaadd02b6" operator="isTrue">
           <h2>w2-add-whose-w2</h2>
           <p>TaxReturnAlert, Heading, CollectionItemReference, GenericString, SaveAndOrContinueButton</p>
@@ -59,24 +47,10 @@
           <h2>w2-add-box-f-different-address</h2>
           <p>Heading, InfoDisplay, DFModal, Address, SaveAndOrContinueButton</p>
         </div>
-      </fg-collection>
-    </section>
-  </page>
-
-  <page title="Employer info" route="/income/jobs/employer-info">
-    <section>
-      <fg-collection path="/formW2s" item-name="formW2s" determiner="another">
         <div class="df-screen">
           <h2>w2-add-box-bc</h2>
           <p>MefAlert, ContextHeading, Heading, Ein, InfoDisplay ×2, LimitingString ×2, Address, DFModal, SaveAndOrContinueButton</p>
         </div>
-      </fg-collection>
-    </section>
-  </page>
-
-  <page title="Wages and taxes withheld" route="/income/jobs/wages-and-taxes-withheld">
-    <section>
-      <fg-collection path="/formW2s" item-name="formW2s" determiner="another">
         <div class="df-screen">
           <h2>w2-add-boxes-1-8</h2>
           <p>Heading, InfoDisplay, DFModal, Dollar ×8, SaveAndOrContinueButton</p>
@@ -97,13 +71,6 @@
           <h2>w2-allocated-tips-ko</h2>
           <p>IconDisplay, Heading, InfoDisplay ×2, DFAlert, KnockoutButton</p>
         </div>
-      </fg-collection>
-    </section>
-  </page>
-
-  <page title="Benefits received" route="/income/jobs/benefits-received">
-    <section>
-      <fg-collection path="/formW2s" item-name="formW2s" determiner="another">
         <div class="df-screen">
           <h2>w2-add-boxes-10-11</h2>
           <p>Heading, InfoDisplay, Dollar ×2, SaveAndOrContinueButton</p>
@@ -112,13 +79,6 @@
           <h2>w2-nonqualified-plan-ko</h2>
           <p>IconDisplay, Heading, DFAlert, KnockoutButton</p>
         </div>
-      </fg-collection>
-    </section>
-  </page>
-
-  <page title="Box 12 codes" route="/income/jobs/box-12-codes">
-    <section>
-      <fg-collection path="/formW2s" item-name="formW2s" determiner="another">
         <div class="df-screen">
           <h2>w2-has-box-12</h2>
           <p>Heading, ContextHeading, DFModal, Boolean, FactSelect, SaveAndOrContinueButton</p>
@@ -131,13 +91,6 @@
           <h2>w2-governmental-457b</h2>
           <p>ContextHeading, Heading, DFModal, Boolean, SaveAndOrContinueButton</p>
         </div>
-      </fg-collection>
-    </section>
-  </page>
-
-  <page title="W2 box 12 ko" route="/income/jobs/w2-box-12-ko">
-    <section>
-      <fg-collection path="/formW2s" item-name="formW2s" determiner="another">
         <div class="df-screen df-knockout" condition="/flowGate4ea307c3" operator="isTrue">
           <h2>w2-box-12-ko</h2>
           <p>IconDisplay, Heading, DFAlert, KnockoutButton</p>
@@ -146,13 +99,6 @@
           <h2>w2-box-12-dependent-ko</h2>
           <p>IconDisplay, Heading, InfoDisplay ×3, DFAlert, KnockoutButton</p>
         </div>
-      </fg-collection>
-    </section>
-  </page>
-
-  <page title="Box 13 codes" route="/income/jobs/box-13-codes">
-    <section>
-      <fg-collection path="/formW2s" item-name="formW2s" determiner="another">
         <div class="df-screen" condition="/formW2s/*/flowGatef7212230" operator="isTrue">
           <h2>w2-add-box-13-options</h2>
           <p>Heading, InfoDisplay, DFModal, Boolean ×3, SaveAndOrContinueButton</p>
@@ -165,13 +111,6 @@
           <h2>w2-box-13-sick-pay-ko</h2>
           <p>IconDisplay, Heading, DFAlert, KnockoutButton</p>
         </div>
-      </fg-collection>
-    </section>
-  </page>
-
-  <page title="Box 14 codes" route="/income/jobs/box-14-codes">
-    <section>
-      <fg-collection path="/formW2s" item-name="formW2s" determiner="another">
         <div class="df-screen">
           <h2>w2-has-box-14</h2>
           <p>ContextHeading, Heading, DFModal, Boolean, FactSelect, SaveAndOrContinueButton</p>
@@ -200,13 +139,6 @@
           <h2>w2-box-14-md-union-dues-amount</h2>
           <p>Heading, DFModal, Dollar, SaveAndOrContinueButton</p>
         </div>
-      </fg-collection>
-    </section>
-  </page>
-
-  <page title="State and local tax info" route="/income/jobs/state-and-local-tax-info">
-    <section>
-      <fg-collection path="/formW2s" item-name="formW2s" determiner="another">
         <div class="df-screen">
           <h2>w2-add-boxes-15-20</h2>
           <p>ContextHeading, Heading, TaxReturnAlert ×3, InfoDisplay, DFModal, Enum, LimitingString ×2, Dollar ×4, SaveAndOrContinueButton</p>
@@ -223,24 +155,10 @@
           <h2>w2-part-year-yonkers-ko</h2>
           <p>IconDisplay, Heading, InfoDisplay, DFAlert, KnockoutButton</p>
         </div>
-      </fg-collection>
-    </section>
-  </page>
-
-  <page title="W2 other state ko" route="/income/jobs/w2-other-state-ko">
-    <section>
-      <fg-collection path="/formW2s" item-name="formW2s" determiner="another">
         <div class="df-screen df-knockout" condition="/flowGate74c09545" operator="isTrue">
           <h2>w2-other-state-ko</h2>
           <p>IconDisplay, Heading, InfoDisplay, DFAlert, KnockoutButton</p>
         </div>
-      </fg-collection>
-    </section>
-  </page>
-
-  <page title="Corrected or non standard w2" route="/income/jobs/corrected-or-non-standard-w2">
-    <section>
-      <fg-collection path="/formW2s" item-name="formW2s" determiner="another">
         <div class="df-screen" condition="/formW2s/*/flowGate2b168cd8" operator="isTrue">
           <h2>w2-nonstandard-corrected</h2>
           <p>Heading, InfoDisplay, Enum, SaveAndOrContinueButton</p>

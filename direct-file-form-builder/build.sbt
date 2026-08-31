@@ -4,25 +4,43 @@ ThisBuild / scalaVersion := "3.7.2"
 // Set default class for "run"
 Compile / mainClass := Some("gov.irs.directfile.main")
 
-// Prevent additional compilation when the generated locale file is created. `regenerate` writes
-// flow_en.yaml back into src/main/resources on every run, and without this an `sbt ~run` loop
-// re-triggers itself forever.
+// Two generated trees under src/main/resources are kept off the classpath:
+//
+//   node_modules/            lint tooling — eslint, html-validate, and the USWDS distribution that
+//                            `make copy-uswds` lifts out of it. 14,638 files.
+//   website-static/vendor/   the generated mirrors: taxpert, USWDS, the Fact Graph bundle. 2,683
+//                            files, gitignored, with exactly one writer each.
+//
+// Neither is ever read from the classpath, so copying 17,000 files into `target/classes` and jarring
+// them is pure waste. The site generator reads `website-static/` from **disk** — `Website.scala` does
+// `os.copy(app.websiteStaticDir, …)` against `FormBuilderApp.resourceRoot`, not a classpath lookup —
+// and the Dockerfile serves `out/` from nginx rather than running the jar. Only the *library's* own
+// browser assets travel in a jar, and those are form-builder's.
+//
+// Both clauses of each filter are load-bearing: the filter is applied to each file rather than used
+// to prune the directory, so matching the directory's own name alone excludes one entry and keeps
+// everything underneath it.
+//
+// WHAT THIS DOES NOT FIX, contrary to what an earlier version of this comment claimed. `make ci`
+// fails here perhaps one run in three with a `FileNotFoundException` or a `ClassNotFoundException`
+// naming something under `target/`, and the cause is not a file count: it is that
+// `docker-compose.override.yml`'s watch container bind-mounts this directory and runs `sbt ~run`
+// inside it, so a containerised build and a host build share one `target/scala-3.7.2/classes`.
+// `make copy-uswds` opens with an `rm -rf` of its target, which retriggers that watcher on every
+// host build — its own log records `Build triggered by …/uswds-3.13.0/img/material-icons/wash.svg`
+// and then the same exception. `make down` (or stopping that one container) before a host build is
+// the workaround; giving the container its own target/ is the fix, and belongs in the compose
+// files for all four applications rather than here.
+//
+// `flow_en.yaml` is excluded for an unrelated reason: `regenerate` writes it back into
+// src/main/resources on every run, and without this an `sbt ~run` loop retriggers itself forever.
+def generatedTree(name: String) =
+  new SimpleFileFilter(f => f.getName == name || f.getPath.contains(s"/$name/"))
+
 Compile / unmanagedResources / excludeFilter := (Compile / unmanagedResources / excludeFilter).value ||
   "flow_en.yaml" ||
-  // `src/main/resources/direct-file/node_modules` is lint tooling — eslint, html-validate, and the
-  // USWDS distribution that `make copy-uswds` lifts out of it into `website-static/vendor/`. None of
-  // it belongs on the classpath, and every file of it was being copied into `target/classes` and
-  // then jarred. Past ~16,000 files that copy and the packaging step disagree about what is there,
-  // and the build dies with a FileNotFoundException naming some file deep inside a dependency
-  // (`es-abstract/2020/Canonicalize.js`, `@eslint/config-array/...`) — intermittently, so a retry
-  // often "fixes" it. Pruning the directory removes the failure and most of the build's I/O.
-  // Every app in this repository has the same node_modules under resources; the two with the
-  // largest trees are the two that flake.
-  //
-  // Both clauses are load-bearing: the filter is applied to each file rather than used to prune the
-  // directory, so matching the directory's own name alone excludes one entry and keeps all 15,831
-  // underneath it.
-  new SimpleFileFilter(f => f.getName == "node_modules" || f.getPath.contains("/node_modules/"))
+  generatedTree("node_modules") ||
+  generatedTree("vendor")
 
 scalafmtConfig := file(".scalafmt.conf")
 

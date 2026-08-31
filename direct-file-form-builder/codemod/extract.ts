@@ -39,6 +39,7 @@
  */
 import { writeFileSync, mkdirSync } from 'fs';
 import { dirname, resolve } from 'path';
+import en from '/src/locales/en.yaml';
 import flowNodes from '/src/flow/flow.js';
 import { createFlowConfig } from '/src/flow/flowConfig.js';
 import type { FlowConfig, FlowSubcategory, FlowSubSubcategory, FlowCollectionLoop } from '/src/flow/flowConfig.js';
@@ -103,9 +104,29 @@ function extractSubSubcategory(ssc: FlowSubSubcategory) {
   };
 }
 
+/**
+ * What one item of a collection is called, in words — `person`, `W-2`, `care provider`.
+ *
+ * `<fg-collection item-name>` needs it for the Add button ("Add another **W-2**") and the item
+ * heading, and Direct File already has the string: the hub screen's Add control reads
+ * `fields.{collection}.controls.add`, which is that sentence. Stripping the leading verb leaves the
+ * noun, and the library composes its own button text around it.
+ *
+ * Null for an auto-iterating loop, and not a gap in this function: upstream has no such key for one
+ * because upstream never names those items — it renders no list, no Add button and no Remove
+ * control over a derived collection. Stage 4 owes them a word.
+ */
+function itemNameFor(collectionName: string): string | null {
+  const add = (en as Record<string, any>).fields?.[collectionName]?.controls?.add;
+  if (typeof add !== `string`) return null;
+  const name = add.replace(/^Add\s+/, ``).trim();
+  return name.length > 0 && name !== add ? name : null;
+}
+
 function extractLoop(loop: FlowCollectionLoop) {
   return {
     loopName: loop.loopName,
+    itemName: itemNameFor(loop.collectionName as string),
     fullRoute: loop.fullRoute,
     subcategoryRoute: loop.subcategoryRoute,
     collectionName: loop.collectionName as string,
