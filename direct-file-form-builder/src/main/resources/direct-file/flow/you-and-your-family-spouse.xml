@@ -33,7 +33,7 @@
           <li>Qualifying Surviving Spouse</li>
         </ul>
         <p>Each filing status has its own qualification rules and can change the amount you get back or owe.</p>
-        <p><a href="$t(commonUrls.determiningFileStatus)" target="_blank">There’s more to determining filing status than being married or single. </a></p>
+        <p><a href="https://www.irs.gov/newsroom/theres-more-to-determining-filing-status-than-being-married-or-single" target="_blank">There’s more to determining filing status than being married or single. </a></p>
       </modal-content>
     </modal-dialog>
   </page>
@@ -1052,11 +1052,11 @@ or residence requirements</li>
       <modal-content>
         <p>The Marketplace sends Form 1095-A, Health Insurance Marketplace Statement to people enrolled in qualified Marketplace health plans.</p>
         <p>The Marketplace should mail or electronically provide the form before January 31, <fg-show path="/nextTaxYear"/>. If you don’t receive a Form 1095-A, or need to request a copy, then log in to your Marketplace account to download the form or contact your Marketplace for help.</p>
-        <p>If you got coverage through HealthCare.gov and set up an account, you can <a href="$t(commonUrls.form1095A)" target="_blank">download Form 1095-A from your HealthCare.gov account.</a></p>
-        <p>If you got coverage through a state Marketplace like <a href="$t(commonUrls.marketplaceInState)" target="_blank"><fg-show path="/stateMarketplaceName"/></a>, visit their website to download or request a Form 1095-A.</p>
-        <p>Your Forms 1095-A will also be available in your <a href="$t(commonUrls.irsOnlineAcct)" target="_blank">IRS Online Account </a> when the IRS receives them.</p>
+        <p>If you got coverage through HealthCare.gov and set up an account, you can <a href="https://www.healthcare.gov/tax-form-1095/" target="_blank">download Form 1095-A from your HealthCare.gov account.</a></p>
+        <p>If you got coverage through a state Marketplace like <a href="https://www.healthcare.gov/marketplace-in-your-state/" target="_blank"><fg-show path="/stateMarketplaceName"/></a>, visit their website to download or request a Form 1095-A.</p>
+        <p>Your Forms 1095-A will also be available in your <a href="https://sa.www4.irs.gov/ola/information_return" target="_blank">IRS Online Account </a> when the IRS receives them.</p>
         <p>If someone else enrolled you, your spouse (who you’re filing jointly with), or a dependent, then a Form 1095-A may be sent to the person who completed the enrollment. You’ll need to check with them to get a copy.</p>
-        <p><a href="$t(commonUrls.form1095A)" target="_blank">Learn more about Form 1095-A.</a></p>
+        <p><a href="https://www.healthcare.gov/tax-form-1095/" target="_blank">Learn more about Form 1095-A.</a></p>
       </modal-content>
     </modal-dialog>
     <modal-dialog id="modal-info-info-credits-and-deductions-credits-find-1095-a-without-state-plan-linkmodal1">
@@ -1064,11 +1064,11 @@ or residence requirements</li>
       <modal-content>
         <p>The Marketplace sends Form 1095-A, Health Insurance Marketplace Statement to people enrolled in qualified Marketplace health plans.</p>
         <p>The Marketplace should mail or electronically provide the form before January 31, <fg-show path="/nextTaxYear"/>. If you don’t receive a Form 1095-A, or need to request a copy, then log in to your Marketplace account to download the form or contact your Marketplace for help.</p>
-        <p>If you got coverage through HealthCare.gov and set up an account, you can <a href="$t(commonUrls.form1095A)" target="_blank">download Form 1095-A from your HealthCare.gov account.</a></p>
-        <p>If you got coverage through a state Marketplace, <a href="$t(commonUrls.marketplaceInState)" target="_blank">visit the state Marketplace website</a> to download or request a Form 1095-A.</p>
-        <p>Your Forms 1095-A will also be available in your <a href="$t(commonUrls.irsOnlineAcct)" target="_blank">IRS Online Account </a> when the IRS receives them.</p>
+        <p>If you got coverage through HealthCare.gov and set up an account, you can <a href="https://www.healthcare.gov/tax-form-1095/" target="_blank">download Form 1095-A from your HealthCare.gov account.</a></p>
+        <p>If you got coverage through a state Marketplace, <a href="https://www.healthcare.gov/marketplace-in-your-state/" target="_blank">visit the state Marketplace website</a> to download or request a Form 1095-A.</p>
+        <p>Your Forms 1095-A will also be available in your <a href="https://sa.www4.irs.gov/ola/information_return" target="_blank">IRS Online Account </a> when the IRS receives them.</p>
         <p>If someone else enrolled you, your spouse (who you’re filing jointly with), or a dependent, then a Form 1095-A may be sent to the person who completed the enrollment. You’ll need to check with them to get a copy.</p>
-        <p><a href="$t(commonUrls.form1095A)" target="_blank">Learn more about Form 1095-A.</a></p>
+        <p><a href="https://www.healthcare.gov/tax-form-1095/" target="_blank">Learn more about Form 1095-A.</a></p>
       </modal-content>
     </modal-dialog>
     <modal-dialog id="modal-sharedmodalaptc">

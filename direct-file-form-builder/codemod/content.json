@@ -6389,7 +6389,7 @@
               "t": [
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.determiningFileStatus)",
+                  "href": "https://www.irs.gov/newsroom/theres-more-to-determining-filing-status-than-being-married-or-single",
                   "c": [
                     {
                       "k": "text",
@@ -13798,7 +13798,7 @@
                 },
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.form1095A)",
+                  "href": "https://www.healthcare.gov/tax-form-1095/",
                   "c": [
                     {
                       "k": "text",
@@ -13817,7 +13817,7 @@
                 },
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.marketplaceInState)",
+                  "href": "https://www.healthcare.gov/marketplace-in-your-state/",
                   "c": [
                     {
                       "k": "fact",
@@ -13840,7 +13840,7 @@
                 },
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.irsOnlineAcct)",
+                  "href": "https://sa.www4.irs.gov/ola/information_return",
                   "c": [
                     {
                       "k": "text",
@@ -13868,7 +13868,7 @@
               "t": [
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.form1095A)",
+                  "href": "https://www.healthcare.gov/tax-form-1095/",
                   "c": [
                     {
                       "k": "text",
@@ -13924,7 +13924,7 @@
                 },
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.form1095A)",
+                  "href": "https://www.healthcare.gov/tax-form-1095/",
                   "c": [
                     {
                       "k": "text",
@@ -13943,7 +13943,7 @@
                 },
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.marketplaceInState)",
+                  "href": "https://www.healthcare.gov/marketplace-in-your-state/",
                   "c": [
                     {
                       "k": "text",
@@ -13966,7 +13966,7 @@
                 },
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.irsOnlineAcct)",
+                  "href": "https://sa.www4.irs.gov/ola/information_return",
                   "c": [
                     {
                       "k": "text",
@@ -13994,7 +13994,7 @@
               "t": [
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.form1095A)",
+                  "href": "https://www.healthcare.gov/tax-form-1095/",
                   "c": [
                     {
                       "k": "text",
@@ -32714,7 +32714,7 @@
               "t": [
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.determiningFileStatus)",
+                  "href": "https://www.irs.gov/newsroom/theres-more-to-determining-filing-status-than-being-married-or-single",
                   "c": [
                     {
                       "k": "text",
@@ -32890,7 +32890,7 @@
                 },
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.standardDeduction)",
+                  "href": "https://www.irs.gov/publications/p501#en_US_2024_publink100033487",
                   "c": [
                     {
                       "k": "text",
@@ -32909,7 +32909,7 @@
               "t": [
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.determiningFileStatus)",
+                  "href": "https://www.irs.gov/newsroom/theres-more-to-determining-filing-status-than-being-married-or-single",
                   "c": [
                     {
                       "k": "text",
@@ -32982,7 +32982,7 @@
               "t": [
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.determiningFileStatus)",
+                  "href": "https://www.irs.gov/newsroom/theres-more-to-determining-filing-status-than-being-married-or-single",
                   "c": [
                     {
                       "k": "text",
@@ -33186,7 +33186,7 @@
                 },
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.standardDeduction)",
+                  "href": "https://www.irs.gov/publications/p501#en_US_2024_publink100033487",
                   "c": [
                     {
                       "k": "text",
@@ -33205,7 +33205,7 @@
               "t": [
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.determiningFileStatus)",
+                  "href": "https://www.irs.gov/newsroom/theres-more-to-determining-filing-status-than-being-married-or-single",
                   "c": [
                     {
                       "k": "text",
@@ -33440,7 +33440,7 @@
             },
             {
               "k": "link",
-              "href": "$t(commonUrls.standardDeduction)",
+              "href": "https://www.irs.gov/publications/p501#en_US_2024_publink100033487",
               "c": [
                 {
                   "k": "text",
@@ -33518,7 +33518,7 @@
                 },
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.standardDeduction)",
+                  "href": "https://www.irs.gov/publications/p501#en_US_2024_publink100033487",
                   "c": [
                     {
                       "k": "text",
@@ -33537,7 +33537,7 @@
               "t": [
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.determiningFileStatus)",
+                  "href": "https://www.irs.gov/newsroom/theres-more-to-determining-filing-status-than-being-married-or-single",
                   "c": [
                     {
                       "k": "text",
@@ -33656,7 +33656,7 @@
             },
             {
               "k": "link",
-              "href": "$t(commonUrls.standardDeduction)",
+              "href": "https://www.irs.gov/publications/p501#en_US_2024_publink100033487",
               "c": [
                 {
                   "k": "text",
@@ -33734,7 +33734,7 @@
                 },
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.standardDeduction)",
+                  "href": "https://www.irs.gov/publications/p501#en_US_2024_publink100033487",
                   "c": [
                     {
                       "k": "text",
@@ -33753,7 +33753,7 @@
               "t": [
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.determiningFileStatus)",
+                  "href": "https://www.irs.gov/newsroom/theres-more-to-determining-filing-status-than-being-married-or-single",
                   "c": [
                     {
                       "k": "text",
@@ -33939,7 +33939,7 @@
                 },
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.standardDeduction)",
+                  "href": "https://www.irs.gov/publications/p501#en_US_2024_publink100033487",
                   "c": [
                     {
                       "k": "text",
@@ -34111,7 +34111,7 @@
                 },
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.standardDeduction)",
+                  "href": "https://www.irs.gov/publications/p501#en_US_2024_publink100033487",
                   "c": [
                     {
                       "k": "text",
@@ -34425,7 +34425,7 @@
                 },
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.standardDeduction)",
+                  "href": "https://www.irs.gov/publications/p501#en_US_2024_publink100033487",
                   "c": [
                     {
                       "k": "text",
@@ -34444,7 +34444,7 @@
               "t": [
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.determiningFileStatus)",
+                  "href": "https://www.irs.gov/newsroom/theres-more-to-determining-filing-status-than-being-married-or-single",
                   "c": [
                     {
                       "k": "text",
@@ -34494,7 +34494,7 @@
             },
             {
               "k": "link",
-              "href": "$t(commonUrls.standardDeduction)",
+              "href": "https://www.irs.gov/publications/p501#en_US_2024_publink100033487",
               "c": [
                 {
                   "k": "text",
@@ -34710,7 +34710,7 @@
                 },
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.standardDeduction)",
+                  "href": "https://www.irs.gov/publications/p501#en_US_2024_publink100033487",
                   "c": [
                     {
                       "k": "text",
@@ -34729,7 +34729,7 @@
               "t": [
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.determiningFileStatus)",
+                  "href": "https://www.irs.gov/newsroom/theres-more-to-determining-filing-status-than-being-married-or-single",
                   "c": [
                     {
                       "k": "text",
@@ -34791,7 +34791,7 @@
                 },
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.standardDeduction)",
+                  "href": "https://www.irs.gov/publications/p501#en_US_2024_publink100033487",
                   "c": [
                     {
                       "k": "text",
@@ -34948,7 +34948,7 @@
                 },
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.standardDeduction)",
+                  "href": "https://www.irs.gov/publications/p501#en_US_2024_publink100033487",
                   "c": [
                     {
                       "k": "text",
@@ -35120,7 +35120,7 @@
                 },
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.standardDeduction)",
+                  "href": "https://www.irs.gov/publications/p501#en_US_2024_publink100033487",
                   "c": [
                     {
                       "k": "text",
@@ -35819,7 +35819,7 @@
                 },
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.standardDeduction)",
+                  "href": "https://www.irs.gov/publications/p501#en_US_2024_publink100033487",
                   "c": [
                     {
                       "k": "text",
@@ -35838,7 +35838,7 @@
               "t": [
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.determiningFileStatus)",
+                  "href": "https://www.irs.gov/newsroom/theres-more-to-determining-filing-status-than-being-married-or-single",
                   "c": [
                     {
                       "k": "text",
@@ -36406,7 +36406,7 @@
                 },
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.standardDeduction)",
+                  "href": "https://www.irs.gov/publications/p501#en_US_2024_publink100033487",
                   "c": [
                     {
                       "k": "text",
@@ -36425,7 +36425,7 @@
               "t": [
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.determiningFileStatus)",
+                  "href": "https://www.irs.gov/newsroom/theres-more-to-determining-filing-status-than-being-married-or-single",
                   "c": [
                     {
                       "k": "text",
@@ -36965,7 +36965,7 @@
             },
             {
               "k": "link",
-              "href": "$t(commonUrls.standardDeduction)",
+              "href": "https://www.irs.gov/publications/p501#en_US_2024_publink100033487",
               "c": [
                 {
                   "k": "text",
@@ -37077,7 +37077,7 @@
                 },
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.standardDeduction)",
+                  "href": "https://www.irs.gov/publications/p501#en_US_2024_publink100033487",
                   "c": [
                     {
                       "k": "text",
@@ -37096,7 +37096,7 @@
               "t": [
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.determiningFileStatus)",
+                  "href": "https://www.irs.gov/newsroom/theres-more-to-determining-filing-status-than-being-married-or-single",
                   "c": [
                     {
                       "k": "text",
@@ -55311,7 +55311,7 @@
           "t": [
             {
               "k": "link",
-              "href": "$t(commonUrls.householdEmployees)",
+              "href": "https://www.irs.gov/publications/p503#en_US_2023_publink1000203385",
               "c": [
                 {
                   "k": "text",
@@ -55379,7 +55379,7 @@
                 },
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.otherWaysToFile)",
+                  "href": "https://www.irs.gov/filing/individuals/how-to-file",
                   "c": [
                     {
                       "k": "text",
@@ -55394,7 +55394,7 @@
               "t": [
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.householdEmployees)",
+                  "href": "https://www.irs.gov/publications/p503#en_US_2023_publink1000203385",
                   "c": [
                     {
                       "k": "text",
@@ -55438,7 +55438,7 @@
           "t": [
             {
               "k": "link",
-              "href": "$t(commonUrls.householdEmployees)",
+              "href": "https://www.irs.gov/publications/p503#en_US_2023_publink1000203385",
               "c": [
                 {
                   "k": "text",
@@ -86759,7 +86759,7 @@
               "t": [
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.premiumTaxCreditInfo)",
+                  "href": "https://www.irs.gov/affordable-care-act/individuals-and-families/the-premium-tax-credit-the-basics",
                   "c": [
                     {
                       "k": "text",
@@ -86924,7 +86924,7 @@
               "t": [
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.cdccInfo)",
+                  "href": "https://www.irs.gov/taxtopics/tc602",
                   "c": [
                     {
                       "k": "text",
@@ -87012,7 +87012,7 @@
               "t": [
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.elderlyAndDisabledCreditInfo)",
+                  "href": "https://www.irs.gov/instructions/i1040sr",
                   "c": [
                     {
                       "k": "text",
@@ -87094,7 +87094,7 @@
               "t": [
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.saversCreditInfo)",
+                  "href": "https://www.irs.gov/retirement-plans/plan-participant-employee/retirement-savings-contributions-savers-credit",
                   "c": [
                     {
                       "k": "text",
@@ -87252,7 +87252,7 @@
               "t": [
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.ctcInfo)",
+                  "href": "https://www.eitc.irs.gov/other-refundable-credits-toolkit/what-you-need-to-know-about-ctc-and-actc/what-you-need-to-know",
                   "c": [
                     {
                       "k": "text",
@@ -87455,7 +87455,7 @@
               "t": [
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.eitcInfo)",
+                  "href": "https://www.irs.gov/credits-deductions/individuals/earned-income-tax-credit-eitc",
                   "c": [
                     {
                       "k": "text",
@@ -87796,7 +87796,7 @@
               "t": [
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.premiumTaxCreditInfo)",
+                  "href": "https://www.irs.gov/affordable-care-act/individuals-and-families/the-premium-tax-credit-the-basics",
                   "c": [
                     {
                       "k": "text",
@@ -88375,7 +88375,7 @@
                 },
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.form1095A)",
+                  "href": "https://www.healthcare.gov/tax-form-1095/",
                   "c": [
                     {
                       "k": "text",
@@ -88394,7 +88394,7 @@
                 },
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.marketplaceInState)",
+                  "href": "https://www.healthcare.gov/marketplace-in-your-state/",
                   "c": [
                     {
                       "k": "fact",
@@ -88417,7 +88417,7 @@
                 },
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.irsOnlineAcct)",
+                  "href": "https://sa.www4.irs.gov/ola/information_return",
                   "c": [
                     {
                       "k": "text",
@@ -88445,7 +88445,7 @@
               "t": [
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.form1095A)",
+                  "href": "https://www.healthcare.gov/tax-form-1095/",
                   "c": [
                     {
                       "k": "text",
@@ -88501,7 +88501,7 @@
                 },
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.form1095A)",
+                  "href": "https://www.healthcare.gov/tax-form-1095/",
                   "c": [
                     {
                       "k": "text",
@@ -88520,7 +88520,7 @@
                 },
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.marketplaceInState)",
+                  "href": "https://www.healthcare.gov/marketplace-in-your-state/",
                   "c": [
                     {
                       "k": "text",
@@ -88543,7 +88543,7 @@
                 },
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.irsOnlineAcct)",
+                  "href": "https://sa.www4.irs.gov/ola/information_return",
                   "c": [
                     {
                       "k": "text",
@@ -88571,7 +88571,7 @@
               "t": [
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.form1095A)",
+                  "href": "https://www.healthcare.gov/tax-form-1095/",
                   "c": [
                     {
                       "k": "text",
@@ -88783,7 +88783,7 @@
           "heading": [
             {
               "k": "link",
-              "href": "$t(commonUrls.irsOnlineAcct)",
+              "href": "https://sa.www4.irs.gov/ola/information_return",
               "c": [
                 {
                   "k": "text",
@@ -88810,7 +88810,7 @@
           "heading": [
             {
               "k": "link",
-              "href": "$t(commonUrls.irsOnlineAcct)",
+              "href": "https://sa.www4.irs.gov/ola/information_return",
               "c": [
                 {
                   "k": "text",
@@ -89019,7 +89019,7 @@
                 },
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.form1095A)",
+                  "href": "https://www.healthcare.gov/tax-form-1095/",
                   "c": [
                     {
                       "k": "text",
@@ -89033,7 +89033,7 @@
                 },
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.marketplaceInState)",
+                  "href": "https://www.healthcare.gov/marketplace-in-your-state/",
                   "c": [
                     {
                       "k": "text",
@@ -89591,7 +89591,7 @@
                 },
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.form1095A)",
+                  "href": "https://www.healthcare.gov/tax-form-1095/",
                   "c": [
                     {
                       "k": "text",
@@ -89610,7 +89610,7 @@
                 },
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.marketplaceInState)",
+                  "href": "https://www.healthcare.gov/marketplace-in-your-state/",
                   "c": [
                     {
                       "k": "fact",
@@ -89633,7 +89633,7 @@
                 },
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.irsOnlineAcct)",
+                  "href": "https://sa.www4.irs.gov/ola/information_return",
                   "c": [
                     {
                       "k": "text",
@@ -89661,7 +89661,7 @@
               "t": [
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.form1095A)",
+                  "href": "https://www.healthcare.gov/tax-form-1095/",
                   "c": [
                     {
                       "k": "text",
@@ -89717,7 +89717,7 @@
                 },
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.form1095A)",
+                  "href": "https://www.healthcare.gov/tax-form-1095/",
                   "c": [
                     {
                       "k": "text",
@@ -89736,7 +89736,7 @@
                 },
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.marketplaceInState)",
+                  "href": "https://www.healthcare.gov/marketplace-in-your-state/",
                   "c": [
                     {
                       "k": "text",
@@ -89759,7 +89759,7 @@
                 },
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.irsOnlineAcct)",
+                  "href": "https://sa.www4.irs.gov/ola/information_return",
                   "c": [
                     {
                       "k": "text",
@@ -89787,7 +89787,7 @@
               "t": [
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.form1095A)",
+                  "href": "https://www.healthcare.gov/tax-form-1095/",
                   "c": [
                     {
                       "k": "text",
@@ -90130,7 +90130,7 @@
                 },
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.form1095A)",
+                  "href": "https://www.healthcare.gov/tax-form-1095/",
                   "c": [
                     {
                       "k": "text",
@@ -90149,7 +90149,7 @@
                 },
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.marketplaceInState)",
+                  "href": "https://www.healthcare.gov/marketplace-in-your-state/",
                   "c": [
                     {
                       "k": "fact",
@@ -90172,7 +90172,7 @@
                 },
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.irsOnlineAcct)",
+                  "href": "https://sa.www4.irs.gov/ola/information_return",
                   "c": [
                     {
                       "k": "text",
@@ -90200,7 +90200,7 @@
               "t": [
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.form1095A)",
+                  "href": "https://www.healthcare.gov/tax-form-1095/",
                   "c": [
                     {
                       "k": "text",
@@ -90256,7 +90256,7 @@
                 },
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.form1095A)",
+                  "href": "https://www.healthcare.gov/tax-form-1095/",
                   "c": [
                     {
                       "k": "text",
@@ -90275,7 +90275,7 @@
                 },
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.marketplaceInState)",
+                  "href": "https://www.healthcare.gov/marketplace-in-your-state/",
                   "c": [
                     {
                       "k": "text",
@@ -90298,7 +90298,7 @@
                 },
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.irsOnlineAcct)",
+                  "href": "https://sa.www4.irs.gov/ola/information_return",
                   "c": [
                     {
                       "k": "text",
@@ -90326,7 +90326,7 @@
               "t": [
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.form1095A)",
+                  "href": "https://www.healthcare.gov/tax-form-1095/",
                   "c": [
                     {
                       "k": "text",
@@ -91099,7 +91099,7 @@
               "t": [
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.irsOnlineAcct)",
+                  "href": "https://sa.www4.irs.gov/ola/information_return",
                   "c": [
                     {
                       "k": "text",
@@ -91165,7 +91165,7 @@
               "t": [
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.irsOnlineAcct)",
+                  "href": "https://sa.www4.irs.gov/ola/information_return",
                   "c": [
                     {
                       "k": "text",
@@ -91572,7 +91572,7 @@
                 },
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.form1095A)",
+                  "href": "https://www.healthcare.gov/tax-form-1095/",
                   "c": [
                     {
                       "k": "text",
@@ -91591,7 +91591,7 @@
                 },
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.marketplaceInState)",
+                  "href": "https://www.healthcare.gov/marketplace-in-your-state/",
                   "c": [
                     {
                       "k": "fact",
@@ -91614,7 +91614,7 @@
                 },
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.irsOnlineAcct)",
+                  "href": "https://sa.www4.irs.gov/ola/information_return",
                   "c": [
                     {
                       "k": "text",
@@ -91642,7 +91642,7 @@
               "t": [
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.form1095A)",
+                  "href": "https://www.healthcare.gov/tax-form-1095/",
                   "c": [
                     {
                       "k": "text",
@@ -91698,7 +91698,7 @@
                 },
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.form1095A)",
+                  "href": "https://www.healthcare.gov/tax-form-1095/",
                   "c": [
                     {
                       "k": "text",
@@ -91717,7 +91717,7 @@
                 },
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.marketplaceInState)",
+                  "href": "https://www.healthcare.gov/marketplace-in-your-state/",
                   "c": [
                     {
                       "k": "text",
@@ -91740,7 +91740,7 @@
                 },
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.irsOnlineAcct)",
+                  "href": "https://sa.www4.irs.gov/ola/information_return",
                   "c": [
                     {
                       "k": "text",
@@ -91768,7 +91768,7 @@
               "t": [
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.form1095A)",
+                  "href": "https://www.healthcare.gov/tax-form-1095/",
                   "c": [
                     {
                       "k": "text",
@@ -92212,7 +92212,7 @@
               "t": [
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.irsOnlineAcct)",
+                  "href": "https://sa.www4.irs.gov/ola/information_return",
                   "c": [
                     {
                       "k": "text",
@@ -92254,7 +92254,7 @@
               "t": [
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.irsOnlineAcct)",
+                  "href": "https://sa.www4.irs.gov/ola/information_return",
                   "c": [
                     {
                       "k": "text",
@@ -92755,7 +92755,7 @@
                 },
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.form1095A)",
+                  "href": "https://www.healthcare.gov/tax-form-1095/",
                   "c": [
                     {
                       "k": "text",
@@ -92774,7 +92774,7 @@
                 },
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.marketplaceInState)",
+                  "href": "https://www.healthcare.gov/marketplace-in-your-state/",
                   "c": [
                     {
                       "k": "fact",
@@ -92797,7 +92797,7 @@
                 },
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.irsOnlineAcct)",
+                  "href": "https://sa.www4.irs.gov/ola/information_return",
                   "c": [
                     {
                       "k": "text",
@@ -92825,7 +92825,7 @@
               "t": [
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.form1095A)",
+                  "href": "https://www.healthcare.gov/tax-form-1095/",
                   "c": [
                     {
                       "k": "text",
@@ -92881,7 +92881,7 @@
                 },
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.form1095A)",
+                  "href": "https://www.healthcare.gov/tax-form-1095/",
                   "c": [
                     {
                       "k": "text",
@@ -92900,7 +92900,7 @@
                 },
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.marketplaceInState)",
+                  "href": "https://www.healthcare.gov/marketplace-in-your-state/",
                   "c": [
                     {
                       "k": "text",
@@ -92923,7 +92923,7 @@
                 },
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.irsOnlineAcct)",
+                  "href": "https://sa.www4.irs.gov/ola/information_return",
                   "c": [
                     {
                       "k": "text",
@@ -92951,7 +92951,7 @@
               "t": [
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.form1095A)",
+                  "href": "https://www.healthcare.gov/tax-form-1095/",
                   "c": [
                     {
                       "k": "text",
@@ -93040,7 +93040,7 @@
                 },
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.form1095A)",
+                  "href": "https://www.healthcare.gov/tax-form-1095/",
                   "c": [
                     {
                       "k": "text",
@@ -93054,7 +93054,7 @@
                 },
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.marketplaceInState)",
+                  "href": "https://www.healthcare.gov/marketplace-in-your-state/",
                   "c": [
                     {
                       "k": "text",
@@ -93097,7 +93097,7 @@
                 },
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.form1095A)",
+                  "href": "https://www.healthcare.gov/tax-form-1095/",
                   "c": [
                     {
                       "k": "text",
@@ -93111,7 +93111,7 @@
                 },
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.marketplaceInState)",
+                  "href": "https://www.healthcare.gov/marketplace-in-your-state/",
                   "c": [
                     {
                       "k": "text",
@@ -93162,7 +93162,7 @@
               "t": [
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.irsOnlineAcct)",
+                  "href": "https://sa.www4.irs.gov/ola/information_return",
                   "c": [
                     {
                       "k": "text",
@@ -93204,7 +93204,7 @@
               "t": [
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.irsOnlineAcct)",
+                  "href": "https://sa.www4.irs.gov/ola/information_return",
                   "c": [
                     {
                       "k": "text",
@@ -94185,7 +94185,7 @@
                 },
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.form1095A)",
+                  "href": "https://www.healthcare.gov/tax-form-1095/",
                   "c": [
                     {
                       "k": "text",
@@ -94204,7 +94204,7 @@
                 },
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.marketplaceInState)",
+                  "href": "https://www.healthcare.gov/marketplace-in-your-state/",
                   "c": [
                     {
                       "k": "fact",
@@ -94227,7 +94227,7 @@
                 },
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.irsOnlineAcct)",
+                  "href": "https://sa.www4.irs.gov/ola/information_return",
                   "c": [
                     {
                       "k": "text",
@@ -94255,7 +94255,7 @@
               "t": [
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.form1095A)",
+                  "href": "https://www.healthcare.gov/tax-form-1095/",
                   "c": [
                     {
                       "k": "text",
@@ -94311,7 +94311,7 @@
                 },
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.form1095A)",
+                  "href": "https://www.healthcare.gov/tax-form-1095/",
                   "c": [
                     {
                       "k": "text",
@@ -94330,7 +94330,7 @@
                 },
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.marketplaceInState)",
+                  "href": "https://www.healthcare.gov/marketplace-in-your-state/",
                   "c": [
                     {
                       "k": "text",
@@ -94353,7 +94353,7 @@
                 },
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.irsOnlineAcct)",
+                  "href": "https://sa.www4.irs.gov/ola/information_return",
                   "c": [
                     {
                       "k": "text",
@@ -94381,7 +94381,7 @@
               "t": [
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.form1095A)",
+                  "href": "https://www.healthcare.gov/tax-form-1095/",
                   "c": [
                     {
                       "k": "text",
@@ -95916,7 +95916,7 @@
               "t": [
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.ptcAbuseAndAbandonementInstructions)",
+                  "href": "https://www.irs.gov/instructions/i8962#en_US_2024_publink100013922",
                   "c": [
                     {
                       "k": "text",
@@ -95951,7 +95951,7 @@
               "t": [
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.ptcAbuseAndAbandonementInstructions)",
+                  "href": "https://www.irs.gov/instructions/i8962#en_US_2024_publink100013922",
                   "c": [
                     {
                       "k": "text",
@@ -96028,7 +96028,7 @@
               "t": [
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.ptcAbuseAndAbandonement)",
+                  "href": "https://www.irs.gov/instructions/i8962#en_US_2024_publink100013920",
                   "c": [
                     {
                       "k": "text",
@@ -96577,7 +96577,7 @@
                 },
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.form1095A)",
+                  "href": "https://www.healthcare.gov/tax-form-1095/",
                   "c": [
                     {
                       "k": "text",
@@ -96596,7 +96596,7 @@
                 },
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.marketplaceInState)",
+                  "href": "https://www.healthcare.gov/marketplace-in-your-state/",
                   "c": [
                     {
                       "k": "fact",
@@ -96619,7 +96619,7 @@
                 },
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.irsOnlineAcct)",
+                  "href": "https://sa.www4.irs.gov/ola/information_return",
                   "c": [
                     {
                       "k": "text",
@@ -96647,7 +96647,7 @@
               "t": [
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.form1095A)",
+                  "href": "https://www.healthcare.gov/tax-form-1095/",
                   "c": [
                     {
                       "k": "text",
@@ -96703,7 +96703,7 @@
                 },
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.form1095A)",
+                  "href": "https://www.healthcare.gov/tax-form-1095/",
                   "c": [
                     {
                       "k": "text",
@@ -96722,7 +96722,7 @@
                 },
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.marketplaceInState)",
+                  "href": "https://www.healthcare.gov/marketplace-in-your-state/",
                   "c": [
                     {
                       "k": "text",
@@ -96745,7 +96745,7 @@
                 },
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.irsOnlineAcct)",
+                  "href": "https://sa.www4.irs.gov/ola/information_return",
                   "c": [
                     {
                       "k": "text",
@@ -96773,7 +96773,7 @@
               "t": [
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.form1095A)",
+                  "href": "https://www.healthcare.gov/tax-form-1095/",
                   "c": [
                     {
                       "k": "text",
@@ -96812,7 +96812,7 @@
                 },
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.form1095A)",
+                  "href": "https://www.healthcare.gov/tax-form-1095/",
                   "c": [
                     {
                       "k": "text",
@@ -96826,7 +96826,7 @@
                 },
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.marketplaceInState)",
+                  "href": "https://www.healthcare.gov/marketplace-in-your-state/",
                   "c": [
                     {
                       "k": "text",
@@ -99881,7 +99881,7 @@
               "t": [
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.marketplaceInState)",
+                  "href": "https://www.healthcare.gov/marketplace-in-your-state/",
                   "c": [
                     {
                       "k": "text",
@@ -99969,7 +99969,7 @@
               "t": [
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.ptcTaxTool)",
+                  "href": "https://www.healthcare.gov/tax-tool/#/",
                   "c": [
                     {
                       "k": "text",
@@ -100010,7 +100010,7 @@
             },
             {
               "k": "link",
-              "href": "$t(commonUrls.marketplaceInState)",
+              "href": "https://www.healthcare.gov/marketplace-in-your-state/",
               "c": [
                 {
                   "k": "text",
@@ -100036,7 +100036,7 @@
             },
             {
               "k": "link",
-              "href": "$t(commonUrls.ptcTaxTool)",
+              "href": "https://www.healthcare.gov/tax-tool/#/",
               "c": [
                 {
                   "k": "text",
@@ -100167,7 +100167,7 @@
               "t": [
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.marketplaceInState)",
+                  "href": "https://www.healthcare.gov/marketplace-in-your-state/",
                   "c": [
                     {
                       "k": "text",
@@ -101134,7 +101134,7 @@
               "t": [
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.marketplaceInState)",
+                  "href": "https://www.healthcare.gov/marketplace-in-your-state/",
                   "c": [
                     {
                       "k": "text",
@@ -101222,7 +101222,7 @@
               "t": [
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.ptcTaxTool)",
+                  "href": "https://www.healthcare.gov/tax-tool/#/",
                   "c": [
                     {
                       "k": "text",
@@ -102686,7 +102686,7 @@
               "t": [
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.premiumTaxCreditInfo)",
+                  "href": "https://www.irs.gov/affordable-care-act/individuals-and-families/the-premium-tax-credit-the-basics",
                   "c": [
                     {
                       "k": "text",
@@ -103442,7 +103442,7 @@
               "t": [
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.premiumTaxCreditInfo)",
+                  "href": "https://www.irs.gov/affordable-care-act/individuals-and-families/the-premium-tax-credit-the-basics",
                   "c": [
                     {
                       "k": "text",
@@ -103811,7 +103811,7 @@
               "t": [
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.premiumTaxCreditInfo)",
+                  "href": "https://www.irs.gov/affordable-care-act/individuals-and-families/the-premium-tax-credit-the-basics",
                   "c": [
                     {
                       "k": "text",
@@ -103961,7 +103961,7 @@
               "t": [
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.premiumTaxCreditInfo)",
+                  "href": "https://www.irs.gov/affordable-care-act/individuals-and-families/the-premium-tax-credit-the-basics",
                   "c": [
                     {
                       "k": "text",
@@ -104112,7 +104112,7 @@
               "t": [
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.premiumTaxCreditInfo)",
+                  "href": "https://www.irs.gov/affordable-care-act/individuals-and-families/the-premium-tax-credit-the-basics",
                   "c": [
                     {
                       "k": "text",
@@ -104390,7 +104390,7 @@
               "t": [
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.premiumTaxCreditInfo)",
+                  "href": "https://www.irs.gov/affordable-care-act/individuals-and-families/the-premium-tax-credit-the-basics",
                   "c": [
                     {
                       "k": "text",
@@ -104733,7 +104733,7 @@
               "t": [
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.premiumTaxCreditInfo)",
+                  "href": "https://www.irs.gov/affordable-care-act/individuals-and-families/the-premium-tax-credit-the-basics",
                   "c": [
                     {
                       "k": "text",
@@ -105187,7 +105187,7 @@
               "t": [
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.premiumTaxCreditInfo)",
+                  "href": "https://www.irs.gov/affordable-care-act/individuals-and-families/the-premium-tax-credit-the-basics",
                   "c": [
                     {
                       "k": "text",
@@ -105590,7 +105590,7 @@
               "t": [
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.cdccInfo)",
+                  "href": "https://www.irs.gov/taxtopics/tc602",
                   "c": [
                     {
                       "k": "text",
@@ -109648,7 +109648,7 @@
               "t": [
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.cdccInfo)",
+                  "href": "https://www.irs.gov/taxtopics/tc602",
                   "c": [
                     {
                       "k": "text",
@@ -110059,7 +110059,7 @@
               "t": [
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.cdccInfo)",
+                  "href": "https://www.irs.gov/taxtopics/tc602",
                   "c": [
                     {
                       "k": "text",
@@ -112488,7 +112488,7 @@
               "t": [
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.elderlyAndDisabledCreditInfo)",
+                  "href": "https://www.irs.gov/instructions/i1040sr",
                   "c": [
                     {
                       "k": "text",
@@ -114130,7 +114130,7 @@
               "t": [
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.elderlyAndDisabledCreditInfo)",
+                  "href": "https://www.irs.gov/instructions/i1040sr",
                   "c": [
                     {
                       "k": "text",
@@ -114370,7 +114370,7 @@
               "t": [
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.elderlyAndDisabledCreditInfo)",
+                  "href": "https://www.irs.gov/instructions/i1040sr",
                   "c": [
                     {
                       "k": "text",
@@ -115569,7 +115569,7 @@
               "t": [
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.saversCreditInfo)",
+                  "href": "https://www.irs.gov/retirement-plans/plan-participant-employee/retirement-savings-contributions-savers-credit",
                   "c": [
                     {
                       "k": "text",
@@ -115704,7 +115704,7 @@
               "t": [
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.otherWaysToFile)",
+                  "href": "https://www.irs.gov/filing/individuals/how-to-file",
                   "c": [
                     {
                       "k": "text",
@@ -117947,7 +117947,7 @@
               "t": [
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.ctcInfo)",
+                  "href": "https://www.eitc.irs.gov/other-refundable-credits-toolkit/what-you-need-to-know-about-ctc-and-actc/what-you-need-to-know",
                   "c": [
                     {
                       "k": "text",
@@ -119133,7 +119133,7 @@
               "t": [
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.ctcInfo)",
+                  "href": "https://www.eitc.irs.gov/other-refundable-credits-toolkit/what-you-need-to-know-about-ctc-and-actc/what-you-need-to-know",
                   "c": [
                     {
                       "k": "text",
@@ -119444,7 +119444,7 @@
               "t": [
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.ctcInfo)",
+                  "href": "https://www.eitc.irs.gov/other-refundable-credits-toolkit/what-you-need-to-know-about-ctc-and-actc/what-you-need-to-know",
                   "c": [
                     {
                       "k": "text",
@@ -120556,7 +120556,7 @@
               "t": [
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.ctcInfo)",
+                  "href": "https://www.eitc.irs.gov/other-refundable-credits-toolkit/what-you-need-to-know-about-ctc-and-actc/what-you-need-to-know",
                   "c": [
                     {
                       "k": "text",
@@ -127380,7 +127380,7 @@
                 },
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.form2441)",
+                  "href": "https://www.irs.gov/forms-pubs/about-form-2441",
                   "c": [
                     {
                       "k": "text",
@@ -127399,7 +127399,7 @@
               "t": [
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.cdccInfo)",
+                  "href": "https://www.irs.gov/taxtopics/tc602",
                   "c": [
                     {
                       "k": "text",
@@ -127434,7 +127434,7 @@
               "t": [
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.elderlyAndDisabledCreditInfo)",
+                  "href": "https://www.irs.gov/instructions/i1040sr",
                   "c": [
                     {
                       "k": "text",
@@ -127464,7 +127464,7 @@
                 },
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.form8880)",
+                  "href": "https://www.irs.gov/forms-pubs/about-form-8880",
                   "c": [
                     {
                       "k": "text",
@@ -127531,7 +127531,7 @@
               "t": [
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.saversCreditInfo)",
+                  "href": "https://www.irs.gov/retirement-plans/plan-participant-employee/retirement-savings-contributions-savers-credit",
                   "c": [
                     {
                       "k": "text",
@@ -127561,7 +127561,7 @@
                 },
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.form8880)",
+                  "href": "https://www.irs.gov/forms-pubs/about-form-8880",
                   "c": [
                     {
                       "k": "text",
@@ -127637,7 +127637,7 @@
               "t": [
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.saversCreditInfo)",
+                  "href": "https://www.irs.gov/retirement-plans/plan-participant-employee/retirement-savings-contributions-savers-credit",
                   "c": [
                     {
                       "k": "text",
@@ -127667,7 +127667,7 @@
                 },
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.form8880)",
+                  "href": "https://www.irs.gov/forms-pubs/about-form-8880",
                   "c": [
                     {
                       "k": "text",
@@ -127743,7 +127743,7 @@
               "t": [
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.saversCreditInfo)",
+                  "href": "https://www.irs.gov/retirement-plans/plan-participant-employee/retirement-savings-contributions-savers-credit",
                   "c": [
                     {
                       "k": "text",
@@ -127773,7 +127773,7 @@
                 },
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.schedule8812)",
+                  "href": "https://www.irs.gov/pub/irs-pdf/f1040s8.pdf",
                   "c": [
                     {
                       "k": "text",
@@ -127792,7 +127792,7 @@
               "t": [
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.schedule8812LearnMore)",
+                  "href": "https://www.irs.gov/credits-deductions/individuals/child-tax-credit",
                   "c": [
                     {
                       "k": "text",
@@ -127822,7 +127822,7 @@
                 },
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.schedule8812)",
+                  "href": "https://www.irs.gov/pub/irs-pdf/f1040s8.pdf",
                   "c": [
                     {
                       "k": "text",
@@ -127841,7 +127841,7 @@
               "t": [
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.schedule8812LearnMore)",
+                  "href": "https://www.irs.gov/credits-deductions/individuals/child-tax-credit",
                   "c": [
                     {
                       "k": "text",
@@ -127943,7 +127943,7 @@
                 },
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.form8962)",
+                  "href": "https://www.irs.gov/forms-pubs/about-form-8962",
                   "c": [
                     {
                       "k": "text",
@@ -127962,7 +127962,7 @@
               "t": [
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.form8962LearnMore)",
+                  "href": "https://www.irs.gov/affordable-care-act/individuals-and-families/eligibility-for-the-premium-tax-credit",
                   "c": [
                     {
                       "k": "text",
@@ -127992,7 +127992,7 @@
                 },
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.schedule8812)",
+                  "href": "https://www.irs.gov/pub/irs-pdf/f1040s8.pdf",
                   "c": [
                     {
                       "k": "text",
@@ -128011,7 +128011,7 @@
               "t": [
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.schedule8812LearnMore)",
+                  "href": "https://www.irs.gov/credits-deductions/individuals/child-tax-credit",
                   "c": [
                     {
                       "k": "text",
@@ -128041,7 +128041,7 @@
                 },
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.eitcInfo)",
+                  "href": "https://www.irs.gov/credits-deductions/individuals/earned-income-tax-credit-eitc",
                   "c": [
                     {
                       "k": "text",
@@ -128099,7 +128099,7 @@
               "t": [
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.eitcLearnMore)",
+                  "href": "https://www.irs.gov/credits-deductions/individuals/earned-income-tax-credit/who-qualifies-for-the-earned-income-tax-credit-eitc",
                   "c": [
                     {
                       "k": "text",
@@ -129239,7 +129239,7 @@
               "t": [
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.premiumTaxCreditInfo)",
+                  "href": "https://www.irs.gov/affordable-care-act/individuals-and-families/the-premium-tax-credit-the-basics",
                   "c": [
                     {
                       "k": "text",
@@ -129404,7 +129404,7 @@
               "t": [
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.cdccInfo)",
+                  "href": "https://www.irs.gov/taxtopics/tc602",
                   "c": [
                     {
                       "k": "text",
@@ -129492,7 +129492,7 @@
               "t": [
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.elderlyAndDisabledCreditInfo)",
+                  "href": "https://www.irs.gov/instructions/i1040sr",
                   "c": [
                     {
                       "k": "text",
@@ -129574,7 +129574,7 @@
               "t": [
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.saversCreditInfo)",
+                  "href": "https://www.irs.gov/retirement-plans/plan-participant-employee/retirement-savings-contributions-savers-credit",
                   "c": [
                     {
                       "k": "text",
@@ -129732,7 +129732,7 @@
               "t": [
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.ctcInfo)",
+                  "href": "https://www.eitc.irs.gov/other-refundable-credits-toolkit/what-you-need-to-know-about-ctc-and-actc/what-you-need-to-know",
                   "c": [
                     {
                       "k": "text",
@@ -129935,7 +129935,7 @@
               "t": [
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.eitcInfo)",
+                  "href": "https://www.irs.gov/credits-deductions/individuals/earned-income-tax-credit-eitc",
                   "c": [
                     {
                       "k": "text",
@@ -131085,7 +131085,7 @@
               "t": [
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.premiumTaxCreditInfo)",
+                  "href": "https://www.irs.gov/affordable-care-act/individuals-and-families/the-premium-tax-credit-the-basics",
                   "c": [
                     {
                       "k": "text",
@@ -131250,7 +131250,7 @@
               "t": [
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.cdccInfo)",
+                  "href": "https://www.irs.gov/taxtopics/tc602",
                   "c": [
                     {
                       "k": "text",
@@ -131338,7 +131338,7 @@
               "t": [
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.elderlyAndDisabledCreditInfo)",
+                  "href": "https://www.irs.gov/instructions/i1040sr",
                   "c": [
                     {
                       "k": "text",
@@ -131420,7 +131420,7 @@
               "t": [
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.saversCreditInfo)",
+                  "href": "https://www.irs.gov/retirement-plans/plan-participant-employee/retirement-savings-contributions-savers-credit",
                   "c": [
                     {
                       "k": "text",
@@ -131578,7 +131578,7 @@
               "t": [
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.ctcInfo)",
+                  "href": "https://www.eitc.irs.gov/other-refundable-credits-toolkit/what-you-need-to-know-about-ctc-and-actc/what-you-need-to-know",
                   "c": [
                     {
                       "k": "text",
@@ -131781,7 +131781,7 @@
               "t": [
                 {
                   "k": "link",
-                  "href": "$t(commonUrls.eitcInfo)",
+                  "href": "https://www.irs.gov/credits-deductions/individuals/earned-income-tax-credit-eitc",
                   "c": [
                     {
                       "k": "text",
@@ -139818,7 +139818,7 @@
                   "t": [
                     {
                       "k": "link",
-                      "href": "$t(commonUrls.federalTaxReturnElectronicTranscript)",
+                      "href": "https://sa.www4.irs.gov/ola/tax_records",
                       "c": [
                         {
                           "k": "text",
@@ -140110,7 +140110,7 @@
                   "t": [
                     {
                       "k": "link",
-                      "href": "$t(commonUrls.federalTaxReturnElectronicTranscript)",
+                      "href": "https://sa.www4.irs.gov/ola/tax_records",
                       "c": [
                         {
                           "k": "text",
@@ -140650,7 +140650,7 @@
                   "t": [
                     {
                       "k": "link",
-                      "href": "$t(commonUrls.federalTaxReturnElectronicTranscript)",
+                      "href": "https://sa.www4.irs.gov/ola/tax_records",
                       "c": [
                         {
                           "k": "text",
@@ -140893,7 +140893,7 @@
                     },
                     {
                       "k": "link",
-                      "href": "$t(commonUrls.federalTaxReturnElectronicTranscript)",
+                      "href": "https://sa.www4.irs.gov/ola/tax_records",
                       "c": [
                         {
                           "k": "text",
@@ -141221,7 +141221,7 @@
                     },
                     {
                       "k": "link",
-                      "href": "$t(commonUrls.federalTaxReturnElectronicTranscript)",
+                      "href": "https://sa.www4.irs.gov/ola/tax_records",
                       "c": [
                         {
                           "k": "text",
@@ -141798,7 +141798,7 @@
                     },
                     {
                       "k": "link",
-                      "href": "$t(commonUrls.federalTaxReturnElectronicTranscript)",
+                      "href": "https://sa.www4.irs.gov/ola/tax_records",
                       "c": [
                         {
                           "k": "text",

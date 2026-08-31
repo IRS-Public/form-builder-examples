@@ -440,9 +440,26 @@ export class Resolver {
     const resolved = resolveKey(key) ?? key;
     for (const subKey of [`helpText.helpLink.urls`, `helpText.hint.urls`]) {
       const nested = lookup(`${resolved}.${subKey}`);
-      if (nested !== null && typeof nested === `object`) return nested as Record<string, string>;
+      if (nested !== null && typeof nested === `object`) return this.expandUrls(nested as Record<string, string>);
     }
-    return CommonTranslation.maybeUrls(tFn, resolved).urls;
+    return this.expandUrls(CommonTranslation.maybeUrls(tFn, resolved).urls);
+  }
+
+  /**
+   * A url map with its `$t(…)` references resolved.
+   *
+   * 133 of this flow's links are authored as `urls: { LinkX: $t(commonUrls.form1095A) }` — the shared
+   * address list, referenced rather than repeated. `expandReferences` was only ever applied to the
+   * *text* of a string, so the reference reached the page verbatim as
+   * `href="$t(commonUrls.form1095A)"`: a link to a relative path that does not exist, on 26 pages.
+   * i18next resolves a `$t()` wherever it appears in a value, and so does this now.
+   */
+  private expandUrls(urls: Record<string, string>): Record<string, string> {
+    const out: Record<string, string> = {};
+    for (const [name, value] of Object.entries(urls)) {
+      out[name] = typeof value === `string` ? this.expandReferences(value) : value;
+    }
+    return out;
   }
 
   /**
@@ -633,7 +650,7 @@ export class Resolver {
       return [];
     }
     const { urls: own } = CommonTranslation.maybeUrls(tFn, namespacedKey);
-    const urls = { ...inherited, ...own };
+    const urls = { ...inherited, ...this.expandUrls(own) };
     if (typeof body === `string`) {
       return this.blocksFromString(body, urls, modalIds);
     }

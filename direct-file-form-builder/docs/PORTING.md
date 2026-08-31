@@ -84,9 +84,30 @@ step rather than something stage 4 could have emitted. Direct File has the trans
 way its `en.yaml` is; what is missing is the step that moves them across. Until then the resolver
 falls back to English and the `/es/` pages render English text under Spanish chrome.
 
+## How this application presents its flow
+
+**One question per screen, in every build.** `--singleQuestionPerScreen` is on in `make dev`, `make
+site` and the Docker image, which is the opposite of the other three applications. The reason is the
+transpiler's central choice: Direct File's 727 screens were collapsed into 138 topic pages, one per
+SubSubcategory, with in-page conditions hiding what does not apply. Read at that grain you are
+reading the collapse rather than the product — `income/jobs` alone is dozens of questions on one
+page. Split back apart it is 343 pages, each one upstream screen, which is the shape Direct File
+ships. `make dev-topic-pages` shows the un-split flow, and Author Mode stays un-split because it
+edits the XML on disk and the splitter's pages are not on it.
+
+**The step indicator counts sections, not pages.** `fragments/usa-step-indicator.html` overrides the
+scaffold's to render one segment per flow module — 25 — labelled from the same
+`all-screens.section.*` keys Browse All uses, and it carries `usa-step-indicator--no-labels`. Both
+halves are needed. At 138 segments the row ran off the side of the viewport: USWDS sizes a segment
+`flex: 1 1 0%` so the bars always fit, but a label cannot shrink below its longest word. And "1 of
+138" is not a number anyone tracks, where "4 of 25 — Filing status" is. What is lost is the
+per-segment link back to a completed section, since the modifier hides the span that carries it;
+those links were already unreachable at 138 segments, and Browse All is this application's
+navigation surface.
+
 ## Library changes this port needed
 
-Eight in `form-builder` and two in `fact-graph`, all landed in the libraries rather than worked
+Ten in `form-builder` and two in `fact-graph`, all landed in the libraries rather than worked
 around here, because each is something another application would want. The first three are gaps; the
 rest are defects — constructs Direct File's flow and dictionary use that the libraries mishandled.
 
@@ -133,6 +154,23 @@ rest are defects — constructs Direct File's flow and dictionary use that the l
    cosmetic limit: 55 of Direct File's option labels interpolate a fact, and a flattened fact
    reference is the empty string, so "I lived in more than 1 state in {{/taxYear}}" reached the page
    without the year and an option whose whole label was the year reached it blank.
+
+9. **`PageSplitter` cuts between blocks when a page has no top-level question.** `--singleQuestionPerScreen`
+   was a no-op for this application, silently: the splitter's `flatten` looks through `<section>` and
+   `<fg-detail>` and nothing else, and every question here is nested inside the conditional
+   `<div class="df-screen">` the transpiler wraps each source screen in. That div cannot be flattened
+   away — the condition on it is what decides whether the screen shows, and it lives in the element's
+   attributes rather than in a parsed field — so the splitter now cuts *between* the blocks instead,
+   emitting each whole. `HtmlWithChildren` carries its parsed condition for that, and `Page` carries
+   an explicit `gate` the splitter sets from it, so a block that does not apply is skipped by the
+   navigator rather than rendered as a page with nothing on it. No other application changes: a page
+   with a top-level question still splits per question, and the three others have no page without one.
+
+10. **The step indicator can group by flow module.** `sections` and `sectionIndex` sit beside the
+    `pages` and `stepIndex` the shipped fragment uses, so no existing output moves; an application
+    that wants section-level navigation overrides the fragment and reads them. The label is
+    deliberately not resolved in the library — which locale key names a module is the application's
+    convention. `Page.moduleSlug` moved off `AllScreens`, since both surfaces group by it now.
 
 Two more landed in **`fact-graph`** rather than `form-builder`.
 

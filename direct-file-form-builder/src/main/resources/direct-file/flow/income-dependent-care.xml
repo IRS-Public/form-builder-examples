@@ -53,7 +53,7 @@
           <li>They provide the care from their own home or place of business</li>
           <li>You pay an agency to place them in your home and the agency controls what work is done and how it’s done</li>
         </ul>
-        <p><a href="$t(commonUrls.householdEmployees)" target="_blank">Learn more about who’s considered a household employee.</a></p>
+        <p><a href="https://www.irs.gov/publications/p503#en_US_2023_publink1000203385" target="_blank">Learn more about who’s considered a household employee.</a></p>
         <fg-set path="/flowKnockoutHouseholdEmployee">
           <question>In <fg-show path="/taxYear"/>, did you have a household employee who came to your home to provide child or dependent care?</question>
           <input type="boolean"/>
@@ -62,7 +62,7 @@
       <div class="df-screen df-knockout" condition="/flowGateae4700b6" operator="isTrue">
         <h2>Direct File doesn’t have the tax forms you need yet.</h2>
         <p>You said you paid a household employee for dependent care expenses. If you hired a household employee in <fg-show path="/taxYear"/>, you may need to pay employment taxes, which requires forms that Direct File doesn’t support yet.</p>
-        <p><a href="$t(commonUrls.householdEmployees)" target="_blank">Learn more about who’s considered a household employee.</a></p>
+        <p><a href="https://www.irs.gov/publications/p503#en_US_2023_publink1000203385" target="_blank">Learn more about who’s considered a household employee.</a></p>
         <fg-alert alert-key="/flow/income/dependent-care/household-employee-ko-benefits" alert-type="error" knockout="true" condition="/flowAlwaysTrue" operator="isTrue">
           <heading><a href="https://www.irs.gov/filing/individuals/how-to-file" target="_blank">Find other ways to file your federal taxes.</a></heading>
         </fg-alert>
@@ -109,8 +109,8 @@
       <modal-heading>Why do we ask about household employees?</modal-heading>
       <modal-content>
         <p>If you hired a household employee in <fg-show path="/taxYear"/>, you may need to pay employment taxes and file Schedule H (Form 1040) with your federal tax return. You’ll also need an Employer Identification Number (EIN).</p>
-        <p>Direct File doesn’t support Schedule H (Form 1040) yet, so if you must pay employment taxes, you’ll need to <a href="$t(commonUrls.otherWaysToFile)" target="_blank">find another way to file your federal taxes.</a></p>
-        <p><a href="$t(commonUrls.householdEmployees)" target="_blank">Learn more about who’s considered a household employee.</a></p>
+        <p>Direct File doesn’t support Schedule H (Form 1040) yet, so if you must pay employment taxes, you’ll need to <a href="https://www.irs.gov/filing/individuals/how-to-file" target="_blank">find another way to file your federal taxes.</a></p>
+        <p><a href="https://www.irs.gov/publications/p503#en_US_2023_publink1000203385" target="_blank">Learn more about who’s considered a household employee.</a></p>
       </modal-content>
     </modal-dialog>
     <modal-dialog id="modal-sharedmodalforfeitcarryforward">

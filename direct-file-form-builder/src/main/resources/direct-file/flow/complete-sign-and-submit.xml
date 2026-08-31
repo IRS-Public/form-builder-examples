@@ -33,7 +33,7 @@
         </ul>
         <p><strong>Other ways to find your AGI</strong></p>
         <ul>
-          <li><a href="$t(commonUrls.federalTaxReturnElectronicTranscript)" target="_blank">Sign in to your IRS online account</a>. Your AGI will be shown in the Return Summary section under <strong>Tax Records</strong>.</li>
+          <li><a href="https://sa.www4.irs.gov/ola/tax_records" target="_blank">Sign in to your IRS online account</a>. Your AGI will be shown in the Return Summary section under <strong>Tax Records</strong>.</li>
           <li>If you have a copy of your <fg-show path="/lastTaxYear"/> federal tax return, the AGI will be listed on line 11 of your Form 1040. Get a copy of your <fg-show path="/lastTaxYear"/> return by logging in to the tax software you used, or contact your tax preparer.</li>
         </ul>
         <p><strong>Ways to find last year’s Self-Select PIN</strong></p>
@@ -117,7 +117,7 @@
         </ul>
         <p><strong>Other ways to find your AGI</strong></p>
         <ul>
-          <li><a href="$t(commonUrls.federalTaxReturnElectronicTranscript)" target="_blank">Sign in to your IRS online account</a>. Your AGI will be shown in the Return Summary section under <strong>Tax Records</strong>.</li>
+          <li><a href="https://sa.www4.irs.gov/ola/tax_records" target="_blank">Sign in to your IRS online account</a>. Your AGI will be shown in the Return Summary section under <strong>Tax Records</strong>.</li>
           <li>If you have a copy of your <fg-show path="/lastTaxYear"/> federal tax return, the AGI will be listed on line 11 of your Form 1040. Get a copy of your <fg-show path="/lastTaxYear"/> return by logging in to the tax software you used, or contact your tax preparer.</li>
         </ul>
         <p><strong>Ways to find last year’s Self-Select PIN</strong></p>
@@ -147,7 +147,7 @@
         <p>If a taxpayer’s filing status or tax situation was different last year, they may need to use a specific AGI. <a href="https://www.irs.gov/e-file-providers/self-select-pin-method-for-forms-1040-and-4868-modernized-e-file-mef#PIN5" target="_blank">Learn more about which AGI to use.</a></p>
         <p><strong>Ways to find your AGI</strong></p>
         <ul>
-          <li><a href="$t(commonUrls.federalTaxReturnElectronicTranscript)" target="_blank">Sign in to your IRS account</a>. Your AGI will be shown in the Return Summary section under <strong>Tax Records</strong>.</li>
+          <li><a href="https://sa.www4.irs.gov/ola/tax_records" target="_blank">Sign in to your IRS account</a>. Your AGI will be shown in the Return Summary section under <strong>Tax Records</strong>.</li>
           <li>If you have a copy of your <fg-show path="/lastTaxYear"/> federal tax return, the AGI will be listed on line 11 of your Form 1040. Get a copy of your <fg-show path="/lastTaxYear"/> return by logging in to the tax software you used or contact your tax preparer.</li>
         </ul>
       </modal-content>
@@ -175,7 +175,7 @@
         </ul>
         <p><strong>Other ways to find their AGI</strong></p>
         <ul>
-          <li>Have them sign into their <a href="$t(commonUrls.federalTaxReturnElectronicTranscript)" target="_blank">IRS account</a>. Their AGI will be shown in the Return Summary section under <strong>Tax Records</strong>.</li>
+          <li>Have them sign into their <a href="https://sa.www4.irs.gov/ola/tax_records" target="_blank">IRS account</a>. Their AGI will be shown in the Return Summary section under <strong>Tax Records</strong>.</li>
           <li>If they have a copy of their <fg-show path="/lastTaxYear"/> federal tax return, the AGI will be listed on line 11 of their Form 1040. They can get a copy of their <fg-show path="/lastTaxYear"/> return by logging in to the tax software they used or contacting their tax preparer.</li>
         </ul>
         <p><strong>Ways to find last year’s Self-Select PIN</strong></p>
@@ -260,7 +260,7 @@
         </ul>
         <p><strong>Other ways to find their AGI</strong></p>
         <ul>
-          <li>Have them sign into their <a href="$t(commonUrls.federalTaxReturnElectronicTranscript)" target="_blank">IRS account</a>. Their AGI will be shown in the Return Summary section under <strong>Tax Records</strong>.</li>
+          <li>Have them sign into their <a href="https://sa.www4.irs.gov/ola/tax_records" target="_blank">IRS account</a>. Their AGI will be shown in the Return Summary section under <strong>Tax Records</strong>.</li>
           <li>If they have a copy of their <fg-show path="/lastTaxYear"/> federal tax return, the AGI will be listed on line 11 of their Form 1040. They can get a copy of their <fg-show path="/lastTaxYear"/> return by logging in to the tax software they used or contacting their tax preparer.</li>
         </ul>
         <p><strong>Ways to find last year’s Self-Select PIN</strong></p>
@@ -290,7 +290,7 @@
         <p>If a taxpayer’s filing status or tax situation was different last year, they may need to use a specific AGI. <a href="https://www.irs.gov/e-file-providers/self-select-pin-method-for-forms-1040-and-4868-modernized-e-file-mef#PIN5" target="_blank">Learn more about which AGI to use.</a></p>
         <p><strong>Ways to find <fg-show path="/secondaryFiler/firstName"/>’s AGI</strong></p>
         <ul>
-          <li>Have them sign into their <a href="$t(commonUrls.federalTaxReturnElectronicTranscript)" target="_blank">IRS account</a>. Their AGI will be shown in the Return Summary section under <strong>Tax Records</strong>.</li>
+          <li>Have them sign into their <a href="https://sa.www4.irs.gov/ola/tax_records" target="_blank">IRS account</a>. Their AGI will be shown in the Return Summary section under <strong>Tax Records</strong>.</li>
           <li>If they have a copy of their <fg-show path="/lastTaxYear"/> federal tax return, AGI will be listed on line 11 of their Form 1040. They can get a copy of their <fg-show path="/lastTaxYear"/> return by logging in to the tax software they used or contact their tax preparer.</li>
         </ul>
       </modal-content>

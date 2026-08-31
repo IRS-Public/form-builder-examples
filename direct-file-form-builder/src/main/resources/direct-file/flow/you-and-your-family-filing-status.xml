@@ -19,7 +19,7 @@
         <fg-detail>
           <summary>What are the requirements for the other filing statuses?</summary>
           <p>Each filing status has different requirements.</p>
-          <p><a href="$t(commonUrls.determiningFileStatus)" target="_blank">Learn more about each filing status.</a></p>
+          <p><a href="https://www.irs.gov/newsroom/theres-more-to-determining-filing-status-than-being-married-or-single" target="_blank">Learn more about each filing status.</a></p>
           <p><strong>Married Filing Jointly and Married Filing Separately:</strong></p>
           <ul>
             <li>You must be married</li>
@@ -46,7 +46,7 @@
         <fg-detail>
           <summary>What are the requirements for the other filing statuses?</summary>
           <p>Each filing status has different requirements.</p>
-          <p><a href="$t(commonUrls.determiningFileStatus)" target="_blank">Learn more about each filing status.</a></p>
+          <p><a href="https://www.irs.gov/newsroom/theres-more-to-determining-filing-status-than-being-married-or-single" target="_blank">Learn more about each filing status.</a></p>
           <p><strong>Married Filing Jointly:</strong></p>
           <ul>
             <li>You must be married</li>
@@ -84,7 +84,7 @@
           <li>For more than 6 months, you paid more than half the <a href="https://www.irs.gov/publications/p501#en_US_2024_publink1000220796" target="_blank">cost of keeping up a home</a> for someone who lived with you and <a href="https://www.irs.gov/publications/p501#en_US_2024_publink1000220823" target="_blank">met the requirements</a></li>
         </ul>
         <fg-alert alert-key="/flow/you-and-your-family/filing-status/filing-status-assertion-hoh-best" alert-type="info" condition="/flowAlwaysTrue" operator="isTrue">
-          <heading><strong><fg-show path="/recommendedFilingStatusCapitalized"/></strong> is the best for you because it gives you a bigger <a href="$t(commonUrls.standardDeduction)" target="_blank">standard deduction</a> than the other filing statuses you qualify for. This means that less of your income will be taxed.</heading>
+          <heading><strong><fg-show path="/recommendedFilingStatusCapitalized"/></strong> is the best for you because it gives you a bigger <a href="https://www.irs.gov/publications/p501#en_US_2024_publink100033487" target="_blank">standard deduction</a> than the other filing statuses you qualify for. This means that less of your income will be taxed.</heading>
           <p><modal-link for="modal-info-info-you-and-your-family-filing-status-filing-status-best-fit-modal-linkmodal1">How does my filing status affect my taxes?</modal-link></p>
         </fg-alert>
         <p>If you update information about your marital status or your family and household, it may change which filing statuses you qualify for. We’ll let you know if that happens.</p>
@@ -100,7 +100,7 @@
           <li>You didn’t remarry before the end of the tax year</li>
         </ul>
         <fg-alert alert-key="/flow/you-and-your-family/filing-status/filing-status-assertion-qss-best" alert-type="info" condition="/flowAlwaysTrue" operator="isTrue">
-          <heading><strong><fg-show path="/recommendedFilingStatusCapitalized"/></strong> is the best for you because it gives you a bigger <a href="$t(commonUrls.standardDeduction)" target="_blank">standard deduction</a> than the other filing statuses you qualify for. This means that less of your income will be taxed.</heading>
+          <heading><strong><fg-show path="/recommendedFilingStatusCapitalized"/></strong> is the best for you because it gives you a bigger <a href="https://www.irs.gov/publications/p501#en_US_2024_publink100033487" target="_blank">standard deduction</a> than the other filing statuses you qualify for. This means that less of your income will be taxed.</heading>
           <p><modal-link for="modal-info-info-you-and-your-family-filing-status-filing-status-best-fit-modal-linkmodal1">How does my filing status affect my taxes?</modal-link></p>
         </fg-alert>
         <p>If you update information about your marital status or your family and household, it may change which filing statuses you qualify for. We’ll let you know if that happens.</p>
@@ -141,7 +141,7 @@
         <h2>Change your filing status</h2>
         <p>This choice is important because it impacts how much money you get back or owe.</p>
         <fg-alert alert-key="/flow/you-and-your-family/filing-status/filing-status-override" alert-type="info" condition="/flowGate9759668d" operator="isTrue">
-          <heading><strong><fg-show path="/recommendedFilingStatusCapitalized"/></strong> is the best for you because it gives you a bigger <a href="$t(commonUrls.standardDeduction)" target="_blank">standard deduction</a> than the other filing statuses you qualify for. This means that less of your income will be taxed.</heading>
+          <heading><strong><fg-show path="/recommendedFilingStatusCapitalized"/></strong> is the best for you because it gives you a bigger <a href="https://www.irs.gov/publications/p501#en_US_2024_publink100033487" target="_blank">standard deduction</a> than the other filing statuses you qualify for. This means that less of your income will be taxed.</heading>
           <p><modal-link for="modal-info-info-you-and-your-family-filing-status-filing-status-best-fit-modal-linkmodal1">How does my filing status affect my taxes?</modal-link></p>
         </fg-alert>
         <fg-alert alert-key="/flow/you-and-your-family/filing-status/filing-status-override" alert-type="info" condition="/flowGatebf866066" operator="isTrue">
@@ -270,7 +270,7 @@
         <p>You already chose a filing status, but you made edits to your information that make you ineligible for it.</p>
         <p>Choose a new filing status that you qualify for.</p>
         <fg-alert alert-key="/flow/you-and-your-family/filing-status/filing-status-error-manual-fix" alert-type="info" condition="/flowAlwaysTrue" operator="isTrue">
-          <heading><strong><fg-show path="/recommendedFilingStatusCapitalized"/></strong> is the best for you because it gives you a bigger <a href="$t(commonUrls.standardDeduction)" target="_blank">standard deduction</a> than the other filing statuses you qualify for. This means that less of your income will be taxed.</heading>
+          <heading><strong><fg-show path="/recommendedFilingStatusCapitalized"/></strong> is the best for you because it gives you a bigger <a href="https://www.irs.gov/publications/p501#en_US_2024_publink100033487" target="_blank">standard deduction</a> than the other filing statuses you qualify for. This means that less of your income will be taxed.</heading>
           <p><modal-link for="modal-info-info-you-and-your-family-filing-status-filing-status-best-fit-modal-linkmodal1">How does my filing status affect my taxes?</modal-link></p>
         </fg-alert>
         <fg-set path="/filingStatus">
@@ -326,21 +326,21 @@
     <modal-dialog id="modal-info-info-you-and-your-family-filing-status-reasons-help-linkmodal1">
       <modal-heading>How does my filing status affect my taxes?</modal-heading>
       <modal-content>
-        <p>Your filing status is important because it determines the rate at which your income is taxed. It can also affect your <a href="$t(commonUrls.standardDeduction)" target="_blank">standard deduction</a> and your ability to claim certain credits.</p>
-        <p><a href="$t(commonUrls.determiningFileStatus)" target="_blank">Learn more about filing status.</a></p>
+        <p>Your filing status is important because it determines the rate at which your income is taxed. It can also affect your <a href="https://www.irs.gov/publications/p501#en_US_2024_publink100033487" target="_blank">standard deduction</a> and your ability to claim certain credits.</p>
+        <p><a href="https://www.irs.gov/newsroom/theres-more-to-determining-filing-status-than-being-married-or-single" target="_blank">Learn more about filing status.</a></p>
       </modal-content>
     </modal-dialog>
     <modal-dialog id="modal-info-info-you-and-your-family-filing-status-filing-status-best-fit-modal-linkmodal1">
       <modal-heading>How does my filing status affect my taxes?</modal-heading>
       <modal-content>
-        <p>Your filing status is important because it determines the rate at which your income is taxed. It can also affect your <a href="$t(commonUrls.standardDeduction)" target="_blank">standard deduction</a> and your ability to claim certain credits.</p>
-        <p><a href="$t(commonUrls.determiningFileStatus)" target="_blank">Learn more about filing status.</a></p>
+        <p>Your filing status is important because it determines the rate at which your income is taxed. It can also affect your <a href="https://www.irs.gov/publications/p501#en_US_2024_publink100033487" target="_blank">standard deduction</a> and your ability to claim certain credits.</p>
+        <p><a href="https://www.irs.gov/newsroom/theres-more-to-determining-filing-status-than-being-married-or-single" target="_blank">Learn more about filing status.</a></p>
       </modal-content>
     </modal-dialog>
     <modal-dialog id="modal-info-info-you-and-your-family-filing-status-filing-status-best-fit-mfj-hoh-modal--59bc7d00">
       <modal-heading>Learn more about the filing statuses I may qualify for</modal-heading>
       <modal-content>
-        <p>Some taxpayers are eligible for more than one filing status. Your filing status is important because it determines your income tax rate. It can also change your <a href="$t(commonUrls.standardDeduction)" target="_blank">standard deduction</a> and your ability to claim certain credits.</p>
+        <p>Some taxpayers are eligible for more than one filing status. Your filing status is important because it determines your income tax rate. It can also change your <a href="https://www.irs.gov/publications/p501#en_US_2024_publink100033487" target="_blank">standard deduction</a> and your ability to claim certain credits.</p>
         <p><strong>Filing statuses available to married taxpayers</strong></p>
         <p>Generally, married taxpayers can use the Married Filing Jointly or Married Filing Separately filing statuses.</p>
         <p>Married taxpayers may also be able to use the Head of Household filing status if they’re considered unmarried for tax purposes and have a qualifying person that meets all of the requirements for that filing status. <a href="https://www.irs.gov/publications/p501#en_US_2024_publink1000220775" target="_blank">Learn more about the requirements for Head of Household filing status.</a></p>
@@ -358,7 +358,7 @@
         <p>Here are a few things that can help you decide if it’s better to file jointly (using Married Filing Jointly filing status) or file separately (using Married Filing Separately filing status).</p>
         <p><strong>Taxes on your income</strong></p>
         <p>If you and your spouse decide to file jointly, your tax may be lower than your combined tax if you file separately. This means you’ll probably get more money back or owe less.</p>
-        <p>This is because the <a href="$t(commonUrls.standardDeduction)" target="_blank">standard deduction</a> and tax brackets change when two people combine their income and expenses on a joint return. You can file a joint return even if one of you had no income or deductions.</p>
+        <p>This is because the <a href="https://www.irs.gov/publications/p501#en_US_2024_publink100033487" target="_blank">standard deduction</a> and tax brackets change when two people combine their income and expenses on a joint return. You can file a joint return even if one of you had no income or deductions.</p>
         <p>However, filing separately can sometimes mean you pay less tax. For example, if you have high medical expenses, you may be able to deduct more of those expenses. This is because when you file separately, you’re reporting less income, which may qualify you to deduct more.</p>
         <p><strong>Eligibility for tax benefits</strong></p>
         <p>If you file a separate return, some credits and deductions aren’t available or can be reduced. For example, taxpayers filing separate returns are generally not eligible for the Earned Income Tax Credit (EITC) unless they have a qualifying child and are separated from their spouse. Taxpayers filing separate returns will also pay tax on more of their social security benefits.</p>
@@ -379,7 +379,7 @@
         <p>Here are a few things that can help you decide if it’s better to file jointly (using Married Filing Jointly filing status) or file separately (using Married Filing Separately filing status).</p>
         <p><strong>Taxes on your income</strong></p>
         <p>If you and your spouse decide to file jointly, your tax may be lower than your combined tax if you file separately. This means you’ll probably get more money back or owe less.</p>
-        <p>This is because the <a href="$t(commonUrls.standardDeduction)" target="_blank">standard deduction</a> and tax brackets change when two people combine their income and expenses on a joint return. You can file a joint return even if one of you had no income or deductions.</p>
+        <p>This is because the <a href="https://www.irs.gov/publications/p501#en_US_2024_publink100033487" target="_blank">standard deduction</a> and tax brackets change when two people combine their income and expenses on a joint return. You can file a joint return even if one of you had no income or deductions.</p>
         <p>However, filing separately can sometimes mean you pay less tax. For example, if you have high medical expenses, you may be able to deduct more of those expenses. This is because when you file separately, you’re reporting less income, which may qualify you to deduct more.</p>
         <p><strong>Eligibility for tax benefits</strong></p>
         <p>If you file a separate return, some credits and deductions aren’t available or can be reduced. For example, taxpayers filing separate returns are generally not eligible for the Earned Income Tax Credit (EITC) unless they have a qualifying child and are separated from their spouse. Taxpayers filing separate returns will also pay tax on more of their social security benefits.</p>

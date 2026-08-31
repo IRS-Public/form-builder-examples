@@ -75,10 +75,10 @@
         <p condition="/flowGated50370d5" operator="isTrue">This means that you or <fg-show path="/secondaryFiler/firstName"/> probably had a <modal-link for="modal-sharedmodalforwhatisqualifiedmarketplaceplan">Marketplace health plan</modal-link> in <fg-show path="/taxYear"/> that qualifies for the Premium Tax Credit (PTC). We’ll ask you to confirm this next.</p>
         <p condition="/flowGate1b1f3b04" operator="isTrue">This means that you, <fg-show path="/secondaryFiler/firstName"/>, or your dependents probably had a <modal-link for="modal-sharedmodalforwhatisqualifiedmarketplaceplan">Marketplace health plan</modal-link> in <fg-show path="/taxYear"/> that qualifies for the Premium Tax Credit (PTC). We’ll ask you to confirm this next.</p>
         <fg-alert alert-key="/flow/credits-and-deductions/credits/1095-import-info" alert-type="info" condition="/flowGate14546ad2" operator="isTrue">
-          <heading><a href="$t(commonUrls.irsOnlineAcct)" target="_blank">Get Form 1095-A from your IRS Online Account</a></heading>
+          <heading><a href="https://sa.www4.irs.gov/ola/information_return" target="_blank">Get Form 1095-A from your IRS Online Account</a></heading>
         </fg-alert>
         <fg-alert alert-key="/flow/credits-and-deductions/credits/1095-import-info" alert-type="info" condition="/flowGate980b4142" operator="isTrue">
-          <heading><a href="$t(commonUrls.irsOnlineAcct)" target="_blank">Get Form 1095-A from <fg-show path="/primaryFiler/firstName"/>’s IRS Online Account</a></heading>
+          <heading><a href="https://sa.www4.irs.gov/ola/information_return" target="_blank">Get Form 1095-A from <fg-show path="/primaryFiler/firstName"/>’s IRS Online Account</a></heading>
         </fg-alert>
         <p><modal-link for="modal-info-info-credits-and-deductions-credits-received-1095-a-without-marketplace-plan-931d2e4b">What if I didn’t have a qualified health plan but received a Form 1095-A?</modal-link></p>
       </div>
@@ -104,7 +104,7 @@
         <p>When you file your taxes, the amount of the credit you got in advance is compared to the  amount you actually qualify for.</p>
         <p>If you didn’t get the full amount that you qualify for through advance payments, you’ll get the remaining credit when you file your taxes.</p>
         <p>If your advance payments are more than the PTC you qualify for, you’ll have to repay some or all of the excess amount on your federal tax return.</p>
-        <p><a href="$t(commonUrls.premiumTaxCreditInfo)" target="_blank">Learn more about the PTC.</a></p>
+        <p><a href="https://www.irs.gov/affordable-care-act/individuals-and-families/the-premium-tax-credit-the-basics" target="_blank">Learn more about the PTC.</a></p>
       </modal-content>
     </modal-dialog>
     <modal-dialog id="modal-sharedmodalcdcc">
@@ -115,7 +115,7 @@
         <p>The credit ranges from <fg-show path="/cdccMinAllowedPercentageTY2024"/>% to <fg-show path="/cdccMaxAllowedPercentageTY2024"/>% of your expenses up to <fg-show path="/cdccMaxClaimableExpenseWithOneQP"/> for one qualifying person and <fg-show path="/cdccMaxClaimableExpenseWithTwoQP"/> for two qualifying people. This means the biggest credit you can get is <fg-show path="/cdccMaxAllowedCreditWithOneQP"/> for one qualifying person and <fg-show path="/cdccMaxAllowedCreditWithTwoQP"/> for two or more qualifying people.</p>
         <p>This credit is <strong>nonrefundable</strong>.  This means that it can reduce your taxes, but it won’t reduce what you owe below $0. In other words, it can’t give you a refund.</p>
         <p><strong>There are some tax situations that Direct File doesn’t support yet</strong>. We ask questions to check if these situations apply to you as you complete your return. Also, if you or your spouse had dependent care provided in <fg-show path="/lastTaxYear"/> that you paid for later in <fg-show path="/taxYear"/>, and you didn’t take the maximum amount of expenses for CDCC in <fg-show path="/taxYear"/>, you won’t be able to use Direct File this year. This requires completing Worksheet A and line 9b of Form 2441.</p>
-        <p><a href="$t(commonUrls.cdccInfo)" target="_blank">Learn more about CDCC</a></p>
+        <p><a href="https://www.irs.gov/taxtopics/tc602" target="_blank">Learn more about CDCC</a></p>
       </modal-content>
     </modal-dialog>
     <modal-dialog id="modal-sharedmodaledc">
@@ -128,7 +128,7 @@
         </ul>
         <p>Taxpayers who meet the eligibility requirements can qualify for the credit.</p>
         <p>This credit is <strong>nonrefundable</strong>. This means that it can reduce your taxes, but it won’t reduce what you owe below $0. In other words, it can’t give you a refund.</p>
-        <p><a href="$t(commonUrls.elderlyAndDisabledCreditInfo)" target="_blank">Learn more about the Credit for the Elderly or the Disabled</a></p>
+        <p><a href="https://www.irs.gov/instructions/i1040sr" target="_blank">Learn more about the Credit for the Elderly or the Disabled</a></p>
       </modal-content>
     </modal-dialog>
     <modal-dialog id="modal-sharedmodalsaverscredit">
@@ -137,7 +137,7 @@
         <p>The Saver’s Credit, also known as the Retirement Savings Contributions Credit, is a tax benefit for low- to moderate-income taxpayers that offsets a portion of workers’ voluntarily contributions to their Individual Retirement Arrangements (IRAs), 401(k) plans and similar workplace retirement programs. The Saver’s credit also helps eligible people who are the designated beneficiaries of an Achieving a Better Life Experience (ABLE) account.</p>
         <p>Taxpayers who meet the eligibility requirements for the Saver’s Credit can qualify for up to <fg-show path="/saversMaxCreditAmountNotMFJ"/> (<fg-show path="/saversMaxCreditLimit"/> if married filing jointly).</p>
         <p>This credit is <strong>nonrefundable</strong>. This means that it can reduce your taxes, but it won’t reduce what you owe below $0. In other words, it can’t give you a refund.</p>
-        <p><a href="$t(commonUrls.saversCreditInfo)" target="_blank">Learn more about Saver’s Credit</a></p>
+        <p><a href="https://www.irs.gov/retirement-plans/plan-participant-employee/retirement-savings-contributions-savers-credit" target="_blank">Learn more about Saver’s Credit</a></p>
       </modal-content>
     </modal-dialog>
     <modal-dialog id="modal-sharedmodalctc">
@@ -151,7 +151,7 @@
         <p><strong>Additional Child Tax Credit (ACTC)</strong></p>
         <p>ACTC is the <strong>refundable</strong> part of the credit, worth up to <fg-show path="/maxActcAmount"/> per child. A refundable credit will reduce your taxes. It can even result in a refund if it reduces your taxes below $0.</p>
         <p>ACTC is available to taxpayers who qualify for CTC but couldn’t claim the full amount because they didn’t owe any taxes, or owed less than the amount of their CTC.</p>
-        <p><a href="$t(commonUrls.ctcInfo)" target="_blank">Learn more about CTC and ACTC</a></p>
+        <p><a href="https://www.eitc.irs.gov/other-refundable-credits-toolkit/what-you-need-to-know-about-ctc-and-actc/what-you-need-to-know" target="_blank">Learn more about CTC and ACTC</a></p>
       </modal-content>
     </modal-dialog>
     <modal-dialog id="modal-sharedmodalodc">
@@ -176,7 +176,7 @@
           <li><fg-show path="/roundedMaxEitcWith3OrMoreQualifyingChildren"/> if they have 3 or more qualifying children with valid SSNs</li>
         </ul>
         <p>This credit is <strong>refundable</strong>. A refundable credit will reduce your taxes. It can even result in a refund if it reduces your taxes below $0.</p>
-        <p><a href="$t(commonUrls.eitcInfo)" target="_blank">Learn more about EITC</a></p>
+        <p><a href="https://www.irs.gov/credits-deductions/individuals/earned-income-tax-credit-eitc" target="_blank">Learn more about EITC</a></p>
       </modal-content>
     </modal-dialog>
     <modal-dialog id="modal-info-info-credits-and-deductions-credits-intro-potential-credits-linkmodal6">
@@ -212,11 +212,11 @@
       <modal-content>
         <p>The Marketplace sends Form 1095-A, Health Insurance Marketplace Statement to people enrolled in qualified Marketplace health plans.</p>
         <p>The Marketplace should mail or electronically provide the form before January 31, <fg-show path="/nextTaxYear"/>. If you don’t receive a Form 1095-A, or need to request a copy, then log in to your Marketplace account to download the form or contact your Marketplace for help.</p>
-        <p>If you got coverage through HealthCare.gov and set up an account, you can <a href="$t(commonUrls.form1095A)" target="_blank">download Form 1095-A from your HealthCare.gov account.</a></p>
-        <p>If you got coverage through a state Marketplace like <a href="$t(commonUrls.marketplaceInState)" target="_blank"><fg-show path="/stateMarketplaceName"/></a>, visit their website to download or request a Form 1095-A.</p>
-        <p>Your Forms 1095-A will also be available in your <a href="$t(commonUrls.irsOnlineAcct)" target="_blank">IRS Online Account </a> when the IRS receives them.</p>
+        <p>If you got coverage through HealthCare.gov and set up an account, you can <a href="https://www.healthcare.gov/tax-form-1095/" target="_blank">download Form 1095-A from your HealthCare.gov account.</a></p>
+        <p>If you got coverage through a state Marketplace like <a href="https://www.healthcare.gov/marketplace-in-your-state/" target="_blank"><fg-show path="/stateMarketplaceName"/></a>, visit their website to download or request a Form 1095-A.</p>
+        <p>Your Forms 1095-A will also be available in your <a href="https://sa.www4.irs.gov/ola/information_return" target="_blank">IRS Online Account </a> when the IRS receives them.</p>
         <p>If someone else enrolled you, your spouse (who you’re filing jointly with), or a dependent, then a Form 1095-A may be sent to the person who completed the enrollment. You’ll need to check with them to get a copy.</p>
-        <p><a href="$t(commonUrls.form1095A)" target="_blank">Learn more about Form 1095-A.</a></p>
+        <p><a href="https://www.healthcare.gov/tax-form-1095/" target="_blank">Learn more about Form 1095-A.</a></p>
       </modal-content>
     </modal-dialog>
     <modal-dialog id="modal-info-info-credits-and-deductions-credits-check-marketplace-plan-for-ptc-without-s-c8e0c241">
@@ -224,11 +224,11 @@
       <modal-content>
         <p>The Marketplace sends Form 1095-A, Health Insurance Marketplace Statement to people enrolled in qualified Marketplace health plans.</p>
         <p>The Marketplace should mail or electronically provide the form before January 31, <fg-show path="/nextTaxYear"/>. If you don’t receive a Form 1095-A, or need to request a copy, then log in to your Marketplace account to download the form or contact your Marketplace for help.</p>
-        <p>If you got coverage through HealthCare.gov and set up an account, you can <a href="$t(commonUrls.form1095A)" target="_blank">download Form 1095-A from your HealthCare.gov account.</a></p>
-        <p>If you got coverage through a state Marketplace, <a href="$t(commonUrls.marketplaceInState)" target="_blank">visit the state Marketplace website</a> to download or request a Form 1095-A.</p>
-        <p>Your Forms 1095-A will also be available in your <a href="$t(commonUrls.irsOnlineAcct)" target="_blank">IRS Online Account </a> when the IRS receives them.</p>
+        <p>If you got coverage through HealthCare.gov and set up an account, you can <a href="https://www.healthcare.gov/tax-form-1095/" target="_blank">download Form 1095-A from your HealthCare.gov account.</a></p>
+        <p>If you got coverage through a state Marketplace, <a href="https://www.healthcare.gov/marketplace-in-your-state/" target="_blank">visit the state Marketplace website</a> to download or request a Form 1095-A.</p>
+        <p>Your Forms 1095-A will also be available in your <a href="https://sa.www4.irs.gov/ola/information_return" target="_blank">IRS Online Account </a> when the IRS receives them.</p>
         <p>If someone else enrolled you, your spouse (who you’re filing jointly with), or a dependent, then a Form 1095-A may be sent to the person who completed the enrollment. You’ll need to check with them to get a copy.</p>
-        <p><a href="$t(commonUrls.form1095A)" target="_blank">Learn more about Form 1095-A.</a></p>
+        <p><a href="https://www.healthcare.gov/tax-form-1095/" target="_blank">Learn more about Form 1095-A.</a></p>
       </modal-content>
     </modal-dialog>
     <modal-dialog id="modal-sharedmodalforwhatisqualifiedmarketplaceplan">
@@ -255,7 +255,7 @@
       <modal-heading>What if I didn’t have a qualified health plan but received a Form 1095-A?</modal-heading>
       <modal-content>
         <p>If no one on your tax return had a qualified Marketplace health plan, but someone received a Form 1095-A, the form may have been sent by mistake.</p>
-        <p>Before you file your taxes, you’ll need to <a href="$t(commonUrls.form1095A)" target="_blank">contact HealthCare.gov</a> or your <a href="$t(commonUrls.marketplaceInState)" target="_blank">state Marketplace</a> to correct this mistake by getting a voided Form 1095-A. If you file your federal tax return without first getting a voided 1095-A, the IRS may reject your tax return.</p>
+        <p>Before you file your taxes, you’ll need to <a href="https://www.healthcare.gov/tax-form-1095/" target="_blank">contact HealthCare.gov</a> or your <a href="https://www.healthcare.gov/marketplace-in-your-state/" target="_blank">state Marketplace</a> to correct this mistake by getting a voided Form 1095-A. If you file your federal tax return without first getting a voided 1095-A, the IRS may reject your tax return.</p>
       </modal-content>
     </modal-dialog>
   </page>
@@ -331,12 +331,12 @@
         <fg-alert alert-key="/flow/credits-and-deductions/credits/qualified-marketplace-plan" alert-type="info" condition="/flowGatec0c05d09" operator="isTrue">
           <heading>There’s a Form 1095-A in your IRS Online Account</heading>
           <p>This means you should answer <strong>Yes</strong>, unless you think you received the form by mistake.</p>
-          <p><a href="$t(commonUrls.irsOnlineAcct)" target="_blank">Get Form 1095-A from your IRS Online Account</a></p>
+          <p><a href="https://sa.www4.irs.gov/ola/information_return" target="_blank">Get Form 1095-A from your IRS Online Account</a></p>
         </fg-alert>
         <fg-alert alert-key="/flow/credits-and-deductions/credits/qualified-marketplace-plan" alert-type="info" condition="/flowGate8bc00e5d" operator="isTrue">
           <heading>There’s a Form 1095-A in <fg-show path="/primaryFiler/firstName"/>’s IRS Online Account</heading>
           <p>This means you should answer <strong>Yes</strong>, unless you think you received the form by mistake.</p>
-          <p><a href="$t(commonUrls.irsOnlineAcct)" target="_blank">Get Form 1095-A from <fg-show path="/primaryFiler/firstName"/>’s IRS Online Account</a></p>
+          <p><a href="https://sa.www4.irs.gov/ola/information_return" target="_blank">Get Form 1095-A from <fg-show path="/primaryFiler/firstName"/>’s IRS Online Account</a></p>
         </fg-alert>
         <p condition="/flowGateaf08d616" operator="isTrue"><modal-link for="modal-info-info-credits-and-deductions-credits-check-marketplace-plan-for-ptc-with-stat-3029a2b9">How can I check if I have a Marketplace health plan that qualifies for the PTC?</modal-link></p>
         <p condition="/flowGate9840b715" operator="isTrue"><modal-link for="modal-info-info-credits-and-deductions-credits-check-marketplace-plan-for-ptc-without-s-c8e0c241">How can I check if I have a Marketplace health plan that qualifies for the PTC?</modal-link></p>
@@ -380,11 +380,11 @@
         <p class="df-context-heading">Premium Tax Credit</p>
         <fg-alert alert-key="/flow/credits-and-deductions/credits/1095-a-check" alert-type="info" condition="/flowGatec0c05d09" operator="isTrue">
           <heading>There’s a Form 1095-A in your IRS Online Account</heading>
-          <p><a href="$t(commonUrls.irsOnlineAcct)" target="_blank">Get Form 1095-A from your IRS Online Account</a></p>
+          <p><a href="https://sa.www4.irs.gov/ola/information_return" target="_blank">Get Form 1095-A from your IRS Online Account</a></p>
         </fg-alert>
         <fg-alert alert-key="/flow/credits-and-deductions/credits/1095-a-check" alert-type="info" condition="/flowGate8bc00e5d" operator="isTrue">
           <heading>There’s a Form 1095-A in <fg-show path="/primaryFiler/firstName"/>’s IRS Online Account</heading>
-          <p><a href="$t(commonUrls.irsOnlineAcct)" target="_blank">Get Form 1095-A from <fg-show path="/primaryFiler/firstName"/>’s IRS Online Account</a></p>
+          <p><a href="https://sa.www4.irs.gov/ola/information_return" target="_blank">Get Form 1095-A from <fg-show path="/primaryFiler/firstName"/>’s IRS Online Account</a></p>
         </fg-alert>
         <p condition="/flowGate14546ad2" operator="isTrue">If you had a qualified health plan, but didn’t receive a Form 1095-A, you’ll need to get a copy of the form before you can finish filing your taxes.</p>
         <p condition="/flowGate255e3e20" operator="isTrue">If you or your dependents had a qualified health plan, but didn’t receive a Form 1095-A, you’ll need to get a copy of the form before you can finish filing your taxes.</p>
@@ -402,11 +402,11 @@
         <p class="df-context-heading">Premium Tax Credit</p>
         <fg-alert alert-key="/flow/credits-and-deductions/credits/multiple-forms-check" alert-type="info" condition="/flowGatec0c05d09" operator="isTrue">
           <heading>There’s a Form 1095-A in your IRS Online Account</heading>
-          <p><a href="$t(commonUrls.irsOnlineAcct)" target="_blank">Get Form 1095-A from your IRS Online Account</a></p>
+          <p><a href="https://sa.www4.irs.gov/ola/information_return" target="_blank">Get Form 1095-A from your IRS Online Account</a></p>
         </fg-alert>
         <fg-alert alert-key="/flow/credits-and-deductions/credits/multiple-forms-check" alert-type="info" condition="/flowGate8bc00e5d" operator="isTrue">
           <heading>There’s a Form 1095-A in <fg-show path="/primaryFiler/firstName"/>’s IRS Online Account</heading>
-          <p><a href="$t(commonUrls.irsOnlineAcct)" target="_blank">Get Form 1095-A from <fg-show path="/primaryFiler/firstName"/>’s IRS Online Account</a></p>
+          <p><a href="https://sa.www4.irs.gov/ola/information_return" target="_blank">Get Form 1095-A from <fg-show path="/primaryFiler/firstName"/>’s IRS Online Account</a></p>
         </fg-alert>
         <p>You could have more than one Form 1095-A if, for example:</p>
         <ul>
@@ -549,11 +549,11 @@
       <modal-content>
         <p>The Marketplace sends Form 1095-A, Health Insurance Marketplace Statement to people enrolled in qualified Marketplace health plans.</p>
         <p>The Marketplace should mail or electronically provide the form before January 31, <fg-show path="/nextTaxYear"/>. If you don’t receive a Form 1095-A, or need to request a copy, then log in to your Marketplace account to download the form or contact your Marketplace for help.</p>
-        <p>If you got coverage through HealthCare.gov and set up an account, you can <a href="$t(commonUrls.form1095A)" target="_blank">download Form 1095-A from your HealthCare.gov account.</a></p>
-        <p>If you got coverage through a state Marketplace like <a href="$t(commonUrls.marketplaceInState)" target="_blank"><fg-show path="/stateMarketplaceName"/></a>, visit their website to download or request a Form 1095-A.</p>
-        <p>Your Forms 1095-A will also be available in your <a href="$t(commonUrls.irsOnlineAcct)" target="_blank">IRS Online Account </a> when the IRS receives them.</p>
+        <p>If you got coverage through HealthCare.gov and set up an account, you can <a href="https://www.healthcare.gov/tax-form-1095/" target="_blank">download Form 1095-A from your HealthCare.gov account.</a></p>
+        <p>If you got coverage through a state Marketplace like <a href="https://www.healthcare.gov/marketplace-in-your-state/" target="_blank"><fg-show path="/stateMarketplaceName"/></a>, visit their website to download or request a Form 1095-A.</p>
+        <p>Your Forms 1095-A will also be available in your <a href="https://sa.www4.irs.gov/ola/information_return" target="_blank">IRS Online Account </a> when the IRS receives them.</p>
         <p>If someone else enrolled you, your spouse (who you’re filing jointly with), or a dependent, then a Form 1095-A may be sent to the person who completed the enrollment. You’ll need to check with them to get a copy.</p>
-        <p><a href="$t(commonUrls.form1095A)" target="_blank">Learn more about Form 1095-A.</a></p>
+        <p><a href="https://www.healthcare.gov/tax-form-1095/" target="_blank">Learn more about Form 1095-A.</a></p>
       </modal-content>
     </modal-dialog>
     <modal-dialog id="modal-info-info-credits-and-deductions-credits-find-1095-a-without-state-plan-linkmodal1">
@@ -561,11 +561,11 @@
       <modal-content>
         <p>The Marketplace sends Form 1095-A, Health Insurance Marketplace Statement to people enrolled in qualified Marketplace health plans.</p>
         <p>The Marketplace should mail or electronically provide the form before January 31, <fg-show path="/nextTaxYear"/>. If you don’t receive a Form 1095-A, or need to request a copy, then log in to your Marketplace account to download the form or contact your Marketplace for help.</p>
-        <p>If you got coverage through HealthCare.gov and set up an account, you can <a href="$t(commonUrls.form1095A)" target="_blank">download Form 1095-A from your HealthCare.gov account.</a></p>
-        <p>If you got coverage through a state Marketplace, <a href="$t(commonUrls.marketplaceInState)" target="_blank">visit the state Marketplace website</a> to download or request a Form 1095-A.</p>
-        <p>Your Forms 1095-A will also be available in your <a href="$t(commonUrls.irsOnlineAcct)" target="_blank">IRS Online Account </a> when the IRS receives them.</p>
+        <p>If you got coverage through HealthCare.gov and set up an account, you can <a href="https://www.healthcare.gov/tax-form-1095/" target="_blank">download Form 1095-A from your HealthCare.gov account.</a></p>
+        <p>If you got coverage through a state Marketplace, <a href="https://www.healthcare.gov/marketplace-in-your-state/" target="_blank">visit the state Marketplace website</a> to download or request a Form 1095-A.</p>
+        <p>Your Forms 1095-A will also be available in your <a href="https://sa.www4.irs.gov/ola/information_return" target="_blank">IRS Online Account </a> when the IRS receives them.</p>
         <p>If someone else enrolled you, your spouse (who you’re filing jointly with), or a dependent, then a Form 1095-A may be sent to the person who completed the enrollment. You’ll need to check with them to get a copy.</p>
-        <p><a href="$t(commonUrls.form1095A)" target="_blank">Learn more about Form 1095-A.</a></p>
+        <p><a href="https://www.healthcare.gov/tax-form-1095/" target="_blank">Learn more about Form 1095-A.</a></p>
       </modal-content>
     </modal-dialog>
     <modal-dialog id="modal-info-info-credits-and-deductions-credits-what-is-tax-family-linkmodal1">
@@ -613,11 +613,11 @@
       <modal-content>
         <p>The Marketplace sends Form 1095-A, Health Insurance Marketplace Statement to people enrolled in qualified Marketplace health plans.</p>
         <p>The Marketplace should mail or electronically provide the form before January 31, <fg-show path="/nextTaxYear"/>. If you don’t receive a Form 1095-A, or need to request a copy, then log in to your Marketplace account to download the form or contact your Marketplace for help.</p>
-        <p>If you got coverage through HealthCare.gov and set up an account, you can <a href="$t(commonUrls.form1095A)" target="_blank">download Form 1095-A from your HealthCare.gov account.</a></p>
-        <p>If you got coverage through a state Marketplace like <a href="$t(commonUrls.marketplaceInState)" target="_blank"><fg-show path="/stateMarketplaceName"/></a>, visit their website to download or request a Form 1095-A.</p>
-        <p>Your Forms 1095-A will also be available in your <a href="$t(commonUrls.irsOnlineAcct)" target="_blank">IRS Online Account </a> when the IRS receives them.</p>
+        <p>If you got coverage through HealthCare.gov and set up an account, you can <a href="https://www.healthcare.gov/tax-form-1095/" target="_blank">download Form 1095-A from your HealthCare.gov account.</a></p>
+        <p>If you got coverage through a state Marketplace like <a href="https://www.healthcare.gov/marketplace-in-your-state/" target="_blank"><fg-show path="/stateMarketplaceName"/></a>, visit their website to download or request a Form 1095-A.</p>
+        <p>Your Forms 1095-A will also be available in your <a href="https://sa.www4.irs.gov/ola/information_return" target="_blank">IRS Online Account </a> when the IRS receives them.</p>
         <p>If someone else enrolled you, your spouse (who you’re filing jointly with), or a dependent, then a Form 1095-A may be sent to the person who completed the enrollment. You’ll need to check with them to get a copy.</p>
-        <p><a href="$t(commonUrls.form1095A)" target="_blank">Learn more about Form 1095-A.</a></p>
+        <p><a href="https://www.healthcare.gov/tax-form-1095/" target="_blank">Learn more about Form 1095-A.</a></p>
       </modal-content>
     </modal-dialog>
     <modal-dialog id="modal-info-info-credits-and-deductions-credits-check-marketplace-plan-for-ptc-without-s-c8e0c241">
@@ -625,11 +625,11 @@
       <modal-content>
         <p>The Marketplace sends Form 1095-A, Health Insurance Marketplace Statement to people enrolled in qualified Marketplace health plans.</p>
         <p>The Marketplace should mail or electronically provide the form before January 31, <fg-show path="/nextTaxYear"/>. If you don’t receive a Form 1095-A, or need to request a copy, then log in to your Marketplace account to download the form or contact your Marketplace for help.</p>
-        <p>If you got coverage through HealthCare.gov and set up an account, you can <a href="$t(commonUrls.form1095A)" target="_blank">download Form 1095-A from your HealthCare.gov account.</a></p>
-        <p>If you got coverage through a state Marketplace, <a href="$t(commonUrls.marketplaceInState)" target="_blank">visit the state Marketplace website</a> to download or request a Form 1095-A.</p>
-        <p>Your Forms 1095-A will also be available in your <a href="$t(commonUrls.irsOnlineAcct)" target="_blank">IRS Online Account </a> when the IRS receives them.</p>
+        <p>If you got coverage through HealthCare.gov and set up an account, you can <a href="https://www.healthcare.gov/tax-form-1095/" target="_blank">download Form 1095-A from your HealthCare.gov account.</a></p>
+        <p>If you got coverage through a state Marketplace, <a href="https://www.healthcare.gov/marketplace-in-your-state/" target="_blank">visit the state Marketplace website</a> to download or request a Form 1095-A.</p>
+        <p>Your Forms 1095-A will also be available in your <a href="https://sa.www4.irs.gov/ola/information_return" target="_blank">IRS Online Account </a> when the IRS receives them.</p>
         <p>If someone else enrolled you, your spouse (who you’re filing jointly with), or a dependent, then a Form 1095-A may be sent to the person who completed the enrollment. You’ll need to check with them to get a copy.</p>
-        <p><a href="$t(commonUrls.form1095A)" target="_blank">Learn more about Form 1095-A.</a></p>
+        <p><a href="https://www.healthcare.gov/tax-form-1095/" target="_blank">Learn more about Form 1095-A.</a></p>
       </modal-content>
     </modal-dialog>
     <modal-dialog id="modal-info-info-credits-and-deductions-credits-what-if-enrolled-someone-else-linkmodal1">
@@ -656,14 +656,14 @@
           <li>If the VOID box is checked, it means the Marketplace previously sent you a Form 1095-A by mistake. When filing your federal taxes, don’t use the information on the <a href="https://www.irs.gov/affordable-care-act/corrected-incorrect-or-voided-form-1095-a" target="_blank">voided Form 1095-A</a> or the previous version of the form that was sent by mistake</li>
           <li>If the CORRECTED box is checked, it means the Marketplace previously sent you a Form 1095-A with one or more errors. You can use the information on a <a href="https://www.irs.gov/affordable-care-act/corrected-incorrect-or-voided-form-1095-a" target="_blank">corrected Form 1095-A</a> to file your taxes. Don’t use the information on the previous Form 1095-A that had errors</li>
         </ul>
-        <p>If you review your Form 1095-A and have a question or think there’s a mistake, <a href="$t(commonUrls.form1095A)" target="_blank">contact HealthCare.gov</a> or your <a href="$t(commonUrls.marketplaceInState)" target="_blank">state Marketplace</a> to get help before filing your federal taxes.</p>
+        <p>If you review your Form 1095-A and have a question or think there’s a mistake, <a href="https://www.healthcare.gov/tax-form-1095/" target="_blank">contact HealthCare.gov</a> or your <a href="https://www.healthcare.gov/marketplace-in-your-state/" target="_blank">state Marketplace</a> to get help before filing your federal taxes.</p>
       </modal-content>
     </modal-dialog>
     <modal-dialog id="modal-info-info-credits-and-deductions-credits-received-1095-a-without-marketplace-plan-931d2e4b">
       <modal-heading>What if I didn’t have a qualified health plan but received a Form 1095-A?</modal-heading>
       <modal-content>
         <p>If no one on your tax return had a qualified Marketplace health plan, but someone received a Form 1095-A, the form may have been sent by mistake.</p>
-        <p>Before you file your taxes, you’ll need to <a href="$t(commonUrls.form1095A)" target="_blank">contact HealthCare.gov</a> or your <a href="$t(commonUrls.marketplaceInState)" target="_blank">state Marketplace</a> to correct this mistake by getting a voided Form 1095-A. If you file your federal tax return without first getting a voided 1095-A, the IRS may reject your tax return.</p>
+        <p>Before you file your taxes, you’ll need to <a href="https://www.healthcare.gov/tax-form-1095/" target="_blank">contact HealthCare.gov</a> or your <a href="https://www.healthcare.gov/marketplace-in-your-state/" target="_blank">state Marketplace</a> to correct this mistake by getting a voided Form 1095-A. If you file your federal tax return without first getting a voided 1095-A, the IRS may reject your tax return.</p>
       </modal-content>
     </modal-dialog>
     <modal-dialog id="modal-info-info-credits-and-deductions-credits-ptc-multiple-forms-self-no-deps-linkmodal1">
@@ -860,14 +860,14 @@
           <li>Abuse of a child or other family member living in the household</li>
         </ul>
         <p>If you have concerns about your safety, consider contacting the confidential 24-hour National Domestic Violence Hotline at 1-800-799-SAFE (7233), or 1-800-787-3224 (TTY), or 1-855-812-1001 (video phone, only for deaf callers).</p>
-        <p><a href="$t(commonUrls.ptcAbuseAndAbandonementInstructions)" target="_blank">Learn more about domestic abuse and the PTC</a></p>
+        <p><a href="https://www.irs.gov/instructions/i8962#en_US_2024_publink100013922" target="_blank">Learn more about domestic abuse and the PTC</a></p>
       </modal-content>
     </modal-dialog>
     <modal-dialog id="modal-sharedmodalforptcspousalabandonment">
       <modal-heading>How is spousal abandonment defined?</modal-heading>
       <modal-content>
         <p>For the purposes of the Premium Tax Credit (PTC), a taxpayer is the victim of spousal abandonment for a tax year if, taking into account all facts and circumstances, they are unable to locate their spouse after a reasonable effort.</p>
-        <p><a href="$t(commonUrls.ptcAbuseAndAbandonementInstructions)" target="_blank">Learn more about spousal abandonment and the PTC</a></p>
+        <p><a href="https://www.irs.gov/instructions/i8962#en_US_2024_publink100013922" target="_blank">Learn more about spousal abandonment and the PTC</a></p>
       </modal-content>
     </modal-dialog>
     <modal-dialog id="modal-sharedmodalforptcwhyaskabuseabandonment">
@@ -879,7 +879,7 @@
           <li>You’re living apart from your spouse when you file your <fg-show path="/taxYear"/> federal tax return</li>
           <li><fg-show path="/taxYear"/> isn’t the fourth year in a row that you’re claiming the PTC and using a Married Filing Separately filing status because of domestic abuse or spousal abandonment</li>
         </ul>
-        <p><a href="$t(commonUrls.ptcAbuseAndAbandonement)" target="_blank">Learn more about domestic abuse, spousal abandonment, and the PTC</a></p>
+        <p><a href="https://www.irs.gov/instructions/i8962#en_US_2024_publink100013920" target="_blank">Learn more about domestic abuse, spousal abandonment, and the PTC</a></p>
       </modal-content>
     </modal-dialog>
     <modal-dialog id="modal-info-info-credits-and-deductions-credits-ptc-below-100-fed-poverty-line-linkmodal2">
@@ -1195,8 +1195,8 @@ qualified health plan and who you’re including on this federal tax return</li>
         <div class="df-screen" condition="/1095As/*/flowGate75225c29" operator="isTrue">
           <h2>You said there was a change in circumstances that wasn’t reported to the Marketplace, which means your second lowest cost silver plan (SLCSP) premiums may be incorrect.</h2>
           <p class="df-context-heading">Premium Tax Credit</p>
-          <p condition="/1095As/*/flowGate9d395117" operator="isTrue">You’ll need to <a href="$t(commonUrls.marketplaceInState)" target="_blank">check with your state Marketplace</a> to find the correct SLCSP premiums.</p>
-          <p condition="/1095As/*/flowGate3c144cda" operator="isTrue">You’ll need to <a href="$t(commonUrls.ptcTaxTool)" target="_blank">use the health coverage tax tool</a> to find the correct SLCSP premiums.</p>
+          <p condition="/1095As/*/flowGate9d395117" operator="isTrue">You’ll need to <a href="https://www.healthcare.gov/marketplace-in-your-state/" target="_blank">check with your state Marketplace</a> to find the correct SLCSP premiums.</p>
+          <p condition="/1095As/*/flowGate3c144cda" operator="isTrue">You’ll need to <a href="https://www.healthcare.gov/tax-tool/#/" target="_blank">use the health coverage tax tool</a> to find the correct SLCSP premiums.</p>
           <p><modal-link for="modal-info-info-credits-and-deductions-credits-ptc-what-is-slcsp-linkmodal1">What are second lowest cost silver plan (SLCSP) premiums?</modal-link></p>
           <p condition="/1095As/*/flowGate9d395117" operator="isTrue"><modal-link for="modal-info-info-credits-and-deductions-credits-ptc-how-to-check-state-slcsp-linkmodal1">How can I check my SLCSP premiums with my state Marketplace?</modal-link></p>
         </div>
@@ -1340,11 +1340,11 @@ qualified health plan and who you’re including on this federal tax return</li>
       <modal-content>
         <p>The Marketplace sends Form 1095-A, Health Insurance Marketplace Statement to people enrolled in qualified Marketplace health plans.</p>
         <p>The Marketplace should mail or electronically provide the form before January 31, <fg-show path="/nextTaxYear"/>. If you don’t receive a Form 1095-A, or need to request a copy, then log in to your Marketplace account to download the form or contact your Marketplace for help.</p>
-        <p>If you got coverage through HealthCare.gov and set up an account, you can <a href="$t(commonUrls.form1095A)" target="_blank">download Form 1095-A from your HealthCare.gov account.</a></p>
-        <p>If you got coverage through a state Marketplace like <a href="$t(commonUrls.marketplaceInState)" target="_blank"><fg-show path="/stateMarketplaceName"/></a>, visit their website to download or request a Form 1095-A.</p>
-        <p>Your Forms 1095-A will also be available in your <a href="$t(commonUrls.irsOnlineAcct)" target="_blank">IRS Online Account </a> when the IRS receives them.</p>
+        <p>If you got coverage through HealthCare.gov and set up an account, you can <a href="https://www.healthcare.gov/tax-form-1095/" target="_blank">download Form 1095-A from your HealthCare.gov account.</a></p>
+        <p>If you got coverage through a state Marketplace like <a href="https://www.healthcare.gov/marketplace-in-your-state/" target="_blank"><fg-show path="/stateMarketplaceName"/></a>, visit their website to download or request a Form 1095-A.</p>
+        <p>Your Forms 1095-A will also be available in your <a href="https://sa.www4.irs.gov/ola/information_return" target="_blank">IRS Online Account </a> when the IRS receives them.</p>
         <p>If someone else enrolled you, your spouse (who you’re filing jointly with), or a dependent, then a Form 1095-A may be sent to the person who completed the enrollment. You’ll need to check with them to get a copy.</p>
-        <p><a href="$t(commonUrls.form1095A)" target="_blank">Learn more about Form 1095-A.</a></p>
+        <p><a href="https://www.healthcare.gov/tax-form-1095/" target="_blank">Learn more about Form 1095-A.</a></p>
       </modal-content>
     </modal-dialog>
     <modal-dialog id="modal-info-info-credits-and-deductions-credits-find-1095-a-without-state-plan-linkmodal1">
@@ -1352,18 +1352,18 @@ qualified health plan and who you’re including on this federal tax return</li>
       <modal-content>
         <p>The Marketplace sends Form 1095-A, Health Insurance Marketplace Statement to people enrolled in qualified Marketplace health plans.</p>
         <p>The Marketplace should mail or electronically provide the form before January 31, <fg-show path="/nextTaxYear"/>. If you don’t receive a Form 1095-A, or need to request a copy, then log in to your Marketplace account to download the form or contact your Marketplace for help.</p>
-        <p>If you got coverage through HealthCare.gov and set up an account, you can <a href="$t(commonUrls.form1095A)" target="_blank">download Form 1095-A from your HealthCare.gov account.</a></p>
-        <p>If you got coverage through a state Marketplace, <a href="$t(commonUrls.marketplaceInState)" target="_blank">visit the state Marketplace website</a> to download or request a Form 1095-A.</p>
-        <p>Your Forms 1095-A will also be available in your <a href="$t(commonUrls.irsOnlineAcct)" target="_blank">IRS Online Account </a> when the IRS receives them.</p>
+        <p>If you got coverage through HealthCare.gov and set up an account, you can <a href="https://www.healthcare.gov/tax-form-1095/" target="_blank">download Form 1095-A from your HealthCare.gov account.</a></p>
+        <p>If you got coverage through a state Marketplace, <a href="https://www.healthcare.gov/marketplace-in-your-state/" target="_blank">visit the state Marketplace website</a> to download or request a Form 1095-A.</p>
+        <p>Your Forms 1095-A will also be available in your <a href="https://sa.www4.irs.gov/ola/information_return" target="_blank">IRS Online Account </a> when the IRS receives them.</p>
         <p>If someone else enrolled you, your spouse (who you’re filing jointly with), or a dependent, then a Form 1095-A may be sent to the person who completed the enrollment. You’ll need to check with them to get a copy.</p>
-        <p><a href="$t(commonUrls.form1095A)" target="_blank">Learn more about Form 1095-A.</a></p>
+        <p><a href="https://www.healthcare.gov/tax-form-1095/" target="_blank">Learn more about Form 1095-A.</a></p>
       </modal-content>
     </modal-dialog>
     <modal-dialog id="modal-info-info-credits-and-deductions-credits-received-1095-a-without-marketplace-plan-931d2e4b">
       <modal-heading>What if I didn’t have a qualified health plan but received a Form 1095-A?</modal-heading>
       <modal-content>
         <p>If no one on your tax return had a qualified Marketplace health plan, but someone received a Form 1095-A, the form may have been sent by mistake.</p>
-        <p>Before you file your taxes, you’ll need to <a href="$t(commonUrls.form1095A)" target="_blank">contact HealthCare.gov</a> or your <a href="$t(commonUrls.marketplaceInState)" target="_blank">state Marketplace</a> to correct this mistake by getting a voided Form 1095-A. If you file your federal tax return without first getting a voided 1095-A, the IRS may reject your tax return.</p>
+        <p>Before you file your taxes, you’ll need to <a href="https://www.healthcare.gov/tax-form-1095/" target="_blank">contact HealthCare.gov</a> or your <a href="https://www.healthcare.gov/marketplace-in-your-state/" target="_blank">state Marketplace</a> to correct this mistake by getting a voided Form 1095-A. If you file your federal tax return without first getting a voided 1095-A, the IRS may reject your tax return.</p>
       </modal-content>
     </modal-dialog>
     <modal-dialog id="modal-info-info-credits-and-deductions-credits-ptc-coverage-months-linkmodal1">
@@ -1452,7 +1452,7 @@ qualified health plan and who you’re including on this federal tax return</li>
           <li>You had changes in your household that weren’t reported to the Marketplace</li>
         </ul>
         <p>If you have reason to believe the Marketplace inaccurately reported the SLCSP premiums, you should look up the correct SLCSP premiums and enter them here. <strong>You don’t need to request an updated Form 1095-A.</strong></p>
-        <p><a href="$t(commonUrls.marketplaceInState)" target="_blank">Find your state Marketplace website</a></p>
+        <p><a href="https://www.healthcare.gov/marketplace-in-your-state/" target="_blank">Find your state Marketplace website</a></p>
       </modal-content>
     </modal-dialog>
     <modal-dialog id="modal-info-info-credits-and-deductions-credits-ptc-what-if-slcsp-inaccurate-federal-linkmodal1">
@@ -1464,7 +1464,7 @@ qualified health plan and who you’re including on this federal tax return</li>
           <li>You had changes in your household that weren’t reported to the Marketplace</li>
         </ul>
         <p>If you have reason to believe the Marketplace inaccurately reported the SLCSP premiums, you should look up the correct SLCSP premiums and enter them here. <strong>You don’t need to request an updated Form 1095-A.</strong></p>
-        <p><a href="$t(commonUrls.ptcTaxTool)" target="_blank">Use the health coverage tax tool</a></p>
+        <p><a href="https://www.healthcare.gov/tax-tool/#/" target="_blank">Use the health coverage tax tool</a></p>
       </modal-content>
     </modal-dialog>
     <modal-dialog id="modal-info-info-credits-and-deductions-credits-ptc-what-is-slcsp-linkmodal1">
@@ -1480,7 +1480,7 @@ qualified health plan and who you’re including on this federal tax return</li>
       <modal-content>
         <p>Your state Marketplace website may have a SLCSP premium look up tool.</p>
         <p>If your state Marketplace website doesn’t have a look up tool, you’ll need to contact the Marketplace directly to find out the correct SLCSP premium.</p>
-        <p><a href="$t(commonUrls.marketplaceInState)" target="_blank">Find your state Marketplace website</a></p>
+        <p><a href="https://www.healthcare.gov/marketplace-in-your-state/" target="_blank">Find your state Marketplace website</a></p>
       </modal-content>
     </modal-dialog>
   </page>
@@ -1611,7 +1611,7 @@ qualified health plan and who you’re including on this federal tax return</li>
         <p>When you file your taxes, the amount of the credit you got in advance is compared to the  amount you actually qualify for.</p>
         <p>If you didn’t get the full amount that you qualify for through advance payments, you’ll get the remaining credit when you file your taxes.</p>
         <p>If your advance payments are more than the PTC you qualify for, you’ll have to repay some or all of the excess amount on your federal tax return.</p>
-        <p><a href="$t(commonUrls.premiumTaxCreditInfo)" target="_blank">Learn more about the PTC.</a></p>
+        <p><a href="https://www.irs.gov/affordable-care-act/individuals-and-families/the-premium-tax-credit-the-basics" target="_blank">Learn more about the PTC.</a></p>
       </modal-content>
     </modal-dialog>
     <modal-dialog id="modal-sharedmodalaptc">
@@ -1748,7 +1748,7 @@ qualified health plan and who you’re including on this federal tax return</li>
         <p>When you file your taxes, the amount of the credit you got in advance is compared to the  amount you actually qualify for.</p>
         <p>If you didn’t get the full amount that you qualify for through advance payments, you’ll get the remaining credit when you file your taxes.</p>
         <p>If your advance payments are more than the PTC you qualify for, you’ll have to repay some or all of the excess amount on your federal tax return.</p>
-        <p><a href="$t(commonUrls.premiumTaxCreditInfo)" target="_blank">Learn more about the PTC.</a></p>
+        <p><a href="https://www.irs.gov/affordable-care-act/individuals-and-families/the-premium-tax-credit-the-basics" target="_blank">Learn more about the PTC.</a></p>
       </modal-content>
     </modal-dialog>
     <modal-dialog id="modal-sharedmodalaptc">
@@ -1810,7 +1810,7 @@ qualified health plan and who you’re including on this federal tax return</li>
         <p>The credit ranges from <fg-show path="/cdccMinAllowedPercentageTY2024"/>% to <fg-show path="/cdccMaxAllowedPercentageTY2024"/>% of your expenses up to <fg-show path="/cdccMaxClaimableExpenseWithOneQP"/> for one qualifying person and <fg-show path="/cdccMaxClaimableExpenseWithTwoQP"/> for two qualifying people. This means the biggest credit you can get is <fg-show path="/cdccMaxAllowedCreditWithOneQP"/> for one qualifying person and <fg-show path="/cdccMaxAllowedCreditWithTwoQP"/> for two or more qualifying people.</p>
         <p>This credit is <strong>nonrefundable</strong>.  This means that it can reduce your taxes, but it won’t reduce what you owe below $0. In other words, it can’t give you a refund.</p>
         <p><strong>There are some tax situations that Direct File doesn’t support yet</strong>. We ask questions to check if these situations apply to you as you complete your return. Also, if you or your spouse had dependent care provided in <fg-show path="/lastTaxYear"/> that you paid for later in <fg-show path="/taxYear"/>, and you didn’t take the maximum amount of expenses for CDCC in <fg-show path="/taxYear"/>, you won’t be able to use Direct File this year. This requires completing Worksheet A and line 9b of Form 2441.</p>
-        <p><a href="$t(commonUrls.cdccInfo)" target="_blank">Learn more about CDCC</a></p>
+        <p><a href="https://www.irs.gov/taxtopics/tc602" target="_blank">Learn more about CDCC</a></p>
       </modal-content>
     </modal-dialog>
   </page>
@@ -2220,7 +2220,7 @@ qualified health plan and who you’re including on this federal tax return</li>
         <p>The credit ranges from <fg-show path="/cdccMinAllowedPercentageTY2024"/>% to <fg-show path="/cdccMaxAllowedPercentageTY2024"/>% of your expenses up to <fg-show path="/cdccMaxClaimableExpenseWithOneQP"/> for one qualifying person and <fg-show path="/cdccMaxClaimableExpenseWithTwoQP"/> for two qualifying people. This means the biggest credit you can get is <fg-show path="/cdccMaxAllowedCreditWithOneQP"/> for one qualifying person and <fg-show path="/cdccMaxAllowedCreditWithTwoQP"/> for two or more qualifying people.</p>
         <p>This credit is <strong>nonrefundable</strong>.  This means that it can reduce your taxes, but it won’t reduce what you owe below $0. In other words, it can’t give you a refund.</p>
         <p><strong>There are some tax situations that Direct File doesn’t support yet</strong>. We ask questions to check if these situations apply to you as you complete your return. Also, if you or your spouse had dependent care provided in <fg-show path="/lastTaxYear"/> that you paid for later in <fg-show path="/taxYear"/>, and you didn’t take the maximum amount of expenses for CDCC in <fg-show path="/taxYear"/>, you won’t be able to use Direct File this year. This requires completing Worksheet A and line 9b of Form 2441.</p>
-        <p><a href="$t(commonUrls.cdccInfo)" target="_blank">Learn more about CDCC</a></p>
+        <p><a href="https://www.irs.gov/taxtopics/tc602" target="_blank">Learn more about CDCC</a></p>
       </modal-content>
     </modal-dialog>
   </page>
@@ -2258,7 +2258,7 @@ qualified health plan and who you’re including on this federal tax return</li>
         <p>The credit ranges from <fg-show path="/cdccMinAllowedPercentageTY2024"/>% to <fg-show path="/cdccMaxAllowedPercentageTY2024"/>% of your expenses up to <fg-show path="/cdccMaxClaimableExpenseWithOneQP"/> for one qualifying person and <fg-show path="/cdccMaxClaimableExpenseWithTwoQP"/> for two qualifying people. This means the biggest credit you can get is <fg-show path="/cdccMaxAllowedCreditWithOneQP"/> for one qualifying person and <fg-show path="/cdccMaxAllowedCreditWithTwoQP"/> for two or more qualifying people.</p>
         <p>This credit is <strong>nonrefundable</strong>.  This means that it can reduce your taxes, but it won’t reduce what you owe below $0. In other words, it can’t give you a refund.</p>
         <p><strong>There are some tax situations that Direct File doesn’t support yet</strong>. We ask questions to check if these situations apply to you as you complete your return. Also, if you or your spouse had dependent care provided in <fg-show path="/lastTaxYear"/> that you paid for later in <fg-show path="/taxYear"/>, and you didn’t take the maximum amount of expenses for CDCC in <fg-show path="/taxYear"/>, you won’t be able to use Direct File this year. This requires completing Worksheet A and line 9b of Form 2441.</p>
-        <p><a href="$t(commonUrls.cdccInfo)" target="_blank">Learn more about CDCC</a></p>
+        <p><a href="https://www.irs.gov/taxtopics/tc602" target="_blank">Learn more about CDCC</a></p>
       </modal-content>
     </modal-dialog>
   </page>
@@ -2606,7 +2606,7 @@ qualified health plan and who you’re including on this federal tax return</li>
         </ul>
         <p>Taxpayers who meet the eligibility requirements can qualify for the credit.</p>
         <p>This credit is <strong>nonrefundable</strong>. This means that it can reduce your taxes, but it won’t reduce what you owe below $0. In other words, it can’t give you a refund.</p>
-        <p><a href="$t(commonUrls.elderlyAndDisabledCreditInfo)" target="_blank">Learn more about the Credit for the Elderly or the Disabled</a></p>
+        <p><a href="https://www.irs.gov/instructions/i1040sr" target="_blank">Learn more about the Credit for the Elderly or the Disabled</a></p>
       </modal-content>
     </modal-dialog>
   </page>
@@ -2817,7 +2817,7 @@ qualified health plan and who you’re including on this federal tax return</li>
         </ul>
         <p>Taxpayers who meet the eligibility requirements can qualify for the credit.</p>
         <p>This credit is <strong>nonrefundable</strong>. This means that it can reduce your taxes, but it won’t reduce what you owe below $0. In other words, it can’t give you a refund.</p>
-        <p><a href="$t(commonUrls.elderlyAndDisabledCreditInfo)" target="_blank">Learn more about the Credit for the Elderly or the Disabled</a></p>
+        <p><a href="https://www.irs.gov/instructions/i1040sr" target="_blank">Learn more about the Credit for the Elderly or the Disabled</a></p>
       </modal-content>
     </modal-dialog>
   </page>
@@ -2843,7 +2843,7 @@ qualified health plan and who you’re including on this federal tax return</li>
         </ul>
         <p>Taxpayers who meet the eligibility requirements can qualify for the credit.</p>
         <p>This credit is <strong>nonrefundable</strong>. This means that it can reduce your taxes, but it won’t reduce what you owe below $0. In other words, it can’t give you a refund.</p>
-        <p><a href="$t(commonUrls.elderlyAndDisabledCreditInfo)" target="_blank">Learn more about the Credit for the Elderly or the Disabled</a></p>
+        <p><a href="https://www.irs.gov/instructions/i1040sr" target="_blank">Learn more about the Credit for the Elderly or the Disabled</a></p>
       </modal-content>
     </modal-dialog>
   </page>
@@ -3039,7 +3039,7 @@ qualified health plan and who you’re including on this federal tax return</li>
         <p>The Saver’s Credit, also known as the Retirement Savings Contributions Credit, is a tax benefit for low- to moderate-income taxpayers that offsets a portion of workers’ voluntarily contributions to their Individual Retirement Arrangements (IRAs), 401(k) plans and similar workplace retirement programs. The Saver’s credit also helps eligible people who are the designated beneficiaries of an Achieving a Better Life Experience (ABLE) account.</p>
         <p>Taxpayers who meet the eligibility requirements for the Saver’s Credit can qualify for up to <fg-show path="/saversMaxCreditAmountNotMFJ"/> (<fg-show path="/saversMaxCreditLimit"/> if married filing jointly).</p>
         <p>This credit is <strong>nonrefundable</strong>. This means that it can reduce your taxes, but it won’t reduce what you owe below $0. In other words, it can’t give you a refund.</p>
-        <p><a href="$t(commonUrls.saversCreditInfo)" target="_blank">Learn more about the Saver’s Credit</a></p>
+        <p><a href="https://www.irs.gov/retirement-plans/plan-participant-employee/retirement-savings-contributions-savers-credit" target="_blank">Learn more about the Saver’s Credit</a></p>
       </modal-content>
     </modal-dialog>
     <modal-dialog id="modal-info-info-credits-and-deductions-credits-savers-not-supported-situations-linkmodal1">
@@ -3055,7 +3055,7 @@ qualified health plan and who you’re including on this federal tax return</li>
           <li>Contributions to an Achieving a Better Life Experience (ABLE) account made by the designated beneficiary</li>
         </ul>
         <p>If any of these situations apply, you’ll need to file using another tool.</p>
-        <p><a href="$t(commonUrls.otherWaysToFile)" target="_blank">Find other ways to file your federal taxes.</a></p>
+        <p><a href="https://www.irs.gov/filing/individuals/how-to-file" target="_blank">Find other ways to file your federal taxes.</a></p>
       </modal-content>
     </modal-dialog>
     <modal-dialog id="modal-info-info-credits-and-deductions-credits-savers-self-reported-distribution-linkmodal1">
@@ -3351,7 +3351,7 @@ qualified health plan and who you’re including on this federal tax return</li>
         <p><strong>Additional Child Tax Credit (ACTC)</strong></p>
         <p>ACTC is the <strong>refundable</strong> part of the credit, worth up to <fg-show path="/maxActcAmount"/> per child. A refundable credit will reduce your taxes. It can even result in a refund if it reduces your taxes below $0.</p>
         <p>ACTC is available to taxpayers who qualify for CTC but couldn’t claim the full amount because they didn’t owe any taxes, or owed less than the amount of their CTC.</p>
-        <p><a href="$t(commonUrls.ctcInfo)" target="_blank">Learn more about CTC and ACTC</a></p>
+        <p><a href="https://www.eitc.irs.gov/other-refundable-credits-toolkit/what-you-need-to-know-about-ctc-and-actc/what-you-need-to-know" target="_blank">Learn more about CTC and ACTC</a></p>
       </modal-content>
     </modal-dialog>
     <modal-dialog id="modal-sharedmodalodc">
@@ -3409,7 +3409,7 @@ qualified health plan and who you’re including on this federal tax return</li>
         <p><strong>Additional Child Tax Credit (ACTC)</strong></p>
         <p>ACTC is the <strong>refundable</strong> part of the credit, worth up to <fg-show path="/maxActcAmount"/> per child. A refundable credit will reduce your taxes. It can even result in a refund if it reduces your taxes below $0.</p>
         <p>ACTC is available to taxpayers who qualify for CTC but couldn’t claim the full amount because they didn’t owe any taxes, or owed less than the amount of their CTC.</p>
-        <p><a href="$t(commonUrls.ctcInfo)" target="_blank">Learn more about CTC and ACTC</a></p>
+        <p><a href="https://www.eitc.irs.gov/other-refundable-credits-toolkit/what-you-need-to-know-about-ctc-and-actc/what-you-need-to-know" target="_blank">Learn more about CTC and ACTC</a></p>
       </modal-content>
     </modal-dialog>
     <modal-dialog id="modal-sharedmodalodc">
@@ -3445,7 +3445,7 @@ qualified health plan and who you’re including on this federal tax return</li>
         <p><strong>Additional Child Tax Credit (ACTC)</strong></p>
         <p>ACTC is the <strong>refundable</strong> part of the credit, worth up to <fg-show path="/maxActcAmount"/> per child. A refundable credit will reduce your taxes. It can even result in a refund if it reduces your taxes below $0.</p>
         <p>ACTC is available to taxpayers who qualify for CTC but couldn’t claim the full amount because they didn’t owe any taxes, or owed less than the amount of their CTC.</p>
-        <p><a href="$t(commonUrls.ctcInfo)" target="_blank">Learn more about CTC and ACTC</a></p>
+        <p><a href="https://www.eitc.irs.gov/other-refundable-credits-toolkit/what-you-need-to-know-about-ctc-and-actc/what-you-need-to-know" target="_blank">Learn more about CTC and ACTC</a></p>
       </modal-content>
     </modal-dialog>
   </page>
@@ -3586,7 +3586,7 @@ qualified health plan and who you’re including on this federal tax return</li>
         <p><strong>Additional Child Tax Credit (ACTC)</strong></p>
         <p>ACTC is the <strong>refundable</strong> part of the credit, worth up to <fg-show path="/maxActcAmount"/> per child. A refundable credit will reduce your taxes. It can even result in a refund if it reduces your taxes below $0.</p>
         <p>ACTC is available to taxpayers who qualify for CTC but couldn’t claim the full amount because they didn’t owe any taxes, or owed less than the amount of their CTC.</p>
-        <p><a href="$t(commonUrls.ctcInfo)" target="_blank">Learn more about CTC and ACTC</a></p>
+        <p><a href="https://www.eitc.irs.gov/other-refundable-credits-toolkit/what-you-need-to-know-about-ctc-and-actc/what-you-need-to-know" target="_blank">Learn more about CTC and ACTC</a></p>
       </modal-content>
     </modal-dialog>
     <modal-dialog id="modal-sharedmodalodc">
@@ -4518,34 +4518,34 @@ qualified health plan and who you’re including on this federal tax return</li>
     <modal-dialog id="modal-sharedmodalcdcccalculated">
       <modal-heading>How was my Child and Dependent Care Credit calculated?</modal-heading>
       <modal-content>
-        <p>We used <a href="$t(commonUrls.form2441)" target="_blank">Form 2441</a> to calculate the amount of your Child and Dependent Care Credit. This calculation is based on several factors, such as your child and dependent care expenses and your income.</p>
-        <p><a href="$t(commonUrls.cdccInfo)" target="_blank">Learn more about who qualifies.</a></p>
+        <p>We used <a href="https://www.irs.gov/forms-pubs/about-form-2441" target="_blank">Form 2441</a> to calculate the amount of your Child and Dependent Care Credit. This calculation is based on several factors, such as your child and dependent care expenses and your income.</p>
+        <p><a href="https://www.irs.gov/taxtopics/tc602" target="_blank">Learn more about who qualifies.</a></p>
       </modal-content>
     </modal-dialog>
     <modal-dialog id="modal-sharedmodaledccalculated">
       <modal-heading>How was my Credit for the Elderly or the Disabled calculated?</modal-heading>
       <modal-content>
         <p>We used Schedule R to calculate the amount of your Credit for the Elderly or the Disabled based on your filing status, age, and income. If you are married and filing a joint return, it is also based on your spouse’s age and income.</p>
-        <p><a href="$t(commonUrls.elderlyAndDisabledCreditInfo)" target="_blank">Learn more about who qualifies.</a></p>
+        <p><a href="https://www.irs.gov/instructions/i1040sr" target="_blank">Learn more about who qualifies.</a></p>
       </modal-content>
     </modal-dialog>
     <modal-dialog id="modal-sharedmodalsaverscalculated">
       <modal-heading>How was my Saver’s Credit calculated?</modal-heading>
       <modal-content>
-        <p>We used <a href="$t(commonUrls.form8880)" target="_blank">Form 8880</a> to calculate the amount of the credit that you qualify for.</p>
+        <p>We used <a href="https://www.irs.gov/forms-pubs/about-form-8880" target="_blank">Form 8880</a> to calculate the amount of the credit that you qualify for.</p>
         <p>The amount of the credit is the smaller of:</p>
         <ul>
           <li>The limitation based on your tax liability, calculated on Form 8880’s Credit Limit Worksheet, or</li>
           <li>A percentage of your eligible contributions and elective deferrals (up to <fg-show path="/saversMaxCreditAmountNotMFJ"/> per eligible taxpayer)</li>
         </ul>
         <p>The percentage is based on your adjusted gross income (AGI) and filing status.</p>
-        <p><a href="$t(commonUrls.saversCreditInfo)" target="_blank">Learn more about who qualifies</a></p>
+        <p><a href="https://www.irs.gov/retirement-plans/plan-participant-employee/retirement-savings-contributions-savers-credit" target="_blank">Learn more about who qualifies</a></p>
       </modal-content>
     </modal-dialog>
     <modal-dialog id="modal-sharedmodalsaversmfjcalculated">
       <modal-heading>How was my Saver’s Credit calculated?</modal-heading>
       <modal-content>
-        <p>We used <a href="$t(commonUrls.form8880)" target="_blank">Form 8880</a> to calculate the amount of the credit that you qualify for.</p>
+        <p>We used <a href="https://www.irs.gov/forms-pubs/about-form-8880" target="_blank">Form 8880</a> to calculate the amount of the credit that you qualify for.</p>
         <p>The amount of the credit is the smaller of:</p>
         <ul>
           <li>The limitation based on your tax liability, calculated on Form 8880’s Credit Limit Worksheet, or</li>
@@ -4553,13 +4553,13 @@ qualified health plan and who you’re including on this federal tax return</li>
         </ul>
         <p>The percentage is based on your adjusted gross income (AGI) and filing status.</p>
         <p>For the contributions of both spouses to be factored into the credit amount, both spouses must have made eligible contributions or elective deferrals and meet requirements to take the credit. If only one spouse is eligible, the total credit amount will be calculated based on their contributions only.</p>
-        <p><a href="$t(commonUrls.saversCreditInfo)" target="_blank">Learn more about who qualifies</a></p>
+        <p><a href="https://www.irs.gov/retirement-plans/plan-participant-employee/retirement-savings-contributions-savers-credit" target="_blank">Learn more about who qualifies</a></p>
       </modal-content>
     </modal-dialog>
     <modal-dialog id="modal-sharedmodalsaversmfjbothcalculated">
       <modal-heading>How was my Saver’s Credit calculated?</modal-heading>
       <modal-content>
-        <p>We used <a href="$t(commonUrls.form8880)" target="_blank">Form 8880</a> to calculate the amount of the credit that you qualify for.</p>
+        <p>We used <a href="https://www.irs.gov/forms-pubs/about-form-8880" target="_blank">Form 8880</a> to calculate the amount of the credit that you qualify for.</p>
         <p>The amount of the credit is the smaller of:</p>
         <ul>
           <li>The limitation based on your tax liability, calculated on Form 8880’s Credit Limit Worksheet, or</li>
@@ -4567,21 +4567,21 @@ qualified health plan and who you’re including on this federal tax return</li>
         </ul>
         <p>The percentage is based on your adjusted gross income (AGI) and filing status.</p>
         <p>For the contributions of both spouses to be factored into the credit amount, both spouses must have made eligible contributions or elective deferrals and meet requirements to take the credit. If only one spouse is eligible, the total credit amount will be calculated based on their contributions only.</p>
-        <p><a href="$t(commonUrls.saversCreditInfo)" target="_blank">Learn more about who qualifies</a></p>
+        <p><a href="https://www.irs.gov/retirement-plans/plan-participant-employee/retirement-savings-contributions-savers-credit" target="_blank">Learn more about who qualifies</a></p>
       </modal-content>
     </modal-dialog>
     <modal-dialog id="modal-sharedmodalodccalculated">
       <modal-heading>How was my Credit for Other Dependents calculated?</modal-heading>
       <modal-content>
-        <p>We used <a href="$t(commonUrls.schedule8812)" target="_blank">Schedule 8812</a> to calculate the amount of your Credit for Other Dependents. This calculation is based on several factors, such as how many dependents and qualifying people you have, and how much money you make.</p>
-        <p><a href="$t(commonUrls.schedule8812LearnMore)" target="_blank">Learn more about who qualifies.</a></p>
+        <p>We used <a href="https://www.irs.gov/pub/irs-pdf/f1040s8.pdf" target="_blank">Schedule 8812</a> to calculate the amount of your Credit for Other Dependents. This calculation is based on several factors, such as how many dependents and qualifying people you have, and how much money you make.</p>
+        <p><a href="https://www.irs.gov/credits-deductions/individuals/child-tax-credit" target="_blank">Learn more about who qualifies.</a></p>
       </modal-content>
     </modal-dialog>
     <modal-dialog id="modal-sharedmodalctccalculated">
       <modal-heading>How was my Child Tax Credit calculated?</modal-heading>
       <modal-content>
-        <p>We used <a href="$t(commonUrls.schedule8812)" target="_blank">Schedule 8812</a> to calculate the amount of your Child Tax Credit. This calculation is based on several factors, such as how many qualifying children you have and how much money you make.</p>
-        <p><a href="$t(commonUrls.schedule8812LearnMore)" target="_blank">Learn more about who qualifies.</a></p>
+        <p>We used <a href="https://www.irs.gov/pub/irs-pdf/f1040s8.pdf" target="_blank">Schedule 8812</a> to calculate the amount of your Child Tax Credit. This calculation is based on several factors, such as how many qualifying children you have and how much money you make.</p>
+        <p><a href="https://www.irs.gov/credits-deductions/individuals/child-tax-credit" target="_blank">Learn more about who qualifies.</a></p>
       </modal-content>
     </modal-dialog>
     <modal-dialog id="modal-sharedmodalrefundablecredits">
@@ -4599,27 +4599,27 @@ qualified health plan and who you’re including on this federal tax return</li>
     <modal-dialog id="modal-sharedmodalhowwasptccalculated">
       <modal-heading>How was my Premium Tax Credit calculated?</modal-heading>
       <modal-content>
-        <p>We used <a href="$t(commonUrls.form8962)" target="_blank">Form 8962</a> to calculate the amount of your Premium Tax Credit (PTC) and compare it to any advance payments of PTC. These calculations are based on several factors, such as your family size and income.</p>
-        <p><a href="$t(commonUrls.form8962LearnMore)" target="_blank">Learn more about who qualifies for the PTC</a></p>
+        <p>We used <a href="https://www.irs.gov/forms-pubs/about-form-8962" target="_blank">Form 8962</a> to calculate the amount of your Premium Tax Credit (PTC) and compare it to any advance payments of PTC. These calculations are based on several factors, such as your family size and income.</p>
+        <p><a href="https://www.irs.gov/affordable-care-act/individuals-and-families/eligibility-for-the-premium-tax-credit" target="_blank">Learn more about who qualifies for the PTC</a></p>
       </modal-content>
     </modal-dialog>
     <modal-dialog id="modal-sharedmodalactccalculated">
       <modal-heading>How was my Additional Child Tax Credit calculated?</modal-heading>
       <modal-content>
-        <p>We used <a href="$t(commonUrls.schedule8812)" target="_blank">Schedule 8812</a> to calculate the amount of your Additional Child Tax Credit. This calculation is based on several factors, such as how many qualifying children you have and how much money you make.</p>
-        <p><a href="$t(commonUrls.schedule8812LearnMore)" target="_blank">Learn more about who qualifies.</a></p>
+        <p>We used <a href="https://www.irs.gov/pub/irs-pdf/f1040s8.pdf" target="_blank">Schedule 8812</a> to calculate the amount of your Additional Child Tax Credit. This calculation is based on several factors, such as how many qualifying children you have and how much money you make.</p>
+        <p><a href="https://www.irs.gov/credits-deductions/individuals/child-tax-credit" target="_blank">Learn more about who qualifies.</a></p>
       </modal-content>
     </modal-dialog>
     <modal-dialog id="modal-sharedmodaleitccalculated">
       <modal-heading>How was my Earned Income Tax Credit calculated?</modal-heading>
       <modal-content>
-        <p>We used <a href="$t(commonUrls.eitcInfo)" target="_blank">EIC Worksheet A</a> to calculate the amount of your Earned Income Tax Credit.</p>
+        <p>We used <a href="https://www.irs.gov/credits-deductions/individuals/earned-income-tax-credit-eitc" target="_blank">EIC Worksheet A</a> to calculate the amount of your Earned Income Tax Credit.</p>
         <p>This calculation is based on several factors, such as:</p>
         <ul>
           <li>Your earned income</li>
           <li>How many qualifying children you have with a valid Social Security number issued on or before the due date of your <fg-show path="/taxYear"/> return (including extensions)</li>
         </ul>
-        <p><a href="$t(commonUrls.eitcLearnMore)" target="_blank">Learn more about who qualifies.</a></p>
+        <p><a href="https://www.irs.gov/credits-deductions/individuals/earned-income-tax-credit/who-qualifies-for-the-earned-income-tax-credit-eitc" target="_blank">Learn more about who qualifies.</a></p>
       </modal-content>
     </modal-dialog>
     <modal-dialog id="modal-sharedmodalptc">
@@ -4632,7 +4632,7 @@ qualified health plan and who you’re including on this federal tax return</li>
         <p>When you file your taxes, the amount of the credit you got in advance is compared to the  amount you actually qualify for.</p>
         <p>If you didn’t get the full amount that you qualify for through advance payments, you’ll get the remaining credit when you file your taxes.</p>
         <p>If your advance payments are more than the PTC you qualify for, you’ll have to repay some or all of the excess amount on your federal tax return.</p>
-        <p><a href="$t(commonUrls.premiumTaxCreditInfo)" target="_blank">Learn more about the PTC.</a></p>
+        <p><a href="https://www.irs.gov/affordable-care-act/individuals-and-families/the-premium-tax-credit-the-basics" target="_blank">Learn more about the PTC.</a></p>
       </modal-content>
     </modal-dialog>
     <modal-dialog id="modal-sharedmodalcdcc">
@@ -4643,7 +4643,7 @@ qualified health plan and who you’re including on this federal tax return</li>
         <p>The credit ranges from <fg-show path="/cdccMinAllowedPercentageTY2024"/>% to <fg-show path="/cdccMaxAllowedPercentageTY2024"/>% of your expenses up to <fg-show path="/cdccMaxClaimableExpenseWithOneQP"/> for one qualifying person and <fg-show path="/cdccMaxClaimableExpenseWithTwoQP"/> for two qualifying people. This means the biggest credit you can get is <fg-show path="/cdccMaxAllowedCreditWithOneQP"/> for one qualifying person and <fg-show path="/cdccMaxAllowedCreditWithTwoQP"/> for two or more qualifying people.</p>
         <p>This credit is <strong>nonrefundable</strong>.  This means that it can reduce your taxes, but it won’t reduce what you owe below $0. In other words, it can’t give you a refund.</p>
         <p><strong>There are some tax situations that Direct File doesn’t support yet</strong>. We ask questions to check if these situations apply to you as you complete your return. Also, if you or your spouse had dependent care provided in <fg-show path="/lastTaxYear"/> that you paid for later in <fg-show path="/taxYear"/>, and you didn’t take the maximum amount of expenses for CDCC in <fg-show path="/taxYear"/>, you won’t be able to use Direct File this year. This requires completing Worksheet A and line 9b of Form 2441.</p>
-        <p><a href="$t(commonUrls.cdccInfo)" target="_blank">Learn more about CDCC</a></p>
+        <p><a href="https://www.irs.gov/taxtopics/tc602" target="_blank">Learn more about CDCC</a></p>
       </modal-content>
     </modal-dialog>
     <modal-dialog id="modal-sharedmodaledc">
@@ -4656,7 +4656,7 @@ qualified health plan and who you’re including on this federal tax return</li>
         </ul>
         <p>Taxpayers who meet the eligibility requirements can qualify for the credit.</p>
         <p>This credit is <strong>nonrefundable</strong>. This means that it can reduce your taxes, but it won’t reduce what you owe below $0. In other words, it can’t give you a refund.</p>
-        <p><a href="$t(commonUrls.elderlyAndDisabledCreditInfo)" target="_blank">Learn more about the Credit for the Elderly or the Disabled</a></p>
+        <p><a href="https://www.irs.gov/instructions/i1040sr" target="_blank">Learn more about the Credit for the Elderly or the Disabled</a></p>
       </modal-content>
     </modal-dialog>
     <modal-dialog id="modal-sharedmodalsaverscredit">
@@ -4665,7 +4665,7 @@ qualified health plan and who you’re including on this federal tax return</li>
         <p>The Saver’s Credit, also known as the Retirement Savings Contributions Credit, is a tax benefit for low- to moderate-income taxpayers that offsets a portion of workers’ voluntarily contributions to their Individual Retirement Arrangements (IRAs), 401(k) plans and similar workplace retirement programs. The Saver’s credit also helps eligible people who are the designated beneficiaries of an Achieving a Better Life Experience (ABLE) account.</p>
         <p>Taxpayers who meet the eligibility requirements for the Saver’s Credit can qualify for up to <fg-show path="/saversMaxCreditAmountNotMFJ"/> (<fg-show path="/saversMaxCreditLimit"/> if married filing jointly).</p>
         <p>This credit is <strong>nonrefundable</strong>. This means that it can reduce your taxes, but it won’t reduce what you owe below $0. In other words, it can’t give you a refund.</p>
-        <p><a href="$t(commonUrls.saversCreditInfo)" target="_blank">Learn more about Saver’s Credit</a></p>
+        <p><a href="https://www.irs.gov/retirement-plans/plan-participant-employee/retirement-savings-contributions-savers-credit" target="_blank">Learn more about Saver’s Credit</a></p>
       </modal-content>
     </modal-dialog>
     <modal-dialog id="modal-sharedmodalctc">
@@ -4679,7 +4679,7 @@ qualified health plan and who you’re including on this federal tax return</li>
         <p><strong>Additional Child Tax Credit (ACTC)</strong></p>
         <p>ACTC is the <strong>refundable</strong> part of the credit, worth up to <fg-show path="/maxActcAmount"/> per child. A refundable credit will reduce your taxes. It can even result in a refund if it reduces your taxes below $0.</p>
         <p>ACTC is available to taxpayers who qualify for CTC but couldn’t claim the full amount because they didn’t owe any taxes, or owed less than the amount of their CTC.</p>
-        <p><a href="$t(commonUrls.ctcInfo)" target="_blank">Learn more about CTC and ACTC</a></p>
+        <p><a href="https://www.eitc.irs.gov/other-refundable-credits-toolkit/what-you-need-to-know-about-ctc-and-actc/what-you-need-to-know" target="_blank">Learn more about CTC and ACTC</a></p>
       </modal-content>
     </modal-dialog>
     <modal-dialog id="modal-sharedmodalodc">
@@ -4704,7 +4704,7 @@ qualified health plan and who you’re including on this federal tax return</li>
           <li><fg-show path="/roundedMaxEitcWith3OrMoreQualifyingChildren"/> if they have 3 or more qualifying children with valid SSNs</li>
         </ul>
         <p>This credit is <strong>refundable</strong>. A refundable credit will reduce your taxes. It can even result in a refund if it reduces your taxes below $0.</p>
-        <p><a href="$t(commonUrls.eitcInfo)" target="_blank">Learn more about EITC</a></p>
+        <p><a href="https://www.irs.gov/credits-deductions/individuals/earned-income-tax-credit-eitc" target="_blank">Learn more about EITC</a></p>
       </modal-content>
     </modal-dialog>
   </page>
