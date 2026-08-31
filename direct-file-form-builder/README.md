@@ -195,6 +195,35 @@ there because labels go through Thymeleaf and are resolved per locale at build t
 `website-static/` is served verbatim and never passes through Thymeleaf. A string written there
 would be English in the Spanish build.
 
+## What checks what
+
+Four gates, and they answer different questions. Running the wrong one for the change you made is
+the usual way to be surprised later.
+
+| | Command | Answers |
+|---|---|---|
+| **Parity** | `make transpile-verify` | Does this flow show each screen to exactly the taxpayers Direct File shows it to? 89,329 in-engine decisions over 161 scenarios, plus the declaration-order walk. Needs a `direct-file` checkout. |
+| **Dictionary** | `make test` | Does the fact dictionary still compute Direct File's arithmetic? All 161 corpus returns load and balance; two are pinned. |
+| **Build** | `make ci` | Does it generate, validate and lint? |
+| **Browser** | `make smoke` | Does the generated site *run*? |
+
+`make smoke` is the only one that opens a browser, and it exists because the other three cannot see a
+whole class of failure. The parity gates compare `Condition.evaluate` against the synthesized gate
+facts in-engine and never render a page, so they are blind to a fact path the browser cannot write,
+an input type that fails to register, or a module that throws at import. Both have happened here: 47
+questions threw `requirement failed` until `seed-fact-graph.js` created the second filer, and three
+input modules threw out of `connectedCallback` on any page holding an unanswered address or TIN.
+Neither moved a single number in the parity run.
+
+It is deliberately small — the first few pages, one scenario, seven assertions — and it is not a
+second flow suite. `codemod/verify-visibility.ts` is where the question "which screen shows for whom"
+belongs. See `tests/smoke.spec.js`.
+
+```bash
+make site && make smoke          # it reads ./out, so the build has to exist
+npx playwright install chromium  # once, on a machine that has not run Playwright before
+```
+
 ## Three rules to follow
 
 1. **Authored text goes in the flow XML.** `locales/flow_*.yaml` are build outputs.

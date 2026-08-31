@@ -34,3 +34,9 @@ metals.sbt
 
 # macOS
 .DS_Store
+
+# Playwright's own output: the browser downloads live in the shared ~/.cache, but traces and the HTML
+# report are per-run artifacts of `make smoke`.
+/test-results/
+/playwright-report/
+/blob-report/

@@ -95,6 +95,12 @@ page. Split back apart it is 343 pages, each one upstream screen, which is the s
 ships. `make dev-topic-pages` shows the un-split flow, and Author Mode stays un-split because it
 edits the XML on disk and the splitter's pages are not on it.
 
+**`Result.get` throws on an incomplete result.** The three input modules this application registers
+read `fact?.get` in their `write`, which throws `NoSuchElementException` out of `connectedCallback`
+on every page holding an unanswered address, TIN, EIN, PIN, IP PIN, phone number or bank account —
+aborting the rest of that element's render. They test `fact?.complete` first now. `value` is already
+`''` when incomplete, which is what the registry's contract offers for exactly this.
+
 **The step indicator counts sections, not pages.** `fragments/usa-step-indicator.html` overrides the
 scaffold's to render one segment per flow module — 25 — labelled from the same
 `all-screens.section.*` keys Browse All uses, and it carries `usa-step-indicator--no-labels`. Both
@@ -107,7 +113,7 @@ navigation surface.
 
 ## Library changes this port needed
 
-Ten in `form-builder` and two in `fact-graph`, all landed in the libraries rather than worked
+Eleven in `form-builder` and two in `fact-graph`, all landed in the libraries rather than worked
 around here, because each is something another application would want. The first three are gaps; the
 rest are defects — constructs Direct File's flow and dictionary use that the libraries mishandled.
 
@@ -171,6 +177,16 @@ rest are defects — constructs Direct File's flow and dictionary use that the l
     that wants section-level navigation overrides the fragment and reads them. The label is
     deliberately not resolved in the library — which locale key names a module is the application's
     convention. `Page.moduleSlug` moved off `AllScreens`, since both surfaces group by it now.
+
+11. **A knockout inside a hidden wrapper no longer blocks Continue.** `validateSectionForNavigation`
+    asked for `fg-alert[knockout="true"]:not(.hidden)`, which reads the alert's own class and nothing
+    above it. A condition hides the element that carries it, and in this flow a knockout's condition
+    is on the wrapping `<div class="df-screen df-knockout">` while the alert inside it is authored
+    `condition="/flowAlwaysTrue"` — so the wrapper was hidden, the alert was not, and Continue
+    concluded the taxpayer was knocked out. It refused to navigate and said nothing: every field
+    answered, no error message, no movement, on any topic page carrying a knockout. The `<fg-set>`
+    check two lines above had always read the same question correctly with `closest('.hidden')`;
+    `visibleKnockoutAlert()` now makes the two agree, and `tests/fg-validation.test.mjs` pins it.
 
 Two more landed in **`fact-graph`** rather than `form-builder`.
 

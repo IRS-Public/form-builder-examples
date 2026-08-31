@@ -228,6 +228,19 @@ check-shared-ui: ## Fail if the vendored mirror has drifted from taxpert's sourc
 		|| { echo "==> vendored shared UI is out of date — run 'make copy-shared-ui'"; exit 1; }
 	@echo "==> vendored shared UI matches taxpert"
 
+.PHONY: smoke
+smoke: ## Run the browser smoke test against ./out (needs `make site` first)
+	@# The check the two parity gates cannot make. `transpile-verify` compares 89,329 in-engine
+	@# decisions against Direct File's own and never renders a page, so it cannot see a fact path the
+	@# browser cannot write, an input type that fails to register, or a module that throws at import.
+	@# This loads the first few pages in a real browser and asserts they run. See tests/smoke.spec.js.
+	@#
+	@# Separate from `test` and from `ci`: it needs a built site and a browser, which `make ci` has
+	@# neither of. `npx playwright install chromium` once, on a machine that has not run it before.
+	@test -d $(OUTPUT_DIR) || { \
+	  echo "==> no build at $(OUTPUT_DIR) — run 'make site' first"; exit 1; }
+	npx playwright test
+
 .PHONY: test
 test: ## Run the test suite
 	@# -oC prints only the tests that fail

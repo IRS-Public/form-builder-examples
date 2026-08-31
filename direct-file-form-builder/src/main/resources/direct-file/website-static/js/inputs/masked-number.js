@@ -95,7 +95,11 @@ for (const type of TYPES) {
 
     write (el, value, fact) {
       const input = el.querySelector('input')
-      input.value = fact?.get ? type.display(digitsOf(type.parts(fact.get))) : ''
+      // `Result.get` throws on an incomplete result rather than answering undefined, so the
+      // completeness check has to come first — `fact?.get` threw a NoSuchElementException out of
+      // connectedCallback on every page holding an unanswered one of these, which aborted the rest
+      // of that element's render. `value` is already '' when incomplete; `fact` is the raw Result.
+      input.value = fact?.complete ? type.display(digitsOf(type.parts(fact.get))) : ''
     },
 
     clear (el) {

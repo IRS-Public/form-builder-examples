@@ -42,7 +42,11 @@ registerInputType('address', {
   },
 
   write (el, value, fact) {
-    const address = fact?.get
+    // `Result.get` throws on an incomplete result rather than answering undefined, so the
+    // completeness check has to come first — `fact?.get` threw a NoSuchElementException out of
+    // connectedCallback on every page holding an unanswered one of these, which aborted the rest
+    // of that element's render. `value` is already '' when incomplete; `fact` is the raw Result.
+    const address = fact?.complete ? fact.get : null
     field(el, 'street').value = address?.streetAddress ?? ''
     field(el, 'street2').value = address?.streetAddressLine2 ?? ''
     field(el, 'city').value = address?.city ?? ''

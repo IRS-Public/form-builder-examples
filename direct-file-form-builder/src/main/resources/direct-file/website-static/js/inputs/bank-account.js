@@ -27,7 +27,11 @@ registerInputType('bank-account', {
   },
 
   write (el, value, fact) {
-    const account = fact?.get
+    // `Result.get` throws on an incomplete result rather than answering undefined, so the
+    // completeness check has to come first — `fact?.get` threw a NoSuchElementException out of
+    // connectedCallback on every page holding an unanswered one of these, which aborted the rest
+    // of that element's render. `value` is already '' when incomplete; `fact` is the raw Result.
+    const account = fact?.complete ? fact.get : null
     for (const radio of el.querySelectorAll('[name$="-type"]')) {
       radio.checked = account?.accountType === radio.value
     }
