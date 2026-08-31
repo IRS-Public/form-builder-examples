@@ -1,6 +1,6 @@
 package gov.irs.directfile
 
-import gov.irs.directfile.inputs.{ Address, BankAccount, MaskedNumber }
+import gov.irs.directfile.inputs.{ Address, BankAccount, CollectionItemReference, MaskedNumber }
 import gov.irs.formbuilder.{ FormBuilder, FormBuilderApp }
 import scala.collection.immutable.ListMap
 
@@ -31,11 +31,12 @@ val app: FormBuilderApp = FormBuilderApp(
   // The scaffold renders it into every page's <head>, whether or not the workspace is built in.
   storagePrefix = Some("direct-file"),
 
-  // The seven Fact Graph types the scaffold's built-in inputs do not cover. Each name selects three
+  // The eight Fact Graph types the scaffold's built-in inputs do not cover. Each name selects three
   // things that have to agree: the parser below, `templates/nodes/inputs/{name}.html`, and the
   // handlers registered under it in `website-static/js/inputs/`.
   //
-  // Seven and not the eight the porting plan listed. `fact-select` is not here, and its absence is
+  // Eight, and still not the eight the porting plan listed — the sets differ. `fact-select` is not
+  // here, and its absence is
   // the finding rather than an omission: what makes Direct File's FactSelect a component is the
   // *amount* it collects beside the code, at a path assembled from the chosen code
   // (`/formW2s/*/{code}`) — a path the Flow XML has no way to name. What is left once that is taken
@@ -43,9 +44,13 @@ val app: FormBuilderApp = FormBuilderApp(
   // that only renamed a built-in would claim the gap was closed. See codemod/component-coverage.md.
   //
   // `nodeTypes` stays empty: Direct File's flow needs no element the scaffold has never heard of.
+  // `collection-item-reference` is the one the plan did not list: thirteen questions ask which item
+  // of another collection a fact points at, and until it existed they rendered with nothing to
+  // answer them with.
   inputTypes = MaskedNumber.all ++ Map(
     "address" -> Address,
     "bank-account" -> BankAccount,
+    CollectionItemReference.name -> CollectionItemReference,
   ),
 )
 

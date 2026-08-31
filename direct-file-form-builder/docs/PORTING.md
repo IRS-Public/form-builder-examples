@@ -86,7 +86,7 @@ falls back to English and the `/es/` pages render English text under Spanish chr
 
 ## Library changes this port needed
 
-Seven in `form-builder` and one in `fact-graph`, all landed in the libraries rather than worked
+Eight in `form-builder` and two in `fact-graph`, all landed in the libraries rather than worked
 around here, because each is something another application would want. The first three are gaps; the
 rest are defects — constructs Direct File's flow and dictionary use that the libraries mishandled.
 
@@ -125,6 +125,14 @@ rest are defects — constructs Direct File's flow and dictionary use that the l
    characters, naming it. Past that the YAML printer emits the explicit-key form (`? key` / `:
    value`) which the parser reading the file back rejects — so the build wrote a file it could not
    load, and the error surfaced on the next run pointing at a line that looked fine.
+
+8. **`th:utext` on an enum option's label.** `enum.html` and `multi-enum.html` escaped the option
+   label on the way out, though `FgSet.scala` had always stored the option's *inner markup* as the
+   translation value — so an option could not say "in `<fg-show path="/taxYear"/>"` or bold a box
+   number, and the boolean input's options, which use `th:utext`, could. In this port that was not a
+   cosmetic limit: 55 of Direct File's option labels interpolate a fact, and a flattened fact
+   reference is the empty string, so "I lived in more than 1 state in {{/taxYear}}" reached the page
+   without the year and an option whose whole label was the year reached it blank.
 
 Two more landed in **`fact-graph`** rather than `form-builder`.
 
@@ -173,6 +181,23 @@ for; one because it only exists on the e-signature path, which is out of scope. 
 in `codemod/verify-visibility.ts`'s `KNOWN`, and the check fails on anything else — and on a `KNOWN`
 entry that has come back into line, so a stale exemption cannot hide a later regression. See
 [../codemod/README.md](../codemod/README.md) for the full account.
+
+`make test` is the third leg, and it is about the dictionary rather than the flow. The cookiecutter
+left two starter specs behind — an `EligibilitySpec` reading a `/qualifies` fact this dictionary has
+never declared, and a `FlowSpec` asserting a page at route `/`, which Direct File's flow has not got
+and no longer needs. Four assertions were red on every run from the moment the 36 real modules
+landed, which is worse than no gate at all. They now assert this application:
+
+  - **`DeterminationSpec`** loads all 161 scenarios in `scenarios/` through this dictionary, checks
+    that `overpayment - balanceDue == totalPayments - totalTax` and that a refund is due exactly
+    when there is an overpayment on every one of them, and pins two named returns — `HOH_32k_EITC`,
+    a head-of-household filer with one qualifying child and a $2,726 EITC, and `ats_1`, a single
+    filer with neither. The corpus is upstream's own backend fixtures, so the inputs are Direct
+    File's rather than invented here, and the loadability check guards both directions: a dictionary
+    edit the corpus no longer fits, and a corpus the dictionary cannot read.
+  - **`FlowSpec`** asserts the shape the transpiler promises: 138 unique routes, every one of them
+    `/category/subcategory/subsubcategory` under one of the five categories, every page stamped with
+    the module it came from, and every route in step with that module's filename.
 
 ## The workspace over it
 

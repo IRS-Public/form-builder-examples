@@ -66761,7 +66761,7 @@
           "loops": [
             {
               "loopName": "/filersWithHsa",
-              "itemName": null,
+              "itemName": "person",
               "fullRoute": "/flow/income/hsa",
               "subcategoryRoute": "/flow/income/hsa",
               "collectionName": "/filersWithHsa",
@@ -67510,7 +67510,7 @@
             },
             {
               "loopName": "/cdccQualifyingPeople",
-              "itemName": null,
+              "itemName": "qualifying person",
               "fullRoute": "/flow/credits-and-deductions/credits",
               "subcategoryRoute": "/flow/credits-and-deductions/credits",
               "collectionName": "/cdccQualifyingPeople",
@@ -67535,7 +67535,7 @@
             },
             {
               "loopName": "/cdccQualifyingFilers",
-              "itemName": null,
+              "itemName": "person",
               "fullRoute": "/flow/credits-and-deductions/credits",
               "subcategoryRoute": "/flow/credits-and-deductions/credits",
               "collectionName": "/cdccQualifyingFilers",
@@ -67605,7 +67605,7 @@
             },
             {
               "loopName": "/cdccNonDependentQualifyingPeopleAssignedTins",
-              "itemName": null,
+              "itemName": "qualifying person",
               "fullRoute": "/flow/credits-and-deductions/credits",
               "subcategoryRoute": "/flow/credits-and-deductions/credits",
               "collectionName": "/cdccNonDependentQualifyingPeopleAssignedTins",
@@ -67630,7 +67630,7 @@
             },
             {
               "loopName": "/filersMaybeEligibleForDisability",
-              "itemName": null,
+              "itemName": "person",
               "fullRoute": "/flow/credits-and-deductions/credits",
               "subcategoryRoute": "/flow/credits-and-deductions/credits",
               "collectionName": "/filersMaybeEligibleForDisability",
@@ -67655,7 +67655,7 @@
             },
             {
               "loopName": "/filersQualifiedForEdcThroughDisability",
-              "itemName": null,
+              "itemName": "person",
               "fullRoute": "/flow/credits-and-deductions/credits",
               "subcategoryRoute": "/flow/credits-and-deductions/credits",
               "collectionName": "/filersQualifiedForEdcThroughDisability",
@@ -67680,7 +67680,7 @@
             },
             {
               "loopName": "/deceasedEitcEligibleQcCollection",
-              "itemName": null,
+              "itemName": "qualifying child",
               "fullRoute": "/flow/credits-and-deductions/credits",
               "subcategoryRoute": "/flow/credits-and-deductions/credits",
               "collectionName": "/deceasedEitcEligibleQcCollection",
@@ -67705,7 +67705,7 @@
             },
             {
               "loopName": "/unclaimedEITCQcsWithTINsCollection",
-              "itemName": null,
+              "itemName": "qualifying child",
               "fullRoute": "/flow/credits-and-deductions/credits",
               "subcategoryRoute": "/flow/credits-and-deductions/credits",
               "collectionName": "/unclaimedEITCQcsWithTINsCollection",

@@ -26,7 +26,10 @@
           </fg-set>
         </div>
         <div class="df-screen" condition="/form1099Gs/*/flowGate1d90573a" operator="isTrue">
-          <h2>Whose 1099-G is it?</h2>
+          <fg-set path="/form1099Gs/*/filer">
+            <question>Whose 1099-G is it?</question>
+            <input type="collection-item-reference" item-label="{{/filers/*/firstName}} {{/filers/*/lastName}}"/>
+          </fg-set>
         </div>
         <div class="df-screen" condition="/form1099Gs/*/flowGatef050ef4e" operator="isTrue">
           <h2>Enter the name of the payer.</h2>
@@ -55,11 +58,11 @@
         </div>
         <div class="df-screen" condition="/form1099Gs/*/flowGate54628ef0" operator="isTrue">
           <h2>Enter the amount of unemployment compensation repaid this year.</h2>
-          <fg-set path="/form1099Gs/*/writableAmountPaidBackForBenefitsInTaxYear">
+          <fg-set path="/form1099Gs/*/writableAmountPaidBackForBenefitsInTaxYear" optional="true">
             <question>Amount paid back this year for benefits received <strong>in</strong> <fg-show path="/taxYear"/></question>
             <input type="dollar"/>
           </fg-set>
-          <fg-set path="/form1099Gs/*/writableAmountPaidBackForBenefitsBeforeTaxYear">
+          <fg-set path="/form1099Gs/*/writableAmountPaidBackForBenefitsBeforeTaxYear" optional="true">
             <question>Amount paid back this year for benefits received <strong>before</strong> <fg-show path="/taxYear"/></question>
             <input type="dollar"/>
           </fg-set>
@@ -75,7 +78,7 @@
         <div class="df-screen" condition="/form1099Gs/*/flowGatef050ef4e" operator="isTrue">
           <h2>If there was any voluntary federal withholding on the unemployment compensation, enter the amount of federal income tax withheld from <strong>box 4</strong>.</h2>
           <p>If box 4 is blank, leave it blank here, too.</p>
-          <fg-set path="/form1099Gs/*/writableFederalTaxWithheld">
+          <fg-set path="/form1099Gs/*/writableFederalTaxWithheld" optional="true">
             <question><strong>Box 4</strong> - Federal income tax withheld</question>
             <input type="dollar"/>
           </fg-set>
@@ -92,18 +95,18 @@
           <h2>Enter the state tax information from <strong> boxes 10a, 10b, and 11</strong></h2>
           <fg-apply path="/form1099Gs/*/hasSeenLastAvailableScreen" source="/flowTrue"/>
           <p>Be sure to fill out any boxes that have information listed on the Form 1099-G. If a box is blank, skip that specific box.</p>
-          <fg-set path="/form1099Gs/*/writableState">
+          <fg-set path="/form1099Gs/*/writableState" optional="true">
             <question><strong>Box 10a</strong> - State</question>
             <input type="enum" options-path="/incomeFormStateOptions">
-              <option value="sameState"></option>
+              <option value="sameState"><fg-show path="/filerResidenceAndIncomeState"/></option>
               <option value="differentState">Another state</option>
             </input>
           </fg-set>
-          <fg-set path="/form1099Gs/*/writableStateIdNumber">
+          <fg-set path="/form1099Gs/*/writableStateIdNumber" optional="true">
             <question><strong>Box 10b</strong> - State identification no.</question>
             <input type="text"/>
           </fg-set>
-          <fg-set path="/form1099Gs/*/writableStateTaxWithheld">
+          <fg-set path="/form1099Gs/*/writableStateTaxWithheld" optional="true">
             <question><strong>Box 11</strong> - State income tax withheld</question>
             <input type="dollar"/>
           </fg-set>
@@ -116,7 +119,10 @@
           </fg-alert>
         </div>
         <div class="df-screen" condition="/form1099Gs/*/flowGate57c474fc" operator="isTrue">
-          <h2>Whose unemployment compensation is it?</h2>
+          <fg-set path="/form1099Gs/*/filer">
+            <question>Whose unemployment compensation is it?</question>
+            <input type="collection-item-reference" item-label="{{/filers/*/firstName}} {{/filers/*/lastName}}"/>
+          </fg-set>
         </div>
         <div class="df-screen" condition="/form1099Gs/*/flowGate57fc2e70" operator="isTrue">
           <h2>Enter the name of the payer.</h2>
@@ -144,11 +150,11 @@
         </div>
         <div class="df-screen" condition="/form1099Gs/*/flowGate33814930" operator="isTrue">
           <h2>Enter the amount of unemployment compensation repaid this year.</h2>
-          <fg-set path="/form1099Gs/*/writableAmountPaidBackForBenefitsInTaxYear">
+          <fg-set path="/form1099Gs/*/writableAmountPaidBackForBenefitsInTaxYear" optional="true">
             <question>Amount paid back this year for benefits received <strong>in</strong> <fg-show path="/taxYear"/></question>
             <input type="dollar"/>
           </fg-set>
-          <fg-set path="/form1099Gs/*/writableAmountPaidBackForBenefitsBeforeTaxYear">
+          <fg-set path="/form1099Gs/*/writableAmountPaidBackForBenefitsBeforeTaxYear" optional="true">
             <question>Amount paid back this year for benefits received <strong>before</strong> <fg-show path="/taxYear"/></question>
             <input type="dollar"/>
           </fg-set>

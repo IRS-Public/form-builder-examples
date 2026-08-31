@@ -61,7 +61,7 @@
         <fg-set path="/signReturnIdentity">
           <question>How do you want to confirm your identity?</question>
           <input type="enum" options-path="/signReturnIdentityOptions">
-            <option value="lastYearAgi">Use last year’s AGI (Direct File can look this up)</option>
+            <option value="lastYearAgi">Use last year’s AGI <strong>(Direct File can look this up)</strong></option>
             <option value="lastYearPin">Use last year’s Self-Select PIN</option>
             <option value="cannotFind">I can’t find last year’s Self-Select PIN or AGI</option>
           </input>
@@ -203,7 +203,7 @@
         <fg-set path="/signReturnIdentitySpouse">
           <question>How does <fg-show path="/secondaryFiler/firstName"/> want to confirm their identity?</question>
           <input type="enum" options-path="/signReturnIdentitySpouseOptions">
-            <option value="lastYearAgi">Use last year’s AGI (Direct File can look this up)</option>
+            <option value="lastYearAgi">Use last year’s AGI <strong>(Direct File can look this up)</strong></option>
             <option value="lastYearPin">Use last year’s Self-Select PIN</option>
             <option value="cannotFind">They can’t find last year’s Self-Select PIN or AGI</option>
           </input>

@@ -1,0 +1,40 @@
+<!--/* Which item of another collection this fact points at: whose W-2, whose 1099-G, which person
+       in the household qualifies you for head of household.
+
+       Radios rather than a select, because that is what upstream renders and because the lists are
+       short — every one of the thirteen questions this serves points at /filers (two items at
+       most), at /formW2s, or at the household.
+
+       THE OPTIONS ARE NOT HERE. How many there are is a property of the fact graph in the browser,
+       not of the flow, so the <template> below is one radio and collection-item-reference.js clones
+       it once per collection item. The data attributes are the two things that vary: the collection
+       to list, resolved from the fact dictionary by inputs/CollectionItemReference.scala, and the
+       label pattern, carried from Direct File's `fields.{path}.item` through the flow XML. The
+       fallback label is a message rather than a literal so it translates with everything else.
+
+       th:id on the fieldset, and not only for the label associations built in JS: an id containing
+       `/*/` is what fg-collection-utils' configureCollectionIds rewrites when this question is
+       inside a collection loop, which eleven of the thirteen are. A data attribute would not be
+       rewritten — which is exactly why the label pattern is one, since its `*` stands for the
+       *referenced* item rather than the enclosing one. */-->
+<fieldset class="usa-fieldset df-item-reference" th:id="${controlId}"
+          th:attr="aria-describedby=${hintId},
+                   data-collection=${collection},
+                   data-item-label=${itemLabel},
+                   data-unnamed=#{inputs.collection-item-reference.unnamed}">
+  <legend class="usa-legend twe-question">
+    <div th:utext="#{${contentKey} + .question}" th:remove="tag"></div>
+    <span th:if="${!optional}" aria-hidden="true" class="usa-hint" th:text="#{components.fg-set.required}"></span>
+  </legend>
+  <div th:replace="~{nodes/hint}"></div>
+  <div th:replace="~{nodes/modal-link}"></div>
+
+  <div class="df-item-reference__options"></div>
+
+  <template class="df-item-reference__option">
+    <div class="usa-radio">
+      <input class="usa-radio__input" type="radio" aria-invalid="false">
+      <label class="usa-radio__label"></label>
+    </div>
+  </template>
+</fieldset>

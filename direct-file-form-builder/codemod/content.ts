@@ -44,6 +44,31 @@ import { generateContent } from '/../node_modules/@irs/df-common/src/components/
 // import in behind them.
 import { modalId, plainText } from './render.ts';
 
+/**
+ * Markup this port drops on purpose, and why.
+ *
+ * The distinction the coverage report rests on. A construct *not* listed here that the walker meets
+ * is a gap in the IR — the words survive, the structure does not, and the count is the argument for
+ * adding a node. A construct listed here is a decision, and the reason is the whole of it. Nested
+ * lists used to be in the first group and are now expressed (see `ListItem`); everything left is in
+ * the second.
+ */
+export const DROPPED_WITH_REASON: Record<string, string> = {
+  '<InternalLink>':
+    `every remaining one points at a \`/data-view/…\` route. This port has no DataView — the topic ` +
+    `page is its review surface — so there is nowhere to link to. The words stay, the link goes.`,
+  '<customerSupportLink>':
+    `upstream binds no component and no url to this tag either, so it renders as plain text in ` +
+    `Direct File too. Not a difference from upstream.`,
+  '<InlinePDFButton>': `out of scope: PDF. The sentence survives; the download button does not.`,
+  '<span>':
+    `carries no semantics — "the Form <span>W-2</span>" reads the same without it. On a data-import ` +
+    `screen, which is out of scope in any case.`,
+  'markup in a collection item label':
+    `the label is a template the browser evaluates once per collection item, so it reaches the page ` +
+    `as an attribute rather than as markup. One of the nine wraps itself in a <p>.`,
+};
+
 // ── The intermediate representation ────────────────────────────────────────────────────────────
 //
 // Deliberately smaller than HTML: every shape here is one the app's FlowConfig.rng already accepts,
@@ -63,6 +88,24 @@ export type Inline =
   | { k: 'modal'; id: string; c: Inline[] };
 
 /**
+ * One `<li>`: its own line, and whatever blocks were nested under it.
+ *
+ * `blocks` is in practice always a nested list. Direct File authors them inside an `<li>`'s own
+ * string — 44 of them — and before this existed the inline walker met the `<ul>`, kept the words and
+ * dropped the structure, so a two-level list arrived as one flat run of sentences.
+ *
+ * The consequence to know: form-builder treats `<li>` as a *leaf* (`parser/Html.scala`'s
+ * `LEAF_NODES`), storing its inner markup as one translation string and re-emitting it verbatim. So
+ * a nested list renders as a nested list, and its items share their parent item's translation key
+ * rather than getting their own. Making `<li>` a non-leaf is a library change that would re-key
+ * every list item in all four applications, which is not this port's to make.
+ */
+export interface ListItem {
+  t: Inline[];
+  blocks?: Block[];
+}
+
+/**
  * A block, plus the content declaration's own conditions if it had any.
  *
  * `cond` is left raw on purpose. Turning a condition set into a gate fact needs the screen's
@@ -74,19 +117,32 @@ export type Block = BlockBody & { cond?: unknown[] };
 type BlockBody =
   | { k: 'h'; level: 2 | 3 | 4; t: Inline[] }
   | { k: 'p'; cls?: string; t: Inline[] }
-  | { k: 'list'; ordered: boolean; items: Inline[][] }
+  | { k: 'list'; ordered: boolean; items: ListItem[] }
   /** `knockout` is set by the emitter, which is what knows the screen is one. */
   | { k: 'alert'; type: 'error' | 'warning' | 'info' | 'success'; heading: Inline[]; body: Block[]; knockout?: true }
   | { k: 'detail'; summary: Inline[]; body: Block[] }
   | { k: 'table'; caption: Inline[]; rows: { th: Inline[]; td: Inline[] }[] }
-  | { k: 'set'; path: string; question: Inline[]; hint?: Inline[]; input: InputSpec }
+  | { k: 'set'; path: string; question: Inline[]; hint?: Inline[]; input: InputSpec; optional?: true }
   /** A `<SetFactAction>`, which lives on the screen rather than in its content. Built by the emitter. */
   | { k: 'apply'; path: string; source: string };
 
 export type InputSpec =
   | { type: 'boolean'; options?: { value: 'true' | 'false'; label: Inline[] }[] }
   | { type: 'dollar' | 'text' | 'date' | 'int' | 'tin' | 'ein' | 'pin' | 'ip-pin' | 'phone-number' | 'address' | 'bank-account' }
-  | { type: 'enum' | 'multi-enum' | 'select'; optionsPath: string; options: { value: string; label: string }[] };
+  /**
+   * Which item of another collection this fact points at. `itemLabel` is Direct File's
+   * `fields.{path}.item` carried whole — `{{/filers/*\/firstName}} {{/filers/*\/lastName}}` — because
+   * the browser evaluates it once per item, and the collection to list is not here at all: the app's
+   * `CollectionItemReference` parser reads it off the fact dictionary.
+   */
+  | { type: 'collection-item-reference'; itemLabel: string }
+  /**
+   * `label` is inline for `enum` and `multi-enum`, whose templates render it with `th:utext` — so an
+   * option may say "in <fg-show path="/taxYear"/>" or bold a box number, the way its question can.
+   * `select` keeps a plain string, because HTML's `<option>` holds text and nothing else.
+   */
+  | { type: 'enum' | 'multi-enum'; optionsPath: string; options: { value: string; label: Inline[] }[] }
+  | { type: 'select'; optionsPath: string; options: { value: string; label: string }[] };
 
 export interface ModalDialog {
   id: string;
@@ -119,7 +175,12 @@ export interface ContentReport {
   /** Keys a component named that `en.yaml` does not have. */
   missingKeys: string[];
   /** Inline constructs met that the IR has no shape for, with counts. */
+  /** Constructs the IR has no node for. A gap; each entry is an argument for adding one. */
   unhandledInline: Record<string, number>;
+  /** Markup dropped on purpose: the count, and the reason it is not a gap. */
+  droppedWithReason: Record<string, { count: number; because: string }>;
+  /** Either kind, with the content keys it was met under — where to go and look. */
+  unhandledExamples: Record<string, string[]>;
   /** Enum/multi-enum option labels whose markup had to be flattened, with counts. */
   flattenedOptionLabels: number;
 }
@@ -182,10 +243,37 @@ export class Resolver {
   private readonly modals = new Map<string, ModalDialog>();
   readonly missingKeys = new Set<string>();
   readonly unhandledInline = new Map<string, number>();
+  readonly droppedWithReason = new Map<string, number>();
+  /** construct → the keys it was met under. Counts say how big a gap is; these say where it is. */
+  readonly unhandledExamples = new Map<string, Set<string>>();
   flattenedOptionLabels = 0;
 
+  /** The key currently being resolved, so a note can say where the construct was met. */
+  private currentKey: string | null = null;
+
+  /** Run `body` with `key` recorded as the origin of anything it notes. Restores on the way out, so
+   *  a nested resolution (a modal reached from a body tree) reports itself and then hands back. */
+  private under<T>(key: string, body: () => T): T {
+    const previous = this.currentKey;
+    this.currentKey = key;
+    try {
+      return body();
+    } finally {
+      this.currentKey = previous;
+    }
+  }
+
   private note (what: string) {
-    this.unhandledInline.set(what, (this.unhandledInline.get(what) ?? 0) + 1);
+    const counter = Object.hasOwn(DROPPED_WITH_REASON, what) ? this.droppedWithReason : this.unhandledInline;
+    counter.set(what, (counter.get(what) ?? 0) + 1);
+    const seen = this.unhandledExamples.get(what) ?? new Set<string>();
+    if (this.currentKey !== null) seen.add(this.currentKey);
+    this.unhandledExamples.set(what, seen);
+  }
+
+  /** The same counter, for a caller outside the inline walk that had to drop markup too. */
+  noteUnhandled(what: string) {
+    this.note(what);
   }
 
   /** Modals hoisted while resolving the current screen, then cleared by `takeModals`. */
@@ -339,10 +427,12 @@ export class Resolver {
    * as `components`, for the same reason.
    */
   inlineForKey(key: string, modalIds: Record<string, string> = {}, inherited: Record<string, string> = {}): Inline[] {
-    if (this.isModal(key)) return this.modalInline(key);
-    const value = this.stringForKey(key);
-    if (value === null) return [];
-    return this.inline(value, { ...inherited, ...this.urlsFor(key) }, modalIds);
+    return this.under(key, () => {
+      if (this.isModal(key)) return this.modalInline(key);
+      const value = this.stringForKey(key);
+      if (value === null) return [];
+      return this.inline(value, { ...inherited, ...this.urlsFor(key) }, modalIds);
+    });
   }
 
   /** A key's own url map, looking inside `helpText.helpLink` for the shape that keeps it there. */
@@ -364,15 +454,17 @@ export class Resolver {
    * `.body`.
    */
   blocksForContent(rawKey: string): Block[] {
-    if (this.isModal(rawKey)) return this.modalBlocks(rawKey);
-    const resolved = resolveKey(rawKey);
-    if (resolved === null) {
-      this.missingKeys.add(rawKey);
-      return [];
-    }
-    if (lookup(`${resolved}.body`) !== undefined) return this.blocksForBody(resolved, `body`);
-    const value = this.stringForKey(resolved);
-    return value === null ? [] : this.blocksFromString(value, this.urlsFor(resolved));
+    return this.under(rawKey, () => {
+      if (this.isModal(rawKey)) return this.modalBlocks(rawKey);
+      const resolved = resolveKey(rawKey);
+      if (resolved === null) {
+        this.missingKeys.add(rawKey);
+        return [];
+      }
+      if (lookup(`${resolved}.body`) !== undefined) return this.blocksForBody(resolved, `body`);
+      const value = this.stringForKey(resolved);
+      return value === null ? [] : this.blocksFromString(value, this.urlsFor(resolved));
+    });
   }
 
   /**
@@ -418,15 +510,44 @@ export class Resolver {
    * are the ones `inline` counts.
    */
   blocksForKey(key: string, modalIds: Record<string, string> = {}, inherited: Record<string, string> = {}): Block[] {
-    if (this.isModal(key)) return this.modalBlocks(key);
-    const value = this.stringForKey(key);
-    if (value === null) return [];
-    return this.blocksFromString(value, { ...inherited, ...this.urlsFor(key) }, modalIds);
+    return this.under(key, () => {
+      if (this.isModal(key)) return this.modalBlocks(key);
+      const value = this.stringForKey(key);
+      if (value === null) return [];
+      return this.blocksFromString(value, { ...inherited, ...this.urlsFor(key) }, modalIds);
+    });
+  }
+
+  /**
+   * A run of `<li>`s authored with no wrapper around it, wrapped.
+   *
+   * `- ul: $t(info./info/income/income-supported-list)` is a `<ul>` whose whole body is a reference,
+   * and the key it names holds the `<li>`s and nothing else. Expanding the reference therefore hands
+   * `blocksFromString` a bare run of list items — a list body with its list missing, which the block
+   * splitter had no pattern for and the inline walker then flattened to sentences.
+   *
+   * Items already inside a `<ul>`/`<ol>` are masked out first, so only a genuinely unwrapped run is
+   * wrapped. An `<li>` inside a `<p>` is left where it is: that is markup in a place a list cannot
+   * go, and it stays counted rather than being silently promoted to a list of its own.
+   */
+  private wrapBareListItems(source: string): string {
+    const masked = source.replace(/<(ul|ol)>[\s\S]*?<\/\1>/g, (block) => ` `.repeat(block.length));
+    const runs = [...masked.matchAll(/<li>[\s\S]*?<\/li>(?:\s*<li>[\s\S]*?<\/li>)*/g)];
+    if (runs.length === 0) return source;
+
+    let out = ``;
+    let last = 0;
+    for (const run of runs) {
+      const end = run.index + run[0].length;
+      out += `${source.slice(last, run.index)}<ul>${source.slice(run.index, end)}</ul>`;
+      last = end;
+    }
+    return out + source.slice(last);
   }
 
   /** One authored string, split on the block tags it may carry. */
   blocksFromString(raw: string, urls: Record<string, string>, modalIds: Record<string, string> = {}): Block[] {
-    const source = this.expandReferences(raw);
+    const source = this.wrapBareListItems(this.expandReferences(raw));
     const out: Block[] = [];
     const push = (text: string) => {
       const nodes = this.inline(text, urls, modalIds);
@@ -441,8 +562,8 @@ export class Resolver {
         push(match[2]);
       } else {
         const items = [...match[2].matchAll(/<li>([\s\S]*?)<\/li>/g)]
-          .map((li) => this.inline(li[1], urls, modalIds))
-          .filter((nodes) => nodes.length > 0);
+          .map((li) => this.listItem(li[1], urls, modalIds))
+          .filter((item) => item.t.length > 0 || (item.blocks?.length ?? 0) > 0);
         if (items.length > 0) out.push({ k: `list`, ordered: match[1] === `ol`, items });
       }
       last = match.index + match[0].length;
@@ -450,6 +571,40 @@ export class Resolver {
     const tail = source.slice(last).trim();
     if (tail.length > 0) push(tail);
     return out;
+  }
+
+  /**
+   * One `<li>`'s authored string, as a line plus whatever it nested under itself.
+   *
+   * Run through the *block* splitter rather than the inline walker, which is the whole fix: a `<ul>`
+   * inside an `<li>` is a block in a place a block can go, and treating the li body as inline-only
+   * is what used to drop it. The leading run of paragraphs is the item's own line; anything after
+   * the first non-paragraph is nested under it.
+   */
+  private listItem(raw: string, urls: Record<string, string>, modalIds: Record<string, string>): ListItem {
+    const blocks = this.blocksFromString(raw, urls, modalIds);
+    const firstNonParagraph = blocks.findIndex((block) => block.k !== `p`);
+    if (firstNonParagraph === -1) {
+      return { t: blocks.flatMap((block) => (block.k === `p` ? block.t : [])) };
+    }
+    const lead = blocks.slice(0, firstNonParagraph).flatMap((block) => (block.k === `p` ? block.t : []));
+    return { t: lead, blocks: blocks.slice(firstNonParagraph) };
+  }
+
+  /**
+   * A content key as one `<li>` — its line, plus anything it nested under itself.
+   *
+   * `ConditionalList`'s items are authored as sentences, except where one carries its own `<ul>` of
+   * conditions ("…still take the credit if:" and three bullets). Resolving them as inline flattened
+   * that sub-list into the sentence; this keeps it as a list under its item.
+   */
+  listItemForKey(key: string, inherited: Record<string, string> = {}): ListItem {
+    if (this.isModal(key)) return { t: this.modalInline(key) };
+    return this.under(key, () => {
+      const value = this.stringForKey(key);
+      if (value === null) return { t: [] };
+      return this.listItem(value, { ...inherited, ...this.urlsFor(key) }, {});
+    });
   }
 
   // ── Body trees ───────────────────────────────────────────────────────────────────────────────
@@ -462,14 +617,23 @@ export class Resolver {
    * called — React does not invoke a function component until it renders — so walking the tree is
    * reading the traversal's answer, not running the app.
    */
-  blocksForBody(namespacedKey: string, subKey: string | null, modalIds: Record<string, string> = {}): Block[] {
+  blocksForBody(
+    namespacedKey: string,
+    subKey: string | null,
+    modalIds: Record<string, string> = {},
+    // Links the *component* supplies rather than the locale file — `DFAlert`'s and `DFAccordion`'s
+    // `internalLink` route, whose text is wrapped in `<InternalLink>` inside the body. Merged under
+    // the key's own url map, so an authored url still wins.
+    inherited: Record<string, string> = {},
+  ): Block[] {
     const tKey = subKey === null ? namespacedKey : `${namespacedKey}.${subKey}`;
     const body = lookup(tKey);
     if (body === undefined) {
       this.missingKeys.add(tKey);
       return [];
     }
-    const { urls } = CommonTranslation.maybeUrls(tFn, namespacedKey);
+    const { urls: own } = CommonTranslation.maybeUrls(tFn, namespacedKey);
+    const urls = { ...inherited, ...own };
     if (typeof body === `string`) {
       return this.blocksFromString(body, urls, modalIds);
     }
@@ -497,7 +661,8 @@ export class Resolver {
       } else if (tag === `ul` || tag === `ol`) {
         const items = flatten((element.props as { children?: unknown }).children)
           .filter((li) => li.type === `li` || typeof li.type !== `string`)
-          .map((li) => this.inlineOfElement(li, urls, modalIds));
+          .map((li) => this.listItemOfElement(li, urls, modalIds))
+          .filter((item) => item.t.length > 0 || (item.blocks?.length ?? 0) > 0);
         if (items.length > 0) out.push({ k: `list`, ordered: tag === `ol`, items });
       } else if (tag === `h2` || tag === `h3` || tag === `h4`) {
         out.push({ k: `h`, level: Number(tag.slice(1)) as 2 | 3 | 4, t: this.inlineOfElement(element, urls, modalIds) });
@@ -509,6 +674,39 @@ export class Resolver {
       }
     }
     return out;
+  }
+
+  /**
+   * One generated `<li>`, as a line plus whatever it nested under itself.
+   *
+   * The block-level twin of `inlineOfElement`. A generated `<li>`'s leaves are content keys, and a
+   * key whose string carries a `<ul>` has to be resolved as blocks rather than as inline — resolving
+   * it as inline is exactly what dropped 39 nested items. The leading paragraphs are the line; the
+   * rest is nested under it, the same split `listItem` makes for an authored string.
+   */
+  private listItemOfElement(element: ReactLike, urls: Record<string, string>, modalIds: Record<string, string>): ListItem {
+    const blocks: Block[] = [];
+    const visit = (node: unknown) => {
+      for (const child of flatten(node)) {
+        if (typeof child.type === `string`) visit((child.props as { children?: unknown }).children);
+        else {
+          const key = (child.props as { i18nKey?: string }).i18nKey;
+          if (key) blocks.push(...this.blocksForKey(key, modalIds, urls));
+        }
+      }
+    };
+    visit(element);
+
+    const firstNonParagraph = blocks.findIndex((block) => block.k !== `p`);
+    if (firstNonParagraph === -1) {
+      // The ordinary item, and the one that has to keep behaving exactly as it did: an `<li>` whose
+      // leaves are all sentences is its own line and nothing else.
+      return { t: blocks.flatMap((block) => (block.k === `p` ? block.t : [])) };
+    }
+    return {
+      t: blocks.slice(0, firstNonParagraph).flatMap((block) => (block.k === `p` ? block.t : [])),
+      blocks: blocks.slice(firstNonParagraph),
+    };
   }
 
   /** The text inside one generated element: its leaves, in order. */

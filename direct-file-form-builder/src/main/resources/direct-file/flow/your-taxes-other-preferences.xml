@@ -174,7 +174,7 @@
           <input type="enum" options-path="/presidentalCampaignOptions">
             <option value="filer">Yes, I do</option>
             <option value="neither">No</option>
-            <option value="spouse">Yes, does</option>
+            <option value="spouse">Yes, <fg-show path="/secondaryFiler/firstName"/> does</option>
             <option value="both">Yes, we both do</option>
           </input>
         </fg-set>

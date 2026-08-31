@@ -91,6 +91,16 @@ export function renderCoverage(report: ContentReport, screenCount: number): stri
     `| **Total** | **${Object.keys(components).length}** |`,
   ].join(`\n`);
 
+  const dropped = Object.entries(report.droppedWithReason).sort((a, b) => b[1].count - a[1].count);
+  const droppedTable =
+    dropped.length === 0
+      ? `_None._\n`
+      : `${[
+          `| Construct | Occurrences | Why |`,
+          `|---|---:|---|`,
+          ...dropped.map(([k, v]) => `| ${escapeCell(k)} | ${v.count} | ${escapeCell(v.because)} |`),
+        ].join(`\n`)}\n`;
+
   const unhandled = Object.entries(report.unhandledInline).sort((a, b) => b[1] - a[1]);
   const unhandledTable =
     unhandled.length === 0
@@ -111,12 +121,19 @@ export function renderCoverage(report: ContentReport, screenCount: number): stri
       (g) => `## ${g.heading}\n\n${g.blurb}\n\n${table(components, g.category)}`
     ).join(`\n`) +
     `\n## Inline constructs with no shape in the IR\n\n` +
-    `Markup met inside an authored string that the inline IR has no node for. Each one is dropped to ` +
-    `its text, so the words survive and the markup does not — a link stops being a link, a nested ` +
-    `list stops being a list. Counted rather than silenced, because the number is the argument for ` +
-    `adding a node.\n\n` +
+    `Markup met inside an authored string that the inline IR has no node for. Each one would be ` +
+    `dropped to its text, so the words would survive and the markup would not — a link stopping ` +
+    `being a link, a nested list stopping being a list. Counted rather than silenced, because the ` +
+    `number is the argument for adding a node.\n\n` +
     `${unhandledTable}\n` +
-    `Enum and multi-enum option labels whose markup had to be flattened to plain text, because an ` +
-    `\`<option>\` carries a string: **${report.flattenedOptionLabels}**.\n`
+    `## Markup dropped on purpose\n\n` +
+    `The other half of the same walk, and the distinction is the point: these are decisions rather ` +
+    `than gaps, so each carries its reason instead of a claim on someone's time.\n\n` +
+    `${droppedTable}\n` +
+    `Option labels flattened to plain text: **${report.flattenedOptionLabels}**. Only a \`select\` ` +
+    `can need this — an HTML \`<option>\` holds text and nothing else. \`enum\` and \`multi-enum\` ` +
+    `keep their markup: FgSet stores an option's inner XML as its translation value and their ` +
+    `templates render it with \`th:utext\`, so "in <fg-show path=\"/taxYear\"/>" and a bold box ` +
+    `number both survive.\n`
   );
 }

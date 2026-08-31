@@ -186,7 +186,13 @@ copy-uswds: ## Regenerate the vendored USWDS mirror from node_modules
 	@if [ ! -d $(USWDS_SRC) ]; then \
 		echo "==> $(USWDS_SRC) not found — run 'make ci-setup' (or 'make bootstrap') first"; exit 1; \
 	fi
-	rm -rf $(USWDS_TARGET)
+	@# Emptied rather than removed, for the reason copy-shared-ui spells out: docker-compose.override.yml
+	@# bind-mounts this directory, and Docker Desktop stamps a `user:<you> deny delete` ACL on any
+	@# host directory it has mounted. `rm -rf` on the directory itself then fails with "Permission
+	@# denied" *after* deleting everything inside it, which leaves an empty mirror and a `make site`
+	@# that cannot be run again until the ACL is cleared by hand.
+	mkdir -p $(USWDS_TARGET)
+	find $(USWDS_TARGET) -mindepth 1 -delete
 	mkdir -p $(USWDS_TARGET)/styles $(USWDS_TARGET)/js
 	cp $(USWDS_SRC)/css/uswds.min.css $(USWDS_TARGET)/styles/
 	cp $(USWDS_SRC)/js/uswds.min.js $(USWDS_SRC)/js/uswds-init.min.js $(USWDS_TARGET)/js/

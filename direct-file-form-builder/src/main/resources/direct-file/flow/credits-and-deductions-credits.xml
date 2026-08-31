@@ -804,13 +804,10 @@
         <h2>Do you meet both these requirements for taxpayers who are filing separately from their spouses?</h2>
         <p class="df-context-heading">Premium Tax Credit</p>
         <ul>
-          <li>
-    You’re using the Married Filing Separately filing status because you’re the victim of
+          <li>You’re using the Married Filing Separately filing status because you’re the victim of
     <modal-link for="modal-sharedmodalforptcdomesticabuse">domestic abuse</modal-link> or
-    <modal-link for="modal-sharedmodalforptcspousalabandonment">spousal abandonment</modal-link>
-  </li>
-          <li>You’ll be living apart from your spouse when you file your federal tax return
-  </li>
+    <modal-link for="modal-sharedmodalforptcspousalabandonment">spousal abandonment</modal-link></li>
+          <li>You’ll be living apart from your spouse when you file your federal tax return</li>
         </ul>
         <p> By answering <strong>Yes</strong>, you’re certifying that you meet both requirements. </p>
         <p><modal-link for="modal-sharedmodalforptcwhyaskabuseabandonment">Why are we asking about domestic abuse and spousal abandonment?</modal-link></p>
@@ -995,7 +992,7 @@
             <question><strong>Line 10</strong> - Policy start date</question>
             <input type="date"/>
           </fg-set>
-          <fg-set path="/1095As/*/writableSpecialPolicyModificationInStartingMonth">
+          <fg-set path="/1095As/*/writableSpecialPolicyModificationInStartingMonth" optional="true">
             <question>Enter the <fg-show path="/taxYear"/> policy start and termination (end) dates from <strong>lines 10-11</strong>.</question>
             <input type="boolean"/>
           </fg-set>
@@ -1910,9 +1907,9 @@ qualified health plan and who you’re including on this federal tax return</li>
           <input type="enum" options-path="/combatPayOptions">
             <option value="useSpouseCombatPay">Include all combat pay</option>
             <option value="usePrimaryCombatPay">Include all combat pay</option>
-            <option value="useBothCombatPay">Include all of my and ’s combat pay</option>
-            <option value="usePrimaryNotSpouseCombatPay">Include all of my combat pay and exclude all of ’s combat pay</option>
-            <option value="useSpouseNotPrimaryCombatPay">Include all of ’s combat pay and exclude all of my combat pay</option>
+            <option value="useBothCombatPay">Include all of my and <fg-show path="/secondaryFiler/firstName"/>’s combat pay</option>
+            <option value="usePrimaryNotSpouseCombatPay">Include all of my combat pay and exclude all of <fg-show path="/secondaryFiler/firstName"/>’s combat pay</option>
+            <option value="useSpouseNotPrimaryCombatPay">Include all of <fg-show path="/secondaryFiler/firstName"/>’s combat pay and exclude all of my combat pay</option>
             <option value="noCombatPay">Exclude all combat pay</option>
           </input>
         </fg-set>
@@ -1951,7 +1948,7 @@ qualified health plan and who you’re including on this federal tax return</li>
 
   <page title="Dependent care expenses" route="/credits-and-deductions/credits/qualifying-person-info-qp">
     <section>
-      <fg-collection path="/cdccQualifyingPeople" item-name="cdcc qualifying people" readonly="true">
+      <fg-collection path="/cdccQualifyingPeople" item-name="qualifying person" readonly="true">
         <div class="df-screen" condition="/flowGateed53932a" operator="isTrue">
           <h2>Did you have any qualified dependent care expenses for <fg-show path="/familyAndHousehold/*/fullName"/>?</h2>
           <p class="df-context-heading">Child and Dependent Care Credit</p>
@@ -2042,7 +2039,7 @@ qualified health plan and who you’re including on this federal tax return</li>
 
   <page title="Dependent care expenses" route="/credits-and-deductions/credits/qualifying-person-info-qfiler">
     <section>
-      <fg-collection path="/cdccQualifyingFilers" item-name="cdcc qualifying filers" readonly="true">
+      <fg-collection path="/cdccQualifyingFilers" item-name="person" readonly="true">
         <div class="df-screen" condition="/flowGate1ab0e71e" operator="isTrue">
           <h2>Did you have any qualified dependent care expenses for <fg-show path="/filers/*/fullName"/>?</h2>
           <p class="df-context-heading">Child and Dependent Care Credit</p>
@@ -2240,11 +2237,13 @@ qualified health plan and who you’re including on this federal tax return</li>
           <li>You don’t qualify this year because you don’t have a qualifying person that meets the <a href="https://www.irs.gov/taxtopics/tc602" target="_blank">requirements for the Child and Dependent Care Credit</a>.</li>
           <li>You don’t qualify this year because you didn’t have any earned income in <fg-show path="/taxYear"/>. To qualify, you must work and have earned income.</li>
           <li>You don’t qualify this year because you and <fg-show path="/secondaryFiler/firstName"/> didn’t have any earned income in <fg-show path="/taxYear"/>. To qualify, you and <fg-show path="/secondaryFiler/firstName"/> must work and have earned income.</li>
-          <li>You don’t qualify this year because you’re married, but filing separately from your spouse, and you don’t meet the exception that would allow you to claim the credit. Under this exception, you can use Married Filing Separately filing status and still take the credit if:  
-  Your home was the home of the qualifying person for more than half the year, and
-  You paid more than half the cost of keeping up your home for the year, and
-  Your spouse didn’t live in your home for the last 6 months of the year.
-</li>
+          <li>You don’t qualify this year because you’re married, but filing separately from your spouse, and you don’t meet the exception that would allow you to claim the credit. Under this exception, you can use Married Filing Separately filing status and still take the credit if:
+            <ul>
+              <li>Your home was the home of the qualifying person for more than half the year, and</li>
+              <li>You paid more than half the cost of keeping up your home for the year, and</li>
+              <li>Your spouse didn’t live in your home for the last 6 months of the year.</li>
+            </ul>
+          </li>
           <li>You don’t qualify this year because you don’t have any qualifying expenses for child and dependent care.</li>
           <li>You don’t qualify this year because you don’t have any qualifying expenses for child and dependent care. All of your qualifying expenses were used to exclude your employer-provided dependent care benefits from tax.</li>
           <li>You don’t qualify this year because you received <fg-show path="/cdccMaxClaimableExpenseWithOneQP"/> or more of employer-provided dependent care benefits, which have been excluded from tax. You can’t take more than <fg-show path="/cdccMaxClaimableExpenseWithOneQP"/> of dependent care expenses into account for the Child and Dependent Care Credit, so even if you have additional qualifying expenses, you can’t use them for the credit.</li>
@@ -2330,6 +2329,10 @@ qualified health plan and who you’re including on this federal tax return</li>
         <div class="df-screen" condition="/cdccCareProviders/*/flowGate994ff53a" operator="isTrue">
           <h2>Which employer supplied the care?</h2>
           <p class="df-context-heading">Child and Dependent Care Credit</p>
+          <fg-set path="/cdccCareProviders/*/writableEmployerWhoFurnishedCare">
+            <question>Which employer supplied the care?</question>
+            <input type="collection-item-reference" item-label="{{/formW2s/*/employerName}}"/>
+          </fg-set>
         </div>
         <div class="df-screen" condition="/cdccCareProviders/*/flowGated00862a4" operator="isTrue">
           <h2>Was the care supplied by <fg-show path="/oneAndOnlyW2/employerName"/>?</h2>
@@ -2348,9 +2351,9 @@ qualified health plan and who you’re including on this federal tax return</li>
           <ul condition="/flowGate150ff010" operator="isTrue">
             <li><fg-show path="/formW2s/*/employerName"/></li>
           </ul>
-          <p condition="/flowGatefda9c18b" operator="isTrue">If a different employer supplied the care for your qualifying person, go back to the <a href="/data-view/flow/income/jobs" target="_blank">Jobs</a> section and add the Form W-2 from that employer.</p>
-          <p condition="/flowGate2a421880" operator="isTrue">If a different employer supplied the care for your qualifying people, go back to the <a href="/data-view/flow/income/jobs" target="_blank">Jobs</a> section and add the Form W-2 from that employer.</p>
-          <p><a href="/data-view/flow/income/jobs" target="_blank">Go to Jobs section</a></p>
+          <p condition="/flowGatefda9c18b" operator="isTrue">If a different employer supplied the care for your qualifying person, go back to the Jobs section and add the Form W-2 from that employer.</p>
+          <p condition="/flowGate2a421880" operator="isTrue">If a different employer supplied the care for your qualifying people, go back to the Jobs section and add the Form W-2 from that employer.</p>
+          <p>Go to Jobs section</p>
         </div>
         <div class="df-screen" condition="/cdccCareProviders/*/flowGateb15c3f76" operator="isTrue">
           <h2>What’s the care provider’s name?</h2>
@@ -2512,7 +2515,7 @@ qualified health plan and who you’re including on this federal tax return</li>
 
   <page title="Additional information" route="/credits-and-deductions/credits/cdcc-nondep-qp-info">
     <section>
-      <fg-collection path="/cdccNonDependentQualifyingPeopleAssignedTins" item-name="cdcc non dependent qualifying people assigned tins" readonly="true">
+      <fg-collection path="/cdccNonDependentQualifyingPeopleAssignedTins" item-name="qualifying person" readonly="true">
         <div class="df-screen" condition="/flowGate655b8d99" operator="isTrue">
           <h2>What’s <fg-show path="/familyAndHousehold/*/firstName"/>’s <fg-show path="/familyAndHousehold/*/tinTypeShort"/>?</h2>
           <p class="df-context-heading">Child and Dependent Care Credit</p>
@@ -2563,7 +2566,7 @@ qualified health plan and who you’re including on this federal tax return</li>
         <div class="df-screen" condition="/flowGate655b8d99" operator="isTrue">
           <h2>We’ll add <fg-show path="/familyAndHousehold/*/fullName"/> to your <fg-show path="/taxYear"/> federal tax return as your qualifying person for the Child and Dependent Care Credit.</h2>
           <p class="df-context-heading">Child and Dependent Care Credit</p>
-          <p>If you need to update this information later, you can edit it in this section or in <a href="/data-view/flow/you-and-your-family/dependents" target="_blank">Family and household</a>.</p>
+          <p>If you need to update this information later, you can edit it in this section or in Family and household.</p>
         </div>
       </fg-collection>
     </section>
@@ -2610,7 +2613,7 @@ qualified health plan and who you’re including on this federal tax return</li>
 
   <page title="Disability information" route="/credits-and-deductions/credits/disability">
     <section>
-      <fg-collection path="/filersMaybeEligibleForDisability" item-name="filers maybe eligible for disability" readonly="true">
+      <fg-collection path="/filersMaybeEligibleForDisability" item-name="person" readonly="true">
         <div class="df-screen" condition="/flowGate070b580f" operator="isTrue">
           <h2>Since you are under age 65, we’ll check if you are eligible under the disability portion of the credit.</h2>
           <p class="df-context-heading">Credit for the Elderly or the Disabled</p>
@@ -2847,7 +2850,7 @@ qualified health plan and who you’re including on this federal tax return</li>
 
   <page title="Doctor’s statement" route="/credits-and-deductions/credits/edc-physician-statement">
     <section>
-      <fg-collection path="/filersQualifiedForEdcThroughDisability" item-name="filers qualified for edc through disability" readonly="true">
+      <fg-collection path="/filersQualifiedForEdcThroughDisability" item-name="person" readonly="true">
         <div class="df-screen" condition="/flowGatec92e7521" operator="isTrue">
           <h2>Have you ever gotten a doctor’s statement that certifies <strong>both</strong> of the following statements are true?</h2>
           <p class="df-context-heading">Credit for the Elderly or the Disabled</p>
@@ -3890,7 +3893,7 @@ qualified health plan and who you’re including on this federal tax return</li>
 
   <page title="Earned Income Tax Credit (EITC) Additional information for qualifying child" route="/credits-and-deductions/credits/eitc-8862-date-of-death">
     <section>
-      <fg-collection path="/deceasedEitcEligibleQcCollection" item-name="deceased eitc eligible qc collection" readonly="true">
+      <fg-collection path="/deceasedEitcEligibleQcCollection" item-name="qualifying child" readonly="true">
         <div class="df-screen" condition="/flowGatea10d1561" operator="isTrue">
           <h2>You said earlier that <fg-show path="/familyAndHousehold/*/firstName"/> died in <fg-show path="/taxYear"/>. When did they die?</h2>
           <p class="df-context-heading">Earned Income Tax Credit</p>
@@ -3938,7 +3941,7 @@ qualified health plan and who you’re including on this federal tax return</li>
 
   <page title="Earned Income Tax Credit (EITC) Additional information for qualifying child" route="/credits-and-deductions/credits/eitc-enter-tin">
     <section>
-      <fg-collection path="/unclaimedEITCQcsWithTINsCollection" item-name="unclaimed eitc qcs with ti ns collection" readonly="true">
+      <fg-collection path="/unclaimedEITCQcsWithTINsCollection" item-name="qualifying child" readonly="true">
         <div class="df-screen" condition="/flowGate4a5ee8df" operator="isTrue">
           <h2>What’s <fg-show path="/familyAndHousehold/*/firstName"/>’s <fg-show path="/familyAndHousehold/*/tinTypeShort"/>?</h2>
           <p class="df-context-heading">Earned Income Tax Credit</p>
@@ -4135,12 +4138,12 @@ qualified health plan and who you’re including on this federal tax return</li>
         <fg-set path="/combatPayElection">
           <question>Do you want to include your nontaxable combat pay in your earned income for the Earned Income Tax Credit?</question>
           <input type="enum" options-path="/combatPayOptions">
-            <option value="useSpouseCombatPay">Include all of ’s combat pay, so EITC is</option>
-            <option value="usePrimaryCombatPay">Include all combat pay so EITC is</option>
-            <option value="useBothCombatPay">Include all my and ’s combat pay, so EITC is</option>
-            <option value="usePrimaryNotSpouseCombatPay">Include all my combat pay and exclude all ’s combat pay, so EITC is</option>
-            <option value="useSpouseNotPrimaryCombatPay">Include all ’s combat pay and exclude all my combat pay, so EITC is</option>
-            <option value="noCombatPay">Exclude all combat pay so EITC is</option>
+            <option value="useSpouseCombatPay">Include all of <fg-show path="/secondaryFiler/firstName"/>’s combat pay, so EITC is <fg-show path="/eitcAmountWithSecondaryCombatPay"/></option>
+            <option value="usePrimaryCombatPay">Include all combat pay so EITC is <fg-show path="/eitcAmountWithPrimaryCombatPay"/></option>
+            <option value="useBothCombatPay">Include all my and <fg-show path="/secondaryFiler/firstName"/>’s combat pay, so EITC is <fg-show path="/eitcAmountWithBothTPCombatPay"/></option>
+            <option value="usePrimaryNotSpouseCombatPay">Include all my combat pay and exclude all <fg-show path="/secondaryFiler/firstName"/>’s combat pay, so EITC is <fg-show path="/eitcAmountWithPrimaryCombatPay"/></option>
+            <option value="useSpouseNotPrimaryCombatPay">Include all <fg-show path="/secondaryFiler/firstName"/>’s combat pay and exclude all my combat pay, so EITC is <fg-show path="/eitcAmountWithSecondaryCombatPay"/></option>
+            <option value="noCombatPay">Exclude all combat pay so EITC is <fg-show path="/eitcAmountWithoutCombatPay"/></option>
           </input>
         </fg-set>
       </div>
@@ -4717,7 +4720,7 @@ qualified health plan and who you’re including on this federal tax return</li>
         <ul>
           <li><strong><fg-show path="/familyAndHousehold/*/fullName"/></strong><br/><fg-show path="/familyAndHousehold/*/dateOfBirth"/></li>
         </ul>
-        <p>Go back to <a href="/data-view/flow/you-and-your-family/dependents" target="_blank">Family and household</a> if you want to revisit the information you entered about them.</p>
+        <p>Go back to Family and household if you want to revisit the information you entered about them.</p>
       </div>
     </section>
   </page>

@@ -85,10 +85,10 @@
         <fg-set path="/yearOfSpouseDeath">
           <question>What year did your spouse die?</question>
           <input type="enum" options-path="/yearOfSpouseDeathOptions">
-            <option value="taxYear"></option>
-            <option value="taxYearMinusOne"></option>
-            <option value="taxYearMinusTwo"></option>
-            <option value="beforeTaxYearMinusTwo">before</option>
+            <option value="taxYear"><fg-show path="/taxYear"/></option>
+            <option value="taxYearMinusOne"><fg-show path="/lastTaxYear"/></option>
+            <option value="taxYearMinusTwo"><fg-show path="/taxYearMinusTwo"/></option>
+            <option value="beforeTaxYearMinusTwo">before <fg-show path="/taxYearMinusTwo"/></option>
           </input>
         </fg-set>
       </div>
@@ -169,9 +169,9 @@
         <fg-set path="/spouseLivedTogetherMonths">
           <question>How long did you and your spouse live together in <fg-show path="/taxYear"/>?</question>
           <input type="enum" options-path="/spouseLivedTogetherMonthsOptions">
-            <option value="livedApartAllYear">We didn’t live together at all in</option>
-            <option value="livedTogetherSixMonthsOrLess">We lived together for half the year or less ( days or less)</option>
-            <option value="livedTogetherMoreThanSixMonths">We lived together for more than half the year (more than days)</option>
+            <option value="livedApartAllYear">We didn’t live together at all in <fg-show path="/taxYear"/></option>
+            <option value="livedTogetherSixMonthsOrLess">We lived together for half the year or less (<fg-show path="/minorityOfDaysInYear"/> days or less)</option>
+            <option value="livedTogetherMoreThanSixMonths">We lived together for more than half the year (more than <fg-show path="/minorityOfDaysInYear"/> days)</option>
           </input>
         </fg-set>
       </div>
@@ -299,9 +299,9 @@ or residence requirements</li>
         <fg-set path="/filingStatusChoice">
           <question>Based on your answers, you qualify for more than one filing status.</question>
           <input type="enum" options-path="/filingStatusInitialOptions">
-            <option value="wantsMarriedFilingJointly">Use Married Filing Jointly filing status</option>
-            <option value="wantsMarriedFilingSeparately">Use Married Filing Separately filing status</option>
-            <option value="wantsToSeeIfTheyQualifyHeadOfHousehold">See if I qualify for Head of Household filing status</option>
+            <option value="wantsMarriedFilingJointly">Use <strong>Married Filing Jointly</strong> filing status</option>
+            <option value="wantsMarriedFilingSeparately">Use <strong>Married Filing Separately</strong> filing status</option>
+            <option value="wantsToSeeIfTheyQualifyHeadOfHousehold">See if I qualify for <strong>Head of Household</strong> filing status</option>
           </input>
         </fg-set>
       </div>
@@ -317,9 +317,9 @@ or residence requirements</li>
         <fg-set path="/filingStatusChoice">
           <question>You and your spouse qualify to use the Married Filing Jointly or Married Filing Separately filing statuses.</question>
           <input type="enum" options-path="/filingStatusInitialOptions">
-            <option value="wantsMarriedFilingJointly">Use Married Filing Jointly filing status</option>
-            <option value="wantsMarriedFilingSeparately">Use Married Filing Separately filing status</option>
-            <option value="wantsToSeeIfTheyQualifyHeadOfHousehold">See if I qualify for Head of Household filing status</option>
+            <option value="wantsMarriedFilingJointly">Use <strong>Married Filing Jointly</strong> filing status</option>
+            <option value="wantsMarriedFilingSeparately">Use <strong>Married Filing Separately</strong> filing status</option>
+            <option value="wantsToSeeIfTheyQualifyHeadOfHousehold">See if I qualify for <strong>Head of Household</strong> filing status</option>
           </input>
         </fg-set>
       </div>
@@ -409,8 +409,8 @@ or residence requirements</li>
         <fg-set path="/spouseLivesInTPState">
           <question>You said you lived in <fg-show path="/filerResidenceAndIncomeState"/> all of <fg-show path="/taxYear"/>.<br/> Where did your spouse live for all of <fg-show path="/taxYear"/>?</question>
           <input type="enum" options-path="/spouseScopedStateOptions">
-            <option value="sameState">My spouse lived in for all of .</option>
-            <option value="moreThanOne">My spouse lived in more than one state in .</option>
+            <option value="sameState">My spouse lived in <fg-show path="/filerResidenceAndIncomeState"/> for all of <fg-show path="/taxYear"/>.</option>
+            <option value="moreThanOne">My spouse lived in more than one state in <fg-show path="/taxYear"/>.</option>
             <option value="noneOfTheAbove">None of these options.</option>
           </input>
         </fg-set>
@@ -421,9 +421,9 @@ or residence requirements</li>
         <fg-set path="/spouseW2And1099IntInScopedState">
           <question>If your spouse has any Forms W-2 for <fg-show path="/taxYear"/>, do any of them list a state other than <fg-show path="/filerResidenceAndIncomeState"/> in <strong>box 15</strong>?</question>
           <input type="enum" options-path="/spouseW2And1099IntStateOptions">
-            <option value="anotherState">Yes, box 15 lists another state besides</option>
-            <option value="onlySame">No, box 15 lists only or is blank</option>
-            <option value="noForms">My spouse won’t have Forms W-2 for</option>
+            <option value="anotherState">Yes, <strong>box 15</strong> lists another state besides <fg-show path="/filerResidenceAndIncomeState"/></option>
+            <option value="onlySame">No, <strong>box 15</strong> lists only <fg-show path="/filerResidenceAndIncomeState"/> or is blank</option>
+            <option value="noForms">My spouse won’t have Forms W-2 for <fg-show path="/taxYear"/></option>
           </input>
         </fg-set>
       </div>
@@ -481,7 +481,7 @@ or residence requirements</li>
           <question>First name</question>
           <input type="text"/>
         </fg-set>
-        <fg-set path="/secondaryFiler/writableMiddleInitial">
+        <fg-set path="/secondaryFiler/writableMiddleInitial" optional="true">
           <question>Middle initial</question>
           <input type="text"/>
         </fg-set>
@@ -489,7 +489,7 @@ or residence requirements</li>
           <question>Last name</question>
           <input type="text"/>
         </fg-set>
-        <fg-set path="/secondaryFiler/writableSuffix">
+        <fg-set path="/secondaryFiler/writableSuffix" optional="true">
           <question>Suffix</question>
           <input type="enum" options-path="/suffixOptions">
             <option value="Sr">Sr</option>
@@ -662,7 +662,7 @@ or residence requirements</li>
           <p>You can file your taxes only as a paper tax return because you’re missing an Identity Protection PIN (IP PIN).</p>
           <p>Paper returns can take up to 6 weeks to process.</p>
           <p>You need an IP PIN to confirm <fg-show path="/secondaryFiler/firstName"/>’s identity. If they have an IP PIN but can’t find it, you won’t be able to file your tax return electronically.</p>
-          <p>Try following <a href="https://www.irs.gov/identity-theft-fraud-scams/retrieve-your-ip-pin" target="_blank">these instructions</a> to get your IP PIN. Once you have the IP PIN you’re looking for, add it to Direct File.</p>
+          <p>Try following <a href="https://www.irs.gov/identity-theft-fraud-scams/retrieve-your-ip-pin" target="_blank">these instructions</a> to get your IP PIN. Once you have the IP PIN you’re looking for, <a href="/you-and-your-family/spouse/spouse-mfj-ip-pin-ready" target="_blank">add it to Direct File</a>.</p>
           <p>If you need assistance, chat with customer support.</p>
         </fg-alert>
       </div>
@@ -897,8 +897,8 @@ or residence requirements</li>
           <question>Select all the people that apply</question>
           <input type="multi-enum" options-path="/mfjdEnrolleesOptions">
             <option value="primary">Me</option>
-            <option value="secondary"></option>
-            <option value="someoneElseThatPrimaryOrSecondaryEnrolled">Someone else that or I enrolled</option>
+            <option value="secondary"><fg-show path="/secondaryFiler/firstName"/></option>
+            <option value="someoneElseThatPrimaryOrSecondaryEnrolled">Someone else that <fg-show path="/secondaryFiler/firstName"/> or I enrolled</option>
           </input>
         </fg-set>
       </div>
@@ -1183,7 +1183,7 @@ or residence requirements</li>
           <question>First name</question>
           <input type="text"/>
         </fg-set>
-        <fg-set path="/secondaryFiler/writableMiddleInitial">
+        <fg-set path="/secondaryFiler/writableMiddleInitial" optional="true">
           <question>Middle initial</question>
           <input type="text"/>
         </fg-set>

@@ -294,7 +294,7 @@
       </div>
       <div class="df-screen" condition="/flowGate05ae77a9" operator="isTrue">
         <h2>To use the <fg-show path="/filingStatusCapitalized"/> filing status, we’ll need more information about your family and household.</h2>
-        <p><a href="/data-view/flow/you-and-your-family/dependents" target="_blank">Go to Family and Household section</a></p>
+        <p>Go to Family and Household section</p>
       </div>
       <div class="df-screen" condition="/flowGateefebf829" operator="isTrue">
         <h2><fg-show path="/firstHohQP/fullName"/> is your qualifying person for Head of Household filing status</h2>
@@ -306,6 +306,10 @@
         <p>These are all the people who could qualify you for Head of Household filing status. You only need to list one of them on your federal tax return.</p>
         <p>If you have more than one qualifying person, you can pick any of them. Who you pick won’t affect your ability to claim all of your dependents or change anything else about your taxes.</p>
         <p condition="/flowGate7dec40f9" operator="isTrue">To file your taxes electronically, you’ll need this person’s Social Security number (SSN), Individual Tax Identification Number (ITIN), or Adoption Taxpayer Identification Number (ATIN). If you don’t have it, you can still use Head of Household filing status, but you’ll need to file a paper federal tax return instead.</p>
+        <fg-set path="/hohQualifyingPerson">
+          <question>Who would you like to use as your qualifying person for Head of Household filing status?</question>
+          <input type="collection-item-reference" item-label="{{/familyAndHousehold/*/firstName}} {{/familyAndHousehold/*/lastName}}"/>
+        </fg-set>
       </div>
       <div class="df-screen df-knockout" condition="/flowGateab33db7f" operator="isTrue">
         <h2>Direct File doesn’t yet support Head of Household filing status with qualifying people who don’t have a Taxpayer Identification Number (TIN).</h2>

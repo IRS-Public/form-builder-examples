@@ -44,7 +44,7 @@ import flowNodes from '/src/flow/flow.js';
 import { createFlowConfig } from '/src/flow/flowConfig.js';
 import type { FlowConfig, FlowSubcategory, FlowSubSubcategory, FlowCollectionLoop } from '/src/flow/flowConfig.js';
 import type { ScreenConfig } from '/src/flow/ScreenConfig.js';
-import { Resolver, type ComponentCategory, type ContentReport, type Inline, type ScreenContent } from './content.ts';
+import { DROPPED_WITH_REASON, Resolver, type ComponentCategory, type ContentReport, type Inline, type ScreenContent } from './content.ts';
 import {
   ComponentMapper,
   NOT_EXPRESSIBLE,
@@ -120,9 +120,11 @@ function extractSubSubcategory(ssc: FlowSubSubcategory) {
  * `fields.{collection}.controls.add`, which is that sentence. Stripping the leading verb leaves the
  * noun, and the library composes its own button text around it.
  *
- * Null for an auto-iterating loop, and not a gap in this function: upstream has no such key for one
- * because upstream never names those items — it renders no list, no Add button and no Remove
- * control over a derived collection. Stage 4 owes them a word.
+ * An auto-iterating loop has no such key, because upstream never names those items: it renders no
+ * list, no Add button and no Remove control over a derived collection. This port does render a
+ * heading over each one — `<fg-collection>` draws a `<details>` per item whether or not it is
+ * editable — so the word has to come from somewhere, and `AUTO_ITERATED_ITEM_NAMES` below is that
+ * somewhere.
  */
 function itemNameFor(collectionName: string): string | null {
   const add = (en as Record<string, any>).fields?.[collectionName]?.controls?.add;
@@ -131,10 +133,41 @@ function itemNameFor(collectionName: string): string | null {
   return name.length > 0 && name !== add ? name : null;
 }
 
+/**
+ * What one item of each auto-iterated collection is called.
+ *
+ * Eight of the nineteen collections are a `<Filter>` over `/filers` or `/familyAndHousehold`, walked
+ * item by item with nothing to add to. Upstream has no word for them and there is none to derive:
+ * the base collection's Add control gives "person" for `/familyAndHousehold` but "Save and continue"
+ * for `/filers`, and the collection *path* gives "Cdcc qualifying people 1" as a heading, which is
+ * what this replaces.
+ *
+ * So the eight are chosen here, once, and the table is the record of the choice. A collection that
+ * needs a name and is not in it keeps the humanized path and is counted in the manifest, so adding a
+ * derived loop upstream shows up as a number rather than as a heading nobody reads.
+ */
+const AUTO_ITERATED_ITEM_NAMES: Record<string, string> = {
+  // Over `/filers`: the taxpayer, and the spouse on a joint return.
+  '/filersWithHsa': `person`,
+  '/cdccQualifyingFilers': `person`,
+  '/filersMaybeEligibleForDisability': `person`,
+  '/filersQualifiedForEdcThroughDisability': `person`,
+  // Over `/familyAndHousehold`, narrowed to the people a credit turns on. "Qualifying person" and
+  // "qualifying child" are the terms the screens around these loops already use, so the heading
+  // reads as the same document rather than as the collection's internal name.
+  '/cdccQualifyingPeople': `qualifying person`,
+  '/cdccNonDependentQualifyingPeopleAssignedTins': `qualifying person`,
+  '/deceasedEitcEligibleQcCollection': `qualifying child`,
+  '/unclaimedEITCQcsWithTINsCollection': `qualifying child`,
+};
+
 function extractLoop(loop: FlowCollectionLoop) {
   return {
     loopName: loop.loopName,
-    itemName: itemNameFor(loop.collectionName as string),
+    itemName:
+      itemNameFor(loop.collectionName as string) ??
+      AUTO_ITERATED_ITEM_NAMES[loop.collectionName as string] ??
+      null,
     fullRoute: loop.fullRoute,
     subcategoryRoute: loop.subcategoryRoute,
     collectionName: loop.collectionName as string,
@@ -416,6 +449,12 @@ function resolveContent(
       components,
       missingKeys: [...resolver.missingKeys].sort(),
       unhandledInline: Object.fromEntries([...resolver.unhandledInline].sort((a, b) => b[1] - a[1])),
+      droppedWithReason: Object.fromEntries(
+        [...resolver.droppedWithReason]
+          .sort((a, b) => b[1] - a[1])
+          .map(([what, count]) => [what, { count, because: DROPPED_WITH_REASON[what] }]),
+      ),
+      unhandledExamples: Object.fromEntries([...resolver.unhandledExamples].map(([k, v]) => [k, [...v].sort()])),
       flattenedOptionLabels: resolver.flattenedOptionLabels,
     },
   };

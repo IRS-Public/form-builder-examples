@@ -14,7 +14,7 @@
         <ul>
           <li>Total contributions to an HSA for <fg-show path="/taxYear"/></li>
           <li>Information about your health plan coverage in <fg-show path="/taxYear"/></li>
-          <li>Total distributions from an HSA in <fg-show path="/taxYear"/> (<modal-link for="modal-info-info-income-hsa-add-linkmodal1">Form 1099-SA</modal-link>) </li>
+          <li>Total distributions from an HSA in <fg-show path="/taxYear"/> (<modal-link for="modal-info-info-income-hsa-add-linkmodal1">Form 1099-SA</modal-link>)</li>
           <li>Total <modal-link for="modal-info-info-income-hsa-add-linkmodal2">qualified medical expenses</modal-link> in <fg-show path="/taxYear"/></li>
         </ul>
         <p condition="/flowGateaecf3df1" operator="isTrue">We also might ask about HSA contributions and health plan coverage for <fg-show path="/lastTaxYear"/> to check if you owe additional taxes.</p>
@@ -292,7 +292,7 @@
 
   <page title="Coverage and contributions" route="/income/hsa/coverage-and-contributions">
     <section>
-      <fg-collection path="/filersWithHsa" item-name="filers with hsa" readonly="true">
+      <fg-collection path="/filersWithHsa" item-name="person" readonly="true">
         <div class="df-screen" condition="/flowGatec93bc5c0" operator="isTrue">
           <h2>Thanks for letting us know.</h2>
           <p condition="/filers/*/flowGate82687f31" operator="isTrue">We’re now going to ask questions about <strong>your</strong> health coverage and contributions in <fg-show path="/taxYear"/>.</p>
@@ -349,8 +349,8 @@
           <fg-set path="/filers/*/enrolledInMedicare" if-true="/filers/*/flowGate009ed267">
             <question>Were you enrolled in Medicare in <fg-show path="/taxYear"/>?</question>
             <input type="enum" options-path="/enrolledInMedicareOptions">
-              <option value="allYear">Yes, was enrolled for the whole year</option>
-              <option value="partOfYear">Yes, was enrolled for part of the year</option>
+              <option value="allYear">Yes, <fg-show path="/secondaryFiler/firstName"/> was enrolled for the whole year</option>
+              <option value="partOfYear">Yes, <fg-show path="/secondaryFiler/firstName"/> was enrolled for part of the year</option>
               <option value="noneOfYear">No</option>
             </input>
           </fg-set>
@@ -481,7 +481,7 @@
             <li><modal-link for="modal-info-info-income-hsa-contributions-do-not-include-linkmodal2">Excess (extra) contributions that were withdrawn</modal-link></li>
           </ul>
           <p><modal-link for="modal-info-info-income-hsa-hsa-contributions-information-modal-linkmodal1">Where can I find HSA contribution information?</modal-link></p>
-          <fg-set path="/filers/*/writableHsaNonemployerContributionsTaxYear">
+          <fg-set path="/filers/*/writableHsaNonemployerContributionsTaxYear" optional="true">
             <question>Contributions made in <fg-show path="/taxYear"/> for <fg-show path="/taxYear"/> that weren’t reported on a Form W-2</question>
             <input type="dollar"/>
           </fg-set>
@@ -496,7 +496,7 @@
             <li><modal-link for="modal-info-info-income-hsa-contributions-do-not-include-linkmodal1">Rollovers or trustee-to-trustee transfers</modal-link></li>
             <li><modal-link for="modal-info-info-income-hsa-contributions-do-not-include-linkmodal2">Excess (extra) contributions that were withdrawn</modal-link></li>
           </ul>
-          <fg-set path="/filers/*/writableHsaNonemployerContributionsTaxYearPlusOne">
+          <fg-set path="/filers/*/writableHsaNonemployerContributionsTaxYearPlusOne" optional="true">
             <question>Contributions made in <fg-show path="/nextTaxYear"/> for <fg-show path="/taxYear"/> that aren’t through an employer</question>
             <input type="dollar"/>
           </fg-set>
@@ -656,8 +656,18 @@
       <modal-content>
         <p>A health plan is an HDHP if it meets the following requirements:</p>
         <ul>
-          <li><strong>A required minimum annual deductible.</strong> For Self-only coverage in <fg-show path="/taxYear"/>, the deductible must be at least <fg-show path="/hdhpMinAnnualDeductibleSelf"/>For Family coverage in <fg-show path="/taxYear"/>, the deductible must be at least <fg-show path="/hdhpMinAnnualDeductibleFamily"/></li>
-          <li><strong>A required maximum limit on the out-of-pocket medical expenses that you must pay for covered expenses.</strong> Out-of-pocket expenses include copayments and other amounts, but don’t include premiums.For Self-only coverage in <fg-show path="/taxYear"/>, the maximum out-of-pocket expenses can’t be more than <fg-show path="/hdhpMaxOOPExpensesSelf"/>For Family coverage in <fg-show path="/taxYear"/>, the maximum out-of-pocket expenses can’t be more than <fg-show path="/hdhpMaxOOPExpensesFamily"/></li>
+          <li><strong>A required minimum annual deductible.</strong>
+            <ul>
+              <li>For Self-only coverage in <fg-show path="/taxYear"/>, the deductible must be at least <fg-show path="/hdhpMinAnnualDeductibleSelf"/></li>
+              <li>For Family coverage in <fg-show path="/taxYear"/>, the deductible must be at least <fg-show path="/hdhpMinAnnualDeductibleFamily"/></li>
+            </ul>
+          </li>
+          <li><strong>A required maximum limit on the out-of-pocket medical expenses that you must pay for covered expenses.</strong> Out-of-pocket expenses include copayments and other amounts, but don’t include premiums.
+            <ul>
+              <li>For Self-only coverage in <fg-show path="/taxYear"/>, the maximum out-of-pocket expenses can’t be more than <fg-show path="/hdhpMaxOOPExpensesSelf"/></li>
+              <li>For Family coverage in <fg-show path="/taxYear"/>, the maximum out-of-pocket expenses can’t be more than <fg-show path="/hdhpMaxOOPExpensesFamily"/></li>
+            </ul>
+          </li>
         </ul>
         <p>Generally, health plans will note if they’re HDHPs or if they make you eligible to contribute to a Health Savings Account. If you’re not sure, check with your health plan provider.</p>
       </modal-content>
@@ -921,7 +931,10 @@
       </div>
       <fg-collection path="/hsaDistributions" item-name="Form 1099-SA" determiner="another" if-true="/flowGate980b4142">
         <div class="df-screen" condition="/flowGate91970fd3" operator="isTrue">
-          <h2>Whose 1099-SA is it?</h2>
+          <fg-set path="/hsaDistributions/*/filer">
+            <question>Whose 1099-SA is it?</question>
+            <input type="collection-item-reference" item-label="{{/filers/*/firstName}} {{/filers/*/lastName}}"/>
+          </fg-set>
         </div>
         <div class="df-screen" condition="/flowGate0f62113b" operator="isTrue">
           <h2>Enter the name of the Health Savings Account (HSA) trustee.</h2>
@@ -953,7 +966,7 @@
         </div>
         <div class="df-screen" condition="/hsaDistributions/*/flowGate74297f9a" operator="isTrue">
           <h2>Enter the total amount of distributions that was a rollover to another Health Savings Account.</h2>
-          <fg-set path="/hsaDistributions/*/writableDistributionsRolloverAmount">
+          <fg-set path="/hsaDistributions/*/writableDistributionsRolloverAmount" optional="true">
             <question>Rollover amount</question>
             <input type="dollar"/>
           </fg-set>
@@ -969,7 +982,7 @@
         </div>
         <div class="df-screen" condition="/hsaDistributions/*/flowGate1e63a5b7" operator="isTrue">
           <h2>Enter the total amount of excess (extra) contributions and earnings on them that were withdrawn before <fg-show path="/taxDay"/>.</h2>
-          <fg-set path="/hsaDistributions/*/writableWithdrawnExcessContributionsAmount">
+          <fg-set path="/hsaDistributions/*/writableWithdrawnExcessContributionsAmount" optional="true">
             <question>Amount of withdrawn excess (extra) contributions and earnings on them</question>
             <input type="dollar"/>
           </fg-set>
@@ -977,7 +990,7 @@
         <div class="df-screen" condition="/flowGate0f62113b" operator="isTrue">
           <h2>Enter the amount of earnings on excess (extra) contributions in <strong>box 2</strong>.</h2>
           <p>If box 2 is blank, leave it blank here, too.</p>
-          <fg-set path="/hsaDistributions/*/writableEarningsOnExcessContributions">
+          <fg-set path="/hsaDistributions/*/writableEarningsOnExcessContributions" optional="true">
             <question><strong>Box 2</strong> - Earnings on excess cont.</question>
             <input type="dollar"/>
           </fg-set>
@@ -1017,7 +1030,7 @@
           <h2>Enter the fair market value (FMV) on date of death in <strong>box 4</strong>.</h2>
           <p>If box 4 is blank, leave it blank here, too.</p>
           <p><modal-link for="modal-info-info-income-hsa-distributions-about-fair-market-value-modal-linkmodal1">Why do we ask about FMV and date of death?</modal-link></p>
-          <fg-set path="/hsaDistributions/*/writableFmvOnDateOfDeath">
+          <fg-set path="/hsaDistributions/*/writableFmvOnDateOfDeath" optional="true">
             <question><strong>Box 4</strong> - FMV on date of death</question>
             <input type="dollar"/>
           </fg-set>
@@ -1144,8 +1157,18 @@
         <p><strong>Special family plan situations</strong></p>
         <p>If you have a family plan, you can also include medical expenses from these situations:</p>
         <ul>
-          <li>Any medical expenses that you paid for any person who would have been considered your dependent except that: They filed a joint returnThey had gross incomeYou, or your spouse if filing jointly, are dependents of someone else</li>
-          <li>Parents who are divorced, separated, or living apart for the last 6 months of the calendar year can treat their child (or children) as the dependent of both parents, whether or not the custodial parent releases claim to the child as the custodial parent’s dependent. In this situation, either parent can cover qualified medical expenses for the child with HSA distributions.</li>
+          <li>Any medical expenses that you paid for any person who would have been considered your dependent except that:
+            <ul>
+              <li>They filed a joint return</li>
+              <li>They had gross income</li>
+              <li>You, or your spouse if filing jointly, are dependents of someone else</li>
+            </ul>
+          </li>
+          <li>Parents who are divorced, separated, or living apart for the last 6 months of the calendar year can treat their child (or children) as the dependent of both parents, whether or not the custodial parent releases claim to the child as the custodial parent’s dependent.
+            <ul>
+              <li>In this situation, either parent can cover qualified medical expenses for the child with HSA distributions.</li>
+            </ul>
+          </li>
         </ul>
       </modal-content>
     </modal-dialog>

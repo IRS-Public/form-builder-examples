@@ -16,12 +16,32 @@
         <h2>Direct File only supports certain types of income.</h2>
         <p condition="/flowGateaecf3df1" operator="isTrue">You <strong>can</strong> use Direct File if you only had these types of income:</p>
         <ul condition="/flowGateaecf3df1" operator="isTrue">
-          <li>Income made as an employee in <fg-show path="/filerResidenceAndIncomeState"/> (Form W-2) Unemployment compensation from <fg-show path="/filerResidenceAndIncomeState"/> (Form 1099-G) Interest income (Form 1099-INT) Health Savings Account (HSA) contributions and distributions (Form 1099-SA) Social Security benefits (Form SSA-1099) Alaska Permanent Fund Dividend (PFD)  Distributions from employer-sponsored retirement plans, like a 401(k), pension, annuity, 403(b), or governmental 457(b) (Form 1099-R)</li>
+          <li>
+            <ul>
+              <li>Income made as an employee in <fg-show path="/filerResidenceAndIncomeState"/> (Form W-2)</li>
+              <li>Unemployment compensation from <fg-show path="/filerResidenceAndIncomeState"/> (Form 1099-G)</li>
+              <li>Interest income (Form 1099-INT)</li>
+              <li>Health Savings Account (HSA) contributions and distributions (Form 1099-SA)</li>
+              <li>Social Security benefits (Form SSA-1099)</li>
+              <li>Alaska Permanent Fund Dividend (PFD)</li>
+              <li>Distributions from employer-sponsored retirement plans, like a 401(k), pension, annuity, 403(b), or governmental 457(b) (Form 1099-R)</li>
+            </ul>
+          </li>
         </ul>
         <p condition="/flowGateaecf3df1" operator="isTrue">As you go through Direct File, we’ll let you know about any situations we don’t yet support with these types of income.</p>
         <p condition="/flowGate980b4142" operator="isTrue">You and <fg-show path="/secondaryFiler/firstName"/> <strong>can</strong> use Direct File if you only had these types of income:</p>
         <ul condition="/flowGate980b4142" operator="isTrue">
-          <li>Income made as an employee in <fg-show path="/filerResidenceAndIncomeState"/> (Form W-2) Unemployment compensation from <fg-show path="/filerResidenceAndIncomeState"/> (Form 1099-G) Interest income (Form 1099-INT) Health Savings Account (HSA) contributions and distributions (Form 1099-SA) Social Security benefits (Form SSA-1099) Alaska Permanent Fund Dividend (PFD)  Distributions from employer-sponsored retirement plans, like a 401(k), pension, annuity, 403(b), or governmental 457(b) (Form 1099-R)</li>
+          <li>
+            <ul>
+              <li>Income made as an employee in <fg-show path="/filerResidenceAndIncomeState"/> (Form W-2)</li>
+              <li>Unemployment compensation from <fg-show path="/filerResidenceAndIncomeState"/> (Form 1099-G)</li>
+              <li>Interest income (Form 1099-INT)</li>
+              <li>Health Savings Account (HSA) contributions and distributions (Form 1099-SA)</li>
+              <li>Social Security benefits (Form SSA-1099)</li>
+              <li>Alaska Permanent Fund Dividend (PFD)</li>
+              <li>Distributions from employer-sponsored retirement plans, like a 401(k), pension, annuity, 403(b), or governmental 457(b) (Form 1099-R)</li>
+            </ul>
+          </li>
         </ul>
         <p condition="/flowGate980b4142" operator="isTrue">As you go through Direct File, we’ll let you know about any situations we don’t yet support with these types of income.</p>
       </div>
@@ -87,7 +107,17 @@
         <h2>Does Direct File support all of the income sources that you have for <fg-show path="/taxYear"/>?</h2>
         <p>For <fg-show path="/taxYear"/>, Direct File supports <strong>only</strong></p>
         <ul>
-          <li>Income made as an employee in <fg-show path="/filerResidenceAndIncomeState"/> (Form W-2) Unemployment compensation from <fg-show path="/filerResidenceAndIncomeState"/> (Form 1099-G) Interest income (Form 1099-INT) Health Savings Account (HSA) contributions and distributions (Form 1099-SA) Social Security benefits (Form SSA-1099) Alaska Permanent Fund Dividend (PFD)  Distributions from employer-sponsored retirement plans, like a 401(k), pension, annuity, 403(b), or governmental 457(b) (Form 1099-R)</li>
+          <li>
+            <ul>
+              <li>Income made as an employee in <fg-show path="/filerResidenceAndIncomeState"/> (Form W-2)</li>
+              <li>Unemployment compensation from <fg-show path="/filerResidenceAndIncomeState"/> (Form 1099-G)</li>
+              <li>Interest income (Form 1099-INT)</li>
+              <li>Health Savings Account (HSA) contributions and distributions (Form 1099-SA)</li>
+              <li>Social Security benefits (Form SSA-1099)</li>
+              <li>Alaska Permanent Fund Dividend (PFD)</li>
+              <li>Distributions from employer-sponsored retirement plans, like a 401(k), pension, annuity, 403(b), or governmental 457(b) (Form 1099-R)</li>
+            </ul>
+          </li>
         </ul>
         <fg-set path="/incomeSourcesSupported" if-true="/flowGateaecf3df1">
           <question>Does Direct File support all of the income sources that you have for <fg-show path="/taxYear"/>?</question>
@@ -122,7 +152,17 @@
       <modal-content>
         <p>Direct File only supports these types of income:</p>
         <ul>
-          <li>Income made as an employee in <fg-show path="/filerResidenceAndIncomeState"/> (Form W-2) Unemployment compensation from <fg-show path="/filerResidenceAndIncomeState"/> (Form 1099-G) Interest income (Form 1099-INT) Health Savings Account (HSA) contributions and distributions (Form 1099-SA) Social Security benefits (Form SSA-1099) Alaska Permanent Fund Dividend (PFD)  Distributions from employer-sponsored retirement plans, like a 401(k), pension, annuity, 403(b), or governmental 457(b) (Form 1099-R)</li>
+          <li>
+            <ul>
+              <li>Income made as an employee in <fg-show path="/filerResidenceAndIncomeState"/> (Form W-2)</li>
+              <li>Unemployment compensation from <fg-show path="/filerResidenceAndIncomeState"/> (Form 1099-G)</li>
+              <li>Interest income (Form 1099-INT)</li>
+              <li>Health Savings Account (HSA) contributions and distributions (Form 1099-SA)</li>
+              <li>Social Security benefits (Form SSA-1099)</li>
+              <li>Alaska Permanent Fund Dividend (PFD)</li>
+              <li>Distributions from employer-sponsored retirement plans, like a 401(k), pension, annuity, 403(b), or governmental 457(b) (Form 1099-R)</li>
+            </ul>
+          </li>
         </ul>
         <p>If you aren’t sure if your income is supported and you need assistance, chat with customer support.</p>
       </modal-content>

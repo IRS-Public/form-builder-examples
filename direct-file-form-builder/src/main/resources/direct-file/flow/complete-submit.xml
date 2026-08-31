@@ -27,16 +27,16 @@
         <h3>Your digital signature</h3>
         <ul>
           <li><strong>Your date of birth</strong><br/><fg-show path="/primaryFiler/dateOfBirth"/></li>
-          <li><strong>Your Self-Select PIN for this year</strong> Edit<br/><fg-show path="/selfSelectPin"/></li>
-          <li><strong>Last year’s Self-Select PIN</strong> Edit<br/><fg-show path="/selfSelectPinLastYear"/></li>
-          <li><strong>Your <fg-show path="/lastTaxYear"/>’s Adjusted Gross Income (AGI)</strong> Edit<br/><fg-show path="/lastYearAgi"/></li>
+          <li><strong>Your Self-Select PIN for this year</strong> <a href="/complete/sign-and-submit/sign-return-create-new-self-select-pin" target="_blank">Edit</a><br/><fg-show path="/selfSelectPin"/></li>
+          <li><strong>Last year’s Self-Select PIN</strong> <a href="/complete/sign-and-submit/sign-return-enter-self-select-pin" target="_blank">Edit</a><br/><fg-show path="/selfSelectPinLastYear"/></li>
+          <li><strong>Your <fg-show path="/lastTaxYear"/>’s Adjusted Gross Income (AGI)</strong> <a href="/complete/sign-and-submit/sign-return-agi" target="_blank">Edit</a><br/><fg-show path="/lastYearAgi"/></li>
         </ul>
         <h3><fg-show path="/secondaryFiler/firstName"/>’s digital signature</h3>
         <ul>
           <li><strong><fg-show path="/secondaryFiler/firstName"/>’s date of birth</strong><br/><fg-show path="/secondaryFiler/dateOfBirth"/></li>
-          <li><strong><fg-show path="/secondaryFiler/firstName"/>’s Self-Select PIN for this year</strong> Edit<br/><fg-show path="/spouseSelfSelectPin"/></li>
-          <li><strong><fg-show path="/secondaryFiler/firstName"/>’s <fg-show path="/lastTaxYear"/>’s Self-Select PIN</strong> Edit<br/><fg-show path="/spouseSelfSelectPinLastYear"/></li>
-          <li><strong><fg-show path="/secondaryFiler/firstName"/>’s <fg-show path="/lastTaxYear"/>’s Adjusted Gross Income (AGI)</strong> Edit<br/><fg-show path="/spouseLastYearAgi"/></li>
+          <li><strong><fg-show path="/secondaryFiler/firstName"/>’s Self-Select PIN for this year</strong> <a href="/complete/sign-and-submit/sign-return-spouse-create-self-select-pin" target="_blank">Edit</a><br/><fg-show path="/spouseSelfSelectPin"/></li>
+          <li><strong><fg-show path="/secondaryFiler/firstName"/>’s <fg-show path="/lastTaxYear"/>’s Self-Select PIN</strong> <a href="/complete/sign-and-submit/sign-return-spouse-enter-self-select-pin" target="_blank">Edit</a><br/><fg-show path="/spouseSelfSelectPinLastYear"/></li>
+          <li><strong><fg-show path="/secondaryFiler/firstName"/>’s <fg-show path="/lastTaxYear"/>’s Adjusted Gross Income (AGI)</strong> <a href="/complete/sign-and-submit/sign-return-spouse-agi" target="_blank">Edit</a><br/><fg-show path="/spouseLastYearAgi"/></li>
         </ul>
         <fg-alert alert-key="/flow/complete/submit/sign-return-mfj-submit" alert-type="warning" condition="/flowAlwaysTrue" operator="isTrue">
           <heading>Double check your date of birth and tax information details to make sure your information is correct</heading>

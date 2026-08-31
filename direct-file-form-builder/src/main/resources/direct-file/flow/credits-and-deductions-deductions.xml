@@ -213,9 +213,9 @@
         <fg-set path="/wasK12Educators">
           <question>Did you or <fg-show path="/secondaryFiler/firstName"/> work as a kindergarten through grade 12 (K–12) educator in <fg-show path="/taxYear"/>?</question>
           <input type="enum" options-path="/k12EducatorOptions">
-            <option value="tpDid">Yes, I worked as a K–12 educator in</option>
-            <option value="spouseDid">Yes, worked as a K–12 educator in</option>
-            <option value="bothDid">Yes, we both worked as K–12 educators in</option>
+            <option value="tpDid">Yes, I worked as a K–12 educator in <fg-show path="/taxYear"/></option>
+            <option value="spouseDid">Yes, <fg-show path="/secondaryFiler/firstName"/> worked as a K–12 educator in <fg-show path="/taxYear"/></option>
+            <option value="bothDid">Yes, we both worked as K–12 educators in <fg-show path="/taxYear"/></option>
             <option value="neither">No</option>
           </input>
         </fg-set>

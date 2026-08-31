@@ -9,10 +9,10 @@ An unmapped type is not a row here — `ComponentMapper.blocks` throws on it, na
 
 | Group | Types |
 |---|---:|
-| Expressed in the flow | 34 |
+| Expressed in the flow | 35 |
 | Drawn by something else | 3 |
 | Out of scope | 13 |
-| Real gaps | 1 |
+| Real gaps | 0 |
 | **Total** | **51** |
 
 ## Expressed in the flow
@@ -27,6 +27,7 @@ Each becomes flow markup. Where a type has more than one row, its props decide: 
 | `BigContent` | 6 | the key's content: a body tree, a sentence, or a modal launcher |
 | `Boolean` | 244 | `<fg-set>` with `<input type="boolean">` |
 |  | 2 | skipped where displayOnlyOn is data-view |
+| `CollectionItemReference` | 13 | `<fg-set>` with `<input type="collection-item-reference">` |
 | `ConditionalAccordion` | 7 | `<fg-detail>` |
 | `ConditionalList` | 58 | `<ul>`, one `<li>` per item that still has a condition |
 | `ContextHeading` | 225 | `<p class="df-context-heading">` |
@@ -105,22 +106,24 @@ The port is questionnaire-only: no authentication, no MeF submission, no PDF, no
 
 Expressible in Direct File and not in this flow. Each is a thing to fix, not a thing to explain.
 
-| Component | Declarations | Becomes |
-|---|---:|---|
-| `CollectionItemReference` | 13 | binds a CollectionItemReference fact, which no input type writes |
+_None._
 
 ## Inline constructs with no shape in the IR
 
-Markup met inside an authored string that the inline IR has no node for. Each one is dropped to its text, so the words survive and the markup does not — a link stops being a link, a nested list stops being a list. Counted rather than silenced, because the number is the argument for adding a node.
+Markup met inside an authored string that the inline IR has no node for. Each one would be dropped to its text, so the words would survive and the markup would not — a link stopping being a link, a nested list stopping being a list. Counted rather than silenced, because the number is the argument for adding a node.
 
-| Construct | Occurrences |
-|---|---:|
-| block `<li>` inside inline text | 39 |
-| `<InternalLink>` | 16 |
-| `<customerSupportLink>` | 11 |
-| block `<p>` inside inline text | 5 |
-| block `<ul>` inside inline text | 5 |
-| `<InlinePDFButton>` | 3 |
-| `<span>` | 1 |
+_None._
 
-Enum and multi-enum option labels whose markup had to be flattened to plain text, because an `<option>` carries a string: **70**.
+## Markup dropped on purpose
+
+The other half of the same walk, and the distinction is the point: these are decisions rather than gaps, so each carries its reason instead of a claim on someone's time.
+
+| Construct | Occurrences | Why |
+|---|---:|---|
+| `<customerSupportLink>` | 11 | upstream binds no component and no url to this tag either, so it renders as plain text in Direct File too. Not a difference from upstream. |
+| `<InternalLink>` | 10 | every remaining one points at a `/data-view/…` route. This port has no DataView — the topic page is its review surface — so there is nowhere to link to. The words stay, the link goes. |
+| `<InlinePDFButton>` | 3 | out of scope: PDF. The sentence survives; the download button does not. |
+| markup in a collection item label | 2 | the label is a template the browser evaluates once per collection item, so it reaches the page as an attribute rather than as markup. One of the nine wraps itself in a `<p>`. |
+| `<span>` | 1 | carries no semantics — "the Form `<span>`W-2`</span>`" reads the same without it. On a data-import screen, which is out of scope in any case. |
+
+Option labels flattened to plain text: **0**. Only a `select` can need this — an HTML `<option>` holds text and nothing else. `enum` and `multi-enum` keep their markup: FgSet stores an option's inner XML as its translation value and their templates render it with `th:utext`, so "in <fg-show path="/taxYear"/>" and a bold box number both survive.

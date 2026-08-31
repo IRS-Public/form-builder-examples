@@ -22,7 +22,10 @@
       </div>
       <fg-collection path="/socialSecurityReports" item-name="Social Security income" determiner="another" if-true="/flowGate4c461469">
         <div class="df-screen" condition="/flowGate980b4142" operator="isTrue">
-          <h2>Whose SSA-1099 is it?</h2>
+          <fg-set path="/socialSecurityReports/*/filer">
+            <question>Whose SSA-1099 is it?</question>
+            <input type="collection-item-reference" item-label="{{/filers/*/firstName}} {{/filers/*/lastName}}"/>
+          </fg-set>
         </div>
         <div class="df-screen">
           <h2>Enter the net benefits received in <fg-show path="/taxYear"/> from <strong>box 5</strong>.</h2>
@@ -44,13 +47,16 @@
           <h2>Enter any voluntary federal income tax withheld from <strong>box 6</strong>.</h2>
           <fg-apply path="/socialSecurityReports/*/hasSeenLastAvailableScreen" source="/flowTrue"/>
           <p>If box 6 is blank, leave it blank here, too.</p>
-          <fg-set path="/socialSecurityReports/*/writableSsaFederalTaxWithheld">
+          <fg-set path="/socialSecurityReports/*/writableSsaFederalTaxWithheld" optional="true">
             <question><strong>Box 6</strong> - Voluntary federal income tax withheld</question>
             <input type="dollar"/>
           </fg-set>
         </div>
         <div class="df-screen" condition="/socialSecurityReports/*/flowGate17f74843" operator="isTrue">
-          <h2>Whose RRB-1099 is it?</h2>
+          <fg-set path="/socialSecurityReports/*/filer">
+            <question>Whose RRB-1099 is it?</question>
+            <input type="collection-item-reference" item-label="{{/filers/*/firstName}} {{/filers/*/lastName}}"/>
+          </fg-set>
         </div>
         <div class="df-screen" condition="/socialSecurityReports/*/flowGated7a08eb8" operator="isTrue">
           <h2>Enter the net benefits received in <fg-show path="/taxYear"/> from <strong>box 5</strong>.</h2>
@@ -64,7 +70,7 @@
           <h2>Enter any federal income tax withheld from <strong>box 10</strong>.</h2>
           <fg-apply path="/socialSecurityReports/*/hasSeenLastAvailableScreen" source="/flowTrue"/>
           <p>If box 10 is blank, leave it blank here, too.</p>
-          <fg-set path="/socialSecurityReports/*/writableRrbFederalTaxWithheld">
+          <fg-set path="/socialSecurityReports/*/writableRrbFederalTaxWithheld" optional="true">
             <question><strong>Box 10</strong> - Federal income tax withheld</question>
             <input type="dollar"/>
           </fg-set>

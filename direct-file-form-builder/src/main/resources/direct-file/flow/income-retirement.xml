@@ -26,14 +26,17 @@
             <question>Is the Form 1099-R nonstandard or corrected?</question>
             <input type="enum" options-path="/form1099RsNonstandardCorrectedOptions">
               <option value="neither">No, this is a standard Form 1099-R</option>
-              <option value="nonstandard">Yes, this Form 1099-R is nonstandard. It is handwritten, altered, or typed on a typewriter.</option>
-              <option value="corrected">Yes, this Form 1099-R is corrected. The top of the form has the corrected box checked.</option>
-              <option value="both">Yes, this Form 1099-R is nonstandard and corrected</option>
+              <option value="nonstandard">Yes, this Form 1099-R is <strong>nonstandard</strong>. It is handwritten, altered, or typed on a typewriter.</option>
+              <option value="corrected">Yes, this Form 1099-R is <strong>corrected</strong>. The top of the form has the <strong>corrected</strong> box checked.</option>
+              <option value="both">Yes, this Form 1099-R is <strong>nonstandard</strong> and <strong>corrected</strong></option>
             </input>
           </fg-set>
         </div>
         <div class="df-screen" condition="/flowGate980b4142" operator="isTrue">
-          <h2>What name is in the <strong>Recipient</strong> box?</h2>
+          <fg-set path="/form1099Rs/*/filer">
+            <question>What name is in the <strong>Recipient</strong> box?</question>
+            <input type="collection-item-reference" item-label="{{/filers/*/firstName}} {{/filers/*/lastName}}"/>
+          </fg-set>
         </div>
         <div class="df-screen">
           <h2>Confirm the box <strong>Recipient’s name</strong> matches the information on this federal tax return.</h2>
@@ -61,7 +64,7 @@
           <fg-set path="/form1099Rs/*/recipientAddressChoice">
             <question>Let’s add the recipient’s address.</question>
             <input type="enum" options-path="/recipientAddressChoiceOptions">
-              <option value="matchesReturn">It’s the same address that’s on this federal tax return:</option>
+              <option value="matchesReturn">It’s the same address that’s on this federal tax return: <br/><strong><fg-show path="/address"/></strong></option>
               <option value="different">It’s a different address</option>
               <option value="none">There’s no address</option>
             </input>
@@ -84,7 +87,7 @@
             <question>Payer’s name</question>
             <input type="text"/>
           </fg-set>
-          <fg-set path="/form1099Rs/*/writablePayerNameLine2">
+          <fg-set path="/form1099Rs/*/writablePayerNameLine2" optional="true">
             <question>Payer’s name (Line 2)</question>
             <input type="text"/>
           </fg-set>
@@ -93,7 +96,7 @@
             <hint><modal-link for="modal-info-info-retirement-1099r-why-cant-i-change-country-linkmodal1">Why can’t I change the country?</modal-link></hint>
             <input type="address"/>
           </fg-set>
-          <fg-set path="/form1099Rs/*/payer/writablePhone">
+          <fg-set path="/form1099Rs/*/payer/writablePhone" optional="true">
             <question>Payer’s telephone number</question>
             <input type="phone-number"/>
           </fg-set>
@@ -115,7 +118,7 @@
           <p>If box 2a is blank, leave it blank here, too.</p>
           <p><modal-link for="modal-info-info-income-1099r-whats-taxable-amount-mean-linkmodal1">What does taxable amount mean?</modal-link></p>
           <p><modal-link for="modal-info-info-income-1099r-box-2a-enter-different-linkmodal1">Can I enter a different number than what is reported on the 1099-R?</modal-link></p>
-          <fg-set path="/form1099Rs/*/writableTaxableAmount">
+          <fg-set path="/form1099Rs/*/writableTaxableAmount" optional="true">
             <question><strong>Box 2a</strong> - Taxable amount</question>
             <input type="dollar"/>
           </fg-set>
@@ -123,11 +126,11 @@
         <div class="df-screen">
           <h2>Check each item that’s checked in <strong>box 2b</strong>.</h2>
           <p>If none of the boxes are checked on the 1099-R, leave them blank here, too.</p>
-          <fg-set path="/form1099Rs/*/writableTaxableAmountNotDetermined">
+          <fg-set path="/form1099Rs/*/writableTaxableAmountNotDetermined" optional="true">
             <question>Check each item that’s checked in <strong>box 2b</strong>.</question>
             <input type="boolean"/>
           </fg-set>
-          <fg-set path="/form1099Rs/*/writableTotalDistribution">
+          <fg-set path="/form1099Rs/*/writableTotalDistribution" optional="true">
             <question>Check each item that’s checked in <strong>box 2b</strong>.</question>
             <input type="boolean"/>
           </fg-set>
@@ -163,7 +166,7 @@
         <div class="df-screen">
           <h2>Enter the capital gain in <strong>box 3</strong>.</h2>
           <p>If box 3 is blank, leave it blank here, too.</p>
-          <fg-set path="/form1099Rs/*/writableCapitalGain">
+          <fg-set path="/form1099Rs/*/writableCapitalGain" optional="true">
             <question><strong>Box 3</strong> - Capital gain (included in box 2a)</question>
             <input type="dollar"/>
           </fg-set>
@@ -179,7 +182,7 @@
         <div class="df-screen">
           <h2>Enter the federal income tax withheld in <strong>box 4</strong>.</h2>
           <p>If box 4 is blank, leave it blank here, too.</p>
-          <fg-set path="/form1099Rs/*/writableFederalWithholding">
+          <fg-set path="/form1099Rs/*/writableFederalWithholding" optional="true">
             <question><strong>Box 4</strong> - Federal income tax withheld</question>
             <input type="dollar"/>
           </fg-set>
@@ -187,7 +190,7 @@
         <div class="df-screen">
           <h2>Enter the employee contributions/Designated Roth contributions or insurance premiums in <strong>box 5</strong>.</h2>
           <p>If box 5 is blank, leave it blank here, too.</p>
-          <fg-set path="/form1099Rs/*/writableEmployeeOrRothOrInsuranceContributions">
+          <fg-set path="/form1099Rs/*/writableEmployeeOrRothOrInsuranceContributions" optional="true">
             <question><strong>Box 5</strong> - Employee contributions/Designated Roth contributions or insurance premiums</question>
             <input type="dollar"/>
           </fg-set>
@@ -196,7 +199,7 @@
           <h2>Enter the net unrealized appreciation in employer’s securities withheld in <strong>box 6</strong>.</h2>
           <p>If box 6 is blank, leave it blank here, too.</p>
           <p><modal-link for="modal-info-info-income-1099r-1099r-what-is-box-6-linkmodal1">What’s box 6 used for?</modal-link></p>
-          <fg-set path="/form1099Rs/*/writableNetAppreciation">
+          <fg-set path="/form1099Rs/*/writableNetAppreciation" optional="true">
             <question><strong>Box 6</strong> - Net unrealized appreciation in employer’s securities</question>
             <input type="dollar"/>
           </fg-set>
@@ -389,11 +392,11 @@
         <div class="df-screen">
           <h2>Enter the other amount and percentage in <strong>box 8</strong>.</h2>
           <p>If box 8 is blank, leave it blank here, too.</p>
-          <fg-set path="/form1099Rs/*/writableOtherDollar">
+          <fg-set path="/form1099Rs/*/writableOtherDollar" optional="true">
             <question>Amount</question>
             <input type="dollar"/>
           </fg-set>
-          <fg-set path="/form1099Rs/*/writableOtherPercentage">
+          <fg-set path="/form1099Rs/*/writableOtherPercentage" optional="true">
             <question>Percentage</question>
             <input type="text"/>
           </fg-set>
@@ -417,7 +420,7 @@
         <div class="df-screen">
           <h2>Enter the percentage of total distribution in <strong>box 9a</strong>.</h2>
           <p>If box 9a is blank, leave it blank here, too.</p>
-          <fg-set path="/form1099Rs/*/writablePercentageTotalDistribution">
+          <fg-set path="/form1099Rs/*/writablePercentageTotalDistribution" optional="true">
             <question><strong>Box 9a</strong> - Your percentage of total distribution</question>
             <input type="text"/>
           </fg-set>
@@ -433,7 +436,7 @@
         <div class="df-screen">
           <h2>Enter the total employee contributions in <strong>box 9b</strong>.</h2>
           <p>If box 9b is blank, leave it blank here, too.</p>
-          <fg-set path="/form1099Rs/*/writableTotalEmployeeContributions">
+          <fg-set path="/form1099Rs/*/writableTotalEmployeeContributions" optional="true">
             <question><strong>Box 9b</strong> -  Total employee contributions</question>
             <input type="dollar"/>
           </fg-set>
@@ -442,7 +445,7 @@
           <h2>Enter the amount allocable to an in-plan Roth rollover (IRR) within 5 years in <strong>box 10</strong>.</h2>
           <p>If box 10 is blank, leave it blank here, too.</p>
           <p><modal-link for="modal-info-info-income-1099r-whats-an-irr-linkmodal1">What’s an IRR?</modal-link></p>
-          <fg-set path="/form1099Rs/*/writableAmountAllocableToIRR">
+          <fg-set path="/form1099Rs/*/writableAmountAllocableToIRR" optional="true">
             <question><strong>Box 10</strong> -  Amount allocable to IRR within 5 years</question>
             <input type="dollar"/>
           </fg-set>
@@ -459,7 +462,7 @@
         <div class="df-screen">
           <h2>Enter the first year of designated Roth contributions in <strong>box 11</strong>.</h2>
           <p>If box 11 is blank, leave it blank here, too.</p>
-          <fg-set path="/form1099Rs/*/writableFirstYearDesignatedRothContributions">
+          <fg-set path="/form1099Rs/*/writableFirstYearDesignatedRothContributions" optional="true">
             <question><strong>Box 11</strong> - 1st year of desig. Roth contrib.</question>
             <input type="text"/>
           </fg-set>
@@ -485,7 +488,7 @@
         <div class="df-screen">
           <h2>Enter the date of payment in <strong>box 13</strong>.</h2>
           <p>If box 13 is blank, leave it blank here, too.</p>
-          <fg-set path="/form1099Rs/*/writableDateOfPayment">
+          <fg-set path="/form1099Rs/*/writableDateOfPayment" optional="true">
             <question><strong>Box 13</strong> - Date of payment</question>
             <input type="date"/>
           </fg-set>
@@ -503,7 +506,7 @@
           <h2>Enter the state tax withheld in <strong>box 14</strong>.</h2>
           <p>If box 14 is blank, leave it blank here, too.</p>
           <p><modal-link for="modal-info-info-income-1099r-what-if-2-amounts-box-14-linkmodal1">What if there are two amounts listed in box 14?</modal-link></p>
-          <fg-set path="/form1099Rs/*/writableStateTaxWithheld">
+          <fg-set path="/form1099Rs/*/writableStateTaxWithheld" optional="true">
             <question><strong>Box 14</strong> - State tax withheld</question>
             <input type="dollar"/>
           </fg-set>
@@ -517,14 +520,14 @@
           <h2>Enter the state information from <strong>box 15</strong>.</h2>
           <p>If box 15 is blank, leave it blank here, too.</p>
           <p><modal-link for="modal-info-info-income-1099r-what-if-2-amounts-box-15-linkmodal1">What if there are two states listed in box 15?</modal-link></p>
-          <fg-set path="/form1099Rs/*/writablePayerState">
+          <fg-set path="/form1099Rs/*/writablePayerState" optional="true">
             <question><strong>Box 15</strong> - Payer’s State</question>
             <input type="enum" options-path="/incomeFormStateOptions">
-              <option value="sameState"></option>
+              <option value="sameState"><fg-show path="/filerResidenceAndIncomeState"/></option>
               <option value="differentState">Another state</option>
             </input>
           </fg-set>
-          <fg-set path="/form1099Rs/*/writablePayerStateNumber">
+          <fg-set path="/form1099Rs/*/writablePayerStateNumber" optional="true">
             <question><strong>Box 15</strong> - Payer’s state no.</question>
             <input type="text"/>
           </fg-set>
@@ -542,19 +545,19 @@
           <h2>Enter the state and local tax information from <strong>boxes 16-19</strong>.</h2>
           <p>Be sure to fill out any boxes that have information listed on the Form 1099-R. If a box is blank, skip that specific box.</p>
           <p><modal-link for="modal-info-info-income-1099r-what-if-multiple-amounts-box-16-19-linkmodal1">What if there are multiple entries in a box?</modal-link></p>
-          <fg-set path="/form1099Rs/*/writableStateDistribution">
+          <fg-set path="/form1099Rs/*/writableStateDistribution" optional="true">
             <question><strong>Box 16</strong> - State distribution</question>
             <input type="dollar"/>
           </fg-set>
-          <fg-set path="/form1099Rs/*/writableLocalTaxWithheld">
+          <fg-set path="/form1099Rs/*/writableLocalTaxWithheld" optional="true">
             <question><strong>Box 17</strong> - Local tax withheld</question>
             <input type="dollar"/>
           </fg-set>
-          <fg-set path="/form1099Rs/*/writableLocality">
+          <fg-set path="/form1099Rs/*/writableLocality" optional="true">
             <question><strong>Box 18</strong> - Name of locality</question>
             <input type="text"/>
           </fg-set>
-          <fg-set path="/form1099Rs/*/writableLocalDistribution">
+          <fg-set path="/form1099Rs/*/writableLocalDistribution" optional="true">
             <question><strong>Box 19</strong> - Local distribution</question>
             <input type="dollar"/>
           </fg-set>
@@ -571,7 +574,7 @@
           <h2>Enter the account number.</h2>
           <fg-apply path="/form1099Rs/*/hasSeenLastAvailableScreen" source="/flowTrue"/>
           <p>If the account number is blank, leave it blank here, too.</p>
-          <fg-set path="/form1099Rs/*/writableAccountNumber">
+          <fg-set path="/form1099Rs/*/writableAccountNumber" optional="true">
             <question>Account number</question>
             <input type="text"/>
           </fg-set>

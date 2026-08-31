@@ -71,7 +71,10 @@
           <p><modal-link for="modal-info-info-income-jobs-data-import-where-do-i-find-my-w2-linkmodal1">Where do I find my copy of the W-2?</modal-link></p>
         </div>
         <div class="df-screen" condition="/formW2s/*/flowGateaadd02b6" operator="isTrue">
-          <h2>Whose W-2 is it?</h2>
+          <fg-set path="/formW2s/*/filer">
+            <question>Whose W-2 is it?</question>
+            <input type="collection-item-reference" item-label="{{/filers/*/firstName}} {{/filers/*/lastName}}"/>
+          </fg-set>
         </div>
         <div class="df-screen" condition="/formW2s/*/flowGatea4e191a4" operator="isTrue">
           <h2>Look at <strong>box a</strong> and confirm the Social Security number (SSN) matches the information on this federal tax return.</h2>
@@ -138,7 +141,7 @@
             <question>Employer name</question>
             <input type="text"/>
           </fg-set>
-          <fg-set path="/formW2s/*/writableEmployerNameLine2">
+          <fg-set path="/formW2s/*/writableEmployerNameLine2" optional="true">
             <question>Employer name (line 2)</question>
             <input type="text"/>
           </fg-set>
@@ -154,35 +157,35 @@
           <h2>Enter the wages and <modal-link for="modal-sharedmodalwithholding">taxes withheld</modal-link> from <strong>boxes 1-8</strong>.</h2>
           <p>If a box is blank, skip that specific box.</p>
           <p><modal-link for="modal-info-info-income-w2-what-if-numbers-wrong-linkmodal1">What if these numbers are incorrect?</modal-link></p>
-          <fg-set path="/formW2s/*/writableWages">
+          <fg-set path="/formW2s/*/writableWages" optional="true">
             <question><strong>Box 1</strong> - Wages, tips, other compensation</question>
             <input type="dollar"/>
           </fg-set>
-          <fg-set path="/formW2s/*/writableFederalWithholding">
+          <fg-set path="/formW2s/*/writableFederalWithholding" optional="true">
             <question><strong>Box 2</strong> - Federal income tax withheld</question>
             <input type="dollar"/>
           </fg-set>
-          <fg-set path="/formW2s/*/writableOasdiWages">
+          <fg-set path="/formW2s/*/writableOasdiWages" optional="true">
             <question><strong>Box 3</strong> - Social security wages</question>
             <input type="dollar"/>
           </fg-set>
-          <fg-set path="/formW2s/*/writableOasdiWithholding">
+          <fg-set path="/formW2s/*/writableOasdiWithholding" optional="true">
             <question><strong>Box 4</strong> - Social security tax withheld</question>
             <input type="dollar"/>
           </fg-set>
-          <fg-set path="/formW2s/*/writableMedicareWages">
+          <fg-set path="/formW2s/*/writableMedicareWages" optional="true">
             <question><strong>Box 5</strong> - Medicare wages and tips</question>
             <input type="dollar"/>
           </fg-set>
-          <fg-set path="/formW2s/*/writableMedicareWithholding">
+          <fg-set path="/formW2s/*/writableMedicareWithholding" optional="true">
             <question><strong>Box 6</strong> - Medicare tax withheld</question>
             <input type="dollar"/>
           </fg-set>
-          <fg-set path="/formW2s/*/writableOasdiTips">
+          <fg-set path="/formW2s/*/writableOasdiTips" optional="true">
             <question><strong>Box 7</strong> - Social security tips</question>
             <input type="dollar"/>
           </fg-set>
-          <fg-set path="/formW2s/*/writableAllocatedTips">
+          <fg-set path="/formW2s/*/writableAllocatedTips" optional="true">
             <question><strong>Box 8</strong> - Allocated tips</question>
             <input type="dollar"/>
           </fg-set>
@@ -223,12 +226,12 @@
         <div class="df-screen">
           <h2>Enter how much you received in benefits from <strong>boxes 10-11</strong>.</h2>
           <p>If a box is blank, skip that specific box.</p>
-          <fg-set path="/formW2s/*/writableDependentCareBenefits">
+          <fg-set path="/formW2s/*/writableDependentCareBenefits" optional="true">
             <question><strong>Box 10</strong> - Dependent care benefits</question>
             <hint><modal-link for="modal-info-info-income-w2-what-are-dependent-care-benefits-linkmodal1">What are dependent care benefits?</modal-link></hint>
             <input type="dollar"/>
           </fg-set>
-          <fg-set path="/formW2s/*/writableNonQualifiedPlans">
+          <fg-set path="/formW2s/*/writableNonQualifiedPlans" optional="true">
             <question><strong>Box 11</strong> - Nonqualified plans</question>
             <hint><modal-link for="modal-info-info-income-w2-what-are-non-qualified-plans-linkmodal1">What are nonqualified plans?</modal-link></hint>
             <input type="dollar"/>
@@ -254,7 +257,7 @@
           <p class="df-context-heading" condition="/formW2s/*/flowGateea28562e" operator="isTrue">Form W-2: <fg-show path="/formW2s/*/employerName"/>, <fg-show path="/formW2s/*/wages"/></p>
           <p>If you have multiple codes in <strong>box 12</strong>, add them 1 at a time.</p>
           <p><modal-link for="modal-info-info-income-w2-whats-box-12-used-for-linkmodal1">What’s box 12 used for?</modal-link></p>
-          <fg-set path="/formW2s/*/writableBox12Code">
+          <fg-set path="/formW2s/*/writableBox12Code" optional="true">
             <question>Box 12 Code</question>
             <select options-path="/w2Box12CodeOptions">
               <option value="uncollectedOasdiTaxOnTips">A</option>
@@ -323,15 +326,15 @@
           <h2>Check each item that’s checked in <strong>box 13</strong>.</h2>
           <p>If none of the boxes are checked on the W-2, leave them blank here, too.</p>
           <p><modal-link for="modal-info-info-income-w2-whats-box-13-used-for-linkmodal1">What’s box 13 used for?</modal-link></p>
-          <fg-set path="/formW2s/*/statutoryEmployee">
+          <fg-set path="/formW2s/*/statutoryEmployee" optional="true">
             <question>Check each item that’s checked in <strong>box 13</strong>.</question>
             <input type="boolean"/>
           </fg-set>
-          <fg-set path="/formW2s/*/retirementPlan">
+          <fg-set path="/formW2s/*/retirementPlan" optional="true">
             <question>Check each item that’s checked in <strong>box 13</strong>.</question>
             <input type="boolean"/>
           </fg-set>
-          <fg-set path="/formW2s/*/thirdPartySickPay">
+          <fg-set path="/formW2s/*/thirdPartySickPay" optional="true">
             <question>Check each item that’s checked in <strong>box 13</strong>.</question>
             <input type="boolean"/>
           </fg-set>
@@ -390,7 +393,7 @@
           <p>If a code on a Form W-2 isn’t in this list, select <strong>Box 14 has other code(s) than these</strong></p>
           <p condition="/flowGate3b289a27" operator="isTrue"><modal-link for="modal-info-info-income-w2-what-is-box-14-ny-linkmodal1">Why are only some box 14 codes listed here?</modal-link></p>
           <p condition="/flowGate7142c1b6" operator="isTrue"><modal-link for="modal-info-info-income-w2-what-is-box-14-md-linkmodal1">Why are only some box 14 codes listed here?</modal-link></p>
-          <fg-set path="/formW2s/*/writableBox14CodeMd" if-true="/flowGate7142c1b6">
+          <fg-set path="/formW2s/*/writableBox14CodeMd" if-true="/flowGate7142c1b6" optional="true">
             <question><strong>Box 14</strong> - Code</question>
             <select options-path="/box14MDCodeOptions">
               <option value="hasOtherBox14Code">Box 14 has other code(s) than these</option>
@@ -402,7 +405,7 @@
               <option value="BOX14_MD_STPICKUP">STPICKUP</option>
             </select>
           </fg-set>
-          <fg-set path="/formW2s/*/writableBox14Code" if-true="/flowGateea4eb61c">
+          <fg-set path="/formW2s/*/writableBox14Code" if-true="/flowGateea4eb61c" optional="true">
             <question><strong>Box 14</strong> - Code</question>
             <select options-path="/box14NYCodeOptions">
               <option value="hasOtherBox14Code">Box 14 has other code(s) than these</option>
@@ -435,7 +438,7 @@
               <option value="TIER4RET">TIER4RET</option>
             </select>
           </fg-set>
-          <fg-set path="/formW2s/*/writableBox14CodeNj" if-true="/flowGatecf2c05c3">
+          <fg-set path="/formW2s/*/writableBox14CodeNj" if-true="/flowGatecf2c05c3" optional="true">
             <question><strong>Box 14</strong> - Code</question>
             <select options-path="/box14NJCodeOptions">
               <option value="hasOtherBox14Code">Box 14 has other code(s) than these</option>
@@ -478,34 +481,34 @@
           <p class="df-context-heading" condition="/formW2s/*/flowGateea28562e" operator="isTrue">Form W-2: <fg-show path="/formW2s/*/employerName"/>, <fg-show path="/formW2s/*/wages"/></p>
           <p>If a box is blank, skip that specific box.</p>
           <p><modal-link for="modal-info-info-income-w2-boxes-15-20-linkmodal1">What if there are multiple entries in a box?</modal-link></p>
-          <fg-set path="/formW2s/*/writableState">
+          <fg-set path="/formW2s/*/writableState" optional="true">
             <question><strong>Box 15</strong> - Employer’s state</question>
             <input type="enum" options-path="/incomeFormStateOptions">
-              <option value="sameState"></option>
+              <option value="sameState"><fg-show path="/filerResidenceAndIncomeState"/></option>
               <option value="differentState">Another state</option>
             </input>
           </fg-set>
-          <fg-set path="/formW2s/*/writableStateEmployerId">
+          <fg-set path="/formW2s/*/writableStateEmployerId" optional="true">
             <question><strong>Box 15</strong> - Employer’s state ID number</question>
             <input type="text"/>
           </fg-set>
-          <fg-set path="/formW2s/*/writableStateWages">
+          <fg-set path="/formW2s/*/writableStateWages" optional="true">
             <question><strong>Box 16</strong> - State wages, tips, etc.</question>
             <input type="dollar"/>
           </fg-set>
-          <fg-set path="/formW2s/*/writableStateWithholding">
+          <fg-set path="/formW2s/*/writableStateWithholding" optional="true">
             <question><strong>Box 17</strong> - State income tax</question>
             <input type="dollar"/>
           </fg-set>
-          <fg-set path="/formW2s/*/writableLocalWages">
+          <fg-set path="/formW2s/*/writableLocalWages" optional="true">
             <question><strong>Box 18</strong> - Local wages, tips, etc.</question>
             <input type="dollar"/>
           </fg-set>
-          <fg-set path="/formW2s/*/writableLocalWithholding">
+          <fg-set path="/formW2s/*/writableLocalWithholding" optional="true">
             <question><strong>Box 19</strong> - Local income tax</question>
             <input type="dollar"/>
           </fg-set>
-          <fg-set path="/formW2s/*/writableLocality">
+          <fg-set path="/formW2s/*/writableLocality" optional="true">
             <question><strong>Box 20</strong> - Locality name</question>
             <input type="text"/>
           </fg-set>
@@ -550,9 +553,9 @@
           <fg-set path="/formW2s/*/nonstandardOrCorrectedChoice">
             <question>Is the Form W-2 nonstandard or corrected?</question>
             <input type="enum" options-path="/w2NonstandardCorrectedOptions">
-              <option value="nonstandard">Yes, this Form W-2 is nonstandard. It is handwritten, altered, or typed on a typewriter.</option>
-              <option value="corrected">Yes, this Form W-2 is corrected. The title is Form W-2c, Corrected Wage and Tax Statement.</option>
-              <option value="both">Yes, this Form W-2 is nonstandard and corrected</option>
+              <option value="nonstandard">Yes, this Form W-2 is <strong>nonstandard</strong>. It is handwritten, altered, or typed on a typewriter.</option>
+              <option value="corrected">Yes, this Form W-2 is <strong>corrected</strong>. The title is <strong>Form W-2c, Corrected Wage and Tax Statement</strong>.</option>
+              <option value="both">Yes, this Form W-2 is <strong>nonstandard</strong> and <strong>corrected</strong></option>
               <option value="neither">No, this is a standard Form W-2</option>
             </input>
           </fg-set>

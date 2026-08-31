@@ -181,6 +181,18 @@
           </choice>
         </attribute>
       </element>
+      <!-- The eighth registered type, and the only one that takes an attribute of its own. Which
+           collection it lists is read out of the fact dictionary by inputs/CollectionItemReference.scala
+           rather than written here; `item-label` cannot be, because it is authored prose — Direct
+           File's `fields.{path}.item`, a run of fact references evaluated once per item. -->
+      <element name="input">
+        <attribute name="type">
+          <value>collection-item-reference</value>
+        </attribute>
+        <attribute name="item-label">
+          <text/>
+        </attribute>
+      </element>
       <element name="input">
         <attribute name="type">
           <value>boolean</value>
@@ -197,6 +209,12 @@
           </element>
         </zeroOrMore>
       </element>
+      <!-- Widened for this application, and for a defect rather than a nicety: 55 of Direct File's
+           option labels interpolate a fact ("I lived in more than 1 state in {{/taxYear}}") and 19
+           bold part of themselves. Flattening those to text dropped the year outright — an option
+           whose whole label was the year rendered blank. FgSet.scala already stores an option's
+           inner markup as its translation value; form-builder's enum templates now render it with
+           th:utext, and this is the grammar saying so. `boolean` above has always been this way. -->
       <element name="input">
         <attribute name="type">
           <value>enum</value>
@@ -214,7 +232,7 @@
                 <text/>
               </attribute>
             </optional>
-            <text/>
+            <ref name="FlowConfigModuleInlineContent"/>
           </element>
         </oneOrMore>
       </element>
@@ -235,7 +253,7 @@
                 <text/>
               </attribute>
             </optional>
-            <text/>
+            <ref name="FlowConfigModuleInlineContent"/>
           </element>
         </oneOrMore>
       </element>
@@ -488,6 +506,13 @@
             </attribute>
           </optional>
           <ref name="FlowConfigModuleInlineContent"/>
+          <!-- Widened for this application: Direct File authors two-level lists, 44 of them, with
+               the inner <ul>/<ol> inside its parent <li>'s own text. form-builder parses <li> as a
+               leaf (parser/Html.scala's LEAF_NODES) and re-emits its inner markup verbatim, so this
+               needs no library change — only permission to say it. -->
+          <zeroOrMore>
+            <ref name="FlowConfigUlElement"/>
+          </zeroOrMore>
         </element>
       </oneOrMore>
     </element>
@@ -805,6 +830,10 @@
                 </attribute>
               </optional>
               <ref name="FlowConfigModuleInlineContent"/>
+              <!-- Nested lists, as in FlowConfigUlElement above and for the same reason. -->
+              <zeroOrMore>
+                <ref name="FlowConfigUlElement"/>
+              </zeroOrMore>
             </element>
           </oneOrMore>
         </element>

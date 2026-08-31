@@ -121,6 +121,10 @@ inputs:
     invalid: PIN must be 6 digits long
   phone-number:
     invalid: This should look like 212-555-0134
+  collection-item-reference:
+    # An option whose naming facts are all still unanswered. Upstream renders a radio with nothing
+    # beside it; a word is better than a blank, and it has to be translated like any other.
+    unnamed: This entry
   address:
     country: Country
     street: Address

@@ -86,6 +86,10 @@
         <div class="df-screen" condition="/interestReports/*/flowGate18fe766f" operator="isTrue">
           <h2>Whose interest income is it?</h2>
           <p>If it’s a joint account, choose the primary account holder who received the 1099-INT.</p>
+          <fg-set path="/interestReports/*/filer">
+            <question>Whose interest income is it?</question>
+            <input type="collection-item-reference" item-label="{{/filers/*/firstName}} {{/filers/*/lastName}}"/>
+          </fg-set>
         </div>
         <div class="df-screen" condition="/interestReports/*/flowGatefa7ef764" operator="isTrue">
           <h2>Enter the name of the payer.</h2>
@@ -96,7 +100,7 @@
             <question>Payer name</question>
             <input type="text"/>
           </fg-set>
-          <fg-set path="/interestReports/*/writablePayerNameLine2">
+          <fg-set path="/interestReports/*/writablePayerNameLine2" optional="true">
             <question>Payer name line 2</question>
             <input type="text"/>
           </fg-set>
@@ -119,7 +123,7 @@
         <div class="df-screen" condition="/interestReports/*/flowGatefa7ef764" operator="isTrue">
           <h2>Enter the amount of interest income in <strong>box 1</strong>.</h2>
           <p>If box 1 is blank, leave it blank here, too.</p>
-          <fg-set path="/interestReports/*/writable1099Amount">
+          <fg-set path="/interestReports/*/writable1099Amount" optional="true">
             <question><strong>Box 1</strong> - Interest income</question>
             <input type="dollar"/>
           </fg-set>
@@ -127,7 +131,7 @@
         <div class="df-screen" condition="/interestReports/*/flowGatefa7ef764" operator="isTrue">
           <h2>Enter the early withdrawal penalty amount in <strong>box 2</strong>.</h2>
           <p>If box 2 is blank, leave it blank here, too.</p>
-          <fg-set path="/interestReports/*/writableEarlyWithdrawlPenaltyAmount">
+          <fg-set path="/interestReports/*/writableEarlyWithdrawlPenaltyAmount" optional="true">
             <question><strong>Box 2</strong> - Early withdrawal penalty</question>
             <input type="dollar"/>
           </fg-set>
@@ -142,7 +146,7 @@
           <h2>Enter the interest on U.S. Savings Bonds and Treasury obligations in <strong>box 3</strong>.</h2>
           <p>If box 3 is blank, leave it blank here, too.</p>
           <p><modal-link for="modal-info-info-income-interest-exclude-under-ed-savings-bonds-linkmodal1">What if you want to exclude interest income under the Education Savings Bond Program?</modal-link></p>
-          <fg-set path="/interestReports/*/writableInterestOnGovernmentBonds">
+          <fg-set path="/interestReports/*/writableInterestOnGovernmentBonds" optional="true">
             <question><strong>Box 3</strong> - Interest on U.S. Savings Bonds and Treasury obligations</question>
             <input type="dollar"/>
           </fg-set>
@@ -150,7 +154,7 @@
         <div class="df-screen" condition="/interestReports/*/flowGatefa7ef764" operator="isTrue">
           <h2>Enter the amount of federal income tax withheld in <strong>box 4</strong>.</h2>
           <p>If box 4 is blank, leave it blank here, too.</p>
-          <fg-set path="/interestReports/*/writableTaxWithheld">
+          <fg-set path="/interestReports/*/writableTaxWithheld" optional="true">
             <question><strong>Box 4</strong> - Federal income tax withheld</question>
             <input type="dollar"/>
           </fg-set>
@@ -166,7 +170,7 @@
         <div class="df-screen" condition="/interestReports/*/flowGatefa7ef764" operator="isTrue">
           <h2>Enter the amount of foreign tax paid in <strong>box 6</strong>.</h2>
           <p>If box 6 is blank, leave it blank here, too.</p>
-          <fg-set path="/interestReports/*/writableForeignTaxPaid">
+          <fg-set path="/interestReports/*/writableForeignTaxPaid" optional="true">
             <question><strong>Box 6</strong> - Foreign tax paid</question>
             <input type="dollar"/>
           </fg-set>
@@ -181,7 +185,7 @@
         <div class="df-screen" condition="/interestReports/*/flowGatefa7ef764" operator="isTrue">
           <h2>Enter the amount of tax-exempt interest in <strong>box 8</strong>.</h2>
           <p>If box 8 is blank, leave it blank here, too.</p>
-          <fg-set path="/interestReports/*/writableTaxExemptInterest">
+          <fg-set path="/interestReports/*/writableTaxExemptInterest" optional="true">
             <question><strong>Box 8</strong> - Tax-exempt interest</question>
             <input type="dollar"/>
           </fg-set>
@@ -195,27 +199,27 @@
         <div class="df-screen" condition="/interestReports/*/flowGatefa7ef764" operator="isTrue">
           <h2>Enter the amounts listed in <strong>boxes 9-14</strong>.</h2>
           <p>If a box is blank on the 1099-INT, leave it blank here, too.</p>
-          <fg-set path="/interestReports/*/writableSpecifiedPrivateActivityBondInterest">
+          <fg-set path="/interestReports/*/writableSpecifiedPrivateActivityBondInterest" optional="true">
             <question><strong>Box 9</strong> - Specified private activity bond interest</question>
             <input type="dollar"/>
           </fg-set>
-          <fg-set path="/interestReports/*/writableMarketDiscount">
+          <fg-set path="/interestReports/*/writableMarketDiscount" optional="true">
             <question><strong>Box 10</strong> - Market discount</question>
             <input type="dollar"/>
           </fg-set>
-          <fg-set path="/interestReports/*/writableBondPremium">
+          <fg-set path="/interestReports/*/writableBondPremium" optional="true">
             <question><strong>Box 11</strong> - Bond premium</question>
             <input type="dollar"/>
           </fg-set>
-          <fg-set path="/interestReports/*/writableBondPremiumOnTreasuryObligations">
+          <fg-set path="/interestReports/*/writableBondPremiumOnTreasuryObligations" optional="true">
             <question><strong>Box 12</strong> - Bond premium on Treasury obligations</question>
             <input type="dollar"/>
           </fg-set>
-          <fg-set path="/interestReports/*/writableBondPremiumOnTaxExemptBond">
+          <fg-set path="/interestReports/*/writableBondPremiumOnTaxExemptBond" optional="true">
             <question><strong>Box 13</strong> - Bond premium on tax-exempt bond</question>
             <input type="dollar"/>
           </fg-set>
-          <fg-set path="/interestReports/*/writableTaxExemptAndTaxCreditBondCusipNo">
+          <fg-set path="/interestReports/*/writableTaxExemptAndTaxCreditBondCusipNo" optional="true">
             <question><strong>Box 14</strong> - Tax-exempt and tax credit bond CUSIP no.</question>
             <input type="text"/>
           </fg-set>
@@ -231,18 +235,18 @@
           <fg-apply path="/interestReports/*/hasSeenLastAvailableScreen" source="/flowTrue"/>
           <p class="df-context-heading" condition="/interestReports/*/flowGate458fbbd1" operator="isTrue">Form 1099-INT: <fg-show path="/interestReports/*/payer"/>, <fg-show path="/interestReports/*/1099Amount"/></p>
           <p>Be sure to fill out any boxes that have information listed on the Form 1099-INT. If a box is blank, skip that specific box.</p>
-          <fg-set path="/interestReports/*/writableState">
+          <fg-set path="/interestReports/*/writableState" optional="true">
             <question><strong>Box 15</strong> - State</question>
             <input type="enum" options-path="/incomeFormStateOptions">
-              <option value="sameState"></option>
+              <option value="sameState"><fg-show path="/filerResidenceAndIncomeState"/></option>
               <option value="differentState">Another state</option>
             </input>
           </fg-set>
-          <fg-set path="/interestReports/*/writableStateIdNumber">
+          <fg-set path="/interestReports/*/writableStateIdNumber" optional="true">
             <question><strong>Box 16</strong> - State identification number</question>
             <input type="text"/>
           </fg-set>
-          <fg-set path="/interestReports/*/writableStateTaxWithheld">
+          <fg-set path="/interestReports/*/writableStateTaxWithheld" optional="true">
             <question><strong>Box 17</strong> - State tax withheld</question>
             <input type="dollar"/>
           </fg-set>
@@ -263,6 +267,10 @@
         <div class="df-screen" condition="/interestReports/*/flowGate6d837efd" operator="isTrue">
           <h2>Whose interest income is it?</h2>
           <p>If it’s a joint account, choose the primary account holder.</p>
+          <fg-set path="/interestReports/*/filer">
+            <question>Whose interest income is it?</question>
+            <input type="collection-item-reference" item-label="{{/filers/*/firstName}} {{/filers/*/lastName}}"/>
+          </fg-set>
         </div>
         <div class="df-screen" condition="/interestReports/*/flowGate09afd31a" operator="isTrue">
           <h2>Enter the <strong>name of the payer</strong>.</h2>
@@ -272,7 +280,7 @@
             <question>Payer name</question>
             <input type="text"/>
           </fg-set>
-          <fg-set path="/interestReports/*/writablePayerNameLine2">
+          <fg-set path="/interestReports/*/writablePayerNameLine2" optional="true">
             <question>Payer name line 2</question>
             <input type="text"/>
           </fg-set>

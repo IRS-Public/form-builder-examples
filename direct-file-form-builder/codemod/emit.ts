@@ -394,7 +394,14 @@ function sameInline(a: Inline[], b: Inline[]): boolean {
   return JSON.stringify(a) === JSON.stringify(b);
 }
 
-/** `/cdccQualifyingPeople` → `cdcc qualifying people`. A placeholder; see `itemNameFor` in extract.ts. */
+/**
+ * `/cdccQualifyingPeople` → `cdcc qualifying people`.
+ *
+ * The last resort, and no collection reaches it today: every one is named either by upstream's own
+ * Add control or by `AUTO_ITERATED_ITEM_NAMES` in extract.ts. Kept, and counted below, so a
+ * collection added upstream that neither source names shows up as a number here rather than as an
+ * item heading reading "Cdcc qualifying people 1".
+ */
 function humanizeCollection(collectionName: string): string {
   return collectionName
     .replace(/^\//, ``)
@@ -713,17 +720,14 @@ function emit(extracted: Extracted, content: Content, resourcesDir: string) {
     content: {
       missingKeys: content.report.missingKeys.length,
       unhandledInline: content.report.unhandledInline,
+      droppedWithReason: content.report.droppedWithReason,
       flattenedOptionLabels: content.report.flattenedOptionLabels,
       render: renderCounts,
       screensWithoutContent,
+      // Should stay 0. See humanizeCollection.
+      collectionsWithNoItemName: [...anchors.values()].filter((p) => !p.itemName).length,
     },
     deferred: {
-      'collection item names':
-        `Stage 4, for ${[...anchors.values()].filter((p) => !p.itemName).length} of the ` +
-        `${anchors.size} collections. The rest take the noun out of upstream's own Add control ` +
-        `(\`fields.{collection}.controls.add\`). An auto-iterating loop has no such key, because ` +
-        `upstream never names those items — it renders no list and no Add button over a derived ` +
-        `collection — so those fall back to the humanized collection path and owe a real word.`,
       'Spanish flow content':
         `Not stage 4's, and not a script run. flow_es.yaml is keyed by flow_en.yaml, which the ` +
         `scaffold regenerates from the emitted XML — so the keys exist only after a build. Direct ` +

@@ -269,7 +269,7 @@
     question: State I lived in for <fg-show path="/taxYear"/>
     options:
       moreThanOne:
-        name: I lived in more than 1 state in
+        name: I lived in more than 1 state in <fg-show path="/taxYear"/>
       ak:
         name: Alaska
       az:
@@ -333,11 +333,12 @@
       in <strong>box 15</strong>?
     options:
       anotherState:
-        name: Yes, box 15 lists another state besides
+        name: Yes, <strong>box 15</strong> lists another state besides <fg-show path="/filerResidenceAndIncomeState"/>
       onlySame:
-        name: No, box 15 lists only or is blank
+        name: No, <strong>box 15</strong> lists only <fg-show path="/filerResidenceAndIncomeState"/>
+          or is blank
       noForms:
-        name: I won’t have Forms W-2 for
+        name: I won’t have Forms W-2 for <fg-show path="/taxYear"/>
   h2-14aec4: In <fg-show path="/taxYear"/>, did you receive an Alaska Permanent Fund
     Dividend (PFD)?
   p-3cca58: The PFD is reported on a Form-1099 MISC. The payer will be listed as the
@@ -542,9 +543,10 @@
     p-40f68d: Paper returns can take up to 6 weeks to process.
     p-084f8a: You need an IP PIN to confirm your identity. If you have an IP PIN but
       can’t find it, you won’t be able to file your tax return electronically.
-    p-f75589: Try following <a href="https://www.irs.gov/identity-theft-fraud-scams/retrieve-your-ip-pin"
+    p-72d5e3: Try following <a href="https://www.irs.gov/identity-theft-fraud-scams/retrieve-your-ip-pin"
       target="_blank">these instructions</a> to get your IP PIN. Once you have the
-      IP PIN you’re looking for, add it to Direct File.
+      IP PIN you’re looking for, <a href="/you-and-your-family/about-you/about-you-ip-pin-ready"
+      target="_blank">add it to Direct File</a>.
     p-e30d60: If you need assistance, chat with customer support.
   h2-9f3005: Enter your 6-digit Identity Protection (IP) PIN.
   /primaryFiler/identityPin:
@@ -860,13 +862,13 @@
     question: What year did your spouse die?
     options:
       taxYear:
-        name: ''
+        name: <fg-show path="/taxYear"/>
       taxYearMinusOne:
-        name: ''
+        name: <fg-show path="/lastTaxYear"/>
       taxYearMinusTwo:
-        name: ''
+        name: <fg-show path="/taxYearMinusTwo"/>
       beforeTaxYearMinusTwo:
-        name: before
+        name: before <fg-show path="/taxYearMinusTwo"/>
   h2-ffec2f: Did you qualify to file jointly with your spouse in the year they died?
   p-e345d3: Answer <strong>Yes</strong> if you qualified to file jointly that year,
     even if you didn’t do so.
@@ -957,11 +959,13 @@
     question: How long did you and your spouse live together in <fg-show path="/taxYear"/>?
     options:
       livedApartAllYear:
-        name: We didn’t live together at all in
+        name: We didn’t live together at all in <fg-show path="/taxYear"/>
       livedTogetherSixMonthsOrLess:
-        name: We lived together for half the year or less ( days or less)
+        name: We lived together for half the year or less (<fg-show path="/minorityOfDaysInYear"/>
+          days or less)
       livedTogetherMoreThanSixMonths:
-        name: We lived together for more than half the year (more than days)
+        name: We lived together for more than half the year (more than <fg-show path="/minorityOfDaysInYear"/>
+          days)
   h2-298402: Did you and your spouse live apart for the last 6 months (July through
     December) of <fg-show path="/taxYear"/>?
   p-81d89d: Temporary absences for things like school, vacation, work, illness, or
@@ -1115,11 +1119,11 @@
     question: Based on your answers, you qualify for more than one filing status.
     options:
       wantsMarriedFilingJointly:
-        name: Use Married Filing Jointly filing status
+        name: Use <strong>Married Filing Jointly</strong> filing status
       wantsMarriedFilingSeparately:
-        name: Use Married Filing Separately filing status
+        name: Use <strong>Married Filing Separately</strong> filing status
       wantsToSeeIfTheyQualifyHeadOfHousehold:
-        name: See if I qualify for Head of Household filing status
+        name: See if I qualify for <strong>Head of Household</strong> filing status
   h2-03d633: You and your spouse qualify to use the Married Filing Jointly or Married
     Filing Separately filing statuses.
   p-8623aa: You qualify for both because you were <fg-show path="/maritalStatus"/>
@@ -1133,16 +1137,16 @@
       more money back or owe less. However, there are other factors to consider.
     p-b05fb5: <modal-link for="modal-info-info-you-and-your-family-spouse-mfj-more-advantageous-modal-linkmodal1">What
       should I consider when deciding to file jointly or file separately?</modal-link>
-  /filingStatusChoice-5825fc:
+  /filingStatusChoice-93c6c2:
     question: You and your spouse qualify to use the Married Filing Jointly or Married
       Filing Separately filing statuses.
     options:
       wantsMarriedFilingJointly:
-        name: Use Married Filing Jointly filing status
+        name: Use <strong>Married Filing Jointly</strong> filing status
       wantsMarriedFilingSeparately:
-        name: Use Married Filing Separately filing status
+        name: Use <strong>Married Filing Separately</strong> filing status
       wantsToSeeIfTheyQualifyHeadOfHousehold:
-        name: See if I qualify for Head of Household filing status
+        name: See if I qualify for <strong>Head of Household</strong> filing status
   modal-info-info-you-and-your-family-spouse-learn-about-filing-status-i-may-qualify-for--5370e100:
     heading: Learn more about the filing statuses I may qualify for
     p-c1e7ad: Some taxpayers are eligible for more than one filing status. Your filing
@@ -1284,9 +1288,10 @@
       <fg-show path="/taxYear"/>?
     options:
       sameState:
-        name: My spouse lived in for all of .
+        name: My spouse lived in <fg-show path="/filerResidenceAndIncomeState"/> for
+          all of <fg-show path="/taxYear"/>.
       moreThanOne:
-        name: My spouse lived in more than one state in .
+        name: My spouse lived in more than one state in <fg-show path="/taxYear"/>.
       noneOfTheAbove:
         name: None of these options.
   h2-673d38: If your spouse has any Forms W-2 for <fg-show path="/taxYear"/>, do any
@@ -1300,11 +1305,12 @@
       in <strong>box 15</strong>?
     options:
       anotherState:
-        name: Yes, box 15 lists another state besides
+        name: Yes, <strong>box 15</strong> lists another state besides <fg-show path="/filerResidenceAndIncomeState"/>
       onlySame:
-        name: No, box 15 lists only or is blank
+        name: No, <strong>box 15</strong> lists only <fg-show path="/filerResidenceAndIncomeState"/>
+          or is blank
       noForms:
-        name: My spouse won’t have Forms W-2 for
+        name: My spouse won’t have Forms W-2 for <fg-show path="/taxYear"/>
   h2-3927aa: In <fg-show path="/taxYear"/>, did your spouse receive an Alaska Permanent
     Fund Dividend (PFD)?
   p-3cca58: The PFD is reported on a Form-1099 MISC. The payer will be listed as the
@@ -1534,9 +1540,10 @@
     p-c1f360: You need an IP PIN to confirm <fg-show path="/secondaryFiler/firstName"/>’s
       identity. If they have an IP PIN but can’t find it, you won’t be able to file
       your tax return electronically.
-    p-f75589: Try following <a href="https://www.irs.gov/identity-theft-fraud-scams/retrieve-your-ip-pin"
+    p-279a48: Try following <a href="https://www.irs.gov/identity-theft-fraud-scams/retrieve-your-ip-pin"
       target="_blank">these instructions</a> to get your IP PIN. Once you have the
-      IP PIN you’re looking for, add it to Direct File.
+      IP PIN you’re looking for, <a href="/you-and-your-family/spouse/spouse-mfj-ip-pin-ready"
+      target="_blank">add it to Direct File</a>.
     p-e30d60: If you need assistance, chat with customer support.
   h2-6fa600: Enter the 6-digit Identity Protection (IP) PIN for <fg-show path="/filers/*/firstName"/>.
   /secondaryFiler/identityPin:
@@ -1797,9 +1804,9 @@
       primary:
         name: Me
       secondary:
-        name: ''
+        name: <fg-show path="/secondaryFiler/firstName"/>
       someoneElseThatPrimaryOrSecondaryEnrolled:
-        name: Someone else that or I enrolled
+        name: Someone else that <fg-show path="/secondaryFiler/firstName"/> or I enrolled
   h2-8fa8a9: You said you or <fg-show path="/secondaryFiler/firstName"/> enrolled
     someone else in a qualified Marketplace health plan and advance payments of the
     Premium Tax Credit (PTC) were made to help pay for their coverage. Were they part
@@ -2602,9 +2609,11 @@
         allYear:
           name: All year
         sixToElevenMonths:
-          name: More than 6 months ( days) but less than a year
+          name: More than 6 months (<fg-show path="/majorityOfDaysInYear"/> days)
+            but less than a year
         lessThanSixMonths:
-          name: 6 months or less ( days or less)
+          name: 6 months or less (<fg-show path="/minorityOfDaysInYear"/> days or
+            less)
     h2-8b1178: Other than you, does <fg-show path="/familyAndHousehold/*/firstName"/>
       have another biological or adoptive parent?
     p-fedfa8: This might be someone like an ex-spouse or ex-partner.
@@ -2636,24 +2645,26 @@
         as a dependent for <fg-show path="/taxYear"/>?
       options:
         iDid:
-          name: Yes, I signed a form or declaration stating I wouldn’t claim
+          name: Yes, I signed a form or declaration stating I wouldn’t claim <fg-show
+            path="/familyAndHousehold/*/firstName"/>
         theyDid:
           name: Yes, the other biological or adoptive parent signed a form or declaration
-            stating they wouldn’t claim
+            stating they wouldn’t claim <fg-show path="/familyAndHousehold/*/firstName"/>
         nobodyDid:
-          name: No, no one signed anything stating they would not claim
-    /familyAndHousehold/*/whichParentNotClaiming-dc0b63:
+          name: No, no one signed anything stating they would not claim <fg-show path="/familyAndHousehold/*/firstName"/>
+    /familyAndHousehold/*/whichParentNotClaiming-a4126a:
       question: Did you or the other biological or adoptive parent sign a Form 8332,
         or other written declaration, not to claim <fg-show path="/familyAndHousehold/*/firstName"/>
         as a dependent for <fg-show path="/taxYear"/>?
       options:
         iDid:
-          name: Yes, or I signed a form or declaration stating we wouldn’t claim
+          name: Yes, <fg-show path="/secondaryFiler/firstName"/> or I signed a form
+            or declaration stating we wouldn’t claim <fg-show path="/familyAndHousehold/*/firstName"/>
         theyDid:
           name: Yes, the other biological or adoptive parent signed a form or declaration
-            stating they wouldn’t claim
+            stating they wouldn’t claim <fg-show path="/familyAndHousehold/*/firstName"/>
         nobodyDid:
-          name: No, no one signed anything stating they would not claim
+          name: No, no one signed anything stating they would not claim <fg-show path="/familyAndHousehold/*/firstName"/>
     h2-5f6e72: Thanks for letting us know.
     p-819a66: You signed a Form 8332, or other written declaration, not to claim <fg-show
       path="/familyAndHousehold/*/firstName"/> as a dependent in <fg-show path="/taxYear"/>.
@@ -2715,11 +2726,14 @@
         live with you compared to nights with the other parent?
       options:
         more:
-          name: spent more nights with me
+          name: <fg-show path="/familyAndHousehold/*/firstName"/> spent more nights
+            with me
         less:
-          name: spent fewer nights with me
+          name: <fg-show path="/familyAndHousehold/*/firstName"/> spent fewer nights
+            with me
         equal:
-          name: spent the same number of nights with each parent
+          name: <fg-show path="/familyAndHousehold/*/firstName"/> spent the same number
+            of nights with each parent
     h2-eb1621: Is your <fg-show path="/taxYear"/> Adjusted Gross Income (AGI) higher
       than that of the other biological or adoptive parent?
     p-27b350: <modal-link for="modal-info-info-you-and-your-family-dependents-what-is-agi-snack-linkmodal1">What’s
@@ -2744,8 +2758,8 @@
         divorcedOrSeparated:
           name: Divorced or separated
         livedApartLastSixMonths:
-          name: Lived apart at all times for the last 6 months of (whether married
-            or not)
+          name: Lived apart at all times for the last 6 months of <fg-show path="/taxYear"/>
+            (whether married or not)
         other:
           name: None of the above
     h2-7888e2: Did you and/or the other biological or adoptive parent pay for more
@@ -3443,9 +3457,10 @@
       p-6aac1d: You need an IP PIN to confirm <fg-show path="/familyAndHousehold/*/firstName"/>’s
         identity. If they have an IP PIN but can’t find it, you won’t be able to file
         your tax return electronically.
-      p-f75589: Try following <a href="https://www.irs.gov/identity-theft-fraud-scams/retrieve-your-ip-pin"
+      p-e6b720: Try following <a href="https://www.irs.gov/identity-theft-fraud-scams/retrieve-your-ip-pin"
         target="_blank">these instructions</a> to get your IP PIN. Once you have the
-        IP PIN you’re looking for, add it to Direct File.
+        IP PIN you’re looking for, <a href="/you-and-your-family/dependents/qualified-dependent-ip-pin-ready"
+        target="_blank">add it to Direct File</a>.
       p-e30d60: If you need assistance, chat with customer support.
     p-065cf2: <modal-link for="modal-info-info-file-ip-return-without-ip-pin-linkmodal1">What
       if I file my federal tax return without the IRS-assigned Identity Protection
@@ -4591,8 +4606,7 @@
     to Spouse section</a>
   h2-1618c0: To use the <fg-show path="/filingStatusCapitalized"/> filing status,
     we’ll need more information about your family and household.
-  p-6ad672: <a href="/data-view/flow/you-and-your-family/dependents" target="_blank">Go
-    to Family and Household section</a>
+  p-5dff40: Go to Family and Household section
   h2-a9443d: <fg-show path="/firstHohQP/fullName"/> is your qualifying person for
     Head of Household filing status
   p-24b85c: To file your taxes electronically in Direct File, you’ll need <fg-show
@@ -4610,6 +4624,9 @@
     number (SSN), Individual Tax Identification Number (ITIN), or Adoption Taxpayer
     Identification Number (ATIN). If you don’t have it, you can still use Head of
     Household filing status, but you’ll need to file a paper federal tax return instead.
+  /hohQualifyingPerson:
+    question: Who would you like to use as your qualifying person for Head of Household
+      filing status?
   h2-14fef7: Direct File doesn’t yet support Head of Household filing status with
     qualifying people who don’t have a Taxpayer Identification Number (TIN).
   p-8f3ee0: You qualify to use Head of Household filing status with <fg-show path="/hohQualifyingPerson/firstName"/>
@@ -4765,25 +4782,31 @@
   p-2e1a12: 'You <strong>can</strong> use Direct File if you only had these types
     of income:'
   ul-0:
-    li-be92e9: Income made as an employee in <fg-show path="/filerResidenceAndIncomeState"/>
-      (Form W-2) Unemployment compensation from <fg-show path="/filerResidenceAndIncomeState"/>
-      (Form 1099-G) Interest income (Form 1099-INT) Health Savings Account (HSA) contributions
-      and distributions (Form 1099-SA) Social Security benefits (Form SSA-1099) Alaska
-      Permanent Fund Dividend (PFD)  Distributions from employer-sponsored retirement
-      plans, like a 401(k), pension, annuity, 403(b), or governmental 457(b) (Form
-      1099-R)
+    li-99a4d7: |-
+      <ul>
+                    <li>Income made as an employee in <fg-show path="/filerResidenceAndIncomeState"/> (Form W-2)</li>
+                    <li>Unemployment compensation from <fg-show path="/filerResidenceAndIncomeState"/> (Form 1099-G)</li>
+                    <li>Interest income (Form 1099-INT)</li>
+                    <li>Health Savings Account (HSA) contributions and distributions (Form 1099-SA)</li>
+                    <li>Social Security benefits (Form SSA-1099)</li>
+                    <li>Alaska Permanent Fund Dividend (PFD)</li>
+                    <li>Distributions from employer-sponsored retirement plans, like a 401(k), pension, annuity, 403(b), or governmental 457(b) (Form 1099-R)</li>
+                  </ul>
   p-da6d54: As you go through Direct File, we’ll let you know about any situations
     we don’t yet support with these types of income.
   p-208341: 'You and <fg-show path="/secondaryFiler/firstName"/> <strong>can</strong>
     use Direct File if you only had these types of income:'
   ul-1:
-    li-be92e9: Income made as an employee in <fg-show path="/filerResidenceAndIncomeState"/>
-      (Form W-2) Unemployment compensation from <fg-show path="/filerResidenceAndIncomeState"/>
-      (Form 1099-G) Interest income (Form 1099-INT) Health Savings Account (HSA) contributions
-      and distributions (Form 1099-SA) Social Security benefits (Form SSA-1099) Alaska
-      Permanent Fund Dividend (PFD)  Distributions from employer-sponsored retirement
-      plans, like a 401(k), pension, annuity, 403(b), or governmental 457(b) (Form
-      1099-R)
+    li-99a4d7: |-
+      <ul>
+                    <li>Income made as an employee in <fg-show path="/filerResidenceAndIncomeState"/> (Form W-2)</li>
+                    <li>Unemployment compensation from <fg-show path="/filerResidenceAndIncomeState"/> (Form 1099-G)</li>
+                    <li>Interest income (Form 1099-INT)</li>
+                    <li>Health Savings Account (HSA) contributions and distributions (Form 1099-SA)</li>
+                    <li>Social Security benefits (Form SSA-1099)</li>
+                    <li>Alaska Permanent Fund Dividend (PFD)</li>
+                    <li>Distributions from employer-sponsored retirement plans, like a 401(k), pension, annuity, 403(b), or governmental 457(b) (Form 1099-R)</li>
+                  </ul>
 /income/income-sources/reportable-income:
   title: Reportable income
   h2-397d97: Direct File doesn’t yet support any other types of income.
@@ -4842,13 +4865,16 @@
     <fg-show path="/taxYear"/>?
   p-16a115: For <fg-show path="/taxYear"/>, Direct File supports <strong>only</strong>
   ul-8:
-    li-be92e9: Income made as an employee in <fg-show path="/filerResidenceAndIncomeState"/>
-      (Form W-2) Unemployment compensation from <fg-show path="/filerResidenceAndIncomeState"/>
-      (Form 1099-G) Interest income (Form 1099-INT) Health Savings Account (HSA) contributions
-      and distributions (Form 1099-SA) Social Security benefits (Form SSA-1099) Alaska
-      Permanent Fund Dividend (PFD)  Distributions from employer-sponsored retirement
-      plans, like a 401(k), pension, annuity, 403(b), or governmental 457(b) (Form
-      1099-R)
+    li-99a4d7: |-
+      <ul>
+                    <li>Income made as an employee in <fg-show path="/filerResidenceAndIncomeState"/> (Form W-2)</li>
+                    <li>Unemployment compensation from <fg-show path="/filerResidenceAndIncomeState"/> (Form 1099-G)</li>
+                    <li>Interest income (Form 1099-INT)</li>
+                    <li>Health Savings Account (HSA) contributions and distributions (Form 1099-SA)</li>
+                    <li>Social Security benefits (Form SSA-1099)</li>
+                    <li>Alaska Permanent Fund Dividend (PFD)</li>
+                    <li>Distributions from employer-sponsored retirement plans, like a 401(k), pension, annuity, 403(b), or governmental 457(b) (Form 1099-R)</li>
+                  </ul>
   /incomeSourcesSupported:
     question: Does Direct File support all of the income sources that you have for
       <fg-show path="/taxYear"/>?
@@ -4874,13 +4900,16 @@
     heading: What if I’m not sure if my income is supported?
     p-b0bede: 'Direct File only supports these types of income:'
     ul-0:
-      li-be92e9: Income made as an employee in <fg-show path="/filerResidenceAndIncomeState"/>
-        (Form W-2) Unemployment compensation from <fg-show path="/filerResidenceAndIncomeState"/>
-        (Form 1099-G) Interest income (Form 1099-INT) Health Savings Account (HSA)
-        contributions and distributions (Form 1099-SA) Social Security benefits (Form
-        SSA-1099) Alaska Permanent Fund Dividend (PFD)  Distributions from employer-sponsored
-        retirement plans, like a 401(k), pension, annuity, 403(b), or governmental
-        457(b) (Form 1099-R)
+      li-99a4d7: |-
+        <ul>
+                      <li>Income made as an employee in <fg-show path="/filerResidenceAndIncomeState"/> (Form W-2)</li>
+                      <li>Unemployment compensation from <fg-show path="/filerResidenceAndIncomeState"/> (Form 1099-G)</li>
+                      <li>Interest income (Form 1099-INT)</li>
+                      <li>Health Savings Account (HSA) contributions and distributions (Form 1099-SA)</li>
+                      <li>Social Security benefits (Form SSA-1099)</li>
+                      <li>Alaska Permanent Fund Dividend (PFD)</li>
+                      <li>Distributions from employer-sponsored retirement plans, like a 401(k), pension, annuity, 403(b), or governmental 457(b) (Form 1099-R)</li>
+                    </ul>
     p-88a2d3: If you aren’t sure if your income is supported and you need assistance,
       chat with customer support.
 /income/income-sources/foreign-accounts-and-foreign-trusts:
@@ -5150,7 +5179,8 @@
       questions.
     p-c456cd: <modal-link for="modal-info-info-income-jobs-data-import-where-do-i-find-my-w2-linkmodal1">Where
       do I find my copy of the W-2?</modal-link>
-    h2-6f6324: Whose W-2 is it?
+    /formW2s/*/filer:
+      question: Whose W-2 is it?
     h2-0ef177: Look at <strong>box a</strong> and confirm the Social Security number
       (SSN) matches the information on this federal tax return.
     p-0abb5e: <modal-link for="modal-info-info-you-and-your-family-about-you-tin-cant-change-linkmodal1">Why
@@ -5561,7 +5591,7 @@
       question: <strong>Box 15</strong> - Employer’s state
       options:
         sameState:
-          name: ''
+          name: <fg-show path="/filerResidenceAndIncomeState"/>
         differentState:
           name: Another state
     /formW2s/*/writableStateEmployerId:
@@ -5609,13 +5639,13 @@
       question: Is the Form W-2 nonstandard or corrected?
       options:
         nonstandard:
-          name: Yes, this Form W-2 is nonstandard. It is handwritten, altered, or
-            typed on a typewriter.
+          name: Yes, this Form W-2 is <strong>nonstandard</strong>. It is handwritten,
+            altered, or typed on a typewriter.
         corrected:
-          name: Yes, this Form W-2 is corrected. The title is Form W-2c, Corrected
-            Wage and Tax Statement.
+          name: Yes, this Form W-2 is <strong>corrected</strong>. The title is <strong>Form
+            W-2c, Corrected Wage and Tax Statement</strong>.
         both:
-          name: Yes, this Form W-2 is nonstandard and corrected
+          name: Yes, this Form W-2 is <strong>nonstandard</strong> and <strong>corrected</strong>
         neither:
           name: No, this is a standard Form W-2
   modal-sharedmodalw2:
@@ -5931,7 +5961,8 @@
     /form1099Gs/*/has1099:
       question: Did you receive a <modal-link for="modal-headings-heading-income-unemployment-add-1099-linkmodal1">1099-G</modal-link>
         for this unemployment compensation?
-    h2-ec9b0e: Whose 1099-G is it?
+    /form1099Gs/*/filer:
+      question: Whose 1099-G is it?
     h2-fec476: Enter the name of the payer.
     p-fbe201: The payer is the government agency that made the payments. You can usually
       find the payer’s name near the top of the 1099-G.
@@ -5989,7 +6020,7 @@
       question: <strong>Box 10a</strong> - State
       options:
         sameState:
-          name: ''
+          name: <fg-show path="/filerResidenceAndIncomeState"/>
         differentState:
           name: Another state
     /form1099Gs/*/writableStateIdNumber:
@@ -6000,7 +6031,8 @@
       all U.S. states and territories yet.
     p-e107ce: You can only report unemployment compensation from <fg-show path="/filerResidenceAndIncomeState"/>
       within Direct File.
-    h2-93bf91: Whose unemployment compensation is it?
+    /form1099Gs/*/filer-389a90:
+      question: Whose unemployment compensation is it?
     p-88944c: The payer is the government agency that made the payments.
     h2-aaf6d4: Enter the total amount of unemployment compensation received in <fg-show
       path="/taxYear"/>.
@@ -6173,6 +6205,8 @@
     h2-65347e: Whose interest income is it?
     p-5fa330: If it’s a joint account, choose the primary account holder who received
       the 1099-INT.
+    /interestReports/*/filer:
+      question: Whose interest income is it?
     h2-fec476: Enter the name of the payer.
     p-ad575c: The payer is the bank, financial institution, government agency, or
       other entity or person that paid the interest and sent the 1099-INT. Its name
@@ -6258,7 +6292,7 @@
       question: <strong>Box 15</strong> - State
       options:
         sameState:
-          name: ''
+          name: <fg-show path="/filerResidenceAndIncomeState"/>
         differentState:
           name: Another state
     /interestReports/*/writableStateIdNumber:
@@ -6475,6 +6509,8 @@
     h2-c4fe68: Whose Alaska Permanent Fund Dividend (PFD) is it?
     p-a0cc6f: <modal-link for="modal-info-info-income-pfd-report-child-pfd-income-linkmodal1">I
       have a child’s PFD from Alaska. Why can’t I report it in Direct File?</modal-link>
+    /form1099Miscs/*/filer:
+      question: Whose Alaska Permanent Fund Dividend (PFD) is it?
     h2-c56576: Enter the amount listed in other income in <strong>box 3</strong>.
     p-4cc705: The <fg-show path="/taxYear"/> Permanent Fund Dividend amount is <fg-show
       path="/alaskaPfdAmount"/>. This amount includes the Alaska dividend distribution
@@ -6695,9 +6731,8 @@
     must have qualifying expenses paid for the care of a qualifying person. Since
     you don’t have any qualifying people, you won’t be able to exclude any of your
     dependent care benefits from tax.
-  p-1c3347: If you need to add a family or household member to your tax return, go
-    back to the <a href="/data-view/flow/you-and-your-family/dependents" target="_blank">Family
-    and household section</a>.
+  p-3d952b: If you need to add a family or household member to your tax return, go
+    back to the Family and household section.
   p-2f63c9: <a href="https://www.irs.gov/publications/p503#en_US_2023_publink1000203267"
     target="_blank">Who is a qualifying person for dependent care expenses?</a>
   h2-c793c6: In <fg-show path="/taxYear"/>, what were your total qualified expenses
@@ -6811,11 +6846,14 @@
       usePrimaryCombatPay:
         name: Include all combat pay
       useBothCombatPay:
-        name: Include all of my and ’s combat pay
+        name: Include all of my and <fg-show path="/secondaryFiler/firstName"/>’s
+          combat pay
       usePrimaryNotSpouseCombatPay:
-        name: Include all of my combat pay and exclude all of ’s combat pay
+        name: Include all of my combat pay and exclude all of <fg-show path="/secondaryFiler/firstName"/>’s
+          combat pay
       useSpouseNotPrimaryCombatPay:
-        name: Include all of ’s combat pay and exclude all of my combat pay
+        name: Include all of <fg-show path="/secondaryFiler/firstName"/>’s combat
+          pay and exclude all of my combat pay
       noCombatPay:
         name: Exclude all combat pay
   h2-37937a: We need more information to make sure Direct File can support your tax
@@ -7022,6 +7060,8 @@
         'false':
           name: 'No'
     h2-abb415: Which employer supplied the care?
+    /cdccCareProviders/*/writableEmployerWhoFurnishedCare:
+      question: Which employer supplied the care?
     h2-c3a6a1: Was the care supplied by <fg-show path="/oneAndOnlyW2/employerName"/>?
     /cdccCareProviders/*/hasW2Employer-14b2a2:
       question: Was the care supplied by <fg-show path="/oneAndOnlyW2/employerName"/>?
@@ -7034,13 +7074,11 @@
       you entered in the Jobs section.
     ul-1:
       li-b22d09: <fg-show path="/formW2s/*/employerName"/>
-    p-58dec3: If a different employer supplied the care for your qualifying person,
-      go back to the <a href="/data-view/flow/income/jobs" target="_blank">Jobs</a>
-      section and add the Form W-2 from that employer.
-    p-0259d0: If a different employer supplied the care for your qualifying people,
-      go back to the <a href="/data-view/flow/income/jobs" target="_blank">Jobs</a>
-      section and add the Form W-2 from that employer.
-    p-b6ead7: <a href="/data-view/flow/income/jobs" target="_blank">Go to Jobs section</a>
+    p-50aa14: If a different employer supplied the care for your qualifying person,
+      go back to the Jobs section and add the Form W-2 from that employer.
+    p-a1bf51: If a different employer supplied the care for your qualifying people,
+      go back to the Jobs section and add the Form W-2 from that employer.
+    p-513484: Go to Jobs section
     h2-0a6c8e: What’s the care provider’s name?
     p-8f6c3f: If your employer supplied the care either at work or by hiring a care
       provider directly, enter your employer’s name.
@@ -7508,7 +7546,7 @@
 /income/hsa/coverage-and-contributions:
   title: Coverage and contributions
   collection/filersWithHsa:
-    itemName: filers with hsa
+    itemName: person
     h2-5f6e72: Thanks for letting us know.
     p-4f5694: We’re now going to ask questions about <strong>your</strong> health
       coverage and contributions in <fg-show path="/taxYear"/>.
@@ -7570,13 +7608,15 @@
           name: Yes, I was enrolled for part of the year
         noneOfYear:
           name: 'No'
-    /filers/*/enrolledInMedicare-d8c1ba:
+    /filers/*/enrolledInMedicare-075fa9:
       question: Were you enrolled in Medicare in <fg-show path="/taxYear"/>?
       options:
         allYear:
-          name: Yes, was enrolled for the whole year
+          name: Yes, <fg-show path="/secondaryFiler/firstName"/> was enrolled for
+            the whole year
         partOfYear:
-          name: Yes, was enrolled for part of the year
+          name: Yes, <fg-show path="/secondaryFiler/firstName"/> was enrolled for
+            part of the year
         noneOfYear:
           name: 'No'
     h2-f8aaed: Did you have High-Deductible Health Plan (HDHP) coverage in <fg-show
@@ -7872,17 +7912,18 @@
     heading: What are the requirements for a High-Deductible Health Plan (HDHP)?
     p-0e6af3: 'A health plan is an HDHP if it meets the following requirements:'
     ul-0:
-      li-833146: <strong>A required minimum annual deductible.</strong> For Self-only
-        coverage in <fg-show path="/taxYear"/>, the deductible must be at least <fg-show
-        path="/hdhpMinAnnualDeductibleSelf"/>For Family coverage in <fg-show path="/taxYear"/>,
-        the deductible must be at least <fg-show path="/hdhpMinAnnualDeductibleFamily"/>
-      li-107392: <strong>A required maximum limit on the out-of-pocket medical expenses
-        that you must pay for covered expenses.</strong> Out-of-pocket expenses include
-        copayments and other amounts, but don’t include premiums.For Self-only coverage
-        in <fg-show path="/taxYear"/>, the maximum out-of-pocket expenses can’t be
-        more than <fg-show path="/hdhpMaxOOPExpensesSelf"/>For Family coverage in
-        <fg-show path="/taxYear"/>, the maximum out-of-pocket expenses can’t be more
-        than <fg-show path="/hdhpMaxOOPExpensesFamily"/>
+      li-535f7d: |-
+        <strong>A required minimum annual deductible.</strong>
+                    <ul>
+                      <li>For Self-only coverage in <fg-show path="/taxYear"/>, the deductible must be at least <fg-show path="/hdhpMinAnnualDeductibleSelf"/></li>
+                      <li>For Family coverage in <fg-show path="/taxYear"/>, the deductible must be at least <fg-show path="/hdhpMinAnnualDeductibleFamily"/></li>
+                    </ul>
+      li-7214fb: |-
+        <strong>A required maximum limit on the out-of-pocket medical expenses that you must pay for covered expenses.</strong> Out-of-pocket expenses include copayments and other amounts, but don’t include premiums.
+                    <ul>
+                      <li>For Self-only coverage in <fg-show path="/taxYear"/>, the maximum out-of-pocket expenses can’t be more than <fg-show path="/hdhpMaxOOPExpensesSelf"/></li>
+                      <li>For Family coverage in <fg-show path="/taxYear"/>, the maximum out-of-pocket expenses can’t be more than <fg-show path="/hdhpMaxOOPExpensesFamily"/></li>
+                    </ul>
     p-7a798d: Generally, health plans will note if they’re HDHPs or if they make you
       eligible to contribute to a Health Savings Account. If you’re not sure, check
       with your health plan provider.
@@ -8197,7 +8238,8 @@
       HSA distributions aren’t yet supported in Direct File?</modal-link>
   collection/hsaDistributions:
     itemName: Form 1099-SA
-    h2-980941: Whose 1099-SA is it?
+    /hsaDistributions/*/filer:
+      question: Whose 1099-SA is it?
     h2-001421: Enter the name of the Health Savings Account (HSA) trustee.
     p-e9ca14: The trustee is the bank, insurance company, or other entity where your
       HSA is established.
@@ -8383,15 +8425,18 @@
     p-c86964: 'If you have a family plan, you can also include medical expenses from
       these situations:'
     ul-0:
-      li-a1fa4a: 'Any medical expenses that you paid for any person who would have
-        been considered your dependent except that: They filed a joint returnThey
-        had gross incomeYou, or your spouse if filing jointly, are dependents of someone
-        else'
-      li-6714db: Parents who are divorced, separated, or living apart for the last
-        6 months of the calendar year can treat their child (or children) as the dependent
-        of both parents, whether or not the custodial parent releases claim to the
-        child as the custodial parent’s dependent. In this situation, either parent
-        can cover qualified medical expenses for the child with HSA distributions.
+      li-ff5015: |-
+        Any medical expenses that you paid for any person who would have been considered your dependent except that:
+                    <ul>
+                      <li>They filed a joint return</li>
+                      <li>They had gross income</li>
+                      <li>You, or your spouse if filing jointly, are dependents of someone else</li>
+                    </ul>
+      li-c222de: |-
+        Parents who are divorced, separated, or living apart for the last 6 months of the calendar year can treat their child (or children) as the dependent of both parents, whether or not the custodial parent releases claim to the child as the custodial parent’s dependent.
+                    <ul>
+                      <li>In this situation, either parent can cover qualified medical expenses for the child with HSA distributions.</li>
+                    </ul>
 /income/retirement-launch/1099-r-info:
   title: 1099-R information
   h2-e782e2: Retirement income
@@ -8532,14 +8577,15 @@
         neither:
           name: No, this is a standard Form 1099-R
         nonstandard:
-          name: Yes, this Form 1099-R is nonstandard. It is handwritten, altered,
-            or typed on a typewriter.
+          name: Yes, this Form 1099-R is <strong>nonstandard</strong>. It is handwritten,
+            altered, or typed on a typewriter.
         corrected:
-          name: Yes, this Form 1099-R is corrected. The top of the form has the corrected
-            box checked.
+          name: Yes, this Form 1099-R is <strong>corrected</strong>. The top of the
+            form has the <strong>corrected</strong> box checked.
         both:
-          name: Yes, this Form 1099-R is nonstandard and corrected
-    h2-e88781: What name is in the <strong>Recipient</strong> box?
+          name: Yes, this Form 1099-R is <strong>nonstandard</strong> and <strong>corrected</strong>
+    /form1099Rs/*/filer:
+      question: What name is in the <strong>Recipient</strong> box?
     h2-3e8964: Confirm the box <strong>Recipient’s name</strong> matches the information
       on this federal tax return.
     p-37774c: <modal-link for="modal-info-info-income-1099r-why-change-name-linkmodal1">Why
@@ -8566,7 +8612,8 @@
       question: Let’s add the recipient’s address.
       options:
         matchesReturn:
-          name: 'It’s the same address that’s on this federal tax return:'
+          name: 'It’s the same address that’s on this federal tax return: <br/><strong><fg-show
+            path="/address"/></strong>'
         different:
           name: It’s a different address
         none:
@@ -8889,7 +8936,7 @@
       question: <strong>Box 15</strong> - Payer’s State
       options:
         sameState:
-          name: ''
+          name: <fg-show path="/filerResidenceAndIncomeState"/>
         differentState:
           name: Another state
     /form1099Rs/*/writablePayerStateNumber:
@@ -9238,7 +9285,8 @@
     income, and certain deductions/exclusions.
   collection/socialSecurityReports:
     itemName: Social Security income
-    h2-748d44: Whose SSA-1099 is it?
+    /socialSecurityReports/*/filer:
+      question: Whose SSA-1099 is it?
     h2-d59035: Enter the net benefits received in <fg-show path="/taxYear"/> from
       <strong>box 5</strong>.
     p-d47a0c: If box 5 contains a negative number, write it with parentheses or a
@@ -9261,7 +9309,8 @@
     p-2be345: If box 6 is blank, leave it blank here, too.
     /socialSecurityReports/*/writableSsaFederalTaxWithheld:
       question: <strong>Box 6</strong> - Voluntary federal income tax withheld
-    h2-753f96: Whose RRB-1099 is it?
+    /socialSecurityReports/*/filer-94304b:
+      question: Whose RRB-1099 is it?
     /socialSecurityReports/*/rrbNetBenefits:
       question: <strong>Box 5</strong> - Net Social Security equivalent benefit portion
         of Tier 1 paid in <fg-show path="/taxYear"/>
@@ -9645,11 +9694,12 @@
       through grade 12 (K–12) educator in <fg-show path="/taxYear"/>?
     options:
       tpDid:
-        name: Yes, I worked as a K–12 educator in
+        name: Yes, I worked as a K–12 educator in <fg-show path="/taxYear"/>
       spouseDid:
-        name: Yes, worked as a K–12 educator in
+        name: Yes, <fg-show path="/secondaryFiler/firstName"/> worked as a K–12 educator
+          in <fg-show path="/taxYear"/>
       bothDid:
-        name: Yes, we both worked as K–12 educators in
+        name: Yes, we both worked as K–12 educators in <fg-show path="/taxYear"/>
       neither:
         name: 'No'
   h2-bdac4f: How much of <fg-show path="/secondaryFiler/firstName"/>’s own money was
@@ -12423,11 +12473,14 @@
       usePrimaryCombatPay:
         name: Include all combat pay
       useBothCombatPay:
-        name: Include all of my and ’s combat pay
+        name: Include all of my and <fg-show path="/secondaryFiler/firstName"/>’s
+          combat pay
       usePrimaryNotSpouseCombatPay:
-        name: Include all of my combat pay and exclude all of ’s combat pay
+        name: Include all of my combat pay and exclude all of <fg-show path="/secondaryFiler/firstName"/>’s
+          combat pay
       useSpouseNotPrimaryCombatPay:
-        name: Include all of ’s combat pay and exclude all of my combat pay
+        name: Include all of <fg-show path="/secondaryFiler/firstName"/>’s combat
+          pay and exclude all of my combat pay
       noCombatPay:
         name: Exclude all combat pay
   modal-info-info-credits-and-deductions-credits-cdcc-combat-pay-modal-linkmodal1:
@@ -12460,7 +12513,7 @@
 /credits-and-deductions/credits/qualifying-person-info-qp:
   title: Dependent care expenses
   collection/cdccQualifyingPeople:
-    itemName: cdcc qualifying people
+    itemName: qualifying person
     h2-30fba0: Did you have any qualified dependent care expenses for <fg-show path="/familyAndHousehold/*/fullName"/>?
     p-099151: Child and Dependent Care Credit
     p-95cb6b: <modal-link for="modal-sharedmodalcdccexpenses">What are qualified dependent
@@ -12549,7 +12602,7 @@
 /credits-and-deductions/credits/qualifying-person-info-qfiler:
   title: Dependent care expenses
   collection/cdccQualifyingFilers:
-    itemName: cdcc qualifying filers
+    itemName: person
     h2-7406d2: Did you have any qualified dependent care expenses for <fg-show path="/filers/*/fullName"/>?
     p-099151: Child and Dependent Care Credit
     p-95cb6b: <modal-link for="modal-sharedmodalcdccexpenses">What are qualified dependent
@@ -12775,13 +12828,13 @@
     li-a7c64e: You don’t qualify this year because you and <fg-show path="/secondaryFiler/firstName"/>
       didn’t have any earned income in <fg-show path="/taxYear"/>. To qualify, you
       and <fg-show path="/secondaryFiler/firstName"/> must work and have earned income.
-    li-a568f6: "You don’t qualify this year because you’re married, but filing separately\
-      \ from your spouse, and you don’t meet the exception that would allow you to\
-      \ claim the credit. Under this exception, you can use Married Filing Separately\
-      \ filing status and still take the credit if:  \n  Your home was the home of\
-      \ the qualifying person for more than half the year, and\n  You paid more than\
-      \ half the cost of keeping up your home for the year, and\n  Your spouse didn’\
-      t live in your home for the last 6 months of the year."
+    li-de9735: |-
+      You don’t qualify this year because you’re married, but filing separately from your spouse, and you don’t meet the exception that would allow you to claim the credit. Under this exception, you can use Married Filing Separately filing status and still take the credit if:
+                  <ul>
+                    <li>Your home was the home of the qualifying person for more than half the year, and</li>
+                    <li>You paid more than half the cost of keeping up your home for the year, and</li>
+                    <li>Your spouse didn’t live in your home for the last 6 months of the year.</li>
+                  </ul>
     li-b41df7: You don’t qualify this year because you don’t have any qualifying expenses
       for child and dependent care.
     li-c85baa: You don’t qualify this year because you don’t have any qualifying expenses
@@ -12879,6 +12932,8 @@
         'false':
           name: 'No'
     h2-abb415: Which employer supplied the care?
+    /cdccCareProviders/*/writableEmployerWhoFurnishedCare:
+      question: Which employer supplied the care?
     h2-c3a6a1: Was the care supplied by <fg-show path="/oneAndOnlyW2/employerName"/>?
     /cdccCareProviders/*/hasW2Employer-14b2a2:
       question: Was the care supplied by <fg-show path="/oneAndOnlyW2/employerName"/>?
@@ -12891,13 +12946,11 @@
       you entered in the Jobs section.
     ul-1:
       li-b22d09: <fg-show path="/formW2s/*/employerName"/>
-    p-58dec3: If a different employer supplied the care for your qualifying person,
-      go back to the <a href="/data-view/flow/income/jobs" target="_blank">Jobs</a>
-      section and add the Form W-2 from that employer.
-    p-0259d0: If a different employer supplied the care for your qualifying people,
-      go back to the <a href="/data-view/flow/income/jobs" target="_blank">Jobs</a>
-      section and add the Form W-2 from that employer.
-    p-b6ead7: <a href="/data-view/flow/income/jobs" target="_blank">Go to Jobs section</a>
+    p-50aa14: If a different employer supplied the care for your qualifying person,
+      go back to the Jobs section and add the Form W-2 from that employer.
+    p-a1bf51: If a different employer supplied the care for your qualifying people,
+      go back to the Jobs section and add the Form W-2 from that employer.
+    p-513484: Go to Jobs section
     h2-0a6c8e: What’s the care provider’s name?
     p-8f6c3f: If your employer supplied the care either at work or by hiring a care
       provider directly, enter your employer’s name.
@@ -13036,7 +13089,7 @@
 /credits-and-deductions/credits/cdcc-nondep-qp-info:
   title: Additional information
   collection/cdccNonDependentQualifyingPeopleAssignedTins:
-    itemName: cdcc non dependent qualifying people assigned tins
+    itemName: qualifying person
     h2-e238c2: What’s <fg-show path="/familyAndHousehold/*/firstName"/>’s <fg-show
       path="/familyAndHousehold/*/tinTypeShort"/>?
     p-099151: Child and Dependent Care Credit
@@ -13081,9 +13134,8 @@
     h2-eef66e: We’ll add <fg-show path="/familyAndHousehold/*/fullName"/> to your
       <fg-show path="/taxYear"/> federal tax return as your qualifying person for
       the Child and Dependent Care Credit.
-    p-06966c: If you need to update this information later, you can edit it in this
-      section or in <a href="/data-view/flow/you-and-your-family/dependents" target="_blank">Family
-      and household</a>.
+    p-8edd1b: If you need to update this information later, you can edit it in this
+      section or in Family and household.
   modal-info-info-ip-pin-choice-what-linkmodal1:
     heading: What is an Identity Protection (IP) PIN?
     p-e3d032: The <a href="https://www.irs.gov/identity-theft-fraud-scams/get-an-identity-protection-pin"
@@ -13138,7 +13190,7 @@
 /credits-and-deductions/credits/disability:
   title: Disability information
   collection/filersMaybeEligibleForDisability:
-    itemName: filers maybe eligible for disability
+    itemName: person
     h2-0b7f3c: Since you are under age 65, we’ll check if you are eligible under the
       disability portion of the credit.
     p-e318a2: Credit for the Elderly or the Disabled
@@ -13402,7 +13454,7 @@
 /credits-and-deductions/credits/edc-physician-statement:
   title: Doctor’s statement
   collection/filersQualifiedForEdcThroughDisability:
-    itemName: filers qualified for edc through disability
+    itemName: person
     h2-5ebd28: Have you ever gotten a doctor’s statement that certifies <strong>both</strong>
       of the following statements are true?
     p-e318a2: Credit for the Elderly or the Disabled
@@ -14583,7 +14635,7 @@
 /credits-and-deductions/credits/eitc-8862-date-of-death:
   title: Earned Income Tax Credit (EITC) Additional information for qualifying child
   collection/deceasedEitcEligibleQcCollection:
-    itemName: deceased eitc eligible qc collection
+    itemName: qualifying child
     h2-c881e0: You said earlier that <fg-show path="/familyAndHousehold/*/firstName"/>
       died in <fg-show path="/taxYear"/>. When did they die?
     p-1d4ac2: Earned Income Tax Credit
@@ -14634,7 +14686,7 @@
 /credits-and-deductions/credits/eitc-enter-tin:
   title: Earned Income Tax Credit (EITC) Additional information for qualifying child
   collection/unclaimedEITCQcsWithTINsCollection:
-    itemName: unclaimed eitc qcs with ti ns collection
+    itemName: qualifying child
     h2-e238c2: What’s <fg-show path="/familyAndHousehold/*/firstName"/>’s <fg-show
       path="/familyAndHousehold/*/tinTypeShort"/>?
     p-1d4ac2: Earned Income Tax Credit
@@ -14828,17 +14880,21 @@
       for the Earned Income Tax Credit?
     options:
       useSpouseCombatPay:
-        name: Include all of ’s combat pay, so EITC is
+        name: Include all of <fg-show path="/secondaryFiler/firstName"/>’s combat
+          pay, so EITC is <fg-show path="/eitcAmountWithSecondaryCombatPay"/>
       usePrimaryCombatPay:
-        name: Include all combat pay so EITC is
+        name: Include all combat pay so EITC is <fg-show path="/eitcAmountWithPrimaryCombatPay"/>
       useBothCombatPay:
-        name: Include all my and ’s combat pay, so EITC is
+        name: Include all my and <fg-show path="/secondaryFiler/firstName"/>’s combat
+          pay, so EITC is <fg-show path="/eitcAmountWithBothTPCombatPay"/>
       usePrimaryNotSpouseCombatPay:
-        name: Include all my combat pay and exclude all ’s combat pay, so EITC is
+        name: Include all my combat pay and exclude all <fg-show path="/secondaryFiler/firstName"/>’s
+          combat pay, so EITC is <fg-show path="/eitcAmountWithPrimaryCombatPay"/>
       useSpouseNotPrimaryCombatPay:
-        name: Include all ’s combat pay and exclude all my combat pay, so EITC is
+        name: Include all <fg-show path="/secondaryFiler/firstName"/>’s combat pay
+          and exclude all my combat pay, so EITC is <fg-show path="/eitcAmountWithSecondaryCombatPay"/>
       noCombatPay:
-        name: Exclude all combat pay so EITC is
+        name: Exclude all combat pay so EITC is <fg-show path="/eitcAmountWithoutCombatPay"/>
   modal-info-info-credits-and-deductions-credits-eitc-primary-filer-combat-pay-recommend--daddfe57:
     heading: What is earned income?
     p-28774b: Earned income includes the taxable income and wages one gets from working
@@ -15468,8 +15524,8 @@
   ul-0:
     li-e22e3b: <strong><fg-show path="/familyAndHousehold/*/fullName"/></strong><br/><fg-show
       path="/familyAndHousehold/*/dateOfBirth"/>
-  p-84cd41: Go back to <a href="/data-view/flow/you-and-your-family/dependents" target="_blank">Family
-    and household</a> if you want to revisit the information you entered about them.
+  p-bc951d: Go back to Family and household if you want to revisit the information
+    you entered about them.
 /your-taxes/estimated-taxes-paid/est-tax-payments-intro:
   title: In this section, we’ll ask about any payments you made toward your federal
     taxes that weren’t withheld by an employer or other payer.
@@ -15614,12 +15670,14 @@
       made with a former spouse?
     options:
       spouseDid:
-        name: Yes, made estimated federal tax payments with their former spouse
+        name: Yes, <fg-show path="/secondaryFiler/firstName"/> made estimated <fg-show
+          path="/taxYear"/> federal tax payments with their former spouse
       bothDid:
-        name: Yes, and I both made estimated federal tax payments with our former
-          spouses
+        name: Yes, <fg-show path="/secondaryFiler/firstName"/> and I both made estimated
+          <fg-show path="/taxYear"/> federal tax payments with our former spouses
       tpDid:
-        name: Yes, I made estimated federal tax payments with my former spouse
+        name: Yes, I made estimated <fg-show path="/taxYear"/> federal tax payments
+          with my former spouse
       neither:
         name: No, or doesn’t apply
   modal-sharedmodalsesttax:
@@ -16189,9 +16247,12 @@
   fg-alert-76f4df:
     heading: You can file your federal taxes only as a <strong>paper tax return</strong>.
     ul-0:
-      li-4f0af7: Add your IP PIN
-      li-072f47: Add your spouse’s IP PIN
-      li-fea5b1: Add your dependent’s IP PIN
+      li-81642b: <a href="/you-and-your-family/about-you/about-you-ip-pin-ready" target="_blank">Add
+        your IP PIN</a>
+      li-c361c0: <a href="/you-and-your-family/spouse/spouse-mfj-ip-pin-ready" target="_blank">Add
+        your spouse’s IP PIN</a>
+      li-6ca0a9: <a href="/you-and-your-family/dependents/qualified-dependent-ip-pin-ready"
+        target="_blank">Add your dependent’s IP PIN</a>
     fg-detail-2673ce:
       summary: Why?
       p-693909: <strong>You can file your federal taxes only as a paper tax return.</strong>
@@ -16525,7 +16586,7 @@
       neither:
         name: 'No'
       spouse:
-        name: Yes, does
+        name: Yes, <fg-show path="/secondaryFiler/firstName"/> does
       both:
         name: Yes, we both do
   modal-info-info-other-preferences-other-preferences-presidential-fund-what-is-it-linkmodal1:
@@ -16596,7 +16657,7 @@
     question: How do you want to confirm your identity?
     options:
       lastYearAgi:
-        name: Use last year’s AGI (Direct File can look this up)
+        name: Use last year’s AGI <strong>(Direct File can look this up)</strong>
       lastYearPin:
         name: Use last year’s Self-Select PIN
       cannotFind:
@@ -16743,7 +16804,7 @@
       their identity?
     options:
       lastYearAgi:
-        name: Use last year’s AGI (Direct File can look this up)
+        name: Use last year’s AGI <strong>(Direct File can look this up)</strong>
       lastYearPin:
         name: Use last year’s Self-Select PIN
       cannotFind:
@@ -16902,9 +16963,12 @@
   fg-alert-76f4df:
     heading: You can file your federal taxes only as a <strong>paper tax return</strong>.
     ul-0:
-      li-4f0af7: Add your IP PIN
-      li-072f47: Add your spouse’s IP PIN
-      li-fea5b1: Add your dependent’s IP PIN
+      li-81642b: <a href="/you-and-your-family/about-you/about-you-ip-pin-ready" target="_blank">Add
+        your IP PIN</a>
+      li-c361c0: <a href="/you-and-your-family/spouse/spouse-mfj-ip-pin-ready" target="_blank">Add
+        your spouse’s IP PIN</a>
+      li-6ca0a9: <a href="/you-and-your-family/dependents/qualified-dependent-ip-pin-ready"
+        target="_blank">Add your dependent’s IP PIN</a>
     fg-detail-2673ce:
       summary: Why?
       p-693909: <strong>You can file your federal taxes only as a paper tax return.</strong>
@@ -16961,21 +17025,26 @@
   h3-a5e5be: Your digital signature
   ul-2:
     li-4e24d4: <strong>Your date of birth</strong><br/><fg-show path="/primaryFiler/dateOfBirth"/>
-    li-6953c1: <strong>Your Self-Select PIN for this year</strong> Edit<br/><fg-show
-      path="/selfSelectPin"/>
-    li-aebc14: <strong>Last year’s Self-Select PIN</strong> Edit<br/><fg-show path="/selfSelectPinLastYear"/>
-    li-ddf713: <strong>Your <fg-show path="/lastTaxYear"/>’s Adjusted Gross Income
-      (AGI)</strong> Edit<br/><fg-show path="/lastYearAgi"/>
+    li-3c9eda: <strong>Your Self-Select PIN for this year</strong> <a href="/complete/sign-and-submit/sign-return-create-new-self-select-pin"
+      target="_blank">Edit</a><br/><fg-show path="/selfSelectPin"/>
+    li-9314c2: <strong>Last year’s Self-Select PIN</strong> <a href="/complete/sign-and-submit/sign-return-enter-self-select-pin"
+      target="_blank">Edit</a><br/><fg-show path="/selfSelectPinLastYear"/>
+    li-fe32c1: <strong>Your <fg-show path="/lastTaxYear"/>’s Adjusted Gross Income
+      (AGI)</strong> <a href="/complete/sign-and-submit/sign-return-agi" target="_blank">Edit</a><br/><fg-show
+      path="/lastYearAgi"/>
   h3-27204e: <fg-show path="/secondaryFiler/firstName"/>’s digital signature
   ul-3:
     li-560476: <strong><fg-show path="/secondaryFiler/firstName"/>’s date of birth</strong><br/><fg-show
       path="/secondaryFiler/dateOfBirth"/>
-    li-e6972d: <strong><fg-show path="/secondaryFiler/firstName"/>’s Self-Select PIN
-      for this year</strong> Edit<br/><fg-show path="/spouseSelfSelectPin"/>
-    li-4b59bf: <strong><fg-show path="/secondaryFiler/firstName"/>’s <fg-show path="/lastTaxYear"/>’s
-      Self-Select PIN</strong> Edit<br/><fg-show path="/spouseSelfSelectPinLastYear"/>
-    li-2b8ad3: <strong><fg-show path="/secondaryFiler/firstName"/>’s <fg-show path="/lastTaxYear"/>’s
-      Adjusted Gross Income (AGI)</strong> Edit<br/><fg-show path="/spouseLastYearAgi"/>
+    li-3a3298: <strong><fg-show path="/secondaryFiler/firstName"/>’s Self-Select PIN
+      for this year</strong> <a href="/complete/sign-and-submit/sign-return-spouse-create-self-select-pin"
+      target="_blank">Edit</a><br/><fg-show path="/spouseSelfSelectPin"/>
+    li-c81047: <strong><fg-show path="/secondaryFiler/firstName"/>’s <fg-show path="/lastTaxYear"/>’s
+      Self-Select PIN</strong> <a href="/complete/sign-and-submit/sign-return-spouse-enter-self-select-pin"
+      target="_blank">Edit</a><br/><fg-show path="/spouseSelfSelectPinLastYear"/>
+    li-6d9b98: <strong><fg-show path="/secondaryFiler/firstName"/>’s <fg-show path="/lastTaxYear"/>’s
+      Adjusted Gross Income (AGI)</strong> <a href="/complete/sign-and-submit/sign-return-spouse-agi"
+      target="_blank">Edit</a><br/><fg-show path="/spouseLastYearAgi"/>
   fg-alert-7a0be6:
     heading: Double check your date of birth and tax information details to make sure
       your information is correct

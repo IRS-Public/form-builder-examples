@@ -4,6 +4,8 @@
      Corrections belong in the transpiler, so the port stays reproducible against an upstream
      that is still moving. See codemod/README.md. -->
 <FlowConfig>
+  <!-- One module per Direct File subcategory, in the order the flow declares them. Each page
+       becomes one directory with an index.html, in every locale. -->
   <module src="./you-and-your-family-about-you.xml"/>
   <module src="./you-and-your-family-spouse.xml"/>
   <module src="./you-and-your-family-dependents.xml"/>

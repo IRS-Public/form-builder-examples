@@ -130,9 +130,9 @@
         <fg-set path="/paidEstimatedTaxesWithFormerSpouse">
           <question>Were any of these estimated <fg-show path="/taxYear"/> federal tax payments made with a former spouse?</question>
           <input type="enum" options-path="/paidEstimatedTaxesWithFormerSpouseOptions">
-            <option value="spouseDid">Yes, made estimated federal tax payments with their former spouse</option>
-            <option value="bothDid">Yes, and I both made estimated federal tax payments with our former spouses</option>
-            <option value="tpDid">Yes, I made estimated federal tax payments with my former spouse</option>
+            <option value="spouseDid">Yes, <fg-show path="/secondaryFiler/firstName"/> made estimated <fg-show path="/taxYear"/> federal tax payments with their former spouse</option>
+            <option value="bothDid">Yes, <fg-show path="/secondaryFiler/firstName"/> and I both made estimated <fg-show path="/taxYear"/> federal tax payments with our former spouses</option>
+            <option value="tpDid">Yes, I made estimated <fg-show path="/taxYear"/> federal tax payments with my former spouse</option>
             <option value="neither">No, or doesn’t apply</option>
           </input>
         </fg-set>

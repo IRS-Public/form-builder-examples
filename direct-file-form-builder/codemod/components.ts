@@ -60,10 +60,15 @@ const OUT_OF_SCOPE: Record<string, string> = {
   CertifyCheckbox: `out of scope: the e-signature path`,
 };
 
-/** Real gaps: expressible in Direct File, not in this flow. */
-const NOT_EXPRESSIBLE: Record<string, string> = {
-  CollectionItemReference: `binds a CollectionItemReference fact, which no input type writes`,
-};
+/**
+ * Real gaps: expressible in Direct File, not in this flow.
+ *
+ * Empty, and worth leaving here rather than deleting. `CollectionItemReference` was its one entry —
+ * thirteen questions that rendered with no control able to answer them — until the application grew
+ * an `<input type="collection-item-reference">` for it. The table is the place a newly-met component
+ * goes while it is still a gap, and the emit keeps failing on an unlisted type either way.
+ */
+const NOT_EXPRESSIBLE: Record<string, string> = {};
 
 /** Fact controls, and the `<input type>` each becomes. */
 const INPUT_TYPES: Record<string, InputSpec['type']> = {
@@ -81,6 +86,7 @@ const INPUT_TYPES: Record<string, InputSpec['type']> = {
   PhoneNumber: `phone-number`,
   Address: `address`,
   BankAccount: `bank-account`,
+  CollectionItemReference: `collection-item-reference`,
   // The code, as a dropdown. See Main.scala for why the amount beside it is not here.
   FactSelect: `select`,
 };
@@ -240,7 +246,11 @@ export class ComponentMapper {
       return [{ k: `p`, t: [...(label.length > 0 ? [{ k: `strong` as const, c: label }, { k: `text` as const, v: ` ` }] : []), { k: `fact`, path }] }];
     }
 
-    const label = this.fieldLabel(path);
+    // `CollectionItemReference` passes `labelledBy: 'heading'` unconditionally, so its `fields.{path}`
+    // entry is not a label upstream ever shows — and for five of the eight paths it is not a label at
+    // all, but the path repeated back (`name: /formW2s/*/filer`). Taking the heading is both the
+    // faithful reading and the only one that does not put a fact path on screen as a question.
+    const label = name === `CollectionItemReference` ? [] : this.fieldLabel(path);
     // Direct File's `labelledBy: 'heading'` is the common case for a screen with one question: the
     // field has no label of its own and the screen's Heading is it. `<fg-set>` needs a question, so
     // it borrows the heading — and the caller drops the duplicate `<h2>` when that is all the
@@ -250,6 +260,10 @@ export class ComponentMapper {
     const input = this.input(name, type, path, props);
     this.record(name, `<fg-set> with <input type="${input.type}">`);
 
+    // Direct File's fact components default `required` to true; `required={false}` is the explicit
+    // opt-out authors write for a field like a middle initial or suffix. `<fg-set optional="true">` is
+    // the one Flow XML attribute that carries it — dropping it here would make every ported field
+    // required, including the ones upstream deliberately made optional.
     const hintKey = props.hintKey as string | undefined;
     return [
       {
@@ -258,6 +272,7 @@ export class ComponentMapper {
         question,
         ...(hintKey ? { hint: this.r.inlineForKey(hintKey) } : {}),
         input,
+        ...(props.required === false ? { optional: true as const } : {}),
       },
     ];
   }
@@ -280,18 +295,27 @@ export class ComponentMapper {
       };
     }
 
+    if (type === `collection-item-reference`) {
+      return { type, itemLabel: this.itemLabel(path) };
+    }
+
     if (type === `enum` || type === `multi-enum` || type === `select`) {
       const optionsPath = type === `multi-enum` ? multiEnumOptionsPath(path) : getEnumOptionsPath(path as never);
-      const options = getEnumOptions(optionsPath as never).map((value) => ({
-        value,
-        // The order `getExpectedFactControlKeys` states: a suffixed key, then this path's own
-        // override, then the options fact's shared copy.
-        label: this.optionLabel([
-          ...(suffix ? [`fields.${path}.${optionsPath}.${suffix}.${value}`] : []),
-          `fields.${path}.${optionsPath}.${value}`,
-          `fields.${optionsPath}.${value}`,
-        ], value),
-      }));
+      // The order `getExpectedFactControlKeys` states: a suffixed key, then this path's own
+      // override, then the options fact's shared copy.
+      const keysFor = (value: string) => [
+        ...(suffix ? [`fields.${path}.${optionsPath}.${suffix}.${value}`] : []),
+        `fields.${path}.${optionsPath}.${value}`,
+        `fields.${optionsPath}.${value}`,
+      ];
+      const values = getEnumOptions(optionsPath as never) as string[];
+
+      if (type === `select`) {
+        // An HTML `<option>` holds text. Anything richer is flattened here and counted.
+        const options = values.map((value) => ({ value, label: this.optionLabel(keysFor(value), value) }));
+        return { type, optionsPath, options };
+      }
+      const options = values.map((value) => ({ value, label: this.optionLabelInline(keysFor(value), value) }));
       return { type, optionsPath, options };
     }
 
@@ -318,7 +342,50 @@ export class ComponentMapper {
     return fallback;
   }
 
+  /**
+   * The same label, kept as inline nodes — for `enum` and `multi-enum`, whose templates emit it with
+   * `th:utext`.
+   *
+   * This is the fix for a defect rather than a nicety. 55 of the 70 labels that used to be flattened
+   * held a `{{/fact}}` reference, and `plainText` renders a fact node as the empty string: an option
+   * reading "I lived in more than 1 state in {{/taxYear}}" reached the page as "I lived in more than
+   * 1 state in", and one whose whole label was "{{/taxYear}}" reached it blank. Only `select` still
+   * flattens, because an HTML `<option>` genuinely cannot hold an element.
+   */
+  private optionLabelInline(candidates: string[], fallback: string): Inline[] {
+    for (const candidate of candidates) {
+      const value = this.r.lookupValue(candidate);
+      if (typeof value !== `string`) continue;
+      return this.r.inlineText(value);
+    }
+    this.r.missingKeys.add(candidates[0]);
+    return [{ k: `text`, v: fallback }];
+  }
+
   /** `fields.{path}`, as a string or as that object's `.name`. Empty when the field has no label. */
+  /**
+   * `fields.{path}.item` — what to call each option — carried into the flow exactly as authored.
+   *
+   * Deliberately *not* run through the inline IR, unlike every other authored string here. The
+   * value is a template rather than a sentence: `{{/filers/*\/firstName}} {{/filers/*\/lastName}}` is
+   * evaluated once per collection item, in the browser, with that item's id spliced in. Resolving
+   * the fact references at build time would produce one label for a list that has many.
+   *
+   * Markup is the one thing that cannot survive, because the label ends up as an `<option>`-like
+   * string. One of the nine labels wraps itself in a `<p>`; the tags come off and the drop is
+   * counted rather than silent.
+   */
+  private itemLabel(path: string): string {
+    const key = `fields.${path}.item`;
+    const value = this.r.lookupValue(key);
+    if (typeof value !== `string`) {
+      this.r.missingKeys.add(key);
+      return ``;
+    }
+    if (/<[^>]+>/.test(value)) this.r.noteUnhandled(`markup in a collection item label`);
+    return value.replace(/<[^>]+>/g, ``).replace(/\s+/g, ` `).trim();
+  }
+
   private fieldLabel(path: string): Inline[] {
     const direct = this.r.lookupValue(`fields.${path}`);
     if (typeof direct === `string`) return this.r.inlineText(direct);
@@ -335,9 +402,9 @@ export class ComponentMapper {
     // Routes are authored with Direct File's `/flow` prefix, which this port drops. `InternalLink` is
     // the tag the authored string wraps the link text in — upstream passes a component under exactly
     // that name — so it is supplied as a url like any other named link.
-    const href = route.replace(/^\/flow/, ``);
-    const text = this.r.inlineForKey(`${this.r.namespaced(key)}.internalLink`, {}, { InternalLink: href });
-    return text.length === 0 ? [] : [{ k: `p`, t: text }];
+    // Resolved as blocks rather than inline: every one of these values wraps itself in a `<p>`, and
+    // an inline resolution met that as block markup in an inline place and dropped it.
+    return this.r.blocksForKey(`${this.r.namespaced(key)}.internalLink`, {}, internalLinkUrl(route));
   }
 
   /**
@@ -357,7 +424,8 @@ export class ComponentMapper {
     const items = Object.keys(value as object)
       .filter((line) => line !== `urls`)
       .map((line) => this.r.inlineForKey(`${key}.${line}`))
-      .filter((nodes) => nodes.length > 0);
+      .filter((nodes) => nodes.length > 0)
+      .map((t) => ({ t }));
     return items.length === 0 ? [] : [{ k: `list`, ordered: false, items }];
   }
 
@@ -381,8 +449,7 @@ export class ComponentMapper {
 
     // `internalLink` names a flow route, and the authored string wraps its link text in an
     // <InternalLink> tag for the component upstream supplies under that name.
-    const route = props.internalLink as string | undefined;
-    const links = route === undefined ? {} : { InternalLink: route.replace(/^\/flow/, ``) };
+    const links = internalLinkUrl(props.internalLink as string | undefined);
 
     let heading: Inline[];
     let body: Block[];
@@ -395,7 +462,10 @@ export class ComponentMapper {
     } else {
       const own = this.r.lookupValue(`${key}.alertText.heading`);
       heading = typeof own === `string` ? this.r.inlineForKey(`${key}.alertText.heading`, {}, links) : [];
-      body = this.r.lookupValue(`${key}.alertText.body`) === undefined ? [] : this.r.blocksForBody(`${key}.alertText`, `body`);
+      body =
+        this.r.lookupValue(`${key}.alertText.body`) === undefined
+          ? []
+          : this.r.blocksForBody(`${key}.alertText`, `body`, {}, links);
       if (heading.length === 0) {
         // No heading of its own: promote the first paragraph, so the alert still says something in
         // the place `<fg-alert>` renders as its message.
@@ -422,10 +492,12 @@ export class ComponentMapper {
     const key = this.r.namespaced(config.props.i18nKey as string);
     const summary = this.r.inlineForKey(`${key}.heading`);
     const items = (config.props.items as { itemKey: string }[] | undefined) ?? [];
+    // Same as an alert's: the route is a prop and the link text is inside the body.
+    const links = internalLinkUrl(config.props.internalLink as string | undefined);
     const body =
       items.length > 0
-        ? items.flatMap((item) => this.r.blocksForBody(`${key}.${item.itemKey}`, null))
-        : this.r.blocksForBody(key, `body`);
+        ? items.flatMap((item) => this.r.blocksForBody(`${key}.${item.itemKey}`, null, {}, links))
+        : this.r.blocksForBody(key, `body`, {}, links);
     return [{ k: `detail`, summary, body }];
   }
 
@@ -440,7 +512,13 @@ export class ComponentMapper {
   private conditionalList(config: ContentConfig): Block[] {
     const key = this.r.namespaced(config.props.i18nKey as string);
     const items = (config.props.items as { itemKey: string }[] | undefined) ?? [];
-    const lines = items.map((item) => this.cell(`${key}.${item.itemKey}`)).filter((t) => t.length > 0);
+    // An item's `<InternalLink>` points at that item's own `editRoute` — "(edit in the Spouse
+    // section)" beside the spouse's date of birth. The route is a prop on the item rather than a url
+    // in the locale file, which is why it has to be handed in: without it the tag resolves to
+    // nothing, the words survive and the link does not.
+    const lines = (config.props.items as ConditionalListItem[] | undefined ?? [])
+      .map((item) => this.r.listItemForKey(`${key}.${item.itemKey}`, internalLinkUrl(item.editRoute)))
+      .filter((line) => line.t.length > 0 || (line.blocks?.length ?? 0) > 0);
     const prefix = config.props.i18nPrefixKey
       ? this.r.inlineForKey(this.r.namespaced(config.props.i18nPrefixKey as string))
       : [];
@@ -486,6 +564,23 @@ export class ComponentMapper {
   private cell(key: string): Inline[] {
     return this.r.isModal(key) ? this.r.modalInline(key) : this.r.inlineForKey(key);
   }
+}
+
+interface ConditionalListItem {
+  itemKey: string;
+  editRoute?: string;
+}
+
+/**
+ * The `<InternalLink>` url map for a route prop, or none.
+ *
+ * Direct File writes flow routes with a `/flow` prefix this port drops. A `/data-view/…` route names
+ * the DataView, which this port does not have — the topic page is its review surface — so there is
+ * nowhere to point and the tag is left unresolved on purpose, which counts it.
+ */
+function internalLinkUrl(route: string | undefined): Record<string, string> {
+  if (route === undefined || route.startsWith(`/data-view`)) return {};
+  return { InternalLink: route.replace(/^\/flow/, ``) };
 }
 
 /** A content declaration's own `condition` / `conditions`, as one list. */

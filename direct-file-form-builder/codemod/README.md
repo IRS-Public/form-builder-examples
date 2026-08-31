@@ -392,6 +392,45 @@ at all. And `SummaryTable`'s rows are `{th, td}` pairs, `DFAlert`'s body is `ale
 heading at `alertText.heading`, and `iconLists` are flat line maps rather than body trees; each of
 those is `SummaryTable.tsx`, `getKeyValues` and `IconList.tsx` read and followed.
 
+### What the IR holds, and what it drops on purpose
+
+Two counts come out of the same walk and mean opposite things, which is why
+`component-coverage.md` keeps them in separate tables.
+
+**Constructs with no shape in the IR** is a gap: the words survive and the structure does not, and
+the count is the argument for adding a node. It is **0**. Four things closed it:
+
+- **Nested lists.** A `<li>` now carries blocks as well as a line (`ListItem` in `content.ts`), so
+  Direct File's two-level lists stay two-level — 44 items that used to arrive as one flat run of
+  sentences. form-builder needs no change for this: it parses `<li>` as a leaf and re-emits the
+  inner markup verbatim, so the nested list reaches the page. The cost, stated where it happens: the
+  nested items share their parent item's translation key rather than getting their own.
+- **A bare run of `<li>`s.** `- ul: $t(key)` puts the whole list body behind a reference, so
+  expanding it hands the block splitter list items with no list around them. They are wrapped
+  (`wrapBareListItems`), and only when they are not already inside a `<ul>`.
+- **`<InternalLink>` where a route exists.** The route is a component prop rather than a url in the
+  locale file — `ConditionalList`'s per-item `editRoute`, `DFAlert`'s and `DFAccordion`'s
+  `internalLink` — so it is threaded in as an inherited url. `blocksForBody` grew the parameter that
+  made an alert's body able to see it.
+- **Option labels.** See below; this one was a defect rather than a flattening.
+
+**Markup dropped on purpose** is a decision, and each row carries its reason: a `/data-view/…` link
+this port has no page for, a tag upstream binds no component to either, a PDF button, a `<span>`.
+
+### The option labels were a defect, not a nicety
+
+70 enum and multi-enum option labels used to be flattened to plain text on the grounds that an
+`<option>` carries a string. 55 of them held a `{{/fact}}` reference, and `plainText` renders a fact
+node as the empty string — so "I lived in more than 1 state in {{/taxYear}}" reached the page with
+the year missing, and an option whose whole label was `{{/taxYear}}` reached it **blank**.
+
+The fix needed one word in the library. `FgSet.scala` already stores an option's inner markup as its
+translation value; form-builder's `enum.html` and `multi-enum.html` escaped it on the way out. They
+now use `th:utext`, the way the boolean input's options always have, and this application's
+`FlowConfig.rng` says `<option>` may hold inline content. `select` still flattens — an HTML
+`<option>` genuinely holds text and nothing else — and none of Direct File's select options needs
+more, so the count is 0 there too.
+
 Because these run under `vite-node`, everything that touches Direct File stays in `content.ts` and
 `components.ts`. `render.ts` and `emit.ts` import only *types* from them, so they still run under
 bare `node` — a value import across that line pulls `/src/locales/en.yaml` into a process that
@@ -532,5 +571,12 @@ cannot quietly vanish from 727 screens. Adding a type upstream means adding it t
 `RENDERED_ELSEWHERE`, `OUT_OF_SCOPE`, `NOT_EXPRESSIBLE`, `INPUT_TYPES` or the `switch` — the build
 says which.
 
-The one remaining `NOT_EXPRESSIBLE` entry is `CollectionItemReference` (13 declarations): it binds a
-fact whose value is a collection item, and no `<input type>` writes one.
+`NOT_EXPRESSIBLE` is now empty. Its one entry was `CollectionItemReference` (13 declarations) —
+a fact whose value is a collection item, which no `<input type>` wrote, so the question rendered and
+could not be answered. The application grew one: `<input type="collection-item-reference"
+item-label="…"/>`, a radio per item of the referenced collection. Only the label travels in the
+flow, because it is authored prose evaluated once per item; which collection to list is read out of
+the fact dictionary by `inputs/CollectionItemReference.scala`, so the flow cannot disagree with it.
+
+The table is kept rather than deleted: it is where a newly-met component goes while it is still a
+gap, and an empty *Real gaps* section in `component-coverage.md` is a claim worth being able to make.

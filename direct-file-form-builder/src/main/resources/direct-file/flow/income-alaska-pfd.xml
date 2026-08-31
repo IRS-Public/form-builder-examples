@@ -23,6 +23,10 @@
         <div class="df-screen" condition="/flowGate980b4142" operator="isTrue">
           <h2>Whose Alaska Permanent Fund Dividend (PFD) is it?</h2>
           <p><modal-link for="modal-info-info-income-pfd-report-child-pfd-income-linkmodal1">I have a child’s PFD from Alaska. Why can’t I report it in Direct File?</modal-link></p>
+          <fg-set path="/form1099Miscs/*/filer">
+            <question>Whose Alaska Permanent Fund Dividend (PFD) is it?</question>
+            <input type="collection-item-reference" item-label="{{/filers/*/firstName}} {{/filers/*/lastName}}"/>
+          </fg-set>
         </div>
         <div class="df-screen">
           <h2>Enter the amount listed in other income in <strong>box 3</strong>.</h2>
@@ -40,7 +44,7 @@
           <fg-apply path="/form1099Miscs/*/payer/tin" source="/apfForm1099MiscPayerEin"/>
           <fg-apply path="/form1099Miscs/*/hasSeenLastAvailableScreen" source="/flowTrue"/>
           <p>If box 4 is blank, leave it blank here, too.</p>
-          <fg-set path="/form1099Miscs/*/writableFederalWithholding">
+          <fg-set path="/form1099Miscs/*/writableFederalWithholding" optional="true">
             <question><strong>Box 4</strong> - Federal income tax withheld</question>
             <input type="dollar"/>
           </fg-set>

@@ -157,10 +157,22 @@ function renderBlock(block: Block, gate: string | null, indent: string, context:
     }
 
     case `list`: {
-      const items = block.items.filter((item) => !isEmpty(item));
+      const items = block.items.filter((item) => !isEmpty(item.t) || (item.blocks?.length ?? 0) > 0);
       if (items.length === 0) return null;
       const tag = block.ordered ? `ol` : `ul`;
-      const lines = items.map((item) => `${indent}  <li>${renderInline(item)}</li>`);
+      const lines = items.map((item) => {
+        // A nested list goes inside its `<li>`, on its own lines. form-builder parses `<li>` as a
+        // leaf and re-emits its inner markup verbatim, so this arrives in the page as real nested
+        // list markup — at the cost of the nested items sharing the parent item's translation key.
+        // See the ListItem doc in content.ts.
+        const nested = renderBlocks(item.blocks ?? [], `${indent}    `, context);
+        if (nested.length === 0) return `${indent}  <li>${renderInline(item.t)}</li>`;
+        return (
+          `${indent}  <li>${renderInline(item.t)}\n` +
+          `${nested.join(`\n`)}\n` +
+          `${indent}  </li>`
+        );
+      });
       return `${indent}<${tag}${conditionAttrs(gate)}>\n${lines.join(`\n`)}\n${indent}</${tag}>`;
     }
 
@@ -230,7 +242,8 @@ function renderSet(
   // `if-true` rather than `condition`/`operator`: those are the only two attributes
   // `Condition.getCondition` reads on an `<fg-set>`, and a gate is always Boolean and always total.
   const condition = gate === null ? `` : ` if-true="${xmlAttr(gate)}"`;
-  const lines = [`${indent}<fg-set path="${xmlAttr(block.path)}"${condition}>`];
+  const optional = block.optional ? ` optional="true"` : ``;
+  const lines = [`${indent}<fg-set path="${xmlAttr(block.path)}"${condition}${optional}>`];
   lines.push(`${indent}  <question>${renderInline(block.question)}</question>`);
   if (block.hint && !isEmpty(block.hint)) lines.push(`${indent}  <hint>${renderInline(block.hint)}</hint>`);
 
@@ -248,9 +261,15 @@ function renderSet(
   } else if (input.type === `enum` || input.type === `multi-enum`) {
     lines.push(`${indent}  <input type="${input.type}" options-path="${xmlAttr(input.optionsPath)}">`);
     for (const option of input.options) {
-      lines.push(`${indent}    <option value="${xmlAttr(option.value)}">${xmlText(option.label)}</option>`);
+      // Inline, not text: FgSet stores an option's inner markup as its translation value and the
+      // enum templates render it with th:utext, so a year or a bold box number survives to the page.
+      lines.push(`${indent}    <option value="${xmlAttr(option.value)}">${renderInline(option.label)}</option>`);
     }
     lines.push(`${indent}  </input>`);
+  } else if (input.type === `collection-item-reference`) {
+    // The label is the only thing the flow carries: which collection to list is read out of the fact
+    // dictionary by the app's parser, so it is not repeated here and cannot drift from it.
+    lines.push(`${indent}  <input type="collection-item-reference" item-label="${xmlAttr(input.itemLabel)}"/>`);
   } else if (input.type === `select`) {
     lines.push(`${indent}  <select options-path="${xmlAttr(input.optionsPath)}">`);
     for (const option of input.options) {
