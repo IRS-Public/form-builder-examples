@@ -11,6 +11,33 @@ ecosystem, the
 [QUICKSTART.md](https://github.com/IRS-Public/taxpert/blob/main/docs/QUICKSTART.md) in the taxpert
 repository, so do not add them here.
 
+## Commands
+
+Every target at the root takes `APPS=` to narrow it to a subset, as in
+`make ci APPS=credit-assistant`. The same target names exist inside each application directory and
+act on that one.
+
+| Command | What it does |
+|---|---|
+| `make list` | Print the applications the other targets will act on, and the library paths |
+| `make bootstrap` | First-run setup: publish both Scala libraries once, then install and vendor per application |
+| `make run-all-local` | One `make dev` per application, prefixed output, Ctrl-C stops all |
+| `make run-all-docker` | The Docker counterpart, reaching the same addresses |
+| `make ci` | Per application: build, `check-shared-ui`, and validate XML, HTML, JavaScript, and Scala |
+| `make test`, `make site`, `make format`, `make clean` | Per application, in turn |
+| `make link-taxpert TAXPERT_UI=...` | Install the workspace package from a taxpert checkout kept elsewhere |
+
+`make bootstrap` publishes the libraries once for all four rather than once each. Both library
+paths default to a sibling checkout. Neither library is on a remote registry, so `publishLocal` from
+a checkout is the only way either reaches an application here.
+
+Inside an application, `make dev` passes `--auditMode` and the flags that application needs. The
+extra dev targets are not uniform. Credit Assistant has `make dev-ai`, which additionally passes
+`--aiScenarioGeneration --aiFactExplanation` to reveal the two AI chat features, and neither of the
+others wires those up. Credit Assistant, Benefits Enrollment and Direct File have `make dev-author`, and TWE does
+not. Check the application's own Makefile rather than assuming a target exists in all four.
+
+
 ## Where this fits
 
 | Repository | What it is |
@@ -79,61 +106,3 @@ Each application owns its own `build.sbt`, `Makefile`, `package.json`, `fact-exp
 | `<app>/src/main/resources/<app_id>/website-static/` | Brand CSS, application JavaScript, images, and the vendored mirrors |
 | `<app>/docs/` | Application documentation. TWE carries the ADRs the whole ecosystem descends from |
 | `form-builder-apps.json` | Sets Fact Explorer's default application and the order the four appear in. The descriptor Fact Explorer's registry build globs is each application's own `fact-explorer.app.json` |
-
-## Commands
-
-Every target at the root takes `APPS=` to narrow it to a subset, as in
-`make ci APPS=credit-assistant`. The same target names exist inside each application directory and
-act on that one.
-
-| Command | What it does |
-|---|---|
-| `make list` | Print the applications the other targets will act on, and the library paths |
-| `make bootstrap` | First-run setup: publish both Scala libraries once, then install and vendor per application |
-| `make run-all-local` | One `make dev` per application, prefixed output, Ctrl-C stops all |
-| `make run-all-docker` | The Docker counterpart, reaching the same addresses |
-| `make ci` | Per application: build, `check-shared-ui`, and validate XML, HTML, JavaScript, and Scala |
-| `make test`, `make site`, `make format`, `make clean` | Per application, in turn |
-| `make link-taxpert TAXPERT_UI=...` | Install the workspace package from a taxpert checkout kept elsewhere |
-
-`make bootstrap` publishes the libraries once for all four rather than once each. Both library
-paths default to a sibling checkout. Neither library is on a remote registry, so `publishLocal` from
-a checkout is the only way either reaches an application here.
-
-Inside an application, `make dev` passes `--auditMode` and the flags that application needs. The
-extra dev targets are not uniform. Credit Assistant has `make dev-ai`, which additionally passes
-`--aiScenarioGeneration --aiFactExplanation` to reveal the two AI chat features, and neither of the
-others wires those up. Credit Assistant, Benefits Enrollment and Direct File have `make dev-author`, and TWE does
-not. Check the application's own Makefile rather than assuming a target exists in all four.
-
-## Gotchas
-
-- **`website-static/vendor/` is generated, gitignored, and has exactly one writer.** Never commit or
-  hand-edit anything under it. `copy-fg` writes the Fact Graph bundle and `copy-shared-ui` mirrors
-  `taxpert/packages/ui/src`. Benefits Enrollment additionally has `copy-uswds`, because it is the
-  one application here that vendors the design system from npm. `make check-shared-ui`, part of
-  `make ci`, fails the build if the taxpert mirror has drifted.
-- **Shared UI must not be reimplemented here.** A change to the audit panel, the tool panels, the
-  global nav, or the all-screens toolbar belongs in `taxpert/packages/ui/`, followed by
-  `make copy-shared-ui`. An application's own `website-static/` is for application-specific
-  behavior only.
-- **A change to `form-builder` reaches nothing until it is republished.** Run `sbt test
-  publishLocal` there, then `make ci` in **every** application here. The applications after the
-  first are what catch an assumption that only holds for the first — and Direct File, which brings a
-  fact dictionary and a flow it did not author, catches the most.
-- **All four commit their `factgraph-3.1.0.js`.** `make copy-fg` prints a message and moves on when
-  it finds no Fact Graph build, so a fresh clone has a working engine in the browser with no
-  fact-graph checkout. The Scala side is the part that still needs one.
-- **Scala.js output is not byte-reproducible.** `factgraph-3.1.0.js` can change after a
-  `make publish` in fact-graph even when no source did. Those diffs do not need to be committed.
-- **`locales/flow_*.yaml` is generated on every build.** Authored text lives in the flow XML, and a
-  hand edit to the generated file is lost.
-- **`facts/*.xml` are merged in sorted filename order, and a duplicate `<Fact path="...">` is
-  last-wins.** Splitting or renaming a facts file can therefore change which definition survives.
-- **Each application owns its own RELAX NG schemas**, copied from form-builder's seeds. An
-  application that registers a custom node type has to widen its own grammar, which is why TWE's
-  `FlowConfig.rng` and Credit Assistant's differ. Keep `make validate-xml` passing against them.
-- **The Dockerfiles are the same build logic four times.** What differs is a four-line `ARG` block,
-  the port, and the startup banner. A build change should land in all four or in none.
-- **The dev server serves a directory of static HTML.** There is no hot module reload. `sbt ~run`
-  regenerates the site on an edit, and the browser still has to be refreshed.
