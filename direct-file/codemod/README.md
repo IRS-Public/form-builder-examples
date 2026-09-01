@@ -8,10 +8,11 @@ against an upstream that is still moving.
 ```bash
 make transpile          # regenerate the flow and its gate facts
 make transpile-verify   # check page order, then gate parity, against Direct File
+make transpile-es       # reseed locales/flow_es.yaml, then check it — after a build
 make export-scenarios   # regenerate scenarios/ from Direct File's backend fixtures
 ```
 
-All three need a Direct File checkout. `DF_CLIENT_APP` says where it is, defaulting to
+All four need a Direct File checkout. `DF_CLIENT_APP` says where it is, defaulting to
 `../../direct-file/direct-file/df-client/df-client-app`. Nothing here writes to it.
 
 ## The files
@@ -23,11 +24,14 @@ All three need a Direct File checkout. `DF_CLIENT_APP` says where it is, default
 | `gates.ts` | 3 | Turns each distinct condition set into one derived Boolean fact. |
 | `content.ts` | 4 | Resolves keys, body trees, links and modals into an intermediate representation. |
 | `components.ts` | 4 | Maps each of the 51 Direct File content component types onto that representation. |
-| `render.ts` | 4 | Prints the representation as Flow XML. |
+| `resolve-content.ts` | 4 | Drives stage 4 over one locale bundle. Run twice: `en.yaml`, then `es.yaml`. |
+| `render.ts` | 4 | Prints the representation as Flow XML, noting each leaf it prints. |
 | `emit.ts` | 2, 5 | Cuts pages, plans collection loops, writes the flow and the manifest. |
 | `coverage.ts` | 5 | Renders `component-coverage.md`. |
+| `translate.ts` | 15 | Writes `locales/flow_es.yaml` by joining the two stage-4 walks to `flow_en.yaml`. |
 | `verify-order.ts` | check | Page order against Direct File's 175 scenario snapshots. |
 | `verify-visibility.ts` | check | Gate parity against 161 backend scenarios. |
+| `verify-translation.ts` | check | `flow_es.yaml` re-read from disk: key parity, and that its markup resolves. |
 | `scenario-graph.ts` | shared | Reads and translates the backend scenarios, for the two consumers below. |
 | `export-scenarios.ts` | corpus | Writes `scenarios/` from those same graphs. |
 
@@ -43,13 +47,23 @@ Everything after stage 1 reads the JSON rather than the React app, so it runs un
 which strips the types. That split is worth keeping. The interesting stages are testable without a
 DOM and reviewable as a diff.
 
-`render.ts` and `emit.ts` import only types from `content.ts` and `components.ts`. A value import
-across that line pulls `/src/locales/en.yaml` into a process that cannot resolve it.
+`render.ts` and `emit.ts` import only types from `content.ts`, `components.ts` and
+`resolve-content.ts`. A value import across that line pulls Direct File's own packages into a process
+that cannot resolve them.
+
+Stage 15 is back on the Vite side, and for two reasons rather than one: it reads `es.yaml`, and it
+needs a YAML parser to read the file form-builder wrote. `js-yaml` is in the Direct File workspace's
+`node_modules` and this application has none of its own, so the same root-relative import that
+reaches `df-i18n` reaches it.
 
 ## What is committed
 
 `manifest.json` is the record of what was mapped and what was dropped. Its diff is how you notice
 that an upstream change silently removed twenty screens.
+
+`pages.json` is what landed on each emitted page: its screens in order, and the collection that
+absorbed some of them. Stage 15 reads it rather than reconstructing the page cuts, which would mean a
+second copy of `planLoops`.
 
 `flow-config.json` is 2 MB and a judgement call. Committing it lets stages 2 to 5 run without a
 Direct File checkout, and makes an upstream sync show up as a reviewable diff of the input rather
@@ -486,6 +500,18 @@ page title is a static attribute on `<page>`, so the interpolation is dropped an
 tidied and capitalised: "Basic information". That is a real difference from upstream, where the nav
 says the person's name.
 
+**The tidying is `tidyTitle`, and both sources go through it.** Dropping an interpolation leaves a
+hole, and the hole is visible: a stranded full stop where the fact used to be ("…considered married
+for tax purposes in ."), or the word that governed it holding nothing ("`{{/lastTaxYear}}` expenses
+paid for in `{{/taxYear}}`" → "expenses paid for in"). So the stranded punctuation goes, and then the
+dangling words, repeatedly, because removing one interpolation can strand two. Four English titles
+read better for it. A full stop attached to its own last word is untouched — the punctuation has to
+be standing alone to be a hole.
+
+The word list is per language and deliberately not merged: `a` is a Spanish preposition and "Schedule
+A" is a whole English label. Direct File has no such label today, which is why the split is worth
+making before one appears rather than after.
+
 Fourteen sub-subcategories were cut into two pages each, because their screens are not contiguous in
 the flow, and both halves take the same label. That is also what upstream's nav shows.
 
@@ -618,3 +644,92 @@ fact dictionary by `inputs/CollectionItemReference.scala`, so the flow cannot di
 
 The table is kept rather than deleted. It is where a newly-met component goes while it is still a
 gap, and an empty "Real gaps" section in `component-coverage.md` is a claim worth being able to make.
+
+## Stage 15, the Spanish
+
+```bash
+make site && make transpile-es
+```
+
+Every value in `locales/flow_es.yaml` is a string Direct File already wrote. Nothing here translates
+anything, and `es.yaml`'s coverage is upstream's own guarantee: `localeParity.test.ts` asserts a
+value for every key `en.yaml` has, with one exemption. What was missing was the re-keying, and the
+reason that is not a lookup is worth stating precisely, because it is what decides the shape of the
+whole stage.
+
+**`flow_en.yaml`'s keys are not Direct File's keys.** `render.ts` prints literal English into the
+flow XML — `renderInline` never writes a translation key — and form-builder then invents one per leaf
+while it parses that XML: `"$label-${md5(content).take(6)}"` over the English words
+(`TranslationContext.getHashKey`, `Html.scala`'s `LEAF_NODES`). `about-you-intro`'s subtree is
+`h2-6ee87d` and `p-04cb15`. So there is no key in `flow_en.yaml` that is also a key in Direct File's
+`en.yaml`, and there is nothing to look up.
+
+### The join
+
+Stage 4 runs twice — `resolve-content.ts` over `en.yaml`, then over `es.yaml` — through the same
+component mapper, and both trees are printed by the same printer with its leaf recorder on. Modal
+ids are functions of the *key* rather than the words, so the two walks agree on them by construction.
+
+A leaf's address in that walk is structural: `/2#1/0.question`, the shape of the tree rather than a
+position in it. That is what the two languages are joined on, so a subtree whose Spanish resolves to
+a different shape simply fails to pair and is counted rather than shifting everything after it by
+one. The result, per page, is a map from **the exact English text form-builder stored** to its
+Spanish — exact because it comes from the printer, which is the only thing that knows an `<li>`
+carries its nested list inside its own value, that an empty `<fg-alert>` heading becomes the literal
+"Note", and that a `<select>` option is flattened where an enum option is not.
+
+`flow_en.yaml` is then read back and each value looked up in that map, on the page it sits on.
+
+The stage's plan specified a positional zip of the two orderings with the English text as an
+assertion on top of it. This is that assertion used *as* the join rather than as a guard on one. The
+guarantee is the same — a key only takes a translation when the transpiler can show it produced that
+same English on that same page — and it drops the dependency on the codemod's walk order and
+form-builder's parse order staying in step, which was the stage's named risk. Two keys are not
+content-addressed and need no recognising at all: `title` comes off the `<page>` attribute and
+`itemName` off `<fg-collection item-name>`, so both are written straight to the key, the Spanish
+title through the same three-way fallback `emit.ts` gave the English one (`pageTitle` in `render.ts`,
+shared for exactly that reason).
+
+### What it reached
+
+    pages                138
+    translated           7684 of 7684
+    unpaired leaves      0
+    ambiguous text       204
+    interpolation drift  16
+
+The last two are properties of upstream rather than of the join, and `translation-coverage.md` keeps
+them apart from the gaps for the same reason `component-coverage.md` keeps a decision apart from a
+claim on someone's time.
+
+**204** are one English sentence Direct File wrote under two keys and translated twice, in slightly
+different words each time. There is one key here to put either under, because form-builder
+content-addresses on the English and has already collapsed the two, so the first occurrence on the
+page wins. Not a choice this stage makes that the library does not.
+
+**16** interpolate different facts in the two languages — `{{/nextTaxYear}}` where the English says
+`{{/lastTaxYear}}`, or one name where the English repeats it. That is upstream's own wording, and
+`verify-translation.ts` is what makes it safe to take: every path either language names is checked
+against the dictionary, and every `<modal-link for>` against the dialogs its own page carries.
+Neither is checked anywhere else, in either language, because form-builder stores a leaf's markup as
+an opaque string and re-emits it — a bad path renders as a blank space and a bad modal id as a link
+that opens nothing.
+
+### One rough edge, and it is the library's
+
+`<fg-collection>` composes its Add button as `Añadir {determiner} {itemName}`, and
+`determiners.another` is the single word `otro`, which cannot agree in gender or number with eleven
+nouns: "Añadir otro compensación por desempleo". The item names are upstream's own, taken from its
+Add controls (`fields.{collection}.controls.add`, minus the verb and any article). Closing it means
+form-builder taking a gender/number hint on `item-name`, which changes every application's chrome, so
+it is not patched around here. credit-assistant has the same shape with its `itemName` still
+untranslated — a gap Spanish made visible rather than one this port introduced.
+
+### This is a seed, not a replacement for `syncTranslationLocales`
+
+The keys are content-addressed on the English, so any later change to the flow re-keys its entry here
+exactly as it would a hand-written translation, and form-builder's existing TODO-stub mechanism is
+what carries one forward. Re-running `make transpile && make site && make transpile-es` reseeds from
+upstream. A key the join cannot reach gets the `@@TODO_TRANSLATE@@` marker `Locale.scala` writes,
+lifted into a `# TODO: translate` comment above it, and `verify-translation.ts` fails when there are
+more of them than `EXPECTED_UNTRANSLATED` — 0 today.

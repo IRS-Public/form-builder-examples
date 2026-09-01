@@ -76,12 +76,60 @@ Each module is one Direct File subcategory, and each page is a contiguous run of
 order. A collection loop's runs are absorbed into a single `<fg-collection>`, which is what turns 218
 runs into 138 pages.
 
-`locales/flow_es.yaml` holds 15 lines, and that is the port's largest remaining gap. Its key set is
-owned by the generated `flow_en.yaml`, which the scaffold writes from the emitted XML, so the keys
-exist only after a build. Re-keying Direct File's own `es.yaml` against them is a post-build step
-rather than something the transpiler could emit. Direct File has the translations, keyed the way its
-`en.yaml` is. What is missing is the step that moves them across. Until then the resolver falls back
-to English and the `/es/` pages render English text under Spanish chrome.
+`locales/flow_es.yaml` is generated too, but by a separate stage and after a build rather than
+before one. See below.
+
+## The Spanish is Direct File's
+
+Every one of `flow_es.yaml`'s 7,684 values is a string Direct File already wrote. None of it was
+translated for this port, and none of it should be edited here.
+
+`make transpile-es` is what puts them there, and it is apart from `make transpile` because **its
+input is the library's output.** form-builder does not carry a translation key through from the XML;
+it invents one per leaf while it parses, `"$label-${md5(content).take(6)}"` over the *English* words
+(`TranslationContext.getHashKey`). `about-you-intro`'s subtree is `h2-6ee87d` and `p-04cb15`, not
+anything Direct File's `en.yaml` calls them. So there is no key in `flow_en.yaml` that is also a key
+upstream, "look it up in `es.yaml`" does not typecheck, and the file this stage has to match does not
+exist until `make site` has run once.
+
+What the stage does instead is resolve every screen's content **twice**, out of `en.yaml` and out of
+`es.yaml`, through the same component mapper and the same printer. A leaf's address in that walk is
+structural — `/2#1/0.question` — so the two trees are joined on the shape they share rather than on a
+position, and that gives, per page, a map from the exact English text form-builder stored to its
+Spanish. The generated `flow_en.yaml` is then read back and each value looked up in that map. The
+pairing is therefore validated by the English text itself: a key only takes a translation when the
+transpiler can show it produced that same English on that same page.
+
+It reached all 7,684. `codemod/translation-coverage.md` is the readable half and
+`codemod/verify-translation.ts` is the gate — it re-reads the written file rather than trusting the
+object that was written, and asserts key-set equality, that nothing is untranslated, that every
+`<fg-show path>` in *either* language resolves in the dictionary, and that every `<modal-link for>`
+names a dialog its own page carries.
+
+Three things are worth knowing about the result.
+
+**204 values are one English sentence with two translations.** Upstream writes the same sentence
+under two keys and translates each in its own words. There is one key here to put either under,
+because form-builder has already collapsed the two on the English, so the first occurrence on the
+page wins. Not a choice this stage makes that the library does not.
+
+**16 values interpolate different facts in the two languages** — "hasta el 15 de abril de
+{{/nextTaxYear}}" where the English says "for {{/lastTaxYear}}". That is upstream's own wording, and
+the dictionary check above is what makes it safe to take.
+
+**This is a bulk seed, not a replacement for `syncTranslationLocales`.** The keys are
+content-addressed on the English, so a later edit to the flow re-keys its entry here exactly as it
+would a hand-written translation, and form-builder's existing TODO-stub mechanism is what carries one
+forward. Re-running `make transpile-es` after `make transpile && make site` reseeds from upstream.
+
+One rough edge, and it is the library's rather than this stage's: `<fg-collection>` composes its Add
+button as `Añadir {determiner} {itemName}`, and `determiners.another` is the single word `otro`,
+which cannot agree in gender or number with eleven different nouns — "Añadir otro compensación por
+desempleo". The item names themselves are upstream's ("compensación por desempleo",
+"Formulario 1099-R"). Closing it means form-builder taking a gender/number hint on `item-name`, which
+would change every application's chrome; it is not patched around here. credit-assistant has the same
+shape with its `itemName` still untranslated, so this is a gap Spanish made visible rather than one
+this port introduced.
 
 ## How this application presents its flow
 
@@ -268,6 +316,23 @@ for. The seventh exists only on the e-signature path, which is out of scope. The
 `codemod/verify-visibility.ts`'s `KNOWN`, and the check fails on anything else. It also fails on a
 `KNOWN` entry that has come back into line, so a stale exemption cannot hide a later regression.
 
+### Translation parity
+
+`make transpile-es` reseeds `flow_es.yaml` and then checks it.
+
+    keys                 7684
+    untranslated         0 (expected at most 0)
+    interpolation drift  16 (upstream's own wording; each fact checked)
+
+`verify-translation.ts` re-reads the file it just wrote rather than trusting the object that was
+written, because the failures worth catching are in the round trip: a key over 128 characters makes
+the YAML printer switch to the explicit-key form the parser `Locale` uses rejects, and a value that
+looks like a number comes back as one. Beyond key-set equality it checks the two things nothing else
+does — that every `<fg-show path>` in either language resolves in the dictionary, and that every
+`<modal-link for>` names a dialog its own page carries — because form-builder stores a leaf's markup
+as an opaque string and re-emits it, so a broken one renders as a blank space or a link that opens
+nothing. `EXPECTED_UNTRANSLATED` is 0, and raising it is a decision to write down.
+
 ### The dictionary and the flow shape
 
 `make test` is about the dictionary rather than the flow.
@@ -290,7 +355,7 @@ real modules landed.
 
 ### That the site runs
 
-`make smoke` is eight Playwright assertions over the first few pages. It exists because the parity
+`make smoke` is nine Playwright assertions over the first few pages. It exists because the parity
 gates never render a page, so they cannot see a fact path the browser cannot write, an input type
 that fails to register, or a module that throws at import. Three of its assertions are pinned
 regressions: the second filer's seeding, the `Result.get` throw above, and the empty breather screen
@@ -312,8 +377,7 @@ template's:
   `/dueRefund` and `/owesBalance` are the booleans the payment-method screens already branch on.
 - **The Browse All section headings**, one per flow module, in `locales/en.yaml` and `es.yaml`. Each
   is Direct File's own `checklist.{subcategoryRoute}.heading`, in both languages, because a flow
-  module here is one of its subcategories. This is the one place Spanish is real today. The step
-  indicator reads the same keys.
+  module here is one of its subcategories. The step indicator reads the same keys.
 - **The Applications switcher**, listing all four applications in this repository. The three siblings
   are added to this app's `taxpert-config.html` and this app to each of theirs, so the workspace
   carries over from any one of them to any other.

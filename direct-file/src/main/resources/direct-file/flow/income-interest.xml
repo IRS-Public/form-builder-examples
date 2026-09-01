@@ -4,7 +4,7 @@
      Corrections belong in the transpiler, so the port stays reproducible against an upstream
      that is still moving. See codemod/README.md. -->
 <FlowConfig>
-  <page title="In this section, we’ll ask about any interest income you received in ." route="/income/interest/int-income-loop-intro-data-import">
+  <page title="In this section, we’ll ask about any interest income you received" route="/income/interest/int-income-loop-intro-data-import">
     <section>
       <div class="df-screen">
         <h2>Interest income</h2>

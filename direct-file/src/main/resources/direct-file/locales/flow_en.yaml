@@ -778,7 +778,7 @@
       target="_blank">Who is required to file a return?</a>
 /you-and-your-family/spouse/spouse-intro:
   title: In this section, we ask questions to see if you were considered married for
-    tax purposes in .
+    tax purposes
   h2-b6f245: In this section, we ask questions to see if you were considered married
     for tax purposes in <fg-show path="/taxYear"/>.
   p-784c01: Spouse
@@ -4767,7 +4767,7 @@
       target="_blank">Form 8379</a> to claim injured spouse relief to get back your
       share of the joint refund.
 /income/income-sources/income-sources-intro:
-  title: Let’s start getting information about the income you had in .
+  title: Let’s start getting information about the income you had
   h2-829672: Let’s start getting information about the income you had in <fg-show
     path="/taxYear"/>.
   p-58c90d: Income sources
@@ -6133,7 +6133,7 @@
       your state unemployment agency and request a corrected form showing $0 benefits
       received.
 /income/interest/int-income-loop-intro-data-import:
-  title: In this section, we’ll ask about any interest income you received in .
+  title: In this section, we’ll ask about any interest income you received
   h2-b4c28b: Interest income
   p-b4c28b: Interest income
   p-d43f0c: 'Add:'
@@ -12370,7 +12370,7 @@
     p-e58692: <a href="https://www.irs.gov/taxtopics/tc602" target="_blank">Learn
       more about CDCC</a>
 /credits-and-deductions/credits/cdcc-worksheet-a:
-  title: Expenses paid for
+  title: Expenses paid
   h2-098378: Did you or <fg-show path="/secondaryFiler/firstName"/> have any dependent
     care provided in <fg-show path="/lastTaxYear"/> that you paid for later in <fg-show
     path="/taxYear"/>?

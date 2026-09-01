@@ -1,4 +1,4 @@
-// Does the generated site actually run? Eight questions, over the first few pages of the flow.
+// Does the generated site actually run? Nine questions, over the first few pages of the flow.
 //
 // WHY THIS EXISTS. The port's two parity gates are `make transpile-verify`, and between them they
 // compare 89,329 in-engine decisions against Direct File's own — which is a far better check of gate
@@ -15,9 +15,10 @@
 //
 //     make site && make smoke
 //
-// English only. `flow_es.yaml` is still keyed by a build that has not happened, so the Spanish pages
-// render English text under Spanish chrome — a known state, documented in docs/PORTING.md, and not
-// something a smoke test should pin.
+// Almost all English. `make transpile-es` seeds every value in `flow_es.yaml` from Direct File's own
+// Spanish, and `codemod/verify-translation.ts` is what checks the file: key parity, and that the
+// markup inside each value still resolves. What it cannot check is that a page of it loads, so
+// exactly one assertion here does — the same argument that makes this file worth having at all.
 import { test, expect } from '@playwright/test'
 import { readFileSync } from 'node:fs'
 
@@ -227,5 +228,40 @@ test.describe('the generated site runs', () => {
     await page.goto(`${APP}${route}/`)
     await expect(page.locator('.usa-step-indicator__heading-text')).toHaveText('Health Savings Accounts')
     await expect(page.locator('.usa-step-indicator__current-step')).toHaveText('11')
+  })
+
+  test('the Spanish pages carry Direct File\'s Spanish, and still print their facts', async ({ page }) => {
+    // Stage 15's browser-level counterpart, and deliberately one test rather than a Spanish twin of
+    // the file. `verify-translation.ts` already checks all 7,684 values — key parity, and that every
+    // <fg-show path> and <modal-link for> in them resolves — over the whole flow, statically. What no
+    // check upstream of the browser can say is that a page built from those values loads at all.
+    const errors = failOnPageErrors(page)
+    await seedScenario(page)
+    await page.goto(`${APP}/es/you-and-your-family/about-you/about-you-intro/`)
+
+    await expect(screenHeading(page)).toContainText('En esta sección')
+    // The chrome is the app's own es.yaml and the flow text is flow_es.yaml. Both, so a page that
+    // fell back to English on either half fails rather than passing on the other one's Spanish.
+    await expect(page.locator('.usa-step-indicator__heading-text')).toHaveText('Acerca de ti')
+
+    // A translated value is markup, not a sentence. <fg-show> inside one has to bind to the graph the
+    // way it does in English — and 16 Spanish values interpolate a *different* fact than their
+    // English, which is upstream's own wording — and <modal-link for> has to name a dialog its page
+    // actually carries. The citizenship question is the first page in flow order with both.
+    const route = manifestRoutes.find((r) => r.includes('/about-you/citizenship-or-residency/'))
+    expect(route, 'the flow should still have a citizenship page').toBeDefined()
+    await page.goto(`${APP}/es${route}/`)
+
+    const printed = page.locator('#page-content-wrapper fg-show').first()
+    await expect(printed, 'a Spanish value should print its fact, not an empty span').not.toBeEmpty()
+    expect(
+      await page.evaluate(() =>
+        [...document.querySelectorAll('modal-link[for]')].filter(
+          (link) => document.getElementById(link.getAttribute('for')) === null
+        ).length
+      ),
+      'every modal a Spanish value opens should be hoisted onto its page'
+    ).toBe(0)
+    expect(errors).toEqual([])
   })
 })
