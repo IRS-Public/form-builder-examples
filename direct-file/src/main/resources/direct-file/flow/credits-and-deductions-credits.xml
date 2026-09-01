@@ -1815,7 +1815,7 @@ qualified health plan and who you’re including on this federal tax return</li>
     </modal-dialog>
   </page>
 
-  <page title="Expenses paid for" route="/credits-and-deductions/credits/cdcc-worksheet-a">
+  <page title="Expenses paid" route="/credits-and-deductions/credits/cdcc-worksheet-a">
     <section>
       <div class="df-screen" condition="/isHasPotentialCreditsAndIsMaybeEligibleForCdccAndIsCdccMaybeHasQualifyingExpenses" operator="isTrue">
         <h2>Did you or <fg-show path="/secondaryFiler/firstName"/> have any dependent care provided in <fg-show path="/lastTaxYear"/> that you paid for later in <fg-show path="/taxYear"/>?</h2>

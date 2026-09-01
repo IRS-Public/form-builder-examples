@@ -164,9 +164,7 @@
     "screensWithoutContent": [],
     "collectionsWithNoItemName": 0
   },
-  "deferred": {
-    "Spanish flow content": "Not stage 4's, and not a script run. flow_es.yaml is keyed by flow_en.yaml, which the scaffold regenerates from the emitted XML — so the keys exist only after a build. Direct File's own es.yaml has the translations, keyed the same way its en.yaml is; what is missing is the step that re-keys them. See docs/PORTING.md."
-  },
+  "deferred": {},
   "gates": {
     "total": 798,
     "rootScoped": 533,

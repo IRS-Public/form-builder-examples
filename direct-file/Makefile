@@ -257,7 +257,7 @@ format: ## Format the Scala and JavaScript
 	@#
 	@# `facts/` is Direct File's dictionary carried over unchanged — 33 of its 36 modules are
 	@# byte-identical to upstream, which is what makes the copy auditable and what
-	@# docs/PORTING.md rests its argument on. `xmllint --format` rewrites all 36 and destroys
+	@# docs/FLOW_TRANSPILATION.md rests its argument on. `xmllint --format` rewrites all 36 and destroys
 	@# that in one command, silently, with a 16,000-line diff.
 	@#
 	@# `flow/` is generated, so formatting it is a no-op that the next `make transpile` undoes,
@@ -352,6 +352,18 @@ transpile: ## Regenerate the flow and its gate facts from Direct File
 	npx --prefix $(DF_CLIENT_APP) vite-node --root $(DF_CLIENT_APP) \
 		codemod/extract.ts codemod/flow-config.json
 	node codemod/emit.ts codemod/flow-config.json $(RESOURCES_DIR)
+
+.PHONY: transpile-es
+transpile-es: ## Reseed locales/flow_es.yaml from Direct File's Spanish (needs `make site` first)
+	@# Apart from `transpile` because its input is the *library's* output rather than the codemod's.
+	@# form-builder invents a key per leaf while it parses the flow, content-addressed on the English
+	@# words, so locales/flow_en.yaml — the file whose keys this one has to match — does not exist
+	@# until a build has run. Then the check, which re-reads what was written rather than trusting it.
+	npx --prefix $(DF_CLIENT_APP) vite-node --root $(DF_CLIENT_APP) \
+		codemod/translate.ts $(RESOURCES_DIR)
+	npx --prefix $(DF_CLIENT_APP) vite-node --root $(DF_CLIENT_APP) \
+		codemod/verify-translation.ts $(RESOURCES_DIR)
+	@echo "==> rebuild to serve it: make site"
 
 .PHONY: export-scenarios
 export-scenarios: ## Regenerate the scenario corpus from Direct File's backend scenarios

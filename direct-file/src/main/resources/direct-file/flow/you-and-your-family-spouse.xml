@@ -4,7 +4,7 @@
      Corrections belong in the transpiler, so the port stays reproducible against an upstream
      that is still moving. See codemod/README.md. -->
 <FlowConfig>
-  <page title="In this section, we ask questions to see if you were considered married for tax purposes in ." route="/you-and-your-family/spouse/spouse-intro">
+  <page title="In this section, we ask questions to see if you were considered married for tax purposes" route="/you-and-your-family/spouse/spouse-intro">
     <section>
       <div class="df-screen">
         <h2>In this section, we ask questions to see if you were considered married for tax purposes in <fg-show path="/taxYear"/>.</h2>
