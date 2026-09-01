@@ -37,7 +37,15 @@ import { ALWAYS_TRUE_PATH, GateSet, renderGateFacts, type RawScreenCondition, ty
 import { FactTypes } from './fact-types.ts';
 import type { Block, ContentReport, Inline, ModalDialog, ScreenContent } from './content.ts';
 import { renderCoverage } from './coverage.ts';
-import { plainText, renderBlocks, renderInline, renderModals, xmlAttr as attr, type RenderContext } from './render.ts';
+import {
+  pageTitle,
+  renderBlocks,
+  renderInline,
+  renderModals,
+  rewritePaths,
+  xmlAttr as attr,
+  type RenderContext,
+} from './render.ts';
 
 interface ExtractedScreen {
   route: string;
@@ -94,12 +102,6 @@ function stripFlow(route: string): string {
 /** `/you-and-your-family/about-you` → `you-and-your-family-about-you`. */
 function moduleSlug(subcategoryRoute: string): string {
   return stripFlow(subcategoryRoute).replace(/^\//, ``).replace(/\//g, `-`);
-}
-
-/** `your-basic-information` → `Your basic information`. A placeholder title; stage 4 has the real one. */
-function humanize(segment: string): string {
-  const words = segment.replace(/-/g, ` `).trim();
-  return words.charAt(0).toUpperCase() + words.slice(1);
 }
 
 /**
@@ -198,6 +200,33 @@ interface Content {
   report: ContentReport;
 }
 
+/**
+ * One emitted `<page>`, reduced to what stage 15 needs to know about it.
+ *
+ * The page cuts are this stage's, and reconstructing them elsewhere would mean a second copy of
+ * `planLoops` — of which screens a collection absorbed onto which hub, and in what order. So the
+ * emitter writes down what it decided. `translate.ts` reads it to scope each page's English text to
+ * the screens that actually landed on that page, which is what keeps two pages that share a sentence
+ * from sharing a translation they were never checked against.
+ */
+interface EmittedPage {
+  /** The `route` attribute, which is also the page's top-level key in `flow_en.yaml`. */
+  route: string;
+  module: string;
+  subSubcategoryRoute: string | null;
+  /** The screen the page's title falls back to when its sub-subcategory has no nav label. */
+  firstScreen: string;
+  /** The screens rendered directly on the page, outside any collection. */
+  screens: string[];
+  /**
+   * The `<fg-collection>` on this page: its own `itemName`, which is a translated value, and the
+   * screens it absorbed. Kept apart from `screens` because the two are scoped differently — a
+   * wildcard fact path inside a collection resolves against the item and outside one does not, which
+   * is `rewritePaths`, and a translation of `<fg-show path="…">` has to name the same path.
+   */
+  collection: { path: string; itemName: string; screens: string[] } | null;
+}
+
 interface Manifest {
   $comment: string;
   counts: Record<string, number>;
@@ -213,7 +242,12 @@ interface Manifest {
     render: Record<string, number>;
     screensWithoutContent: string[];
   };
-  /** Constructs the transpiler records rather than expresses, each with where it will be handled. */
+  /**
+   * Constructs the transpiler records rather than expresses, each with where it will be handled.
+   *
+   * Empty, and kept for the same reason `NOT_EXPRESSIBLE` is: it is where the next one goes, and an
+   * empty block is a claim worth being able to make.
+   */
   deferred: Record<string, string>;
   gates: { total: number; rootScoped: number; collectionScoped: number; sharedByMoreThanOneScreen: number };
 }
@@ -326,54 +360,6 @@ function planLoops(extracted: Extracted): Map<string, LoopPlan> {
   return plans;
 }
 
-const WILDCARD = /^(\/[A-Za-z0-9]+)\/\*\//;
-
-/**
- * Put every fact path in a screen's content into a scope the page can resolve.
- *
- * The rewrite is `gates.ts`'s `scopePath`, applied to the paths the content names rather than the
- * paths its conditions do — and it is needed for the same reason. `configureCollectionIds` rewrites
- * `/*\/` only inside an `<fg-collection>`; a wildcard path on a page with no collection has no item
- * to resolve against. Direct File resolves those from the screen's `collectionContext`, which for
- * all 52 of them is `/primaryFiler` or `/secondaryFiler` — `<Find>` facts returning one filer.
- *
- * Anything else is left alone and counted: leaving it is what makes the failure visible in the build
- * rather than silently pointing at the wrong item.
- */
-function rewritePaths(
-  blocks: Block[],
-  screen: ExtractedScreen,
-  loopCollection: string | null,
-  counts: Record<string, number>
-): Block[] {
-  const rewrite = (path: string): string => {
-    const match = WILDCARD.exec(path);
-    if (!match) return path;
-    // Inside a collection, any wildcard resolves: `configureCollectionIds` rewrites every `/*\/` on
-    // the cloned item regardless of which collection names it, and a derived collection's ids are
-    // the underlying collection's — which is what makes `/filers/*\/x` correct inside
-    // `<fg-collection path="/filersWithHsa">`.
-    if (loopCollection !== null) return path;
-    const filer = screen.collectionContext;
-    if (match[1] === `/filers` && (filer === `/primaryFiler` || filer === `/secondaryFiler`)) {
-      return path.replace(WILDCARD, `${filer}/`);
-    }
-    counts[`wildcardPathsWithNoItem`] = (counts[`wildcardPathsWithNoItem`] ?? 0) + 1;
-    return path;
-  };
-
-  const walk = (node: unknown): unknown => {
-    if (Array.isArray(node)) return node.map(walk);
-    if (node === null || typeof node !== `object`) return node;
-    const out: Record<string, unknown> = {};
-    for (const [key, value] of Object.entries(node)) {
-      out[key] = key === `path` || key === `source` ? rewrite(value as string) : walk(value);
-    }
-    return out;
-  };
-  return walk(blocks) as Block[];
-}
-
 /**
  * Mark a knockout screen's first alert as one.
  *
@@ -431,6 +417,8 @@ function emit(extracted: Extracted, content: Content, resourcesDir: string) {
 
   const gateSet = new GateSet((factPath) => declared.has(factPath));
   const droppedPages: { page: string; because: string }[] = [];
+  /** What ended up on each emitted page, for stage 15. See `EmittedPage`. */
+  const emittedPages: EmittedPage[] = [];
   const componentTypes = new Map<string, number>();
   const knockouts: string[] = [];
   let screensEmitted = 0;
@@ -490,7 +478,12 @@ function emit(extracted: Extracted, content: Content, resourcesDir: string) {
     }
     for (const modal of resolvedContent.modals) if (!pageModals.has(modal.id)) pageModals.set(modal.id, modal);
 
-    const blocks = rewritePaths(withKnockout(resolvedContent.blocks, screen.isKnockout), screen, loopCollection, renderCounts);
+    const blocks = rewritePaths(
+      withKnockout(resolvedContent.blocks, screen.isKnockout),
+      screen.collectionContext,
+      loopCollection,
+      renderCounts,
+    );
     screensEmitted += 1;
     const body = [
       ...renderSetActions(screen, indent, context),
@@ -552,11 +545,13 @@ function emit(extracted: Extracted, content: Content, resourcesDir: string) {
     // page, so it has none of its own.
     const ownScreens = absorbed.has(i) ? [] : page.screenIndices.map((j) => screens[j]);
     const blocks = ownScreens.map((s) => screenBlock(s, null, `      `)).filter((b): b is string => b !== null);
+    const screensOnPage = ownScreens.map((s) => s.screenRoute);
 
     let collection = ``;
+    let collectionOnPage: EmittedPage[`collection`] = null;
     if (anchored) {
-      const inner = anchored.pageIndices
-        .flatMap((j) => pages[j].screenIndices)
+      const loopScreens = anchored.pageIndices.flatMap((j) => pages[j].screenIndices);
+      const inner = loopScreens
         .map((j) => screenBlock(screens[j], anchored.collectionName, `        `))
         .filter((b): b is string => b !== null);
 
@@ -566,6 +561,11 @@ function emit(extracted: Extracted, content: Content, resourcesDir: string) {
         // from standing on a page upstream would have skipped.
         const hubGate = anchored.hubScreen === null ? null : gateSet.gateFor(screens[anchored.hubScreen].screenRoute);
         const itemName = anchored.itemName ?? humanizeCollection(anchored.collectionName);
+        collectionOnPage = {
+          path: anchored.collectionName,
+          itemName,
+          screens: loopScreens.map((j) => screens[j].screenRoute),
+        };
         const attrs =
           `path="${xmlAttr(anchored.collectionName)}" item-name="${xmlAttr(itemName)}"` +
           (anchored.autoIterate ? ` readonly="true"` : ` determiner="another"`) +
@@ -582,20 +582,15 @@ function emit(extracted: Extracted, content: Content, resourcesDir: string) {
     }
 
     const route = stripFlow(page.route);
-    // The title, in the order it is worth having.
-    //
-    // Direct File's own sub-subcategory label first — "Your basic information", the words its side
-    // nav uses — because a page is one sub-subcategory's worth of screens and that label is what
-    // names it. Then the first screen's heading, which is the sentence Direct File shows on arrival
-    // and the only name a page with no sub-subcategory has. Then the route segment, humanized.
+    // The title. `pageTitle` is the three-way fallback, in render.ts because stage 15 applies the
+    // same one to the Spanish label and heading.
     //
     // Fourteen sub-subcategories were cut into two pages each, because their screens are not
     // contiguous in the flow, and both halves take the same label. That is what Direct File's nav
     // shows too: the label names the topic, not the page.
     const firstHeading = content.screens[screens[page.screenIndices[0]].screenRoute]?.heading ?? null;
     const label = page.subSubcategoryRoute === null ? undefined : content.subSubcategoryTitles[page.subSubcategoryRoute];
-    const title =
-      label ?? (firstHeading === null ? humanize(route.split(`/`).pop() ?? route) : plainText(firstHeading));
+    const title = pageTitle(label, firstHeading, route, `en`);
 
     const modals = renderModals([...pageModals.values()], `    `, {
       gate: () => null,
@@ -610,6 +605,15 @@ function emit(extracted: Extracted, content: Content, resourcesDir: string) {
       `    <section>\n${body}\n    </section>\n` +
       (modals.length > 0 ? `${modals.join(`\n`)}\n` : ``) +
       `  </page>`;
+
+    emittedPages.push({
+      route,
+      module: moduleSlug(page.subcategoryRoute),
+      subSubcategoryRoute: page.subSubcategoryRoute,
+      firstScreen: screens[page.screenIndices[0]].screenRoute,
+      screens: screensOnPage,
+      collection: collectionOnPage,
+    });
 
     const slug = moduleSlug(page.subcategoryRoute);
     if (!modules.has(slug)) modules.set(slug, []);
@@ -742,13 +746,9 @@ function emit(extracted: Extracted, content: Content, resourcesDir: string) {
       // Should stay 0. See humanizeCollection.
       collectionsWithNoItemName: [...anchors.values()].filter((p) => !p.itemName).length,
     },
-    deferred: {
-      'Spanish flow content':
-        `Not stage 4's, and not a script run. flow_es.yaml is keyed by flow_en.yaml, which the ` +
-        `scaffold regenerates from the emitted XML — so the keys exist only after a build. Direct ` +
-        `File's own es.yaml has the translations, keyed the same way its en.yaml is; what is ` +
-        `missing is the step that re-keys them. See docs/PORTING.md.`,
-    },
+    // Nothing. Spanish was the last entry here and is now `make transpile-es`: a stage rather than a
+    // deferral, apart from this one because its input is the library's output. See translate.ts.
+    deferred: {},
     gates: {
       total: gates.length,
       rootScoped: gates.filter((g) => g.scope === null).length,
@@ -758,6 +758,20 @@ function emit(extracted: Extracted, content: Content, resourcesDir: string) {
   };
   writeFileSync(join(import.meta.dirname, `manifest.json`), JSON.stringify(manifest, null, 2) + `\n`);
   writeFileSync(join(import.meta.dirname, `screen-gates.json`), JSON.stringify(screenGates, null, 2) + `\n`);
+  writeFileSync(
+    join(import.meta.dirname, `pages.json`),
+    JSON.stringify(
+      {
+        $comment:
+          `GENERATED by codemod/emit.ts. What landed on each emitted page: its screens in order, and ` +
+          `the collection that absorbed some of them. Stage 15 reads it to scope a page's translations ` +
+          `to that page. See EmittedPage in emit.ts.`,
+        pages: emittedPages,
+      },
+      null,
+      2
+    ) + `\n`
+  );
   // Stage 5's readable half. The manifest is what a script diffs; this is what a reviewer reads.
   writeFileSync(join(import.meta.dirname, `component-coverage.md`), renderCoverage(content.report, screens.length));
 

@@ -7,8 +7,8 @@
  *
  * ## Why this runs beside stage 1 rather than beside the emitter
  *
- * Content resolution needs three things that live in the Direct File checkout: `en.yaml` (1.4 MB of
- * authored text), the namespacing rules its components apply to a key, and the grammar that turns a
+ * Content resolution needs three things that live in the Direct File checkout: the authored text
+ * (1.4 MB of it), the namespacing rules its components apply to a key, and the grammar that turns a
  * YAML body tree into elements. So this module runs under the same `vite-node --root <df-client-app>`
  * as `extract.ts` and imports them:
  *
@@ -22,6 +22,14 @@
  *
  * The output is plain JSON, so `emit.ts` still runs under bare `node` and stays reviewable as a diff.
  *
+ * ## Which language
+ *
+ * The locale bundle is a constructor argument rather than an import, because stage 15 resolves the
+ * same screens twice — once out of `en.yaml` and once out of `es.yaml` — and pairs the two trees leaf
+ * by leaf. Everything else about a resolution is language-independent: the namespace rules, the body
+ * grammar and the modal ids are all functions of the *key*, so the Spanish walk produces the same
+ * shape of tree with the same modal ids and only the words differ. See `translate.ts`.
+ *
  * ## What this does not import
  *
  * `flowLocaleHelpers.ts`'s `getExpected*Keys` compute the *set of keys* a component needs, which is
@@ -30,7 +38,6 @@
  * here are the ones those functions state (`${key}.helpText.modals`, `fields.${path}`,
  * `${key}.internalLink`, `${base}.sections.${itemKey}`), and any disagreement is a bug here.
  */
-import en from '/src/locales/en.yaml';
 // Root-relative, and not the bare `df-i18n` / `@irs/df-common` an app file would write. Vite's root
 // is the Direct File client, so `/x` is a path under it and `/../node_modules/x` reaches the
 // workspace packages beside it — which is where those two are symlinked. A bare specifier resolves
@@ -39,10 +46,10 @@ import en from '/src/locales/en.yaml';
 // modules, which vite-node cannot load outside a browser build.
 import { CommonTranslation } from '/../node_modules/df-i18n/src/index.js';
 import { generateContent } from '/../node_modules/@irs/df-common/src/components/CommonContentDisplay/contentGenerator.js';
-// `slug` and `plainText` live in render.ts, which imports nothing from the Direct File checkout. That
-// is what lets `emit.ts` — plain `node`, no Vite — use them without pulling this module's `en.yaml`
-// import in behind them.
-import { modalId, plainText } from './render.ts';
+// `slug` and `modalId` live in render.ts, which imports nothing from the Direct File checkout. That
+// is what lets `emit.ts` — plain `node`, no Vite — use them without pulling this module's imports of
+// the Direct File client in behind them.
+import { modalId } from './render.ts';
 
 /**
  * Markup this port drops on purpose, and why.
@@ -185,23 +192,10 @@ export interface ContentReport {
   flattenedOptionLabels: number;
 }
 
-// ── Reading en.yaml ────────────────────────────────────────────────────────────────────────────
+// ── Reading the locale bundle ──────────────────────────────────────────────────────────────────
 
-/**
- * i18next's own key resolution: split on `.` and walk. Path-style keys hold no dots, so
- * `info./info/x/y.body` splits cleanly into namespace, key and subkey.
- */
-function lookup(key: string): unknown {
-  let node: unknown = en;
-  for (const part of key.split(`.`)) {
-    if (node === null || typeof node !== `object`) return undefined;
-    node = (node as Record<string, unknown>)[part];
-  }
-  return node;
-}
-
-/** The `t` shape `maybeUrls` expects: a key in, the raw value out. */
-const tFn = ((key: string | string[]) => lookup(Array.isArray(key) ? key[0] : key)) as never;
+/** One parsed locale file — `en.yaml` or `es.yaml`, as the Vite YAML plugin hands it over. */
+export type LocaleBundle = Record<string, unknown>;
 
 /**
  * The namespace a key actually resolves under.
@@ -213,15 +207,6 @@ const tFn = ((key: string | string[]) => lookup(Array.isArray(key) ? key[0] : ke
  * `CommonTranslation.getFallbackKey` does for the components that have more than one candidate.
  */
 const NAMESPACES = [`headings`, `subheadings`, `info`, `fields`, `iconLists`, `modals`, `dataviews`];
-
-function resolveKey(rawKey: string): string | null {
-  const namespaced = CommonTranslation.getNamespacedKey(rawKey);
-  if (lookup(namespaced) !== undefined) return namespaced;
-  for (const ns of NAMESPACES) {
-    if (lookup(`${ns}.${rawKey}`) !== undefined) return `${ns}.${rawKey}`;
-  }
-  return lookup(rawKey) !== undefined ? rawKey : null;
-}
 
 // ── Inline text ────────────────────────────────────────────────────────────────────────────────
 
@@ -240,6 +225,43 @@ const ENTITIES: Record<string, string> = {
 };
 
 export class Resolver {
+  /**
+   * The language this resolver reads. `resolveKey`'s namespace fallbacks are decided by which keys
+   * exist in it, so a bundle missing a key resolves differently rather than wrongly — and Direct
+   * File's own `localeParity.test.ts` is what keeps `es.yaml`'s key set equal to `en.yaml`'s.
+   */
+  private readonly bundle: LocaleBundle;
+
+  constructor(bundle: LocaleBundle) {
+    this.bundle = bundle;
+  }
+
+  /**
+   * i18next's own key resolution: split on `.` and walk. Path-style keys hold no dots, so
+   * `info./info/x/y.body` splits cleanly into namespace, key and subkey.
+   */
+  private lookup(key: string): unknown {
+    let node: unknown = this.bundle;
+    for (const part of key.split(`.`)) {
+      if (node === null || typeof node !== `object`) return undefined;
+      node = (node as Record<string, unknown>)[part];
+    }
+    return node;
+  }
+
+  /** The `t` shape `maybeUrls` expects: a key in, the raw value out. */
+  private readonly tFn = ((key: string | string[]) =>
+    this.lookup(Array.isArray(key) ? key[0] : key)) as never;
+
+  private resolveKey(rawKey: string): string | null {
+    const namespaced = CommonTranslation.getNamespacedKey(rawKey);
+    if (this.lookup(namespaced) !== undefined) return namespaced;
+    for (const ns of NAMESPACES) {
+      if (this.lookup(`${ns}.${rawKey}`) !== undefined) return `${ns}.${rawKey}`;
+    }
+    return this.lookup(rawKey) !== undefined ? rawKey : null;
+  }
+
   private readonly modals = new Map<string, ModalDialog>();
   readonly missingKeys = new Set<string>();
   readonly unhandledInline = new Map<string, number>();
@@ -285,12 +307,12 @@ export class Resolver {
 
   /** Direct File's namespace rule for a path-style key, with this module's fallbacks. */
   namespaced(rawKey: string): string {
-    return resolveKey(rawKey) ?? CommonTranslation.getNamespacedKey(rawKey);
+    return this.resolveKey(rawKey) ?? CommonTranslation.getNamespacedKey(rawKey);
   }
 
   /** A raw value out of `en.yaml`, for a caller that needs to know its shape. */
   lookupValue(key: string): unknown {
-    return lookup(key);
+    return this.lookup(key);
   }
 
   /** One authored string with no url or modal map behind it — a field label, an option name. */
@@ -381,7 +403,7 @@ export class Resolver {
     if (depth > 4 || !raw.includes(`$t(`)) return raw;
     return this.expandReferences(
       raw.replace(T_REFERENCE, (whole, key: string) => {
-        const value = lookup(key.trim());
+        const value = this.lookup(key.trim());
         if (typeof value === `string`) return value;
         this.missingKeys.add(key.trim());
         return whole;
@@ -437,12 +459,12 @@ export class Resolver {
 
   /** A key's own url map, looking inside `helpText.helpLink` for the shape that keeps it there. */
   private urlsFor(key: string): Record<string, string> {
-    const resolved = resolveKey(key) ?? key;
+    const resolved = this.resolveKey(key) ?? key;
     for (const subKey of [`helpText.helpLink.urls`, `helpText.hint.urls`]) {
-      const nested = lookup(`${resolved}.${subKey}`);
+      const nested = this.lookup(`${resolved}.${subKey}`);
       if (nested !== null && typeof nested === `object`) return this.expandUrls(nested as Record<string, string>);
     }
-    return this.expandUrls(CommonTranslation.maybeUrls(tFn, resolved).urls);
+    return this.expandUrls(CommonTranslation.maybeUrls(this.tFn, resolved).urls);
   }
 
   /**
@@ -473,12 +495,12 @@ export class Resolver {
   blocksForContent(rawKey: string): Block[] {
     return this.under(rawKey, () => {
       if (this.isModal(rawKey)) return this.modalBlocks(rawKey);
-      const resolved = resolveKey(rawKey);
+      const resolved = this.resolveKey(rawKey);
       if (resolved === null) {
         this.missingKeys.add(rawKey);
         return [];
       }
-      if (lookup(`${resolved}.body`) !== undefined) return this.blocksForBody(resolved, `body`);
+      if (this.lookup(`${resolved}.body`) !== undefined) return this.blocksForBody(resolved, `body`);
       const value = this.stringForKey(resolved);
       return value === null ? [] : this.blocksFromString(value, this.urlsFor(resolved));
     });
@@ -499,18 +521,18 @@ export class Resolver {
    * as the sentence it is rather than as a missing `.text`.
    */
   private stringForKey(key: string): string | null {
-    const resolved = resolveKey(key);
+    const resolved = this.resolveKey(key);
     if (resolved === null) {
       this.missingKeys.add(key);
       return null;
     }
     for (const subKey of [`helpText.helpLink.text`, `helpText.hint.text`, `internalLink`]) {
-      const nested = lookup(`${resolved}.${subKey}`);
+      const nested = this.lookup(`${resolved}.${subKey}`);
       if (typeof nested === `string`) return nested;
     }
-    const { data } = CommonTranslation.maybeUrls(tFn, resolved);
+    const { data } = CommonTranslation.maybeUrls(this.tFn, resolved);
     const transKey = CommonTranslation.getTranslationKey(resolved, data as never) as string;
-    const value = lookup(transKey);
+    const value = this.lookup(transKey);
     if (typeof value !== `string`) {
       this.missingKeys.add(transKey);
       return null;
@@ -644,12 +666,12 @@ export class Resolver {
     inherited: Record<string, string> = {},
   ): Block[] {
     const tKey = subKey === null ? namespacedKey : `${namespacedKey}.${subKey}`;
-    const body = lookup(tKey);
+    const body = this.lookup(tKey);
     if (body === undefined) {
       this.missingKeys.add(tKey);
       return [];
     }
-    const { urls: own } = CommonTranslation.maybeUrls(tFn, namespacedKey);
+    const { urls: own } = CommonTranslation.maybeUrls(this.tFn, namespacedKey);
     const urls = { ...inherited, ...this.expandUrls(own) };
     if (typeof body === `string`) {
       return this.blocksFromString(body, urls, modalIds);
@@ -755,12 +777,12 @@ export class Resolver {
    * a shared modal's id is its own name and a LinkModal's is qualified by the key that owns it.
    */
   modalBlocks(rawKey: string): Block[] {
-    const base = resolveKey(rawKey);
+    const base = this.resolveKey(rawKey);
     if (base === null) {
       this.missingKeys.add(rawKey);
       return [];
     }
-    const modals = lookup(`${base}.helpText.modals`);
+    const modals = this.lookup(`${base}.helpText.modals`);
     if (modals === null || typeof modals !== `object`) {
       this.missingKeys.add(`${base}.helpText.modals`);
       return [];
@@ -783,7 +805,7 @@ export class Resolver {
 
   /** True when a key's value is a modal launcher rather than a plain string. */
   isModal(rawKey: string): boolean {
-    const base = resolveKey(rawKey);
+    const base = this.resolveKey(rawKey);
     return base !== null && this.lookupValue(`${base}.helpText.modals`) !== undefined;
   }
 
@@ -794,7 +816,7 @@ export class Resolver {
 
   private modalDialog(id: string, contentKey: string): ModalDialog {
     const heading = this.inlineForKey(`${contentKey}.header`);
-    const data = lookup(contentKey);
+    const data = this.lookup(contentKey);
     // A modal whose top level has no `body` is a conditional one: its branches are named keys, and
     // upstream shows whichever the screen's ConditionalList items select. The port has no such
     // selector, so every branch is shown, in order — more than a taxpayer would see, never less.

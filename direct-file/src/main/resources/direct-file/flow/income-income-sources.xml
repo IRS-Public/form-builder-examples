@@ -4,7 +4,7 @@
      Corrections belong in the transpiler, so the port stays reproducible against an upstream
      that is still moving. See codemod/README.md. -->
 <FlowConfig>
-  <page title="Let’s start getting information about the income you had in ." route="/income/income-sources/income-sources-intro">
+  <page title="Let’s start getting information about the income you had" route="/income/income-sources/income-sources-intro">
     <section>
       <div class="df-screen">
         <h2>Let’s start getting information about the income you had in <fg-show path="/taxYear"/>.</h2>

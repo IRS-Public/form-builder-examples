@@ -102,6 +102,7 @@ make dev          # same address, without Author Mode
 | `make fact-explorer` | Build with `--formBuilderGraph` and print this app's Fact Explorer URL. |
 | `make transpile` | Regenerate the flow and its gate facts from Direct File. |
 | `make transpile-verify` | Check the port against Direct File: page order, then gate parity per scenario. |
+| `make transpile-es` | Reseed `locales/flow_es.yaml` from Direct File's Spanish, then check it. Needs a `make site` first. |
 | `make export-scenarios` | Regenerate the scenario corpus from Direct File's backend fixtures. |
 | `make up` `down` `logs` `ps` `rebuild` | The Docker stack. `rebuild` is the escape hatch for a stale sibling library. |
 | `make register-explorer` `unregister-explorer` | Add or remove this app's mount in the taxpert stack's Fact Explorer. `up` runs the first for you. |
@@ -213,10 +214,12 @@ One key per flow module lives under `all-screens.section.*`. These supply the se
 the Browse All listing and the labels on the step indicator. `make transpile` refuses to write
 unless all 25 are present.
 
-`locales/flow_en.yaml` and `locales/flow_es.yaml` are generated from the flow XML. `flow_es.yaml`
-currently holds 15 lines, so the Spanish pages build and render English text under Spanish chrome.
-That is the port's largest remaining gap, and docs/PORTING.md explains why it is a post-build step.
-Editing `flow_en.yaml` by hand loses the edit at the next build.
+`locales/flow_en.yaml` and `locales/flow_es.yaml` are both generated, and neither survives a hand
+edit. The scaffold rewrites `flow_en.yaml` from the flow XML on every build. `flow_es.yaml` is
+rewritten by `make transpile-es`, which seeds all 7,684 values from Direct File's own `es.yaml` — so
+the Spanish pages carry Spanish that Direct File wrote, not a translation made for this port. It runs
+*after* a build rather than before one, because the keys it has to match are invented by form-builder
+while it parses the flow. See docs/PORTING.md.
 
 ### Brand CSS
 
@@ -251,7 +254,7 @@ through Thymeleaf, so a string written there would be English in the Spanish bui
 
 ## What checks what
 
-Four gates, answering different questions.
+Five gates, answering different questions.
 
 | Gate | Command | Answers |
 |---|---|---|
@@ -259,6 +262,7 @@ Four gates, answering different questions.
 | Dictionary | `make test` | Does the fact dictionary still compute Direct File's arithmetic, and does the flow still have the shape the transpiler promises? |
 | Build | `make ci` | Does it generate, validate and lint? |
 | Browser | `make smoke` | Does the generated site run? |
+| Translation | `make transpile-es` | Does every key in `flow_en.yaml` have Direct File's Spanish under it, and does that Spanish's markup still resolve? Needs a build, and a Direct File checkout. |
 
 `make smoke` is the only one that opens a browser, and it covers a class of failure the others
 cannot see. The parity gates compare `Condition.evaluate` against the synthesized gate facts
@@ -268,7 +272,7 @@ questions threw `requirement failed` until `seed-fact-graph.js` created the seco
 input modules threw out of `connectedCallback` on any page holding an unanswered address or TIN.
 Neither moved a single number in the parity run.
 
-The smoke test is deliberately small: the first few pages, one scenario, eight assertions.
+The smoke test is deliberately small: the first few pages, one scenario, nine assertions.
 `codemod/verify-visibility.ts` is where the question "which screen shows for whom" belongs. See
 `tests/smoke.spec.js`.
 

@@ -89,7 +89,7 @@ Use `make run-all-docker APPS="credit-assistant benefits-enrollment"` to start a
 | What it does | Screens a taxpayer for the Earned Income Tax Credit | Estimates federal income-tax withholdings | Screens a household for SNAP and Medicaid | Ports IRS Direct File's return questionnaire (no submission) |
 | Served at | `/app/eitc` | `/app/tax-withholding-estimator` | `/app/benefits` | `/app/direct-file` |
 | Dev port | 3003 | 3000 | 3006 | 3008 |
-| Languages | 8 | 2 (English, Spanish) | 1 (English) | 1 (English) |
+| Languages | 8 | 2 (English, Spanish) | 1 (English) | 2 (English, Spanish) |
 | Extension points used | 3 of 5 | 5 of 5 | 2 of 5 | 2 of 5 |
 | Production build target | `make credit-assistant` | `make twe` | `make site` | `make site` |
 | Fact Explorer id | `credit-assistant` | `twe` | `benefits-enrollment` | `direct-file` |
