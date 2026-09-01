@@ -257,7 +257,7 @@ format: ## Format the Scala and JavaScript
 	@#
 	@# `facts/` is Direct File's dictionary carried over unchanged — 33 of its 36 modules are
 	@# byte-identical to upstream, which is what makes the copy auditable and what
-	@# docs/PORTING.md rests its argument on. `xmllint --format` rewrites all 36 and destroys
+	@# docs/FLOW_TRANSPILATION.md rests its argument on. `xmllint --format` rewrites all 36 and destroys
 	@# that in one command, silently, with a 16,000-line diff.
 	@#
 	@# `flow/` is generated, so formatting it is a no-op that the next `make transpile` undoes,
