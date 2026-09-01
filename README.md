@@ -79,12 +79,12 @@ startup banner, so `diff` between any two shows only those.
 | credit-assistant | `http://localhost:3003/app/eitc/` |
 | tax-withholding-estimator | `http://localhost:3000/app/tax-withholding-estimator/` |
 | benefits-enrollment | `http://localhost:3006/app/benefits/` |
-| direct-file-form-builder | `http://localhost:3008/app/direct-file/` |
+| direct-file | `http://localhost:3008/app/direct-file/` |
 
 Use `make run-all-docker APPS="credit-assistant benefits-enrollment"` to start a subset.
 
 
-| | [`credit-assistant/`](credit-assistant/README.md) | [`tax-withholding-estimator/`](tax-withholding-estimator/README.md) | [`benefits-enrollment/`](benefits-enrollment/README.md) | [`direct-file-form-builder/`](direct-file-form-builder/README.md) |
+| | [`credit-assistant/`](credit-assistant/README.md) | [`tax-withholding-estimator/`](tax-withholding-estimator/README.md) | [`benefits-enrollment/`](benefits-enrollment/README.md) | [`direct-file/`](direct-file/README.md) |
 |---|---|---|---|---|
 | What it does | Screens a taxpayer for the Earned Income Tax Credit | Estimates federal income-tax withholdings | Screens a household for SNAP and Medicaid | Ports IRS Direct File's return questionnaire (no submission) |
 | Served at | `/app/eitc` | `/app/tax-withholding-estimator` | `/app/benefits` | `/app/direct-file` |

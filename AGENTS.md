@@ -26,7 +26,7 @@ the theme and the flow runtime ship inside the form-builder jar.
 
 ## The four applications
 
-| | `credit-assistant/` | `tax-withholding-estimator/` | `benefits-enrollment/` | `direct-file-form-builder/` |
+| | `credit-assistant/` | `tax-withholding-estimator/` | `benefits-enrollment/` | `direct-file/` |
 |---|---|---|---|---|
 | What it does | Screens a taxpayer for the Earned Income Tax Credit | Estimates federal income-tax withholdings | Screens a household for SNAP and Medicaid | Ports IRS Direct File's return questionnaire |
 | Served at | `/app/eitc` | `/app/tax-withholding-estimator` | `/app/benefits` | `/app/direct-file` |
