@@ -8,7 +8,7 @@ against an upstream that is still moving.
 ```bash
 make transpile          # regenerate the flow and its gate facts
 make transpile-verify   # check page order, then gate parity, against Direct File
-make transpile-es       # reseed locales/flow_es.yaml, then check it — after a build
+make transpile-es       # reseed locales/flow_es.yaml, then check it (after a build)
 make export-scenarios   # regenerate scenarios/ from Direct File's backend fixtures
 ```
 
@@ -223,8 +223,8 @@ it, and identical condition sets collapse to one fact whatever order they were w
 Two things share that namespace, and both are checked in `reserveName`. Another gate may spell the
 same name from a different condition set. So may the dictionary: a gate over `isTrue(/filingStatus)`
 wants to be `/isFilingStatusMFJ`, which `filingStatus.xml` already declares. Either way the second
-one gets a numeric suffix. The dictionary half is the one worth stating, because skipping it is not
-a confusing name but a hang: two `<Fact path="…">` with one path is not an error in the Fact Graph,
+one gets a numeric suffix. The dictionary half is the one worth stating, because skipping it produces
+a hang rather than a confusing name: two `<Fact path="…">` with one path is not an error in the Fact Graph,
 the second definition simply replaces the first, so a gate that shadows a fact its own body depends
 on becomes a cycle and `FactDictionary.freeze` never leaves it. 32 of this port's gate names collide
 that way, 26 of them self-referentially.
@@ -505,8 +505,8 @@ hole, and the hole is visible: a stranded full stop where the fact used to be ("
 for tax purposes in ."), or the word that governed it holding nothing ("`{{/lastTaxYear}}` expenses
 paid for in `{{/taxYear}}`" → "expenses paid for in"). So the stranded punctuation goes, and then the
 dangling words, repeatedly, because removing one interpolation can strand two. Four English titles
-read better for it. A full stop attached to its own last word is untouched — the punctuation has to
-be standing alone to be a hole.
+read better for it. A full stop attached to its own last word is untouched, since the punctuation has
+to be standing alone to be a hole.
 
 The word list is per language and deliberately not merged: `a` is a Spanish preposition and "Schedule
 A" is a whole English label. Direct File has no such label today, which is why the split is worth
@@ -551,8 +551,8 @@ exactly the taxpayers it shows for upstream.
 For each of the backend's 161 scenarios it builds the fact graph the way upstream's own snapshot test
 does, using `setupFactGraph` with the same seeding of `/filers`, `/email` and the primary filer's
 TIN. It loads that same state into a graph over this application's dictionary, and then, for every
-screen at every item of its collection, asks both sides: does `screen.conditions.every(evaluate)`
-pass, and is the gate fact true?
+screen at every item of its collection, compares both sides: whether `screen.conditions.every(evaluate)`
+passes, and whether the gate fact is true.
 
 This runs in-engine rather than through a browser. The plan called for Playwright over the generated
 pages. This answers the same question through four fewer layers, each of which has its own reasons to
@@ -658,7 +658,7 @@ reason that is not a lookup is worth stating precisely, because it is what decid
 whole stage.
 
 **`flow_en.yaml`'s keys are not Direct File's keys.** `render.ts` prints literal English into the
-flow XML — `renderInline` never writes a translation key — and form-builder then invents one per leaf
+flow XML (`renderInline` never writes a translation key), and form-builder then invents one per leaf
 while it parses that XML: `"$label-${md5(content).take(6)}"` over the English words
 (`TranslationContext.getHashKey`, `Html.scala`'s `LEAF_NODES`). `about-you-intro`'s subtree is
 `h2-6ee87d` and `p-04cb15`. So there is no key in `flow_en.yaml` that is also a key in Direct File's
@@ -666,7 +666,7 @@ while it parses that XML: `"$label-${md5(content).take(6)}"` over the English wo
 
 ### The join
 
-Stage 4 runs twice — `resolve-content.ts` over `en.yaml`, then over `es.yaml` — through the same
+Stage 4 runs twice, `resolve-content.ts` over `en.yaml`, then over `es.yaml`, through the same
 component mapper, and both trees are printed by the same printer with its leaf recorder on. Modal
 ids are functions of the *key* rather than the words, so the two walks agree on them by construction.
 
@@ -674,7 +674,7 @@ A leaf's address in that walk is structural: `/2#1/0.question`, the shape of the
 position in it. That is what the two languages are joined on, so a subtree whose Spanish resolves to
 a different shape simply fails to pair and is counted rather than shifting everything after it by
 one. The result, per page, is a map from **the exact English text form-builder stored** to its
-Spanish — exact because it comes from the printer, which is the only thing that knows an `<li>`
+Spanish. It is exact because it comes from the printer, which is the only thing that knows an `<li>`
 carries its nested list inside its own value, that an empty `<fg-alert>` heading becomes the literal
 "Note", and that a `<select>` option is flattened where an enum option is not.
 
@@ -682,8 +682,8 @@ carries its nested list inside its own value, that an empty `<fg-alert>` heading
 
 The stage's plan specified a positional zip of the two orderings with the English text as an
 assertion on top of it. This is that assertion used *as* the join rather than as a guard on one. The
-guarantee is the same — a key only takes a translation when the transpiler can show it produced that
-same English on that same page — and it drops the dependency on the codemod's walk order and
+guarantee is the same: a key only takes a translation when the transpiler can show it produced that
+same English on that same page. It drops the dependency on the codemod's walk order and
 form-builder's parse order staying in step, which was the stage's named risk. Two keys are not
 content-addressed and need no recognising at all: `title` comes off the `<page>` attribute and
 `itemName` off `<fg-collection item-name>`, so both are written straight to the key, the Spanish
@@ -705,14 +705,14 @@ claim on someone's time.
 **204** are one English sentence Direct File wrote under two keys and translated twice, in slightly
 different words each time. There is one key here to put either under, because form-builder
 content-addresses on the English and has already collapsed the two, so the first occurrence on the
-page wins. Not a choice this stage makes that the library does not.
+page wins. This stage inherits that collapse from the library rather than choosing it.
 
-**16** interpolate different facts in the two languages — `{{/nextTaxYear}}` where the English says
+**16** interpolate different facts in the two languages: `{{/nextTaxYear}}` where the English says
 `{{/lastTaxYear}}`, or one name where the English repeats it. That is upstream's own wording, and
 `verify-translation.ts` is what makes it safe to take: every path either language names is checked
 against the dictionary, and every `<modal-link for>` against the dialogs its own page carries.
 Neither is checked anywhere else, in either language, because form-builder stores a leaf's markup as
-an opaque string and re-emits it — a bad path renders as a blank space and a bad modal id as a link
+an opaque string and re-emits it. A bad path renders as a blank space and a bad modal id as a link
 that opens nothing.
 
 ### One rough edge, and it is the library's
@@ -723,13 +723,13 @@ nouns: "Añadir otro compensación por desempleo". The item names are upstream's
 Add controls (`fields.{collection}.controls.add`, minus the verb and any article). Closing it means
 form-builder taking a gender/number hint on `item-name`, which changes every application's chrome, so
 it is not patched around here. credit-assistant has the same shape with its `itemName` still
-untranslated — a gap Spanish made visible rather than one this port introduced.
+untranslated, a gap Spanish made visible rather than one this port introduced.
 
-### This is a seed, not a replacement for `syncTranslationLocales`
+### This is a seed rather than a replacement for `syncTranslationLocales`
 
 The keys are content-addressed on the English, so any later change to the flow re-keys its entry here
 exactly as it would a hand-written translation, and form-builder's existing TODO-stub mechanism is
 what carries one forward. Re-running `make transpile && make site && make transpile-es` reseeds from
 upstream. A key the join cannot reach gets the `@@TODO_TRANSLATE@@` marker `Locale.scala` writes,
 lifted into a `# TODO: translate` comment above it, and `verify-translation.ts` fails when there are
-more of them than `EXPECTED_UNTRANSLATED` — 0 today.
+more of them than `EXPECTED_UNTRANSLATED` allows, which is 0 today.

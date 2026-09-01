@@ -55,7 +55,7 @@ make run-all-local
 
 #### One application only
 
-If you only want to run one application, `cd` to an application and start it:
+If you only want to run one application locally:
 
 ```bash
 cd credit-assistant
