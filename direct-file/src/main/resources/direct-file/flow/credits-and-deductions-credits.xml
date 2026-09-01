@@ -322,7 +322,7 @@
         <p condition="/isPtcDependentTpNotClaimedEnrolledSelfAndOthersNotPartOfDifferentTaxFamily" operator="isTrue">You said you enrolled yourself and someone else in a qualified Marketplace health plan in <fg-show path="/taxYear"/>. No one is claiming you as a dependent on their <fg-show path="/taxYear"/> federal tax return, so you’re responsible for reporting information about your Marketplace coverage on this tax return. You also enrolled someone else in a qualified health plan and the person you enrolled is not part of a different tax family. This means you’re responsible for reporting information about their Marketplace coverage on this tax return.</p>
         <p>Let’s keep going.</p>
       </div>
-      <div class="df-screen" condition="/isHasPotentialCreditsAndIsMaybeEligibleForPtcAndIsNotNotMfjAndPrimaryFilerCouldBeDependentAndClaimerIsRequiredToFileOrFilingForCredits" operator="isTrue">
+      <div class="df-screen" condition="/isHasPotentialCreditsAndIsMaybeEligibleForPtcAndIsMfjAndPrimaryFilerCouldBeDependentAndClaimerIsRequiredToFileOrFilingForCredits" operator="isTrue">
         <h2>At any point in <fg-show path="/taxYear"/>, were you enrolled in a <modal-link for="modal-sharedmodalforwhatisqualifiedmarketplaceplan">Marketplace health plan</modal-link> that qualifies for the Premium Tax Credit (PTC), or did you enroll anyone else in one?</h2>
         <p class="df-context-heading">Premium Tax Credit</p>
         <p condition="/isResidentOfStateWithMarketplace2" operator="isTrue">It would’ve been purchased through a government Marketplace like <strong>HealthCare.gov</strong> or a state Marketplace or exchange like <strong><fg-show path="/stateMarketplaceName"/></strong>.</p>
@@ -432,7 +432,7 @@
           <heading><a href="https://www.irs.gov/filing/individuals/how-to-file" target="_blank">Find other ways to file your federal taxes.</a></heading>
         </fg-alert>
       </div>
-      <div class="df-screen" condition="/isHasPotentialCreditsAndIsMaybeEligibleForPtcAndIsHasPtcQualifyingPlanAndIsNotNotMfjAndPrimaryFilerCouldBeDependentAndClaimerIsRequiredToFileOrFilingForCredits" operator="isTrue">
+      <div class="df-screen" condition="/isHasPotentialCreditsAndIsMaybeEligibleForPtcAndIsHasPtcQualifyingPlanAndIsMfjAndPrimaryFilerCouldBeDependentAndClaimerIsRequiredToFileOrFilingForCredits" operator="isTrue">
         <h2>Is there someone other than you listed on Form 1095-A?</h2>
         <p class="df-context-heading">Premium Tax Credit</p>
         <p>To see who was enrolled in a Marketplace plan, refer to Form 1095-A, Part II, Column A.</p>
@@ -504,7 +504,7 @@
           <input type="boolean"/>
         </fg-set>
       </div>
-      <div class="df-screen" condition="/isHasPotentialCreditsAndIsMaybeEligibleForPtcAndIsHasPtcQualifyingPlanAndIsNotFilerNotQualifiedForPtcBecauseOfStatusAndResidenceInfo" operator="isTrue">
+      <div class="df-screen" condition="/isHasPotentialCreditsAndIsMaybeEligibleForPtcAndIsHasPtcQualifyingPlanAndIsFilerQualifiedForPtcBecauseOfStatusAndResidenceInfo" operator="isTrue">
         <h2>While enrolled in the qualified Marketplace health plan, was anyone (including you if you were enrolled) also eligible for or enrolled in employer-sponsored health coverage for at least one full calendar month?</h2>
         <p class="df-context-heading">Premium Tax Credit</p>
         <p>Answer <strong>No</strong> if all offers of employer-sponsored coverage were <modal-link for="modal-info-info-credits-and-deductions-credits-ptc-employer-plan-linkmodal1">unaffordable</modal-link> and nobody enrolled in both Marketplace coverage and employer-sponsored coverage.</p>
@@ -515,7 +515,7 @@
           <input type="boolean"/>
         </fg-set>
       </div>
-      <div class="df-screen df-knockout" condition="/isHasPotentialCreditsAndIsMaybeEligibleForPtcAndIsHasPtcQualifyingPlanAndIsNotFilerNotQualifiedForPtcBecauseOfStatusAndResidenceInfoAndIsHasEmployerSponsoredPlan" operator="isTrue">
+      <div class="df-screen df-knockout" condition="/isHasPotentialCreditsAndIsMaybeEligibleForPtcAndIsHasPtcQualifyingPlanAndIsFilerQualifiedForPtcBecauseOfStatusAndResidenceInfoAndIsHasEmployerSponsoredPlan" operator="isTrue">
         <h2>Direct File only supports certain tax situations.</h2>
         <p>You said someone on the Marketplace plan was eligible for employer-sponsored health coverage at the same time.</p>
         <p>If their <a href="https://www.irs.gov/publications/p974#en_US_2021_publink100023226" target="_blank">employer-sponsored health coverage isnt considered affordable</a>, then they may still qualify for the Premium Tax Credit.  Direct File doesnt support this tax situation yet, so you’ll need to find another way to file your federal taxes.</p>
@@ -800,7 +800,7 @@
 
   <page title="Unique circumstances" route="/credits-and-deductions/credits/unique-circumstances">
     <section>
-      <div class="df-screen" condition="/isHasPotentialCreditsAndIsMaybeEligibleForPtcAndIsHasPtcQualifyingPlanAndIsNotFilerNotQualifiedForPtcBecauseOfStatusAndResidenceInfoAndIsMFSAndCantBeClaimed" operator="isTrue">
+      <div class="df-screen" condition="/isHasPotentialCreditsAndIsMaybeEligibleForPtcAndIsHasPtcQualifyingPlanAndIsFilerQualifiedForPtcBecauseOfStatusAndResidenceInfoAndIsMFSAndCantBeClaimed" operator="isTrue">
         <h2>Do you meet both these requirements for taxpayers who are filing separately from their spouses?</h2>
         <p class="df-context-heading">Premium Tax Credit</p>
         <ul>
@@ -822,7 +822,7 @@
           </input>
         </fg-set>
       </div>
-      <div class="df-screen" condition="/isHasPotentialCreditsAndIsMaybeEligibleForPtcAndIsHasPtcQualifyingPlanAndIsNotFilerNotQualifiedForPtcBecauseOfStatusAndResidenceInfoAndIsHasMfsException" operator="isTrue">
+      <div class="df-screen" condition="/isHasPotentialCreditsAndIsMaybeEligibleForPtcAndIsHasPtcQualifyingPlanAndIsFilerQualifiedForPtcBecauseOfStatusAndResidenceInfoAndIsHasMfsException" operator="isTrue">
         <h2>Will <fg-show path="/taxYear"/> be the fourth year in a row that you’re claiming the Premium Tax Credit and using a Married Filing Separately filing status because of domestic abuse or spousal abandonment?</h2>
         <p class="df-context-heading">Premium Tax Credit</p>
         <p>There’s a three-year limit for claiming this credit while using a Married Filing Separately status because of domestic abuse or spousal abandonment.</p>
@@ -831,7 +831,7 @@
           <input type="boolean"/>
         </fg-set>
       </div>
-      <div class="df-screen" condition="/isHasPotentialCreditsAndIsMaybeEligibleForPtcAndIsHasPtcQualifyingPlanAndIsNotFilerNotQualifiedForPtcBecauseOfStatusAndResidenceInfoAndIsMaybeApplicableTpAndNoAptcAndBelow100PovertyThreshold" operator="isTrue">
+      <div class="df-screen" condition="/isHasPotentialCreditsAndIsMaybeEligibleForPtcAndIsHasPtcQualifyingPlanAndIsFilerQualifiedForPtcBecauseOfStatusAndResidenceInfoAndIsMaybeApplicableTpAndNoAptcAndBelow100PovertyThreshold" operator="isTrue">
         <h2>In <fg-show path="/taxYear"/>, were you enrolled in a qualified Marketplace health plan and not eligible for Medicaid because of immigration status?</h2>
         <p class="df-context-heading">Premium Tax Credit</p>
         <p>Based on your earlier answers, your household income is below 100% of the <modal-link for="modal-info-info-credits-and-deductions-credits-ptc-below-100-fed-poverty-line-linkmodal2">federal poverty line </modal-link>. This means you won’t qualify for the Premium Tax Credit unless someone on the qualified health plan didn’t qualify for Medicaid because of <modal-link for="modal-info-info-credits-and-deductions-credits-ptc-below-100-fed-poverty-line-linkmodal1">their immigration status.</modal-link></p>
@@ -840,7 +840,7 @@
           <input type="boolean"/>
         </fg-set>
       </div>
-      <div class="df-screen" condition="/isHasPotentialCreditsAndIsMaybeEligibleForPtcAndIsHasPtcQualifyingPlanAndIsNotFilerNotQualifiedForPtcBecauseOfStatusAndResidenceInfoAndIsNotApplicableTaxPayerAndHasAptc" operator="isTrue">
+      <div class="df-screen" condition="/isHasPotentialCreditsAndIsMaybeEligibleForPtcAndIsHasPtcQualifyingPlanAndIsFilerQualifiedForPtcBecauseOfStatusAndResidenceInfoAndIsNotApplicableTaxPayerAndHasAptc" operator="isTrue">
         <h2>You don’t qualify for the Premium Tax Credit (PTC) this year, so you’ll need to repay the advance payments of PTC.</h2>
         <p class="df-context-heading">Premium Tax Credit</p>
         <p><strong>Why don’t I qualify?</strong></p>
@@ -923,7 +923,7 @@
             <input type="text"/>
           </fg-set>
         </div>
-        <div class="df-screen" condition="/isHasPotentialCreditsAndIsMaybeEligibleForPtcAndIsHasPtcQualifyingPlanAndIsApplicableTaxPayerOrHasAptcAndIsNotNotPtcApplicableTaxPayerOrIncomplete" operator="isTrue">
+        <div class="df-screen" condition="/isHasPotentialCreditsAndIsMaybeEligibleForPtcAndIsHasPtcQualifyingPlanAndIsApplicableTaxPayerOrHasAptcAndIsPtcApplicableTaxPayerOrIncomplete" operator="isTrue">
           <h2>Choose the state where the qualified Marketplace health plan was purchased.</h2>
           <p class="df-context-heading">Premium Tax Credit</p>
           <p>This should be the state where the people enrolled in the plan lived.</p>
@@ -984,7 +984,7 @@
             </input>
           </fg-set>
         </div>
-        <div class="df-screen" condition="/isHasPotentialCreditsAndIsMaybeEligibleForPtcAndIsHasPtcQualifyingPlanAndIsApplicableTaxPayerOrHasAptcAndIsNotNotPtcApplicableTaxPayerOrIncomplete" operator="isTrue">
+        <div class="df-screen" condition="/isHasPotentialCreditsAndIsMaybeEligibleForPtcAndIsHasPtcQualifyingPlanAndIsApplicableTaxPayerOrHasAptcAndIsPtcApplicableTaxPayerOrIncomplete" operator="isTrue">
           <h2>Enter the <fg-show path="/taxYear"/> policy start and termination (end) dates from <strong>lines 10-11</strong>.</h2>
           <p class="df-context-heading">Premium Tax Credit</p>
           <p>To qualify for the Premium Tax Credit in a given month, someone on the plan must be enrolled on the first day of the month.</p>
@@ -1001,7 +1001,7 @@
             <input type="date"/>
           </fg-set>
         </div>
-        <div class="df-screen" condition="/1095As/*/isHasPotentialCreditsAndIsMaybeEligibleForPtcAndIsHasPtcQualifyingPlanAndIsApplicableTaxPayerOrHasAptcAndIsNotNotPtcApplicableTaxPayerOrIncompleteAndIsMaybeHasPolicyDateException" operator="isTrue">
+        <div class="df-screen" condition="/1095As/*/isHasPotentialCreditsAndIsMaybeEligibleForPtcAndIsHasPtcQualifyingPlanAndIsApplicableTaxPayerOrHasAptcAndIsPtcApplicableTaxPayerOrIncompleteAndIsMaybeHasPolicyDateException" operator="isTrue">
           <h2>You said someone on the qualified Marketplace health plan was born, adopted, or placed for adoption or foster care with your family during <fg-show path="/1095As/*/policyStartDateMonthAsString"/>.<br/><br/>Did they enroll in the qualified health plan on the day they joined your family?</h2>
           <p class="df-context-heading">Premium Tax Credit</p>
           <p>Answer <strong>Yes</strong> if their enrollment was effective on the exact date of their birth, adoption, or court ordered placement with your family.</p>
@@ -1010,7 +1010,7 @@
             <input type="boolean"/>
           </fg-set>
         </div>
-        <div class="df-screen" condition="/1095As/*/isHasPotentialCreditsAndIsMaybeEligibleForPtcAndIsHasPtcQualifyingPlanAndIsApplicableTaxPayerOrHasAptcAndIsNotNotPtcApplicableTaxPayerOrIncompleteAndIsNotHasNoPotentialCoverageMonthsOrIncomplete" operator="isTrue">
+        <div class="df-screen" condition="/1095As/*/isHasPotentialCreditsAndIsMaybeEligibleForPtcAndIsHasPtcQualifyingPlanAndIsApplicableTaxPayerOrHasAptcAndIsPtcApplicableTaxPayerOrIncompleteAndIsNotHasNoPotentialCoverageMonthsOrIncomplete" operator="isTrue">
           <h2>For at least one month in <fg-show path="/taxYear"/>, did at least one person enrolled in the qualified Marketplace health plan meet all of these requirements?</h2>
           <p class="df-context-heading">Premium Tax Credit</p>
           <p>Answer <strong>Yes</strong> if all of these are true:</p>
@@ -1027,12 +1027,12 @@
             <input type="boolean"/>
           </fg-set>
         </div>
-        <div class="df-screen" condition="/1095As/*/isHasPotentialCreditsAndIsMaybeEligibleForPtcAndIsHasPtcQualifyingPlanAndIsApplicableTaxPayerOrHasAptcAndIsNotNotPtcApplicableTaxPayerOrIncompleteAndIsHasNoCoverageMonthsAndNoAptc" operator="isTrue">
+        <div class="df-screen" condition="/1095As/*/isHasPotentialCreditsAndIsMaybeEligibleForPtcAndIsHasPtcQualifyingPlanAndIsApplicableTaxPayerOrHasAptcAndIsPtcApplicableTaxPayerOrIncompleteAndIsHasNoCoverageMonthsAndNoAptc" operator="isTrue">
           <h2>Thank you for telling us about your qualified Marketplace health plan.</h2>
           <p class="df-context-heading">Premium Tax Credit</p>
           <p>Based on your answers, no one met the requirements to take the Premium Tax Credit for any of the months covered on this qualified health plan.</p>
         </div>
-        <div class="df-screen" condition="/1095As/*/isHasPotentialCreditsAndIsMaybeEligibleForPtcAndIsHasPtcQualifyingPlanAndIsApplicableTaxPayerOrHasAptcAndIsNotNotPtcApplicableTaxPayerOrIncompleteAndIsHasCoverageMonthAndHasPotentialCoverageMonths" operator="isTrue">
+        <div class="df-screen" condition="/1095As/*/isHasPotentialCreditsAndIsMaybeEligibleForPtcAndIsHasPtcQualifyingPlanAndIsApplicableTaxPayerOrHasAptcAndIsPtcApplicableTaxPayerOrIncompleteAndIsHasCoverageMonthAndHasPotentialCoverageMonths" operator="isTrue">
           <h2>Select the months when at least one person enrolled in the qualified Marketplace health plan met all of these requirements:</h2>
           <p class="df-context-heading">Premium Tax Credit</p>
           <ul>
@@ -1061,7 +1061,7 @@
             </input>
           </fg-set>
         </div>
-        <div class="df-screen" condition="/1095As/*/isHasPotentialCreditsAndIsMaybeEligibleForPtcAndIsHasPtcQualifyingPlanAndIsApplicableTaxPayerOrHasAptcAndIsNotNotPtcApplicableTaxPayerOrIncompleteAndIsHasCoverageMonthAndHasPotentialCoverageMonths" operator="isTrue">
+        <div class="df-screen" condition="/1095As/*/isHasPotentialCreditsAndIsMaybeEligibleForPtcAndIsHasPtcQualifyingPlanAndIsApplicableTaxPayerOrHasAptcAndIsPtcApplicableTaxPayerOrIncompleteAndIsHasCoverageMonthAndHasPotentialCoverageMonths" operator="isTrue">
           <h2>Based on what you told us about the qualified Marketplace health plan, you may be able to take the Premium Tax Credit for these months:</h2>
           <p class="df-context-heading">Premium Tax Credit</p>
           <ul>
@@ -1080,7 +1080,7 @@
           </ul>
           <p>Next, we’ll ask for more information from Form 1095-A to calculate the amount of the credit.</p>
         </div>
-        <div class="df-screen" condition="/1095As/*/isHasPotentialCreditsAndIsMaybeEligibleForPtcAndIsHasPtcQualifyingPlanAndIsApplicableTaxPayerOrHasAptcAndIsNotNotPtcApplicableTaxPayerOrIncompleteAndIsHasAtLeastOneCoverageMonthAndIsHasPolicyForAllMonths" operator="isTrue">
+        <div class="df-screen" condition="/1095As/*/isHasPotentialCreditsAndIsMaybeEligibleForPtcAndIsHasPtcQualifyingPlanAndIsApplicableTaxPayerOrHasAptcAndIsPtcApplicableTaxPayerOrIncompleteAndIsHasAtLeastOneCoverageMonthAndIsHasPolicyForAllMonths" operator="isTrue">
           <h2>Did your enrollment premiums or second lowest cost silver plan (SLCSP) premiums change at all during <fg-show path="/taxYear"/>?</h2>
           <p class="df-context-heading">Premium Tax Credit</p>
           <p>Answer <strong>No</strong> if the dollar amounts were the same for every month under Form 1095-A, Part III,</p>
@@ -1093,7 +1093,7 @@
             <input type="boolean"/>
           </fg-set>
         </div>
-        <div class="df-screen" condition="/1095As/*/isHasPotentialCreditsAndIsMaybeEligibleForPtcAndIsHasPtcQualifyingPlanAndIsApplicableTaxPayerOrHasAptcAndIsNotNotPtcApplicableTaxPayerOrIncompleteAndIsHasAtLeastOneCoverageMonthAndIsNotPremiumsOrSlcspChange" operator="isTrue">
+        <div class="df-screen" condition="/1095As/*/isHasPotentialCreditsAndIsMaybeEligibleForPtcAndIsHasPtcQualifyingPlanAndIsApplicableTaxPayerOrHasAptcAndIsPtcApplicableTaxPayerOrIncompleteAndIsHasAtLeastOneCoverageMonthAndIsNotPremiumsOrSlcspChange" operator="isTrue">
           <h2>Enter the annual total for the monthly enrollment premiums from <strong>column A, line 33</strong>.</h2>
           <p class="df-context-heading">Premium Tax Credit</p>
           <fg-set path="/1095As/*/writablePtcAnnualPremium">
@@ -1101,7 +1101,7 @@
             <input type="dollar"/>
           </fg-set>
         </div>
-        <div class="df-screen" condition="/1095As/*/isHasPotentialCreditsAndIsMaybeEligibleForPtcAndIsHasPtcQualifyingPlanAndIsApplicableTaxPayerOrHasAptcAndIsNotNotPtcApplicableTaxPayerOrIncompleteAndIsHasAtLeastOneCoverageMonthAndIsPremiumsOrSlcspChangeOrIncomplete" operator="isTrue">
+        <div class="df-screen" condition="/1095As/*/isHasPotentialCreditsAndIsMaybeEligibleForPtcAndIsHasPtcQualifyingPlanAndIsApplicableTaxPayerOrHasAptcAndIsPtcApplicableTaxPayerOrIncompleteAndIsHasAtLeastOneCoverageMonthAndIsPremiumsOrSlcspChangeOrIncomplete" operator="isTrue">
           <h2>Enter the monthly enrollment premiums.</h2>
           <p class="df-context-heading">Premium Tax Credit</p>
           <p>You can find the monthly enrollment premiums in <strong>column A, lines 21-32.</strong></p>
@@ -1154,7 +1154,7 @@
             <input type="dollar"/>
           </fg-set>
         </div>
-        <div class="df-screen" condition="/1095As/*/isHasPotentialCreditsAndIsMaybeEligibleForPtcAndIsHasPtcQualifyingPlanAndIsApplicableTaxPayerOrHasAptcAndIsNotNotPtcApplicableTaxPayerOrIncompleteAndIsHasAtLeastOneCoverageMonth" operator="isTrue">
+        <div class="df-screen" condition="/1095As/*/isHasPotentialCreditsAndIsMaybeEligibleForPtcAndIsHasPtcQualifyingPlanAndIsApplicableTaxPayerOrHasAptcAndIsPtcApplicableTaxPayerOrIncompleteAndIsHasAtLeastOneCoverageMonth" operator="isTrue">
           <h2>Did you or anyone enrolled in the qualified Marketplace health plan have a change in circumstances that wasn’t reported to the Marketplace or isn’t reflected on Form 1095-A?</h2>
           <p class="df-context-heading">Premium Tax Credit</p>
           <ul>
@@ -1182,7 +1182,7 @@ qualified health plan and who you’re including on this federal tax return</li>
             <input type="boolean"/>
           </fg-set>
         </div>
-        <div class="df-screen" condition="/1095As/*/isHasPotentialCreditsAndIsMaybeEligibleForPtcAndIsHasPtcQualifyingPlanAndIsApplicableTaxPayerOrHasAptcAndIsNotNotPtcApplicableTaxPayerOrIncompleteAndIsHasAtLeastOneCoverageMonthAndIsNoChangesAnd12MonthPolicy" operator="isTrue">
+        <div class="df-screen" condition="/1095As/*/isHasPotentialCreditsAndIsMaybeEligibleForPtcAndIsHasPtcQualifyingPlanAndIsApplicableTaxPayerOrHasAptcAndIsPtcApplicableTaxPayerOrIncompleteAndIsHasAtLeastOneCoverageMonthAndIsNoChangesAnd12MonthPolicy" operator="isTrue">
           <h2>Enter the annual total for the monthly second lowest cost silver plan (SLCSP) premium from <strong>column B, line 33</strong>.</h2>
           <p class="df-context-heading">Premium Tax Credit</p>
           <p condition="/1095As/*/isHasStateMarketplacePlan" operator="isTrue"><modal-link for="modal-info-info-credits-and-deductions-credits-ptc-what-if-slcsp-inaccurate-state-linkmodal1">What if the SLCSP premiums are inaccurate, listed as -0-, or blank?</modal-link></p>
@@ -1192,7 +1192,7 @@ qualified health plan and who you’re including on this federal tax return</li>
             <input type="dollar"/>
           </fg-set>
         </div>
-        <div class="df-screen" condition="/1095As/*/isHasPotentialCreditsAndIsMaybeEligibleForPtcAndIsHasPtcQualifyingPlanAndIsApplicableTaxPayerOrHasAptcAndIsNotNotPtcApplicableTaxPayerOrIncompleteAndIsHasAtLeastOneCoverageMonthAndIsHasChangeInCircumstance" operator="isTrue">
+        <div class="df-screen" condition="/1095As/*/isHasPotentialCreditsAndIsMaybeEligibleForPtcAndIsHasPtcQualifyingPlanAndIsApplicableTaxPayerOrHasAptcAndIsPtcApplicableTaxPayerOrIncompleteAndIsHasAtLeastOneCoverageMonthAndIsHasChangeInCircumstance" operator="isTrue">
           <h2>You said there was a change in circumstances that wasn’t reported to the Marketplace, which means your second lowest cost silver plan (SLCSP) premiums may be incorrect.</h2>
           <p class="df-context-heading">Premium Tax Credit</p>
           <p condition="/1095As/*/isHasStateMarketplacePlan" operator="isTrue">You’ll need to <a href="https://www.healthcare.gov/marketplace-in-your-state/" target="_blank">check with your state Marketplace</a> to find the correct SLCSP premiums.</p>
@@ -1200,7 +1200,7 @@ qualified health plan and who you’re including on this federal tax return</li>
           <p><modal-link for="modal-info-info-credits-and-deductions-credits-ptc-what-is-slcsp-linkmodal1">What are second lowest cost silver plan (SLCSP) premiums?</modal-link></p>
           <p condition="/1095As/*/isHasStateMarketplacePlan" operator="isTrue"><modal-link for="modal-info-info-credits-and-deductions-credits-ptc-how-to-check-state-slcsp-linkmodal1">How can I check my SLCSP premiums with my state Marketplace?</modal-link></p>
         </div>
-        <div class="df-screen" condition="/1095As/*/isHasPotentialCreditsAndIsMaybeEligibleForPtcAndIsHasPtcQualifyingPlanAndIsApplicableTaxPayerOrHasAptcAndIsNotNotPtcApplicableTaxPayerOrIncompleteAndIsHasAtLeastOneCoverageMonthAndIsHasChangeOrPolicyIsNotForAllMonths" operator="isTrue">
+        <div class="df-screen" condition="/1095As/*/isHasPotentialCreditsAndIsMaybeEligibleForPtcAndIsHasPtcQualifyingPlanAndIsApplicableTaxPayerOrHasAptcAndIsPtcApplicableTaxPayerOrIncompleteAndIsHasAtLeastOneCoverageMonthAndIsHasChangeOrPolicyIsNotForAllMonths" operator="isTrue">
           <h2>Enter the monthly second lowest cost silver plan (SLCSP) premiums from <strong>column B, lines 21-32</strong>.</h2>
           <p class="df-context-heading">Premium Tax Credit</p>
           <p condition="/1095As/*/isHasChangeInCircumstanceAndIsHasStateMarketplacePlan" operator="isTrue">Enter the monthly second lowest cost silver plan (SLCSP) premiums that you found from your state Marketplace.</p>
@@ -1268,7 +1268,7 @@ qualified health plan and who you’re including on this federal tax return</li>
           </fg-set>
           <p condition="/1095As/*/isPolicyIsActiveInDecAndIsNotHasDecCoverageMonth" operator="isTrue"><strong><strong>Line 32</strong> - December</strong> <fg-show path="/1095As/*/slcspPremiumPlaceholderDec"/></p>
         </div>
-        <div class="df-screen" condition="/1095As/*/isHasPotentialCreditsAndIsMaybeEligibleForPtcAndIsHasPtcQualifyingPlanAndIsApplicableTaxPayerOrHasAptcAndIsNotNotPtcApplicableTaxPayerOrIncompleteAndIsHasAtLeastOneCoverageMonthAndIsShowMonthlyAptc" operator="isTrue">
+        <div class="df-screen" condition="/1095As/*/isHasPotentialCreditsAndIsMaybeEligibleForPtcAndIsHasPtcQualifyingPlanAndIsApplicableTaxPayerOrHasAptcAndIsPtcApplicableTaxPayerOrIncompleteAndIsHasAtLeastOneCoverageMonthAndIsShowMonthlyAptc" operator="isTrue">
           <h2>Enter the monthly advance payments of premium tax credit from <strong>column C, lines 21-32</strong>.</h2>
           <p class="df-context-heading">Premium Tax Credit</p>
           <fg-set path="/1095As/*/writablePtcMonthlyAptcPremiumJan" if-true="/1095As/*/isPolicyIsActiveInJan">
@@ -2466,7 +2466,7 @@ qualified health plan and who you’re including on this federal tax return</li>
             <li>Amounts paid to the provider in <fg-show path="/taxYear"/>, even if the care wasn’t provided in <fg-show path="/taxYear"/></li>
             <li>Amounts your employer paid to a third party on your behalf. (Don’t reduce this amount by any reimbursement you received)</li>
           </ul>
-          <p condition="/isHasQpWhoTurned13AndWasNotUnableToCareForSelfAndIsNotHasMoreThanOneQpWhoTurned13AndWasNotUnableToCareForSelf" operator="isTrue">Don’t include expenses paid to care for your qualifying person after they turned 13, unless they were unable to care for themselves because of a physical or mental disability.</p>
+          <p condition="/isHasQpWhoTurned13AndWasNotUnableToCareForSelfAndIsHasMoreThanOneQpWhoTurned13AndWasUnableToCareForSelf" operator="isTrue">Don’t include expenses paid to care for your qualifying person after they turned 13, unless they were unable to care for themselves because of a physical or mental disability.</p>
           <p condition="/isHasMoreThanOneQpWhoTurned13AndWasNotUnableToCareForSelf" operator="isTrue">Don’t include expenses paid to care for your qualifying people after they turned 13, unless they were unable to care for themselves because of a physical or mental disability.</p>
           <fg-set path="/cdccCareProviders/*/writableAmountPaidForCare">
             <question>Total amount paid to <fg-show path="/cdccCareProviders/*/displayName"/> in <fg-show path="/taxYear"/></question>
@@ -2867,7 +2867,7 @@ qualified health plan and who you’re including on this federal tax return</li>
             <input type="boolean"/>
           </fg-set>
         </div>
-        <div class="df-screen" condition="/filers/*/isHasPotentialCreditsAndIsMaybeEligibleForCreditForElderlyAndDisabledAndIsQualifiedForCreditForElderlyAndDisabledAndIsNotHasPhysicianStatementBothDisabledAndWillNotImprove" operator="isTrue">
+        <div class="df-screen" condition="/filers/*/isHasPotentialCreditsAndIsMaybeEligibleForCreditForElderlyAndDisabledAndIsQualifiedForCreditForElderlyAndDisabledAndIsHasPhysicianStatementBothDisabledAndWillImprove" operator="isTrue">
           <h2>Did you file a doctor’s statement for 1983 or an earlier year certifying you are <modal-link for="modal-headings-heading-credits-and-deductions-credits-edc-physicians-statement-1983-pri-1bb3f304">permanently and totally disabled</modal-link>?</h2>
           <p class="df-context-heading">Credit for the Elderly or the Disabled</p>
           <fg-set path="/filers/*/hasPhysicianStatementBefore1983">

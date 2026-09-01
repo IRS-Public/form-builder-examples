@@ -719,7 +719,7 @@
             <input type="boolean"/>
           </fg-set>
         </div>
-        <div class="df-screen" condition="/familyAndHousehold/*/isFilersCouldHaveDependentOrQualifyingPersonOrIncompleteAndIsNotDisqualifiedDueToParentalCustodyAndIsNotCouldntBeQCOfAnother" operator="isTrue">
+        <div class="df-screen" condition="/familyAndHousehold/*/isFilersCouldHaveDependentOrQualifyingPersonOrIncompleteAndIsNotDisqualifiedDueToParentalCustodyAndIsCouldBeQCOfAnother" operator="isTrue">
           <h2>Other than you, can anyone else claim  <fg-show path="/familyAndHousehold/*/firstName"/> as their qualifying child?</h2>
           <p><modal-link for="modal-info-info-you-and-your-family-dependents-add-person-qc-of-another-snack-linkmodal1">How do I know who can claim them as a qualifying child?</modal-link></p>
           <fg-set path="/familyAndHousehold/*/writableCouldBeQualifyingChildOfAnother">
@@ -730,7 +730,7 @@
             </input>
           </fg-set>
         </div>
-        <div class="df-screen" condition="/familyAndHousehold/*/isFilersCouldHaveDependentOrQualifyingPersonOrIncompleteAndIsNotDisqualifiedDueToParentalCustodyAndIsNotCouldntBeQCOfAnotherAndIsQrPathCouldBeQualifyingChildOfAnother" operator="isTrue">
+        <div class="df-screen" condition="/familyAndHousehold/*/isFilersCouldHaveDependentOrQualifyingPersonOrIncompleteAndIsNotDisqualifiedDueToParentalCustodyAndIsCouldBeQCOfAnotherAndIsQrPathCouldBeQualifyingChildOfAnother" operator="isTrue">
           <h2>Is the person who can claim <fg-show path="/familyAndHousehold/*/firstName"/> required to file a <fg-show path="/taxYear"/> tax return?</h2>
           <p>If you’re not sure, but you know that they’re claiming <fg-show path="/familyAndHousehold/*/firstName"/> as a dependent on their <fg-show path="/taxYear"/> tax return, answer <strong>Yes</strong>.</p>
           <p><modal-link for="modal-info-info-you-and-your-family-dependents-required-to-file-snack-linkmodal1">Who is required to file a tax return?</modal-link></p>
@@ -742,7 +742,7 @@
             </input>
           </fg-set>
         </div>
-        <div class="df-screen" condition="/familyAndHousehold/*/isFilersCouldHaveDependentOrQualifyingPersonOrIncompleteAndIsNotDisqualifiedDueToParentalCustodyAndIsNotCouldntBeQCOfAnotherAndIsQrPathCouldBeQualifyingChildOfAnotherAndIsNotPotentialClaimerMustFile" operator="isTrue">
+        <div class="df-screen" condition="/familyAndHousehold/*/isFilersCouldHaveDependentOrQualifyingPersonOrIncompleteAndIsNotDisqualifiedDueToParentalCustodyAndIsCouldBeQCOfAnotherAndIsQrPathCouldBeQualifyingChildOfAnotherAndIsNotPotentialClaimerMustFile" operator="isTrue">
           <h2>Is the person who can claim <fg-show path="/familyAndHousehold/*/firstName"/> filing a <fg-show path="/taxYear"/> tax return?</h2>
           <p>If you’re not sure, talk to that person and find out. If they filed a tax return, it could affect what you can claim on your tax return.</p>
           <fg-set path="/familyAndHousehold/*/writablePotentialClaimerDidFile">
@@ -753,7 +753,7 @@
             </input>
           </fg-set>
         </div>
-        <div class="df-screen" condition="/familyAndHousehold/*/isFilersCouldHaveDependentOrQualifyingPersonOrIncompleteAndIsNotDisqualifiedDueToParentalCustodyAndIsNotCouldntBeQCOfAnotherAndIsQrPathCouldBeQualifyingChildOfAnotherAndIsNotPotentialClaimerMustFileAndIsPotentialClaimerDidFile" operator="isTrue">
+        <div class="df-screen" condition="/familyAndHousehold/*/isFilersCouldHaveDependentOrQualifyingPersonOrIncompleteAndIsNotDisqualifiedDueToParentalCustodyAndIsCouldBeQCOfAnotherAndIsQrPathCouldBeQualifyingChildOfAnotherAndIsNotPotentialClaimerMustFileAndIsPotentialClaimerDidFile" operator="isTrue">
           <h2>Is the person who can claim <fg-show path="/familyAndHousehold/*/firstName"/> only filing a <fg-show path="/taxYear"/> federal tax return to get a refund of money they paid toward taxes?</h2>
           <p>This means filing a tax return just to get back money withheld from pay or estimated tax payments made for the year, but not claiming any dependents or certain deductions or credits for this tax year.</p>
           <p>If you’re not sure, talk to that person and find out.</p>

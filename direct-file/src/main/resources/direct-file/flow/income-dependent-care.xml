@@ -570,7 +570,7 @@
             <li>Amounts paid to the provider in <fg-show path="/taxYear"/>, even if the care wasn’t provided in <fg-show path="/taxYear"/></li>
             <li>Amounts your employer paid to a third party on your behalf. (Don’t reduce this amount by any reimbursement you received)</li>
           </ul>
-          <p condition="/isHasQpWhoTurned13AndWasNotUnableToCareForSelfAndIsNotHasMoreThanOneQpWhoTurned13AndWasNotUnableToCareForSelf" operator="isTrue">Don’t include expenses paid to care for your qualifying person after they turned 13, unless they were unable to care for themselves because of a physical or mental disability.</p>
+          <p condition="/isHasQpWhoTurned13AndWasNotUnableToCareForSelfAndIsHasMoreThanOneQpWhoTurned13AndWasUnableToCareForSelf" operator="isTrue">Don’t include expenses paid to care for your qualifying person after they turned 13, unless they were unable to care for themselves because of a physical or mental disability.</p>
           <p condition="/isHasMoreThanOneQpWhoTurned13AndWasNotUnableToCareForSelf" operator="isTrue">Don’t include expenses paid to care for your qualifying people after they turned 13, unless they were unable to care for themselves because of a physical or mental disability.</p>
           <fg-set path="/cdccCareProviders/*/writableAmountPaidForCare">
             <question>Total amount paid to <fg-show path="/cdccCareProviders/*/displayName"/> in <fg-show path="/taxYear"/></question>

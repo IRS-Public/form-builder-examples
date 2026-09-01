@@ -205,26 +205,125 @@ function qualifyLeaf(path: string, leaf: string): string {
 }
 
 /**
+ * A handful of ported facts spell their own claim negatively — `notDigitalAssets`,
+ * `cannotFindPinOrAgi`, `taxpayerCannotBeClaimed`, `couldntBeQCOfAnother` — because that is how
+ * Direct File's own condition reads. Naming a gate's `isFalse` of one by mechanically prefixing
+ * `isNot` stacks a second negative onto the leaf's own ("isNotNotDigitalAssets",
+ * "isNotCouldntBeQCOfAnother"), which is the double negative this exists to prevent: it maps the
+ * marker word back to what it would be if the leaf had been spelled positively, wherever in the
+ * leaf it falls, so `assertFalse` can flip polarity instead of negating twice.
+ */
+const NEGATION_TO_POSITIVE: Record<string, string> = {
+  Not: ``,
+  Never: ``,
+  Cannot: `Can`,
+  Cant: `Can`,
+  Couldnt: `Could`,
+  Wont: `Will`,
+  Wouldnt: `Would`,
+  Shouldnt: `Should`,
+  Mustnt: `Must`,
+  Mightnt: `Might`,
+  Isnt: `Is`,
+  Doesnt: `Does`,
+  Didnt: `Did`,
+  Wasnt: `Was`,
+  Werent: `Were`,
+  Arent: `Are`,
+};
+
+/**
+ * The reverse table, for negating a leaf that reads as a bare modal claim — `canBeClaimed`,
+ * `willBeClaimed` — without prefixing `isNot` onto a modal, which is the "is not can be claimed"
+ * kind of sentence this exists to prevent. `assertFalse` reaches for "cannotBeClaimed" instead.
+ */
+const MODAL_TO_NEGATIVE: Record<string, string> = {
+  Can: `Cannot`,
+  Could: `CouldNot`,
+  Will: `WillNot`,
+  Would: `WouldNot`,
+  May: `MayNot`,
+  Might: `MightNot`,
+  Should: `ShouldNot`,
+  Must: `MustNot`,
+  Shall: `ShallNot`,
+};
+
+// Matched case-sensitively against an already-capitalized identifier, so this never fires inside an
+// all-caps acronym (MFJ, QC, AGI, …): a real match is followed by a capital (the next word) or the
+// end of the string, which an acronym's own trailing capitals never are.
+const NEGATION_MARKER = new RegExp(`(${Object.keys(NEGATION_TO_POSITIVE).join(`|`)})(?=[A-Z]|$)`);
+const LEADING_MODAL = new RegExp(`^(${Object.keys(MODAL_TO_NEGATIVE).join(`|`)})(?=[A-Z]|$)`);
+
+/**
+ * The claim `positive` makes with its own negation undone — "NotDigitalAssets" -> "DigitalAssets",
+ * "TaxpayerCannotBeClaimed" -> "TaxpayerCanBeClaimed" — or undefined if it carries none. The marker
+ * can fall anywhere in the identifier, not only at the front: a leaf ported as a compound claim
+ * ("taxpayerCannotBeClaimed") still has exactly one negation word to invert.
+ */
+function positiveCore(positive: string): string | undefined {
+  const match = NEGATION_MARKER.exec(positive);
+  if (!match) return undefined;
+  const word = match[1];
+  return positive.slice(0, match.index) + NEGATION_TO_POSITIVE[word] + positive.slice(match.index + word.length);
+}
+
+/** The modal `positive` opens with, if it opens with one and carries no negation of its own. */
+function leadingModal(positive: string): string | undefined {
+  return LEADING_MODAL.exec(positive)?.[1];
+}
+
+/**
+ * Fragment asserting `positive` is true: always `is${positive}`, modal-led claims included
+ * ("isCanBeClaimed" reads as stilted rather than broken). Kept unconditional rather than reading as
+ * the leaf's own name ("canBeClaimed") on purpose — a single-condition gate over `isTrue` of a leaf
+ * would then be named identically to the leaf itself, and `reserveName` would have to break the tie
+ * with a numeric suffix on every such gate rather than on the rare real collision.
+ */
+function assertTrue(positive: string): string {
+  return `is${positive}`;
+}
+
+/**
+ * Fragment asserting `positive` is false, without stacking a second negative onto one the leaf
+ * already carries and without prefixing `isNot` onto a modal. A leaf that already reads negatively
+ * flips to its positive core instead of doubling up ("isNotNotDigitalAssets" -> "isDigitalAssets").
+ * A bare modal claim gets the modal's own negative instead of "isNot" glued in front of it — dropping
+ * "is" here is load-bearing rather than cosmetic: "isNotCanBeClaimed" ("is not can be claimed") is
+ * not grammatical English, while "cannotBeClaimed" is, and unlike the affirmative case a negated
+ * modal ("cannotBeClaimed", "willNotBeClaimed") is not a leaf any fact in the dictionary is named
+ * after, so this does not create the same collision risk `assertTrue` avoids by keeping its prefix.
+ */
+function assertFalse(positive: string): string {
+  const core = positiveCore(positive);
+  if (core !== undefined) return assertTrue(core);
+  const modal = leadingModal(positive);
+  if (modal) return lowerFirst(MODAL_TO_NEGATIVE[modal] + positive.slice(modal.length));
+  return `isNot${positive}`;
+}
+
+/**
  * One condition, as the identifier fragment it contributes to a gate's name.
  *
  * Existential (`isComplete`/`isIncomplete`), logical (`OrIncomplete`) and boolean (`is`/`isNot`)
  * operators each spell differently, so a gate's name reads as the condition set it was built from
  * rather than a hash of it. `leaf` is the fact's own leaf name, already qualified by `gateName` if a
- * sibling condition needed it distinguished.
+ * sibling condition needed it distinguished. `assertTrue`/`assertFalse` are what keep that spelling
+ * from stacking a negative or a modal onto one the leaf already carries.
  */
 function conditionFragment(condition: NormalizedCondition, leaf: string): string {
   const positive = stripIsPrefix(leaf);
   switch (condition.operator) {
     case `isTrue`:
     case `isTrueAndComplete`:
-      return `is${positive}`;
+      return assertTrue(positive);
     case `isFalse`:
     case `isFalseAndComplete`:
-      return `isNot${positive}`;
+      return assertFalse(positive);
     case `isTrueOrIncomplete`:
-      return `is${positive}OrIncomplete`;
+      return `${assertTrue(positive)}OrIncomplete`;
     case `isFalseOrIncomplete`:
-      return `isNot${positive}OrIncomplete`;
+      return `${assertFalse(positive)}OrIncomplete`;
     case `isComplete`:
       return `${lowerFirst(positive)}IsKnown`;
     case `isIncomplete`:

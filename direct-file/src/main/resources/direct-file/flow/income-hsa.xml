@@ -355,7 +355,7 @@
             </input>
           </fg-set>
         </div>
-        <div class="df-screen" condition="/filers/*/isSomeFilerHasSomeHsaActivityAndIsNotFlowSkipToHsaTestingPeriodContributionCheckAndIsNotFlowKnockoutHdhpCoverageStatusNotNeeded" operator="isTrue">
+        <div class="df-screen" condition="/filers/*/isSomeFilerHasSomeHsaActivityAndIsNotFlowSkipToHsaTestingPeriodContributionCheckAndIsFlowKnockoutHdhpCoverageStatusNeeded" operator="isTrue">
           <h2>Did you have High-Deductible Health Plan (HDHP) coverage in <fg-show path="/taxYear"/>?</h2>
           <p><modal-link for="modal-info-info-income-hsa-hsa-hdhp-requirements-linkmodal1">What are the requirements for an HDHP?</modal-link></p>
           <fg-set path="/filers/*/hsaHdhpCoverageStatus">

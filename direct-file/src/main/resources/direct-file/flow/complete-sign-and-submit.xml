@@ -81,7 +81,7 @@
           </fg-detail>
         </fg-alert>
       </div>
-      <div class="df-screen" condition="/isFiledLastYearAndIsNotCannotFindPinOrAgiAndIsWillEnterLastYearPin" operator="isTrue">
+      <div class="df-screen" condition="/isFiledLastYearAndIsCanFindPinOrAgiAndIsWillEnterLastYearPin" operator="isTrue">
         <h2>Enter your Self-Select PIN from last year’s federal tax return.</h2>
         <p><modal-link for="modal-info-info-complete-sign-and-submit-sign-return-enter-self-select-pin-linkmodal1">Where can I find last year’s Self-Select PIN?</modal-link></p>
         <fg-set path="/selfSelectPinLastYear">
@@ -89,7 +89,7 @@
           <input type="pin"/>
         </fg-set>
       </div>
-      <div class="df-screen" condition="/isNotCannotFindPinOrAgiOrIncompleteAndIsNeedsToEnterLastYearAgi" operator="isTrue">
+      <div class="df-screen" condition="/isCanFindPinOrAgiOrIncompleteAndIsNeedsToEnterLastYearAgi" operator="isTrue">
         <h2>Enter your Adjusted Gross Income (AGI) from last year’s federal tax return.</h2>
         <p condition="/isNotTreatAsMFJ" operator="isTrue">Direct File looks up your <fg-show path="/lastTaxYear"/> AGI from your IRS account.</p>
         <p condition="/isTreatAsMFJ" operator="isTrue">Direct File looks up the <fg-show path="/lastTaxYear"/> AGI from the IRS account for <fg-show path="/email"/>.</p>
@@ -100,7 +100,7 @@
           <input type="dollar"/>
         </fg-set>
       </div>
-      <div class="df-screen" condition="/isNotCannotFindPinOrAgiOrIncomplete" operator="isTrue">
+      <div class="df-screen" condition="/isCanFindPinOrAgiOrIncomplete" operator="isTrue">
         <h2>Create a Self-Select PIN to confirm your identity next year.</h2>
         <fg-set path="/selfSelectPin">
           <question><strong>Create a Self-Select PIN</strong></question>
@@ -223,7 +223,7 @@
           </fg-detail>
         </fg-alert>
       </div>
-      <div class="df-screen" condition="/isMFJWithLivingSpouseAndIsSpouseFiledLastYearAndIsNotSpouseCannotFindPinOrAgiAndIsSpouseWillEnterLastYearPin" operator="isTrue">
+      <div class="df-screen" condition="/isMFJWithLivingSpouseAndIsSpouseFiledLastYearAndIsSpouseCanFindPinOrAgiAndIsSpouseWillEnterLastYearPin" operator="isTrue">
         <h2>Enter <fg-show path="/secondaryFiler/firstName"/>’s Self-Select PIN from last year’s federal tax return.</h2>
         <p><modal-link for="modal-info-info-complete-sign-and-submit-sign-return-enter-self-select-pin-spouse-linkmodal1">Where can they find last year’s Self-Select PIN?</modal-link></p>
         <fg-set path="/spouseSelfSelectPinLastYear">
@@ -231,7 +231,7 @@
           <input type="pin"/>
         </fg-set>
       </div>
-      <div class="df-screen" condition="/isMFJWithLivingSpouseAndIsNotSpouseCannotFindPinOrAgiOrIncompleteAndIsSpouseNeedsToEnterLastYearAgi" operator="isTrue">
+      <div class="df-screen" condition="/isMFJWithLivingSpouseAndIsSpouseCanFindPinOrAgiOrIncompleteAndIsSpouseNeedsToEnterLastYearAgi" operator="isTrue">
         <h2>Enter <fg-show path="/secondaryFiler/firstName"/>’s Adjusted Gross Income (AGI) from last year’s federal tax return.</h2>
         <p condition="/isTreatAsMFJ" operator="isTrue">Direct File looks up the <fg-show path="/lastTaxYear"/> AGI from the IRS account for <fg-show path="/email"/>.</p>
         <p condition="/isTreatAsMFJ" operator="isTrue">If you and your spouse filed your <fg-show path="/lastTaxYear"/> federal tax return using the Married Filing Jointly filing status, you probably have the same AGI. If you didn’t file together, you should look up your AGI to make sure you enter the right number.</p>
@@ -241,7 +241,7 @@
           <input type="dollar"/>
         </fg-set>
       </div>
-      <div class="df-screen" condition="/isMFJWithLivingSpouseAndIsNotSpouseCannotFindPinOrAgiOrIncomplete" operator="isTrue">
+      <div class="df-screen" condition="/isMFJWithLivingSpouseAndIsSpouseCanFindPinOrAgiOrIncomplete" operator="isTrue">
         <h2>Have <fg-show path="/secondaryFiler/firstName"/> create a Self-Select PIN to sign this year’s joint federal tax return.</h2>
         <fg-set path="/spouseSelfSelectPin">
           <question><strong><fg-show path="/secondaryFiler/firstName"/>’s Self-Select PIN</strong></question>

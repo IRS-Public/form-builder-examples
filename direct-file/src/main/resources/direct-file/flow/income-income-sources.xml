@@ -208,7 +208,7 @@
           <input type="boolean"/>
         </fg-set>
       </div>
-      <div class="df-screen df-knockout" condition="/isNotDoesNotHaveForeignAccountsOrTrusts" operator="isTrue">
+      <div class="df-screen df-knockout" condition="/isDoesHaveForeignAccountsOrTrusts" operator="isTrue">
         <h2>Direct File doesn’t yet support foreign accounts or foreign trusts.</h2>
         <fg-alert alert-key="/flow/income/income-sources/foreign-accounts-trusts-knockout" alert-type="error" knockout="true" condition="/flowAlwaysTrue" operator="isTrue">
           <heading><a href="https://www.irs.gov/filing/individuals/how-to-file" target="_blank">Find other ways to file your federal taxes.</a></heading>
@@ -286,7 +286,7 @@
           <input type="boolean"/>
         </fg-set>
       </div>
-      <div class="df-screen df-knockout" condition="/isNotNotDigitalAssets" operator="isTrue">
+      <div class="df-screen df-knockout" condition="/isDigitalAssets" operator="isTrue">
         <h2>Direct File doesn’t yet support the forms required to report digital assets.</h2>
         <fg-alert alert-key="/flow/income/income-sources/digital-assets-knockout" alert-type="error" knockout="true" condition="/flowAlwaysTrue" operator="isTrue">
           <heading><a href="https://www.irs.gov/filing/individuals/how-to-file" target="_blank">Find other ways to file your federal taxes.</a></heading>

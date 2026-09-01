@@ -676,11 +676,11 @@ or residence requirements</li>
       <div class="df-screen" condition="/isPrimaryFilerCouldBeDependentAndClaimerIsRequiredToFileOrFilingForCredits" operator="isTrue">
         <h2>Is that person claiming you as a dependent on their <fg-show path="/taxYear"/> federal tax return?</h2>
         <p>If someone is claiming you as a dependent, you won’t qualify to claim dependents of your own or certain deductions, and will have limited eligibility for tax credits.</p>
-        <fg-set path="/primaryFiler/willBeClaimed" if-true="/isNotTaxpayerCannotBeClaimed">
+        <fg-set path="/primaryFiler/willBeClaimed" if-true="/isTaxpayerCanBeClaimed">
           <question>Is that person claiming you as a dependent on their <fg-show path="/taxYear"/> federal tax return?</question>
           <input type="boolean"/>
         </fg-set>
-        <fg-alert alert-key="/flow/you-and-your-family/about-you/about-you-will-be-claimed" alert-type="warning" condition="/isTaxpayerCannotBeClaimedAndIsNotWillBeClaimedOrIncomplete" operator="isTrue">
+        <fg-alert alert-key="/flow/you-and-your-family/about-you/about-you-will-be-claimed" alert-type="warning" condition="/isTaxpayerCannotBeClaimedAndWillNotBeClaimedOrIncomplete" operator="isTrue">
           <heading>You can’t be claimed as a dependent</heading>
           <p>You <a href="/flow/you-and-your-family/spouse/spouse-mfj-refund-only?reviewMode=true" target="_blank">said</a> you and <fg-show path="/secondaryFiler/firstName"/> want the opportunity to claim tax benefits like dependents, tax credits, and other deductions you may qualify for and don’t want anyone else to be able to claim you as dependents.</p>
           <p>If someone has already filed their federal tax return claiming you as a dependent, they’ll need to file an amended return to remove you as a dependent.</p>

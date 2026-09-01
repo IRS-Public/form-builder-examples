@@ -104,7 +104,7 @@
         <p>Your answers show that you don’t have income or that all your income is tax-free for federal taxes and that you don’t qualify for federal tax credits for <fg-show path="/taxYear"/>.</p>
         <p>The IRS doesn’t accept electronic returns that don’t have taxable income to report or credits to claim. You don’t need to, but if you still want to file a federal tax return, then your only option would be to file by paper.</p>
         <p condition="/isMayBenefitFromFilingStateTaxes" operator="isTrue">Depending on your state and situation, you may benefit by filing a state tax return.</p>
-        <fg-alert alert-key="/flow/your-taxes/estimated-taxes-paid/no-payments-ko" alert-type="error" knockout="true" condition="/isNotMayBenefitFromFilingStateTaxesOrIncomplete" operator="isTrue">
+        <fg-alert alert-key="/flow/your-taxes/estimated-taxes-paid/no-payments-ko" alert-type="error" knockout="true" condition="/mayNotBenefitFromFilingStateTaxesOrIncomplete" operator="isTrue">
           <heading>You <strong>don’t</strong> need to file a federal tax return for <fg-show path="/taxYear"/>.</heading>
         </fg-alert>
         <fg-alert alert-key="/flow/your-taxes/estimated-taxes-paid/no-payments-ko" alert-type="warning" condition="/isMayBenefitFromFilingStateTaxes" operator="isTrue">

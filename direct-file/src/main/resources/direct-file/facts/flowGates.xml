@@ -387,7 +387,7 @@
       </Derived>
     </Fact>
 
-    <Fact path="/isNotTaxpayerCannotBeClaimed">
+    <Fact path="/isTaxpayerCanBeClaimed">
       <Description>Screen gate: isFalse(/taxpayerCannotBeClaimed).</Description>
       <Derived>
         <All>
@@ -401,7 +401,7 @@
       </Derived>
     </Fact>
 
-    <Fact path="/isTaxpayerCannotBeClaimedAndIsNotWillBeClaimedOrIncomplete">
+    <Fact path="/isTaxpayerCannotBeClaimedAndWillNotBeClaimedOrIncomplete">
       <Description>Screen gate: isTrue(/taxpayerCannotBeClaimed) and isFalseOrIncomplete(/primaryFiler/willBeClaimed).</Description>
       <Derived>
         <All>
@@ -1564,7 +1564,7 @@
       </Derived>
     </Fact>
 
-    <Fact path="/isPrimaryFilerHasMarketplacePlanAndIsNotClaimedAsDependentAndIsNotSecondaryFilerHasMarketplacePlanAndIsNotClaimedAsDependent">
+    <Fact path="/isPrimaryFilerHasMarketplacePlanAndIsNotClaimedAsDependentAndIsSecondaryFilerHasMarketplacePlanAndIsClaimedAsDependent">
       <Description>Screen gate: isTrue(/primaryFilerHasMarketplacePlanAndIsNotClaimedAsDependent) and isFalse(/secondaryFilerHasMarketplacePlanAndIsNotClaimedAsDependent).</Description>
       <Derived>
         <All>
@@ -1586,7 +1586,7 @@
       </Derived>
     </Fact>
 
-    <Fact path="/isNotPrimaryFilerHasMarketplacePlanAndIsNotClaimedAsDependentAndIsSecondaryFilerHasMarketplacePlanAndIsNotClaimedAsDependent">
+    <Fact path="/isPrimaryFilerHasMarketplacePlanAndIsClaimedAsDependentAndIsSecondaryFilerHasMarketplacePlanAndIsNotClaimedAsDependent">
       <Description>Screen gate: isFalse(/primaryFilerHasMarketplacePlanAndIsNotClaimedAsDependent) and isTrue(/secondaryFilerHasMarketplacePlanAndIsNotClaimedAsDependent).</Description>
       <Derived>
         <All>
@@ -2268,7 +2268,7 @@
       </Derived>
     </Fact>
 
-    <Fact path="/isMaritalStatusAllowsFilingMarriedAndIsReadyToEnterSpouseInformationAndIsWantsSeparateReturnAndIsNotMFSSpouseFilingReturnDerivedAndIsNotMFSSpouseHasGrossIncomeAndIsNotCanBeClaimed">
+    <Fact path="/isMaritalStatusAllowsFilingMarriedAndIsReadyToEnterSpouseInformationAndIsWantsSeparateReturnAndIsNotMFSSpouseFilingReturnDerivedAndIsNotMFSSpouseHasGrossIncomeAndCannotBeClaimed">
       <Description>Screen gate: isTrue(/maritalStatusAllowsFilingMarried) and isTrue(/readyToEnterSpouseInformation) and isTrue(/wantsSeparateReturn) and isFalse(/MFSSpouseFilingReturnDerived) and isFalse(/MFSSpouseHasGrossIncome) and isFalse(/secondaryFiler/canBeClaimed).</Description>
       <Derived>
         <All>
@@ -4028,7 +4028,7 @@
       </Derived>
     </Fact>
 
-    <Fact path="/familyAndHousehold/*/isFilersCouldHaveDependentOrQualifyingPersonOrIncompleteAndIsNotDisqualifiedDueToParentalCustodyAndIsNotCouldntBeQCOfAnother">
+    <Fact path="/familyAndHousehold/*/isFilersCouldHaveDependentOrQualifyingPersonOrIncompleteAndIsNotDisqualifiedDueToParentalCustodyAndIsCouldBeQCOfAnother">
       <Description>Screen gate: isTrueOrIncomplete(/filersCouldHaveDependentOrQualifyingPerson) and isFalse(/familyAndHousehold/*/disqualifiedDueToParentalCustody) and isFalse(/familyAndHousehold/*/couldntBeQCOfAnother).</Description>
       <Derived>
         <All>
@@ -4060,7 +4060,7 @@
       </Derived>
     </Fact>
 
-    <Fact path="/familyAndHousehold/*/isFilersCouldHaveDependentOrQualifyingPersonOrIncompleteAndIsNotDisqualifiedDueToParentalCustodyAndIsNotCouldntBeQCOfAnotherAndIsQrPathCouldBeQualifyingChildOfAnother">
+    <Fact path="/familyAndHousehold/*/isFilersCouldHaveDependentOrQualifyingPersonOrIncompleteAndIsNotDisqualifiedDueToParentalCustodyAndIsCouldBeQCOfAnotherAndIsQrPathCouldBeQualifyingChildOfAnother">
       <Description>Screen gate: isTrueOrIncomplete(/filersCouldHaveDependentOrQualifyingPerson) and isFalse(/familyAndHousehold/*/disqualifiedDueToParentalCustody) and isFalse(/familyAndHousehold/*/couldntBeQCOfAnother) and isTrue(/familyAndHousehold/*/qrPathCouldBeQualifyingChildOfAnother).</Description>
       <Derived>
         <All>
@@ -4098,7 +4098,7 @@
       </Derived>
     </Fact>
 
-    <Fact path="/familyAndHousehold/*/isFilersCouldHaveDependentOrQualifyingPersonOrIncompleteAndIsNotDisqualifiedDueToParentalCustodyAndIsNotCouldntBeQCOfAnotherAndIsQrPathCouldBeQualifyingChildOfAnotherAndIsNotPotentialClaimerMustFile">
+    <Fact path="/familyAndHousehold/*/isFilersCouldHaveDependentOrQualifyingPersonOrIncompleteAndIsNotDisqualifiedDueToParentalCustodyAndIsCouldBeQCOfAnotherAndIsQrPathCouldBeQualifyingChildOfAnotherAndIsNotPotentialClaimerMustFile">
       <Description>Screen gate: isTrueOrIncomplete(/filersCouldHaveDependentOrQualifyingPerson) and isFalse(/familyAndHousehold/*/disqualifiedDueToParentalCustody) and isFalse(/familyAndHousehold/*/couldntBeQCOfAnother) and isTrue(/familyAndHousehold/*/qrPathCouldBeQualifyingChildOfAnother) and isFalse(/familyAndHousehold/*/potentialClaimerMustFile).</Description>
       <Derived>
         <All>
@@ -4144,7 +4144,7 @@
       </Derived>
     </Fact>
 
-    <Fact path="/familyAndHousehold/*/isFilersCouldHaveDependentOrQualifyingPersonOrIncompleteAndIsNotDisqualifiedDueToParentalCustodyAndIsNotCouldntBeQCOfAnotherAndIsQrPathCouldBeQualifyingChildOfAnotherAndIsNotPotentialClaimerMustFileAndIsPotentialClaimerDidFile">
+    <Fact path="/familyAndHousehold/*/isFilersCouldHaveDependentOrQualifyingPersonOrIncompleteAndIsNotDisqualifiedDueToParentalCustodyAndIsCouldBeQCOfAnotherAndIsQrPathCouldBeQualifyingChildOfAnotherAndIsNotPotentialClaimerMustFileAndIsPotentialClaimerDidFile">
       <Description>Screen gate: isTrueOrIncomplete(/filersCouldHaveDependentOrQualifyingPerson) and isFalse(/familyAndHousehold/*/disqualifiedDueToParentalCustody) and isFalse(/familyAndHousehold/*/couldntBeQCOfAnother) and isTrue(/familyAndHousehold/*/qrPathCouldBeQualifyingChildOfAnother) and isFalse(/familyAndHousehold/*/potentialClaimerMustFile) and isTrue(/familyAndHousehold/*/potentialClaimerDidFile).</Description>
       <Derived>
         <All>
@@ -5787,7 +5787,7 @@
       </Derived>
     </Fact>
 
-    <Fact path="/isNotDoesNotHaveForeignAccountsOrTrusts">
+    <Fact path="/isDoesHaveForeignAccountsOrTrusts">
       <Description>Screen gate: isFalse(/doesNotHaveForeignAccountsOrTrusts).</Description>
       <Derived>
         <All>
@@ -5815,7 +5815,7 @@
       </Derived>
     </Fact>
 
-    <Fact path="/isNotNotDigitalAssets">
+    <Fact path="/isDigitalAssets">
       <Description>Screen gate: isFalse(/notDigitalAssets).</Description>
       <Derived>
         <All>
@@ -8562,7 +8562,7 @@
       </Derived>
     </Fact>
 
-    <Fact path="/isHasQpWhoTurned13AndWasNotUnableToCareForSelfAndIsNotHasMoreThanOneQpWhoTurned13AndWasNotUnableToCareForSelf">
+    <Fact path="/isHasQpWhoTurned13AndWasNotUnableToCareForSelfAndIsHasMoreThanOneQpWhoTurned13AndWasUnableToCareForSelf">
       <Description>Screen gate: isTrue(/hasQpWhoTurned13AndWasNotUnableToCareForSelf) and isFalse(/hasMoreThanOneQpWhoTurned13AndWasNotUnableToCareForSelf).</Description>
       <Derived>
         <All>
@@ -8934,7 +8934,7 @@
       </Derived>
     </Fact>
 
-    <Fact path="/filers/*/isSomeFilerHasSomeHsaActivityAndIsNotFlowSkipToHsaTestingPeriodContributionCheckAndIsNotFlowKnockoutHdhpCoverageStatusNotNeeded">
+    <Fact path="/filers/*/isSomeFilerHasSomeHsaActivityAndIsNotFlowSkipToHsaTestingPeriodContributionCheckAndIsFlowKnockoutHdhpCoverageStatusNeeded">
       <Description>Screen gate: isTrue(/someFilerHasSomeHsaActivity) and isFalse(/filers/*/flowSkipToHsaTestingPeriodContributionCheck) and isFalse(/flowKnockoutHdhpCoverageStatusNotNeeded).</Description>
       <Derived>
         <All>
@@ -11134,7 +11134,7 @@
       </Derived>
     </Fact>
 
-    <Fact path="/isHasPotentialCreditsAndIsMaybeEligibleForPtcAndIsNotNotMfjAndPrimaryFilerCouldBeDependentAndClaimerIsRequiredToFileOrFilingForCredits">
+    <Fact path="/isHasPotentialCreditsAndIsMaybeEligibleForPtcAndIsMfjAndPrimaryFilerCouldBeDependentAndClaimerIsRequiredToFileOrFilingForCredits">
       <Description>Screen gate: isTrue(/hasPotentialCredits) and isTrue(/maybeEligibleForPtc) and isFalse(/notMfjAndPrimaryFilerCouldBeDependentAndClaimerIsRequiredToFileOrFilingForCredits).</Description>
       <Derived>
         <All>
@@ -11365,7 +11365,7 @@
       </Derived>
     </Fact>
 
-    <Fact path="/isHasPotentialCreditsAndIsMaybeEligibleForPtcAndIsHasPtcQualifyingPlanAndIsNotNotMfjAndPrimaryFilerCouldBeDependentAndClaimerIsRequiredToFileOrFilingForCredits">
+    <Fact path="/isHasPotentialCreditsAndIsMaybeEligibleForPtcAndIsHasPtcQualifyingPlanAndIsMfjAndPrimaryFilerCouldBeDependentAndClaimerIsRequiredToFileOrFilingForCredits">
       <Description>Screen gate: isTrue(/hasPotentialCredits) and isTrue(/maybeEligibleForPtc) and isTrue(/hasPtcQualifyingPlan) and isFalse(/notMfjAndPrimaryFilerCouldBeDependentAndClaimerIsRequiredToFileOrFilingForCredits).</Description>
       <Derived>
         <All>
@@ -11585,7 +11585,7 @@
       </Derived>
     </Fact>
 
-    <Fact path="/isHasPotentialCreditsAndIsMaybeEligibleForPtcAndIsHasPtcQualifyingPlanAndIsNotFilerNotQualifiedForPtcBecauseOfStatusAndResidenceInfo">
+    <Fact path="/isHasPotentialCreditsAndIsMaybeEligibleForPtcAndIsHasPtcQualifyingPlanAndIsFilerQualifiedForPtcBecauseOfStatusAndResidenceInfo">
       <Description>Screen gate: isTrue(/hasPotentialCredits) and isTrue(/maybeEligibleForPtc) and isTrue(/hasPtcQualifyingPlan) and isFalse(/filerNotQualifiedForPtcBecauseOfStatusAndResidenceInfo).</Description>
       <Derived>
         <All>
@@ -11619,7 +11619,7 @@
       </Derived>
     </Fact>
 
-    <Fact path="/isHasPotentialCreditsAndIsMaybeEligibleForPtcAndIsHasPtcQualifyingPlanAndIsNotFilerNotQualifiedForPtcBecauseOfStatusAndResidenceInfoAndIsHasEmployerSponsoredPlan">
+    <Fact path="/isHasPotentialCreditsAndIsMaybeEligibleForPtcAndIsHasPtcQualifyingPlanAndIsFilerQualifiedForPtcBecauseOfStatusAndResidenceInfoAndIsHasEmployerSponsoredPlan">
       <Description>Screen gate: isTrue(/hasPotentialCredits) and isTrue(/maybeEligibleForPtc) and isTrue(/hasPtcQualifyingPlan) and isFalse(/filerNotQualifiedForPtcBecauseOfStatusAndResidenceInfo) and isTrue(/hasEmployerSponsoredPlan).</Description>
       <Derived>
         <All>
@@ -11659,7 +11659,7 @@
       </Derived>
     </Fact>
 
-    <Fact path="/isHasPotentialCreditsAndIsMaybeEligibleForPtcAndIsHasPtcQualifyingPlanAndIsNotFilerNotQualifiedForPtcBecauseOfStatusAndResidenceInfoAndIsMFSAndCantBeClaimed">
+    <Fact path="/isHasPotentialCreditsAndIsMaybeEligibleForPtcAndIsHasPtcQualifyingPlanAndIsFilerQualifiedForPtcBecauseOfStatusAndResidenceInfoAndIsMFSAndCantBeClaimed">
       <Description>Screen gate: isTrue(/hasPotentialCredits) and isTrue(/maybeEligibleForPtc) and isTrue(/hasPtcQualifyingPlan) and isFalse(/filerNotQualifiedForPtcBecauseOfStatusAndResidenceInfo) and isTrue(/isMFSAndCantBeClaimed).</Description>
       <Derived>
         <All>
@@ -11699,7 +11699,7 @@
       </Derived>
     </Fact>
 
-    <Fact path="/isHasPotentialCreditsAndIsMaybeEligibleForPtcAndIsHasPtcQualifyingPlanAndIsNotFilerNotQualifiedForPtcBecauseOfStatusAndResidenceInfoAndIsHasMfsException">
+    <Fact path="/isHasPotentialCreditsAndIsMaybeEligibleForPtcAndIsHasPtcQualifyingPlanAndIsFilerQualifiedForPtcBecauseOfStatusAndResidenceInfoAndIsHasMfsException">
       <Description>Screen gate: isTrue(/hasPotentialCredits) and isTrue(/maybeEligibleForPtc) and isTrue(/hasPtcQualifyingPlan) and isFalse(/filerNotQualifiedForPtcBecauseOfStatusAndResidenceInfo) and isTrue(/hasMfsException).</Description>
       <Derived>
         <All>
@@ -11739,7 +11739,7 @@
       </Derived>
     </Fact>
 
-    <Fact path="/isHasPotentialCreditsAndIsMaybeEligibleForPtcAndIsHasPtcQualifyingPlanAndIsNotFilerNotQualifiedForPtcBecauseOfStatusAndResidenceInfoAndIsMaybeApplicableTpAndNoAptcAndBelow100PovertyThreshold">
+    <Fact path="/isHasPotentialCreditsAndIsMaybeEligibleForPtcAndIsHasPtcQualifyingPlanAndIsFilerQualifiedForPtcBecauseOfStatusAndResidenceInfoAndIsMaybeApplicableTpAndNoAptcAndBelow100PovertyThreshold">
       <Description>Screen gate: isTrue(/hasPotentialCredits) and isTrue(/maybeEligibleForPtc) and isTrue(/hasPtcQualifyingPlan) and isFalse(/filerNotQualifiedForPtcBecauseOfStatusAndResidenceInfo) and isTrue(/maybeApplicableTpAndNoAptcAndBelow100PovertyThreshold).</Description>
       <Derived>
         <All>
@@ -11779,7 +11779,7 @@
       </Derived>
     </Fact>
 
-    <Fact path="/isHasPotentialCreditsAndIsMaybeEligibleForPtcAndIsHasPtcQualifyingPlanAndIsNotFilerNotQualifiedForPtcBecauseOfStatusAndResidenceInfoAndIsNotApplicableTaxPayerAndHasAptc">
+    <Fact path="/isHasPotentialCreditsAndIsMaybeEligibleForPtcAndIsHasPtcQualifyingPlanAndIsFilerQualifiedForPtcBecauseOfStatusAndResidenceInfoAndIsNotApplicableTaxPayerAndHasAptc">
       <Description>Screen gate: isTrue(/hasPotentialCredits) and isTrue(/maybeEligibleForPtc) and isTrue(/hasPtcQualifyingPlan) and isFalse(/filerNotQualifiedForPtcBecauseOfStatusAndResidenceInfo) and isTrue(/notApplicableTaxPayerAndHasAptc).</Description>
       <Derived>
         <All>
@@ -11851,7 +11851,7 @@
       </Derived>
     </Fact>
 
-    <Fact path="/isHasPotentialCreditsAndIsMaybeEligibleForPtcAndIsHasPtcQualifyingPlanAndIsApplicableTaxPayerOrHasAptcAndIsNotNotPtcApplicableTaxPayerOrIncomplete">
+    <Fact path="/isHasPotentialCreditsAndIsMaybeEligibleForPtcAndIsHasPtcQualifyingPlanAndIsApplicableTaxPayerOrHasAptcAndIsPtcApplicableTaxPayerOrIncomplete">
       <Description>Screen gate: isTrue(/hasPotentialCredits) and isTrue(/maybeEligibleForPtc) and isTrue(/hasPtcQualifyingPlan) and isTrue(/applicableTaxPayerOrHasAptc) and isFalseOrIncomplete(/notPtcApplicableTaxPayer).</Description>
       <Derived>
         <All>
@@ -11893,7 +11893,7 @@
       </Derived>
     </Fact>
 
-    <Fact path="/1095As/*/isHasPotentialCreditsAndIsMaybeEligibleForPtcAndIsHasPtcQualifyingPlanAndIsApplicableTaxPayerOrHasAptcAndIsNotNotPtcApplicableTaxPayerOrIncompleteAndIsMaybeHasPolicyDateException">
+    <Fact path="/1095As/*/isHasPotentialCreditsAndIsMaybeEligibleForPtcAndIsHasPtcQualifyingPlanAndIsApplicableTaxPayerOrHasAptcAndIsPtcApplicableTaxPayerOrIncompleteAndIsMaybeHasPolicyDateException">
       <Description>Screen gate: isTrue(/hasPotentialCredits) and isTrue(/maybeEligibleForPtc) and isTrue(/hasPtcQualifyingPlan) and isTrue(/applicableTaxPayerOrHasAptc) and isFalseOrIncomplete(/notPtcApplicableTaxPayer) and isTrue(/1095As/*/maybeHasPolicyDateException).</Description>
       <Derived>
         <All>
@@ -11941,7 +11941,7 @@
       </Derived>
     </Fact>
 
-    <Fact path="/1095As/*/isHasPotentialCreditsAndIsMaybeEligibleForPtcAndIsHasPtcQualifyingPlanAndIsApplicableTaxPayerOrHasAptcAndIsNotNotPtcApplicableTaxPayerOrIncompleteAndIsNotHasNoPotentialCoverageMonthsOrIncomplete">
+    <Fact path="/1095As/*/isHasPotentialCreditsAndIsMaybeEligibleForPtcAndIsHasPtcQualifyingPlanAndIsApplicableTaxPayerOrHasAptcAndIsPtcApplicableTaxPayerOrIncompleteAndIsNotHasNoPotentialCoverageMonthsOrIncomplete">
       <Description>Screen gate: isTrue(/hasPotentialCredits) and isTrue(/maybeEligibleForPtc) and isTrue(/hasPtcQualifyingPlan) and isTrue(/applicableTaxPayerOrHasAptc) and isFalseOrIncomplete(/notPtcApplicableTaxPayer) and isFalseOrIncomplete(/1095As/*/hasNoPotentialCoverageMonths).</Description>
       <Derived>
         <All>
@@ -11993,7 +11993,7 @@
       </Derived>
     </Fact>
 
-    <Fact path="/1095As/*/isHasPotentialCreditsAndIsMaybeEligibleForPtcAndIsHasPtcQualifyingPlanAndIsApplicableTaxPayerOrHasAptcAndIsNotNotPtcApplicableTaxPayerOrIncompleteAndIsHasNoCoverageMonthsAndNoAptc">
+    <Fact path="/1095As/*/isHasPotentialCreditsAndIsMaybeEligibleForPtcAndIsHasPtcQualifyingPlanAndIsApplicableTaxPayerOrHasAptcAndIsPtcApplicableTaxPayerOrIncompleteAndIsHasNoCoverageMonthsAndNoAptc">
       <Description>Screen gate: isTrue(/hasPotentialCredits) and isTrue(/maybeEligibleForPtc) and isTrue(/hasPtcQualifyingPlan) and isTrue(/applicableTaxPayerOrHasAptc) and isFalseOrIncomplete(/notPtcApplicableTaxPayer) and isTrue(/1095As/*/hasNoCoverageMonthsAndNoAptc).</Description>
       <Derived>
         <All>
@@ -12041,7 +12041,7 @@
       </Derived>
     </Fact>
 
-    <Fact path="/1095As/*/isHasPotentialCreditsAndIsMaybeEligibleForPtcAndIsHasPtcQualifyingPlanAndIsApplicableTaxPayerOrHasAptcAndIsNotNotPtcApplicableTaxPayerOrIncompleteAndIsHasCoverageMonthAndHasPotentialCoverageMonths">
+    <Fact path="/1095As/*/isHasPotentialCreditsAndIsMaybeEligibleForPtcAndIsHasPtcQualifyingPlanAndIsApplicableTaxPayerOrHasAptcAndIsPtcApplicableTaxPayerOrIncompleteAndIsHasCoverageMonthAndHasPotentialCoverageMonths">
       <Description>Screen gate: isTrue(/hasPotentialCredits) and isTrue(/maybeEligibleForPtc) and isTrue(/hasPtcQualifyingPlan) and isTrue(/applicableTaxPayerOrHasAptc) and isFalseOrIncomplete(/notPtcApplicableTaxPayer) and isTrue(/1095As/*/hasCoverageMonthAndHasPotentialCoverageMonths).</Description>
       <Derived>
         <All>
@@ -12089,7 +12089,7 @@
       </Derived>
     </Fact>
 
-    <Fact path="/1095As/*/isHasPotentialCreditsAndIsMaybeEligibleForPtcAndIsHasPtcQualifyingPlanAndIsApplicableTaxPayerOrHasAptcAndIsNotNotPtcApplicableTaxPayerOrIncompleteAndIsHasAtLeastOneCoverageMonthAndIsHasPolicyForAllMonths">
+    <Fact path="/1095As/*/isHasPotentialCreditsAndIsMaybeEligibleForPtcAndIsHasPtcQualifyingPlanAndIsApplicableTaxPayerOrHasAptcAndIsPtcApplicableTaxPayerOrIncompleteAndIsHasAtLeastOneCoverageMonthAndIsHasPolicyForAllMonths">
       <Description>Screen gate: isTrue(/hasPotentialCredits) and isTrue(/maybeEligibleForPtc) and isTrue(/hasPtcQualifyingPlan) and isTrue(/applicableTaxPayerOrHasAptc) and isFalseOrIncomplete(/notPtcApplicableTaxPayer) and isTrue(/1095As/*/hasAtLeastOneCoverageMonth) and isTrue(/1095As/*/hasPolicyForAllMonths).</Description>
       <Derived>
         <All>
@@ -12143,7 +12143,7 @@
       </Derived>
     </Fact>
 
-    <Fact path="/1095As/*/isHasPotentialCreditsAndIsMaybeEligibleForPtcAndIsHasPtcQualifyingPlanAndIsApplicableTaxPayerOrHasAptcAndIsNotNotPtcApplicableTaxPayerOrIncompleteAndIsHasAtLeastOneCoverageMonthAndIsNotPremiumsOrSlcspChange">
+    <Fact path="/1095As/*/isHasPotentialCreditsAndIsMaybeEligibleForPtcAndIsHasPtcQualifyingPlanAndIsApplicableTaxPayerOrHasAptcAndIsPtcApplicableTaxPayerOrIncompleteAndIsHasAtLeastOneCoverageMonthAndIsNotPremiumsOrSlcspChange">
       <Description>Screen gate: isTrue(/hasPotentialCredits) and isTrue(/maybeEligibleForPtc) and isTrue(/hasPtcQualifyingPlan) and isTrue(/applicableTaxPayerOrHasAptc) and isFalseOrIncomplete(/notPtcApplicableTaxPayer) and isTrue(/1095As/*/hasAtLeastOneCoverageMonth) and isFalse(/1095As/*/premiumsOrSlcspChange).</Description>
       <Derived>
         <All>
@@ -12199,7 +12199,7 @@
       </Derived>
     </Fact>
 
-    <Fact path="/1095As/*/isHasPotentialCreditsAndIsMaybeEligibleForPtcAndIsHasPtcQualifyingPlanAndIsApplicableTaxPayerOrHasAptcAndIsNotNotPtcApplicableTaxPayerOrIncompleteAndIsHasAtLeastOneCoverageMonthAndIsPremiumsOrSlcspChangeOrIncomplete">
+    <Fact path="/1095As/*/isHasPotentialCreditsAndIsMaybeEligibleForPtcAndIsHasPtcQualifyingPlanAndIsApplicableTaxPayerOrHasAptcAndIsPtcApplicableTaxPayerOrIncompleteAndIsHasAtLeastOneCoverageMonthAndIsPremiumsOrSlcspChangeOrIncomplete">
       <Description>Screen gate: isTrue(/hasPotentialCredits) and isTrue(/maybeEligibleForPtc) and isTrue(/hasPtcQualifyingPlan) and isTrue(/applicableTaxPayerOrHasAptc) and isFalseOrIncomplete(/notPtcApplicableTaxPayer) and isTrue(/1095As/*/hasAtLeastOneCoverageMonth) and isTrueOrIncomplete(/1095As/*/premiumsOrSlcspChange).</Description>
       <Derived>
         <All>
@@ -12399,7 +12399,7 @@
       </Derived>
     </Fact>
 
-    <Fact path="/1095As/*/isHasPotentialCreditsAndIsMaybeEligibleForPtcAndIsHasPtcQualifyingPlanAndIsApplicableTaxPayerOrHasAptcAndIsNotNotPtcApplicableTaxPayerOrIncompleteAndIsHasAtLeastOneCoverageMonth">
+    <Fact path="/1095As/*/isHasPotentialCreditsAndIsMaybeEligibleForPtcAndIsHasPtcQualifyingPlanAndIsApplicableTaxPayerOrHasAptcAndIsPtcApplicableTaxPayerOrIncompleteAndIsHasAtLeastOneCoverageMonth">
       <Description>Screen gate: isTrue(/hasPotentialCredits) and isTrue(/maybeEligibleForPtc) and isTrue(/hasPtcQualifyingPlan) and isTrue(/applicableTaxPayerOrHasAptc) and isFalseOrIncomplete(/notPtcApplicableTaxPayer) and isTrue(/1095As/*/hasAtLeastOneCoverageMonth).</Description>
       <Derived>
         <All>
@@ -12447,7 +12447,7 @@
       </Derived>
     </Fact>
 
-    <Fact path="/1095As/*/isHasPotentialCreditsAndIsMaybeEligibleForPtcAndIsHasPtcQualifyingPlanAndIsApplicableTaxPayerOrHasAptcAndIsNotNotPtcApplicableTaxPayerOrIncompleteAndIsHasAtLeastOneCoverageMonthAndIsNoChangesAnd12MonthPolicy">
+    <Fact path="/1095As/*/isHasPotentialCreditsAndIsMaybeEligibleForPtcAndIsHasPtcQualifyingPlanAndIsApplicableTaxPayerOrHasAptcAndIsPtcApplicableTaxPayerOrIncompleteAndIsHasAtLeastOneCoverageMonthAndIsNoChangesAnd12MonthPolicy">
       <Description>Screen gate: isTrue(/hasPotentialCredits) and isTrue(/maybeEligibleForPtc) and isTrue(/hasPtcQualifyingPlan) and isTrue(/applicableTaxPayerOrHasAptc) and isFalseOrIncomplete(/notPtcApplicableTaxPayer) and isTrue(/1095As/*/hasAtLeastOneCoverageMonth) and isTrue(/1095As/*/noChangesAnd12MonthPolicy).</Description>
       <Derived>
         <All>
@@ -12527,7 +12527,7 @@
       </Derived>
     </Fact>
 
-    <Fact path="/1095As/*/isHasPotentialCreditsAndIsMaybeEligibleForPtcAndIsHasPtcQualifyingPlanAndIsApplicableTaxPayerOrHasAptcAndIsNotNotPtcApplicableTaxPayerOrIncompleteAndIsHasAtLeastOneCoverageMonthAndIsHasChangeInCircumstance">
+    <Fact path="/1095As/*/isHasPotentialCreditsAndIsMaybeEligibleForPtcAndIsHasPtcQualifyingPlanAndIsApplicableTaxPayerOrHasAptcAndIsPtcApplicableTaxPayerOrIncompleteAndIsHasAtLeastOneCoverageMonthAndIsHasChangeInCircumstance">
       <Description>Screen gate: isTrue(/hasPotentialCredits) and isTrue(/maybeEligibleForPtc) and isTrue(/hasPtcQualifyingPlan) and isTrue(/applicableTaxPayerOrHasAptc) and isFalseOrIncomplete(/notPtcApplicableTaxPayer) and isTrue(/1095As/*/hasAtLeastOneCoverageMonth) and isTrue(/1095As/*/hasChangeInCircumstance).</Description>
       <Derived>
         <All>
@@ -12581,7 +12581,7 @@
       </Derived>
     </Fact>
 
-    <Fact path="/1095As/*/isHasPotentialCreditsAndIsMaybeEligibleForPtcAndIsHasPtcQualifyingPlanAndIsApplicableTaxPayerOrHasAptcAndIsNotNotPtcApplicableTaxPayerOrIncompleteAndIsHasAtLeastOneCoverageMonthAndIsHasChangeOrPolicyIsNotForAllMonths">
+    <Fact path="/1095As/*/isHasPotentialCreditsAndIsMaybeEligibleForPtcAndIsHasPtcQualifyingPlanAndIsApplicableTaxPayerOrHasAptcAndIsPtcApplicableTaxPayerOrIncompleteAndIsHasAtLeastOneCoverageMonthAndIsHasChangeOrPolicyIsNotForAllMonths">
       <Description>Screen gate: isTrue(/hasPotentialCredits) and isTrue(/maybeEligibleForPtc) and isTrue(/hasPtcQualifyingPlan) and isTrue(/applicableTaxPayerOrHasAptc) and isFalseOrIncomplete(/notPtcApplicableTaxPayer) and isTrue(/1095As/*/hasAtLeastOneCoverageMonth) and isTrue(/1095As/*/hasChangeOrPolicyIsNotForAllMonths).</Description>
       <Derived>
         <All>
@@ -13227,7 +13227,7 @@
       </Derived>
     </Fact>
 
-    <Fact path="/1095As/*/isHasPotentialCreditsAndIsMaybeEligibleForPtcAndIsHasPtcQualifyingPlanAndIsApplicableTaxPayerOrHasAptcAndIsNotNotPtcApplicableTaxPayerOrIncompleteAndIsHasAtLeastOneCoverageMonthAndIsShowMonthlyAptc">
+    <Fact path="/1095As/*/isHasPotentialCreditsAndIsMaybeEligibleForPtcAndIsHasPtcQualifyingPlanAndIsApplicableTaxPayerOrHasAptcAndIsPtcApplicableTaxPayerOrIncompleteAndIsHasAtLeastOneCoverageMonthAndIsShowMonthlyAptc">
       <Description>Screen gate: isTrue(/hasPotentialCredits) and isTrue(/maybeEligibleForPtc) and isTrue(/hasPtcQualifyingPlan) and isTrue(/applicableTaxPayerOrHasAptc) and isFalseOrIncomplete(/notPtcApplicableTaxPayer) and isTrue(/1095As/*/hasAtLeastOneCoverageMonth) and isTrue(/1095As/*/showMonthlyAptc).</Description>
       <Derived>
         <All>
@@ -15661,7 +15661,7 @@
       </Derived>
     </Fact>
 
-    <Fact path="/filers/*/isHasPotentialCreditsAndIsMaybeEligibleForCreditForElderlyAndDisabledAndIsQualifiedForCreditForElderlyAndDisabledAndIsNotHasPhysicianStatementBothDisabledAndWillNotImprove">
+    <Fact path="/filers/*/isHasPotentialCreditsAndIsMaybeEligibleForCreditForElderlyAndDisabledAndIsQualifiedForCreditForElderlyAndDisabledAndIsHasPhysicianStatementBothDisabledAndWillImprove">
       <Description>Screen gate: isTrue(/hasPotentialCredits) and isTrue(/maybeEligibleForCreditForElderlyAndDisabled) and isTrue(/qualifiedForCreditForElderlyAndDisabled) and isFalse(/filers/*/hasPhysicianStatementBothDisabledAndWillNotImprove).</Description>
       <Derived>
         <All>
@@ -17581,7 +17581,7 @@
       </Derived>
     </Fact>
 
-    <Fact path="/isNotMayBenefitFromFilingStateTaxesOrIncomplete">
+    <Fact path="/mayNotBenefitFromFilingStateTaxesOrIncomplete">
       <Description>Screen gate: isFalseOrIncomplete(/mayBenefitFromFilingStateTaxes).</Description>
       <Derived>
         <Any>
@@ -18299,7 +18299,7 @@
       </Derived>
     </Fact>
 
-    <Fact path="/isFiledLastYearAndIsNotCannotFindPinOrAgiAndIsWillEnterLastYearPin">
+    <Fact path="/isFiledLastYearAndIsCanFindPinOrAgiAndIsWillEnterLastYearPin">
       <Description>Screen gate: isTrue(/filedLastYear) and isFalse(/cannotFindPinOrAgi) and isTrue(/willEnterLastYearPin).</Description>
       <Derived>
         <All>
@@ -18327,7 +18327,7 @@
       </Derived>
     </Fact>
 
-    <Fact path="/isNotCannotFindPinOrAgiOrIncompleteAndIsNeedsToEnterLastYearAgi">
+    <Fact path="/isCanFindPinOrAgiOrIncompleteAndIsNeedsToEnterLastYearAgi">
       <Description>Screen gate: isFalseOrIncomplete(/cannotFindPinOrAgi) and isTrue(/needsToEnterLastYearAgi).</Description>
       <Derived>
         <All>
@@ -18351,7 +18351,7 @@
       </Derived>
     </Fact>
 
-    <Fact path="/isNotCannotFindPinOrAgiOrIncomplete">
+    <Fact path="/isCanFindPinOrAgiOrIncomplete">
       <Description>Screen gate: isFalseOrIncomplete(/cannotFindPinOrAgi).</Description>
       <Derived>
         <Any>
@@ -18447,7 +18447,7 @@
       </Derived>
     </Fact>
 
-    <Fact path="/isMFJWithLivingSpouseAndIsSpouseFiledLastYearAndIsNotSpouseCannotFindPinOrAgiAndIsSpouseWillEnterLastYearPin">
+    <Fact path="/isMFJWithLivingSpouseAndIsSpouseFiledLastYearAndIsSpouseCanFindPinOrAgiAndIsSpouseWillEnterLastYearPin">
       <Description>Screen gate: isTrue(/isMFJWithLivingSpouse) and isTrue(/spouseFiledLastYear) and isFalse(/spouseCannotFindPinOrAgi) and isTrue(/spouseWillEnterLastYearPin).</Description>
       <Derived>
         <All>
@@ -18481,7 +18481,7 @@
       </Derived>
     </Fact>
 
-    <Fact path="/isMFJWithLivingSpouseAndIsNotSpouseCannotFindPinOrAgiOrIncompleteAndIsSpouseNeedsToEnterLastYearAgi">
+    <Fact path="/isMFJWithLivingSpouseAndIsSpouseCanFindPinOrAgiOrIncompleteAndIsSpouseNeedsToEnterLastYearAgi">
       <Description>Screen gate: isTrue(/isMFJWithLivingSpouse) and isFalseOrIncomplete(/spouseCannotFindPinOrAgi) and isTrue(/spouseNeedsToEnterLastYearAgi).</Description>
       <Derived>
         <All>
@@ -18511,7 +18511,7 @@
       </Derived>
     </Fact>
 
-    <Fact path="/isMFJWithLivingSpouseAndIsNotSpouseCannotFindPinOrAgiOrIncomplete">
+    <Fact path="/isMFJWithLivingSpouseAndIsSpouseCanFindPinOrAgiOrIncomplete">
       <Description>Screen gate: isTrue(/isMFJWithLivingSpouse) and isFalseOrIncomplete(/spouseCannotFindPinOrAgi).</Description>
       <Derived>
         <All>

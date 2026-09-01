@@ -919,8 +919,8 @@ or residence requirements</li>
       <div class="df-screen" condition="/isMaritalStatusAllowsFilingMarriedAndIsReadyToEnterSpouseInformationAndIsWantsJointReturnAndIsFlowMFJSpouseFilingRequirementSubsectionAndIsMFJNotRequiredToFileAndEitherFilerCanBeClaimedAndIsNotMFJDependentsFilingForCreditsAndIsMfjdSwitchNotDependentTP" operator="isTrue">
         <h2>You can’t prepare your federal tax return as dependent taxpayers.</h2>
         <fg-apply path="/showMFJDChoiceBDynamic" source="/flowFalse"/>
-        <p condition="/isPrimaryFilerHasMarketplacePlanAndIsNotClaimedAsDependentAndIsNotSecondaryFilerHasMarketplacePlanAndIsNotClaimedAsDependent" operator="isTrue">You were enrolled in a qualified Marketplace health plan with advance payments of the Premium Tax Credit (PTC), and no one is claiming you as a dependent. This means you’re responsible for reconciling your advance payments of PTC on this tax return.</p>
-        <p condition="/isNotPrimaryFilerHasMarketplacePlanAndIsNotClaimedAsDependentAndIsSecondaryFilerHasMarketplacePlanAndIsNotClaimedAsDependent" operator="isTrue"><fg-show path="/secondaryFiler/firstName"/> was enrolled in a qualified Marketplace health plan with advance payments of the Premium Tax Credit (PTC), and no one is claiming them as a dependent. Their advance payments of PTC must be reconciled on this tax return.</p>
+        <p condition="/isPrimaryFilerHasMarketplacePlanAndIsNotClaimedAsDependentAndIsSecondaryFilerHasMarketplacePlanAndIsClaimedAsDependent" operator="isTrue">You were enrolled in a qualified Marketplace health plan with advance payments of the Premium Tax Credit (PTC), and no one is claiming you as a dependent. This means you’re responsible for reconciling your advance payments of PTC on this tax return.</p>
+        <p condition="/isPrimaryFilerHasMarketplacePlanAndIsClaimedAsDependentAndIsSecondaryFilerHasMarketplacePlanAndIsNotClaimedAsDependent" operator="isTrue"><fg-show path="/secondaryFiler/firstName"/> was enrolled in a qualified Marketplace health plan with advance payments of the Premium Tax Credit (PTC), and no one is claiming them as a dependent. Their advance payments of PTC must be reconciled on this tax return.</p>
         <p condition="/isPrimaryFilerHasMarketplacePlanAndIsNotClaimedAsDependentAndIsSecondaryFilerHasMarketplacePlanAndIsNotClaimedAsDependent" operator="isTrue">You and <fg-show path="/secondaryFiler/firstName"/> were enrolled in qualified Marketplace health plans with advance payments of the Premium Tax Credit (PTC), and no one is claiming you as dependents. This means you’re responsible for reconciling your advance payments of PTC on this tax return.</p>
         <p condition="/isNotDependentNotOtherTaxFamily" operator="isTrue">You said you or <fg-show path="/secondaryFiler/firstName"/> enrolled someone else in a qualified Marketplace health plan and there were advance payments of the Premium Tax Credit (PTC) made for their Marketplace coverage. Since they’re not part of a different tax family, this means you’re responsible for reconciling their advance payments of PTC.</p>
       </div>
@@ -1315,7 +1315,7 @@ or residence requirements</li>
 
   <page title="Spouse’s age and vision" route="/you-and-your-family/spouse/spouse-age-vision">
     <section>
-      <div class="df-screen" condition="/isMaritalStatusAllowsFilingMarriedAndIsReadyToEnterSpouseInformationAndIsWantsSeparateReturnAndIsNotMFSSpouseFilingReturnDerivedAndIsNotMFSSpouseHasGrossIncomeAndIsNotCanBeClaimed" operator="isTrue">
+      <div class="df-screen" condition="/isMaritalStatusAllowsFilingMarriedAndIsReadyToEnterSpouseInformationAndIsWantsSeparateReturnAndIsNotMFSSpouseFilingReturnDerivedAndIsNotMFSSpouseHasGrossIncomeAndCannotBeClaimed" operator="isTrue">
         <h2>Did your spouse reach age 65 by the end of <fg-show path="/taxYear"/>?</h2>
         <p>People aged 65 or older can claim an additional standard deduction amount. For this purpose, a person is considered age 65 on the day before their 65th birthday. For example, if your spouse was born on January 1, <fg-show path="/64yearsBeforeTaxYear"/>, your spouse would be considered age 65 on December 31, <fg-show path="/taxYear"/>.</p>
         <p condition="/isWidowedInTaxYear2" operator="isTrue">If your spouse was age 65 before they died, answer <strong>Yes</strong>.</p>
@@ -1325,7 +1325,7 @@ or residence requirements</li>
           <input type="boolean"/>
         </fg-set>
       </div>
-      <div class="df-screen" condition="/isMaritalStatusAllowsFilingMarriedAndIsReadyToEnterSpouseInformationAndIsWantsSeparateReturnAndIsNotMFSSpouseFilingReturnDerivedAndIsNotMFSSpouseHasGrossIncomeAndIsNotCanBeClaimed" operator="isTrue">
+      <div class="df-screen" condition="/isMaritalStatusAllowsFilingMarriedAndIsReadyToEnterSpouseInformationAndIsWantsSeparateReturnAndIsNotMFSSpouseFilingReturnDerivedAndIsNotMFSSpouseHasGrossIncomeAndCannotBeClaimed" operator="isTrue">
         <h2>On the last day of <fg-show path="/taxYear"/>, was <fg-show path="/secondaryFiler/firstName"/> blind?</h2>
         <p condition="/isWidowedInTaxYear2" operator="isTrue">If your spouse died before the end of the year and was blind before death, answer <strong>yes</strong>.</p>
         <p><modal-link for="modal-info-info-you-and-your-family-spouse-why-ask-blind-linkmodal1">Why do we ask if your spouse is blind?</modal-link></p>
