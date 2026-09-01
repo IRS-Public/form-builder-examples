@@ -1,0 +1,589 @@
+{
+  "/incomeSourcesSupported": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": true
+  },
+  "/madeIraContributions": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": false
+  },
+  "/flowKnockoutHouseholdEmployee": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": false
+  },
+  "/refundViaAch": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": true
+  },
+  "/familyAndHousehold/#a84c6a78-ac5c-45cd-bee5-031c1e1ae536/tpClaims": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": true
+  },
+  "/familyAndHousehold/#a84c6a78-ac5c-45cd-bee5-031c1e1ae536/lastName": {
+    "$type": "gov.irs.factgraph.persisters.StringWrapper",
+    "item": "Mesa"
+  },
+  "/hasDistributionsInLastThreeYears": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": false
+  },
+  "/familyAndHousehold/#a84c6a78-ac5c-45cd-bee5-031c1e1ae536/firstName": {
+    "$type": "gov.irs.factgraph.persisters.StringWrapper",
+    "item": "Kiko"
+  },
+  "/studentLoansQualify": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": true
+  },
+  "/filers/#a8f921cd-a4db-4782-9627-4a3d6d946046/firstName": {
+    "$type": "gov.irs.factgraph.persisters.StringWrapper",
+    "item": "Chilindrina"
+  },
+  "/cdccCareProvidersIsDone": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": true
+  },
+  "/familyAndHousehold/#a84c6a78-ac5c-45cd-bee5-031c1e1ae536/ownSupport": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": false
+  },
+  "/cdccCareProviders": {
+    "$type": "gov.irs.factgraph.persisters.CollectionWrapper",
+    "item": {
+      "items": []
+    }
+  },
+  "/formW2s/#27974e7a-0e83-45d7-8da4-c583f6266b9f/addressMatchesReturn": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": true
+  },
+  "/familyAndHousehold/#a84c6a78-ac5c-45cd-bee5-031c1e1ae536/dateOfBirth": {
+    "$type": "gov.irs.factgraph.persisters.DayWrapper",
+    "item": {
+      "date": "2011-02-02"
+    }
+  },
+  "/hsaDistributionsIsDone": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": true
+  },
+  "/hasForeignAccounts": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": false
+  },
+  "/filers/#a8f921cd-a4db-4782-9627-4a3d6d946046/isStudent": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": false
+  },
+  "/wantsCustomLanguage": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": true
+  },
+  "/formW2s/#27974e7a-0e83-45d7-8da4-c583f6266b9f/writableStateEmployerId": {
+    "$type": "gov.irs.factgraph.persisters.StringWrapper",
+    "item": "6597790"
+  },
+  "/filers/#a8f921cd-a4db-4782-9627-4a3d6d946046/canBeClaimed": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": false
+  },
+  "/wasK12Educators": {
+    "$type": "gov.irs.factgraph.persisters.EnumWrapper",
+    "item": {
+      "value": "tpDid",
+      "enumOptionsPath": "/k12EducatorOptions"
+    }
+  },
+  "/selfSelectPin": {
+    "$type": "gov.irs.factgraph.persisters.PinWrapper",
+    "item": {
+      "pin": "78787"
+    }
+  },
+  "/1095As": {
+    "$type": "gov.irs.factgraph.persisters.CollectionWrapper",
+    "item": {
+      "items": []
+    }
+  },
+  "/interestReports": {
+    "$type": "gov.irs.factgraph.persisters.CollectionWrapper",
+    "item": {
+      "items": []
+    }
+  },
+  "/filers/#a8f921cd-a4db-4782-9627-4a3d6d946046/isUsCitizenFullYear": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": true
+  },
+  "/maritalStatus": {
+    "$type": "gov.irs.factgraph.persisters.EnumWrapper",
+    "item": {
+      "value": "divorced",
+      "enumOptionsPath": "/maritalStatusOptions"
+    }
+  },
+  "/writableHasPtcQualifyingPlan": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": false
+  },
+  "/isForeignTrustsGrantor": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": false
+  },
+  "/filers/#a8f921cd-a4db-4782-9627-4a3d6d946046/tin": {
+    "$type": "gov.irs.factgraph.persisters.TinWrapper",
+    "item": {
+      "area": "987",
+      "group": "00",
+      "serial": "7543"
+    }
+  },
+  "/flowHasSeenAmount": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": true
+  },
+  "/wantsThirdPartyDesignee": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": false
+  },
+  "/socialSecurityReports": {
+    "$type": "gov.irs.factgraph.persisters.CollectionWrapper",
+    "item": {
+      "items": []
+    }
+  },
+  "/receivedAlaskaPfd": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": false
+  },
+  "/familyAndHousehold/#a84c6a78-ac5c-45cd-bee5-031c1e1ae536/tpPaidMostOfHomeUpkeep": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": true
+  },
+  "/filerResidenceAndIncomeState": {
+    "$type": "gov.irs.factgraph.persisters.EnumWrapper",
+    "item": {
+      "value": "wy",
+      "enumOptionsPath": "/scopedStateOptions"
+    }
+  },
+  "/formW2s": {
+    "$type": "gov.irs.factgraph.persisters.CollectionWrapper",
+    "item": {
+      "items": [
+        "27974e7a-0e83-45d7-8da4-c583f6266b9f"
+      ]
+    }
+  },
+  "/familyAndHousehold/#a84c6a78-ac5c-45cd-bee5-031c1e1ae536/deceased": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": false
+  },
+  "/receivedImproperClaims": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": false
+  },
+  "/hasCdccCarryoverAmountFromPriorTaxYear": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": false
+  },
+  "/filers/#a8f921cd-a4db-4782-9627-4a3d6d946046/occupation": {
+    "$type": "gov.irs.factgraph.persisters.StringWrapper",
+    "item": "Actress"
+  },
+  "/writableCdccHasQualifyingExpenses": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": false
+  },
+  "/formW2s/#27974e7a-0e83-45d7-8da4-c583f6266b9f/retirementPlan": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": false
+  },
+  "/flowHasSeenDeductions": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": true
+  },
+  "/socialSecurityReportsIsDone": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": true
+  },
+  "/flowHasSeenTotalIncomeSummary": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": true
+  },
+  "/filers/#a8f921cd-a4db-4782-9627-4a3d6d946046/hasIpPin": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": false
+  },
+  "/hasCompleted1099RSection": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": true
+  },
+  "/formW2s/#27974e7a-0e83-45d7-8da4-c583f6266b9f/tin": {
+    "$type": "gov.irs.factgraph.persisters.TinWrapper",
+    "item": {
+      "area": "577",
+      "group": "00",
+      "serial": "3654"
+    }
+  },
+  "/formW2s/#27974e7a-0e83-45d7-8da4-c583f6266b9f/filer": {
+    "$type": "gov.irs.factgraph.persisters.CollectionItemWrapper",
+    "item": {
+      "id": "a8f921cd-a4db-4782-9627-4a3d6d946046"
+    }
+  },
+  "/formW2s/#27974e7a-0e83-45d7-8da4-c583f6266b9f/employerName": {
+    "$type": "gov.irs.factgraph.persisters.StringWrapper",
+    "item": "Chespirito Corp."
+  },
+  "/formW2s/#27974e7a-0e83-45d7-8da4-c583f6266b9f/writableWages": {
+    "$type": "gov.irs.factgraph.persisters.DollarWrapper",
+    "item": "37898.00"
+  },
+  "/formW2s/#27974e7a-0e83-45d7-8da4-c583f6266b9f/writableFederalWithholding": {
+    "$type": "gov.irs.factgraph.persisters.DollarWrapper",
+    "item": "587.00"
+  },
+  "/phone": {
+    "$type": "gov.irs.factgraph.persisters.E164Wrapper",
+    "item": {
+      "$type": "gov.irs.factgraph.types.UsPhoneNumber",
+      "areaCode": "555",
+      "officeCode": "555",
+      "lineNumber": "5555"
+    }
+  },
+  "/is1099RFeatureFlagEnabled": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": true
+  },
+  "/familyAndHousehold": {
+    "$type": "gov.irs.factgraph.persisters.CollectionWrapper",
+    "item": {
+      "items": [
+        "a84c6a78-ac5c-45cd-bee5-031c1e1ae536"
+      ]
+    }
+  },
+  "/studentLoanInterestAmount": {
+    "$type": "gov.irs.factgraph.persisters.DollarWrapper",
+    "item": "1200.00"
+  },
+  "/filers/#a8f921cd-a4db-4782-9627-4a3d6d946046/dateOfBirth": {
+    "$type": "gov.irs.factgraph.persisters.DayWrapper",
+    "item": {
+      "date": "1980-01-01"
+    }
+  },
+  "/familyAndHousehold/#a84c6a78-ac5c-45cd-bee5-031c1e1ae536/hasOtherBiologicalOrAdoptiveParent": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": false
+  },
+  "/formW2s/#27974e7a-0e83-45d7-8da4-c583f6266b9f/statutoryEmployee": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": false
+  },
+  "/disposedDigitalAssets": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": false
+  },
+  "/hasCurrentYearDistributions": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": false
+  },
+  "/familyAndHouseholdIsDone": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": true
+  },
+  "/familyAndHousehold/#a84c6a78-ac5c-45cd-bee5-031c1e1ae536/isUsCitizenFullYear": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": true
+  },
+  "/receivedDigitalAssets": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": false
+  },
+  "/formW2s/#27974e7a-0e83-45d7-8da4-c583f6266b9f/writableOasdiWithholding": {
+    "$type": "gov.irs.factgraph.persisters.DollarWrapper",
+    "item": "54.00"
+  },
+  "/filers/#a8f921cd-a4db-4782-9627-4a3d6d946046/isDisabled": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": false
+  },
+  "/hasSeenReviewScreen": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": true
+  },
+  "/hasSome1099rFormsBeforeSectionEnabled": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": false
+  },
+  "/form1099Gs": {
+    "$type": "gov.irs.factgraph.persisters.CollectionWrapper",
+    "item": {
+      "items": []
+    }
+  },
+  "/filers/#a8f921cd-a4db-4782-9627-4a3d6d946046/isPrimaryFiler": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": true
+  },
+  "/familyAndHousehold/#a84c6a78-ac5c-45cd-bee5-031c1e1ae536/childRelationship": {
+    "$type": "gov.irs.factgraph.persisters.EnumWrapper",
+    "item": {
+      "value": "biologicalChild",
+      "enumOptionsPath": "/childRelationshipOptions"
+    }
+  },
+  "/familyAndHousehold/#a84c6a78-ac5c-45cd-bee5-031c1e1ae536/residencyDuration": {
+    "$type": "gov.irs.factgraph.persisters.EnumWrapper",
+    "item": {
+      "value": "allYear",
+      "enumOptionsPath": "/residencyDurationOptions"
+    }
+  },
+  "/selfSelectPinLastYear": {
+    "$type": "gov.irs.factgraph.persisters.PinWrapper",
+    "item": {
+      "pin": "78787"
+    }
+  },
+  "/formW2s/#27974e7a-0e83-45d7-8da4-c583f6266b9f/writableOasdiWages": {
+    "$type": "gov.irs.factgraph.persisters.DollarWrapper",
+    "item": "180.00"
+  },
+  "/hsaDistributions": {
+    "$type": "gov.irs.factgraph.persisters.CollectionWrapper",
+    "item": {
+      "items": []
+    }
+  },
+  "/filers/#81d2aac2-7ae8-4a5a-89c3-72501861274b/isPrimaryFiler": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": false
+  },
+  "/interestReportsIsDone": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": true
+  },
+  "/primaryEducatorExpensesWritable": {
+    "$type": "gov.irs.factgraph.persisters.DollarWrapper",
+    "item": "234.00"
+  },
+  "/familyAndHousehold/#a84c6a78-ac5c-45cd-bee5-031c1e1ae536/hasIpPin": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": false
+  },
+  "/familyAndHousehold/#a84c6a78-ac5c-45cd-bee5-031c1e1ae536/relationshipCategory": {
+    "$type": "gov.irs.factgraph.persisters.EnumWrapper",
+    "item": {
+      "value": "childOrDescendants",
+      "enumOptionsPath": "/relationshipCategoryOptions"
+    }
+  },
+  "/formW2s/#27974e7a-0e83-45d7-8da4-c583f6266b9f/hasRRTACodes": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": false
+  },
+  "/flowHasSeenPrintAndMail": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": true
+  },
+  "/filers/#a8f921cd-a4db-4782-9627-4a3d6d946046/lastName": {
+    "$type": "gov.irs.factgraph.persisters.StringWrapper",
+    "item": "Ramon"
+  },
+  "/email": {
+    "$type": "gov.irs.factgraph.persisters.EmailAddressWrapper",
+    "item": {
+      "email": "marge.simpson@email.com"
+    }
+  },
+  "/filers/#a8f921cd-a4db-4782-9627-4a3d6d946046/isBlind": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": false
+  },
+  "/formW2sIsDone": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": true
+  },
+  "/hasSelfReportedContributions": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": false
+  },
+  "/signReturnIdentity": {
+    "$type": "gov.irs.factgraph.persisters.EnumWrapper",
+    "item": {
+      "value": "lastYearPin",
+      "enumOptionsPath": "/signReturnIdentityOptions"
+    }
+  },
+  "/formW2s/#27974e7a-0e83-45d7-8da4-c583f6266b9f/nonstandardOrCorrectedChoice": {
+    "$type": "gov.irs.factgraph.persisters.EnumWrapper",
+    "item": {
+      "value": "neither",
+      "enumOptionsPath": "/w2NonstandardCorrectedOptions"
+    }
+  },
+  "/familyAndHousehold/#a84c6a78-ac5c-45cd-bee5-031c1e1ae536/married": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": false
+  },
+  "/someFilerHadNonW2HsaActivity": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": false
+  },
+  "/filedLastYear": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": true
+  },
+  "/meta/migrationsApplied": {
+    "$type": "gov.irs.factgraph.persisters.IntWrapper",
+    "item": 2
+  },
+  "/formW2s/#27974e7a-0e83-45d7-8da4-c583f6266b9f/ein": {
+    "$type": "gov.irs.factgraph.persisters.EinWrapper",
+    "item": {
+      "prefix": "00",
+      "serial": "6797983"
+    }
+  },
+  "/familyAndHousehold/#a84c6a78-ac5c-45cd-bee5-031c1e1ae536/ssnEmploymentValidity": {
+    "$type": "gov.irs.factgraph.persisters.EnumWrapper",
+    "item": {
+      "value": "neither",
+      "enumOptionsPath": "/familyAndHouseholdSsnEmploymentValidityOptions"
+    }
+  },
+  "/address": {
+    "$type": "gov.irs.factgraph.persisters.AddressWrapper",
+    "item": {
+      "streetAddress": "123 Vecindad",
+      "city": "Cheyenne",
+      "postalCode": "83002",
+      "stateOrProvence": "WY",
+      "country": ""
+    }
+  },
+  "/filingStatus": {
+    "$type": "gov.irs.factgraph.persisters.EnumWrapper",
+    "item": {
+      "value": "headOfHousehold",
+      "enumOptionsPath": "/filingStatusOptions"
+    }
+  },
+  "/filers": {
+    "$type": "gov.irs.factgraph.persisters.CollectionWrapper",
+    "item": {
+      "items": [
+        "a8f921cd-a4db-4782-9627-4a3d6d946046",
+        "81d2aac2-7ae8-4a5a-89c3-72501861274b"
+      ]
+    }
+  },
+  "/familyAndHousehold/#a84c6a78-ac5c-45cd-bee5-031c1e1ae536/tinType": {
+    "$type": "gov.irs.factgraph.persisters.EnumWrapper",
+    "item": {
+      "value": "ssn",
+      "enumOptionsPath": "/tinTypeOptions"
+    }
+  },
+  "/form1099GsIsDone": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": true
+  },
+  "/languagePreference": {
+    "$type": "gov.irs.factgraph.persisters.EnumWrapper",
+    "item": {
+      "value": "spanish",
+      "enumOptionsPath": "/languageOptions"
+    }
+  },
+  "/formW2s/#27974e7a-0e83-45d7-8da4-c583f6266b9f/hasSeenLastAvailableScreen": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": true
+  },
+  "/hasForeignTrustsTransactions": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": false
+  },
+  "/form1099Rs": {
+    "$type": "gov.irs.factgraph.persisters.CollectionWrapper",
+    "item": {
+      "items": []
+    }
+  },
+  "/wantsCommsFormat": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": false
+  },
+  "/livedTogetherAllYearWithSpouse": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": true
+  },
+  "/formW2s/#27974e7a-0e83-45d7-8da4-c583f6266b9f/thirdPartySickPay": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": false
+  },
+  "/formW2s/#27974e7a-0e83-45d7-8da4-c583f6266b9f/writableState": {
+    "$type": "gov.irs.factgraph.persisters.EnumWrapper",
+    "item": {
+      "value": "sameState",
+      "enumOptionsPath": "/incomeFormStateOptions"
+    }
+  },
+  "/familyAndHousehold/#a84c6a78-ac5c-45cd-bee5-031c1e1ae536/tin": {
+    "$type": "gov.irs.factgraph.persisters.TinWrapper",
+    "item": {
+      "area": "675",
+      "group": "00",
+      "serial": "4444"
+    }
+  },
+  "/familyAndHousehold/#a84c6a78-ac5c-45cd-bee5-031c1e1ae536/unableToCareForSelf": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": false
+  },
+  "/hohQualifyingPerson": {
+    "$type": "gov.irs.factgraph.persisters.CollectionItemWrapper",
+    "item": {
+      "id": "a84c6a78-ac5c-45cd-bee5-031c1e1ae536"
+    }
+  },
+  "/hadStudentLoanInterestPayments": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": true
+  },
+  "/primaryFilerW2And1099IntInScopedState": {
+    "$type": "gov.irs.factgraph.persisters.EnumWrapper",
+    "item": {
+      "value": "onlySame",
+      "enumOptionsPath": "/primaryFilerW2And1099IntStateOptions"
+    }
+  },
+  "/formW2s/#27974e7a-0e83-45d7-8da4-c583f6266b9f/employerAddress": {
+    "$type": "gov.irs.factgraph.persisters.AddressWrapper",
+    "item": {
+      "streetAddress": "345 Vecindad",
+      "city": "Cheyenne",
+      "postalCode": "82001",
+      "stateOrProvence": "WY",
+      "country": ""
+    }
+  },
+  "/paidEstimatedTaxesOrFromLastYear": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": false
+  },
+  "/bankAccount": {
+    "$type": "gov.irs.factgraph.persisters.BankAccountWrapper",
+    "item": {
+      "accountType": "Checking",
+      "routingNumber": "061000052",
+      "accountNumber": "12489064"
+    }
+  }
+}

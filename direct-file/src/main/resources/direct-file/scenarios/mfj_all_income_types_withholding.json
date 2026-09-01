@@ -1,0 +1,934 @@
+{
+  "/filers/#fe689e56-8317-4e63-9807-26c7042d9dae/lastName": {
+    "$type": "gov.irs.factgraph.persisters.StringWrapper",
+    "item": "Lizer"
+  },
+  "/interestReports/#14216d63-3884-4d0d-9ce4-e7a9e1c5abe8/has1099": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": true
+  },
+  "/formW2s/#27b51972-33d4-4c94-96bc-b4514506fbcd/writableOasdiWages": {
+    "$type": "gov.irs.factgraph.persisters.DollarWrapper",
+    "item": "60000.00"
+  },
+  "/form1099Gs/#2b514d0e-d87d-4762-8bf7-e8d26f74b309/has1099": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": true
+  },
+  "/formW2s/#65104ace-78fb-4216-a0d3-312ecf968d31/employerName": {
+    "$type": "gov.irs.factgraph.persisters.StringWrapper",
+    "item": "Bluth Company"
+  },
+  "/formW2s/#65104ace-78fb-4216-a0d3-312ecf968d31/retirementPlan": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": false
+  },
+  "/cdccCareProviders": {
+    "$type": "gov.irs.factgraph.persisters.CollectionWrapper",
+    "item": {
+      "items": []
+    }
+  },
+  "/filers/#fe689e56-8317-4e63-9807-26c7042d9dae/canBeClaimed": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": false
+  },
+  "/hsaDistributionsIsDone": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": true
+  },
+  "/cdccCareProvidersIsDone": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": true
+  },
+  "/formW2s/#27b51972-33d4-4c94-96bc-b4514506fbcd/writableWages": {
+    "$type": "gov.irs.factgraph.persisters.DollarWrapper",
+    "item": "60000.00"
+  },
+  "/formW2s/#27b51972-33d4-4c94-96bc-b4514506fbcd/filer": {
+    "$type": "gov.irs.factgraph.persisters.CollectionItemWrapper",
+    "item": {
+      "id": "fe689e56-8317-4e63-9807-26c7042d9dae"
+    }
+  },
+  "/interestReports/#14216d63-3884-4d0d-9ce4-e7a9e1c5abe8/writable1099Amount": {
+    "$type": "gov.irs.factgraph.persisters.DollarWrapper",
+    "item": "80.00"
+  },
+  "/hasForeignAccounts": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": false
+  },
+  "/form1099Gs/#b0a6ba52-f5df-47df-a386-48c5d1ce22a5/repaid": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": false
+  },
+  "/formW2s/#27b51972-33d4-4c94-96bc-b4514506fbcd/hasRRTACodes": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": false
+  },
+  "/filers/#fe689e56-8317-4e63-9807-26c7042d9dae/firstName": {
+    "$type": "gov.irs.factgraph.persisters.StringWrapper",
+    "item": "Maggie"
+  },
+  "/wantsCustomLanguage": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": false
+  },
+  "/socialSecurityReports/#2dfa8fa4-c727-4b7e-bafa-e04f1b669c6c/ssaNetBenefits": {
+    "$type": "gov.irs.factgraph.persisters.DollarWrapper",
+    "item": "4000.00"
+  },
+  "/filers/#6e683c7b-2694-4884-b269-87275170fa53/isPrimaryFiler": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": true
+  },
+  "/formW2s/#65104ace-78fb-4216-a0d3-312ecf968d31/hasSeenLastAvailableScreen": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": true
+  },
+  "/incomeSourcesSupported": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": true
+  },
+  "/formW2s/#27b51972-33d4-4c94-96bc-b4514506fbcd/hasSeenLastAvailableScreen": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": true
+  },
+  "/form1099Gs/#b0a6ba52-f5df-47df-a386-48c5d1ce22a5/payer": {
+    "$type": "gov.irs.factgraph.persisters.StringWrapper",
+    "item": "State of california"
+  },
+  "/interestReports/#501aef19-f184-4bd8-8f52-8acb21853d38/hasSeenLastAvailableScreen": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": true
+  },
+  "/wasK12Educators": {
+    "$type": "gov.irs.factgraph.persisters.EnumWrapper",
+    "item": {
+      "value": "neither",
+      "enumOptionsPath": "/k12EducatorOptions"
+    }
+  },
+  "/selfSelectPin": {
+    "$type": "gov.irs.factgraph.persisters.PinWrapper",
+    "item": {
+      "pin": "22222"
+    }
+  },
+  "/1095As": {
+    "$type": "gov.irs.factgraph.persisters.CollectionWrapper",
+    "item": {
+      "items": []
+    }
+  },
+  "/maritalStatus": {
+    "$type": "gov.irs.factgraph.persisters.EnumWrapper",
+    "item": {
+      "value": "married",
+      "enumOptionsPath": "/maritalStatusOptions"
+    }
+  },
+  "/interestReports": {
+    "$type": "gov.irs.factgraph.persisters.CollectionWrapper",
+    "item": {
+      "items": [
+        "501aef19-f184-4bd8-8f52-8acb21853d38",
+        "d5246108-e050-437d-8978-6975181e2b1a",
+        "4dab0763-fc4c-4459-a47c-770fc04d2afb",
+        "14216d63-3884-4d0d-9ce4-e7a9e1c5abe8"
+      ]
+    }
+  },
+  "/form1099Gs/#b0a6ba52-f5df-47df-a386-48c5d1ce22a5/has1099": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": true
+  },
+  "/socialSecurityReports/#2dfa8fa4-c727-4b7e-bafa-e04f1b669c6c/filer": {
+    "$type": "gov.irs.factgraph.persisters.CollectionItemWrapper",
+    "item": {
+      "id": "6e683c7b-2694-4884-b269-87275170fa53"
+    }
+  },
+  "/writableHasPtcQualifyingPlan": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": false
+  },
+  "/isForeignTrustsGrantor": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": false
+  },
+  "/formW2s/#65104ace-78fb-4216-a0d3-312ecf968d31/tin": {
+    "$type": "gov.irs.factgraph.persisters.TinWrapper",
+    "item": {
+      "area": "289",
+      "group": "00",
+      "serial": "2229"
+    }
+  },
+  "/spouseLivesInTPState": {
+    "$type": "gov.irs.factgraph.persisters.EnumWrapper",
+    "item": {
+      "value": "sameState",
+      "enumOptionsPath": "/spouseScopedStateOptions"
+    }
+  },
+  "/signReturnIdentitySpouse": {
+    "$type": "gov.irs.factgraph.persisters.EnumWrapper",
+    "item": {
+      "value": "lastYearAgi",
+      "enumOptionsPath": "/signReturnIdentitySpouseOptions"
+    }
+  },
+  "/flowHasSeenAmount": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": true
+  },
+  "/wantsThirdPartyDesignee": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": false
+  },
+  "/interestReports/#501aef19-f184-4bd8-8f52-8acb21853d38/factaFilingRequired": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": false
+  },
+  "/formW2s/#65104ace-78fb-4216-a0d3-312ecf968d31/writableOasdiWages": {
+    "$type": "gov.irs.factgraph.persisters.DollarWrapper",
+    "item": "100000.00"
+  },
+  "/socialSecurityReports/#f63e2dbc-857a-4862-af4a-5d8f184a0b7b/hasSeenLastAvailableScreen": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": true
+  },
+  "/formW2s/#65104ace-78fb-4216-a0d3-312ecf968d31/writableWages": {
+    "$type": "gov.irs.factgraph.persisters.DollarWrapper",
+    "item": "100000.00"
+  },
+  "/spouseSelfSelectPin": {
+    "$type": "gov.irs.factgraph.persisters.PinWrapper",
+    "item": {
+      "pin": "65432"
+    }
+  },
+  "/hasSeenIncomeNotSupportedIntro": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": true
+  },
+  "/socialSecurityReports": {
+    "$type": "gov.irs.factgraph.persisters.CollectionWrapper",
+    "item": {
+      "items": [
+        "2dfa8fa4-c727-4b7e-bafa-e04f1b669c6c",
+        "f63e2dbc-857a-4862-af4a-5d8f184a0b7b"
+      ]
+    }
+  },
+  "/receivedAlaskaPfd": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": false
+  },
+  "/filers/#6e683c7b-2694-4884-b269-87275170fa53/isStudent": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": false
+  },
+  "/interestReports/#4dab0763-fc4c-4459-a47c-770fc04d2afb/payer/tin": {
+    "$type": "gov.irs.factgraph.persisters.EinWrapper",
+    "item": {
+      "prefix": "00",
+      "serial": "2229922"
+    }
+  },
+  "/formW2s": {
+    "$type": "gov.irs.factgraph.persisters.CollectionWrapper",
+    "item": {
+      "items": [
+        "65104ace-78fb-4216-a0d3-312ecf968d31",
+        "27b51972-33d4-4c94-96bc-b4514506fbcd"
+      ]
+    }
+  },
+  "/inRegisteredDomesticPartnership": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": false
+  },
+  "/filerResidenceAndIncomeState": {
+    "$type": "gov.irs.factgraph.persisters.EnumWrapper",
+    "item": {
+      "value": "ca",
+      "enumOptionsPath": "/scopedStateOptions"
+    }
+  },
+  "/form1099Gs/#b0a6ba52-f5df-47df-a386-48c5d1ce22a5/writableStateTaxWithheld": {
+    "$type": "gov.irs.factgraph.persisters.DollarWrapper",
+    "item": "3555.00"
+  },
+  "/form1099Gs/#2b514d0e-d87d-4762-8bf7-e8d26f74b309/hasSeenLastAvailableScreen": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": true
+  },
+  "/formW2s/#27b51972-33d4-4c94-96bc-b4514506fbcd/employerAddress": {
+    "$type": "gov.irs.factgraph.persisters.AddressWrapper",
+    "item": {
+      "streetAddress": "223 Market St",
+      "city": "Los Angeles",
+      "postalCode": "90223",
+      "stateOrProvence": "CA",
+      "country": ""
+    }
+  },
+  "/interestReports/#d5246108-e050-437d-8978-6975181e2b1a/filer": {
+    "$type": "gov.irs.factgraph.persisters.CollectionItemWrapper",
+    "item": {
+      "id": "fe689e56-8317-4e63-9807-26c7042d9dae"
+    }
+  },
+  "/form1099Gs/#b0a6ba52-f5df-47df-a386-48c5d1ce22a5/amount": {
+    "$type": "gov.irs.factgraph.persisters.DollarWrapper",
+    "item": "15000.00"
+  },
+  "/formW2s/#27b51972-33d4-4c94-96bc-b4514506fbcd/nonstandardOrCorrectedChoice": {
+    "$type": "gov.irs.factgraph.persisters.EnumWrapper",
+    "item": {
+      "value": "neither",
+      "enumOptionsPath": "/w2NonstandardCorrectedOptions"
+    }
+  },
+  "/filers/#6e683c7b-2694-4884-b269-87275170fa53/occupation": {
+    "$type": "gov.irs.factgraph.persisters.StringWrapper",
+    "item": "Mr Manager"
+  },
+  "/formW2s/#65104ace-78fb-4216-a0d3-312ecf968d31/writableOasdiWithholding": {
+    "$type": "gov.irs.factgraph.persisters.DollarWrapper",
+    "item": "6000.00"
+  },
+  "/presidentalCampaignDesignation": {
+    "$type": "gov.irs.factgraph.persisters.EnumWrapper",
+    "item": {
+      "value": "neither",
+      "enumOptionsPath": "/presidentalCampaignOptions"
+    }
+  },
+  "/hasCdccCarryoverAmountFromPriorTaxYear": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": false
+  },
+  "/socialSecurityReports/#f63e2dbc-857a-4862-af4a-5d8f184a0b7b/ssaNetBenefits": {
+    "$type": "gov.irs.factgraph.persisters.DollarWrapper",
+    "item": "-1000.00"
+  },
+  "/filers/#fe689e56-8317-4e63-9807-26c7042d9dae/tin": {
+    "$type": "gov.irs.factgraph.persisters.TinWrapper",
+    "item": {
+      "area": "129",
+      "group": "00",
+      "serial": "2292"
+    }
+  },
+  "/filers/#fe689e56-8317-4e63-9807-26c7042d9dae/isUsCitizenFullYear": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": true
+  },
+  "/form1099Gs/#b0a6ba52-f5df-47df-a386-48c5d1ce22a5/filer": {
+    "$type": "gov.irs.factgraph.persisters.CollectionItemWrapper",
+    "item": {
+      "id": "fe689e56-8317-4e63-9807-26c7042d9dae"
+    }
+  },
+  "/lastYearAgi": {
+    "$type": "gov.irs.factgraph.persisters.DollarWrapper",
+    "item": "50.00"
+  },
+  "/formW2s/#65104ace-78fb-4216-a0d3-312ecf968d31/ein": {
+    "$type": "gov.irs.factgraph.persisters.EinWrapper",
+    "item": {
+      "prefix": "00",
+      "serial": "2291111"
+    }
+  },
+  "/writableCdccHasQualifyingExpenses": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": false
+  },
+  "/formW2s/#27b51972-33d4-4c94-96bc-b4514506fbcd/employerName": {
+    "$type": "gov.irs.factgraph.persisters.StringWrapper",
+    "item": "Lizer Lizer and Cutestory"
+  },
+  "/filers/#6e683c7b-2694-4884-b269-87275170fa53/isDisabled": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": false
+  },
+  "/formW2s/#65104ace-78fb-4216-a0d3-312ecf968d31/thirdPartySickPay": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": false
+  },
+  "/formW2s/#27b51972-33d4-4c94-96bc-b4514506fbcd/tin": {
+    "$type": "gov.irs.factgraph.persisters.TinWrapper",
+    "item": {
+      "area": "129",
+      "group": "00",
+      "serial": "2292"
+    }
+  },
+  "/interestReports/#501aef19-f184-4bd8-8f52-8acb21853d38/writable1099Amount": {
+    "$type": "gov.irs.factgraph.persisters.DollarWrapper",
+    "item": "600.00"
+  },
+  "/flowHasSeenDeductions": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": true
+  },
+  "/socialSecurityReportsIsDone": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": true
+  },
+  "/flowHasSeenTotalIncomeSummary": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": true
+  },
+  "/hasCompleted1099RSection": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": true
+  },
+  "/formW2s/#27b51972-33d4-4c94-96bc-b4514506fbcd/ein": {
+    "$type": "gov.irs.factgraph.persisters.EinWrapper",
+    "item": {
+      "prefix": "00",
+      "serial": "8200020"
+    }
+  },
+  "/form1099Gs/#2b514d0e-d87d-4762-8bf7-e8d26f74b309/writableAmountPaidBackForBenefitsInTaxYear": {
+    "$type": "gov.irs.factgraph.persisters.DollarWrapper",
+    "item": "2500.00"
+  },
+  "/interestReports/#4dab0763-fc4c-4459-a47c-770fc04d2afb/has1099": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": true
+  },
+  "/interestReports/#501aef19-f184-4bd8-8f52-8acb21853d38/filer": {
+    "$type": "gov.irs.factgraph.persisters.CollectionItemWrapper",
+    "item": {
+      "id": "6e683c7b-2694-4884-b269-87275170fa53"
+    }
+  },
+  "/formW2s/#65104ace-78fb-4216-a0d3-312ecf968d31/hasRRTACodes": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": false
+  },
+  "/interestReports/#14216d63-3884-4d0d-9ce4-e7a9e1c5abe8/payer": {
+    "$type": "gov.irs.factgraph.persisters.StringWrapper",
+    "item": "savings usa"
+  },
+  "/filers/#fe689e56-8317-4e63-9807-26c7042d9dae/isDisabled": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": false
+  },
+  "/phone": {
+    "$type": "gov.irs.factgraph.persisters.E164Wrapper",
+    "item": {
+      "$type": "gov.irs.factgraph.types.UsPhoneNumber",
+      "areaCode": "925",
+      "officeCode": "555",
+      "lineNumber": "0922"
+    }
+  },
+  "/formW2s/#65104ace-78fb-4216-a0d3-312ecf968d31/filer": {
+    "$type": "gov.irs.factgraph.persisters.CollectionItemWrapper",
+    "item": {
+      "id": "6e683c7b-2694-4884-b269-87275170fa53"
+    }
+  },
+  "/form1099Gs/#2b514d0e-d87d-4762-8bf7-e8d26f74b309/amount": {
+    "$type": "gov.irs.factgraph.persisters.DollarWrapper",
+    "item": "2500.00"
+  },
+  "/is1099RFeatureFlagEnabled": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": true
+  },
+  "/form1099Gs/#b0a6ba52-f5df-47df-a386-48c5d1ce22a5/writableFederalTaxWithheld": {
+    "$type": "gov.irs.factgraph.persisters.DollarWrapper",
+    "item": "2500.00"
+  },
+  "/familyAndHousehold": {
+    "$type": "gov.irs.factgraph.persisters.CollectionWrapper",
+    "item": {
+      "items": []
+    }
+  },
+  "/formW2s/#27b51972-33d4-4c94-96bc-b4514506fbcd/retirementPlan": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": false
+  },
+  "/filers/#fe689e56-8317-4e63-9807-26c7042d9dae/isBlind": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": true
+  },
+  "/form1099Gs/#2b514d0e-d87d-4762-8bf7-e8d26f74b309/filer": {
+    "$type": "gov.irs.factgraph.persisters.CollectionItemWrapper",
+    "item": {
+      "id": "6e683c7b-2694-4884-b269-87275170fa53"
+    }
+  },
+  "/filers/#6e683c7b-2694-4884-b269-87275170fa53/dateOfBirth": {
+    "$type": "gov.irs.factgraph.persisters.DayWrapper",
+    "item": {
+      "date": "1985-04-22"
+    }
+  },
+  "/disposedDigitalAssets": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": false
+  },
+  "/interestReports/#4dab0763-fc4c-4459-a47c-770fc04d2afb/payer": {
+    "$type": "gov.irs.factgraph.persisters.StringWrapper",
+    "item": "Banky"
+  },
+  "/interestReports/#14216d63-3884-4d0d-9ce4-e7a9e1c5abe8/filer": {
+    "$type": "gov.irs.factgraph.persisters.CollectionItemWrapper",
+    "item": {
+      "id": "6e683c7b-2694-4884-b269-87275170fa53"
+    }
+  },
+  "/form1099Gs/#2b514d0e-d87d-4762-8bf7-e8d26f74b309/writableState": {
+    "$type": "gov.irs.factgraph.persisters.EnumWrapper",
+    "item": {
+      "value": "sameState",
+      "enumOptionsPath": "/incomeFormStateOptions"
+    }
+  },
+  "/socialSecurityReports/#2dfa8fa4-c727-4b7e-bafa-e04f1b669c6c/hasSeenLastAvailableScreen": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": true
+  },
+  "/interestReports/#14216d63-3884-4d0d-9ce4-e7a9e1c5abe8/hasSeenLastAvailableScreen": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": true
+  },
+  "/payViaAch": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": false
+  },
+  "/interestReports/#501aef19-f184-4bd8-8f52-8acb21853d38/has1099": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": true
+  },
+  "/madeIraContributions": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": false
+  },
+  "/flowHasSeenCreditsIntroNoCredits": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": true
+  },
+  "/filers/#fe689e56-8317-4e63-9807-26c7042d9dae/dateOfBirth": {
+    "$type": "gov.irs.factgraph.persisters.DayWrapper",
+    "item": {
+      "date": "1977-03-22"
+    }
+  },
+  "/filers/#6e683c7b-2694-4884-b269-87275170fa53/lastName": {
+    "$type": "gov.irs.factgraph.persisters.StringWrapper",
+    "item": "Bluth"
+  },
+  "/spouseFiledLastYear": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": true
+  },
+  "/flowKnockoutHouseholdEmployee": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": false
+  },
+  "/formW2s/#27b51972-33d4-4c94-96bc-b4514506fbcd/writableOasdiWithholding": {
+    "$type": "gov.irs.factgraph.persisters.DollarWrapper",
+    "item": "2500.00"
+  },
+  "/formW2s/#65104ace-78fb-4216-a0d3-312ecf968d31/writableFederalWithholding": {
+    "$type": "gov.irs.factgraph.persisters.DollarWrapper",
+    "item": "12000.00"
+  },
+  "/formW2s/#65104ace-78fb-4216-a0d3-312ecf968d31/nonstandardOrCorrectedChoice": {
+    "$type": "gov.irs.factgraph.persisters.EnumWrapper",
+    "item": {
+      "value": "neither",
+      "enumOptionsPath": "/w2NonstandardCorrectedOptions"
+    }
+  },
+  "/interestReports/#d5246108-e050-437d-8978-6975181e2b1a/payer": {
+    "$type": "gov.irs.factgraph.persisters.StringWrapper",
+    "item": "Lendquick"
+  },
+  "/filers/#6e683c7b-2694-4884-b269-87275170fa53/firstName": {
+    "$type": "gov.irs.factgraph.persisters.StringWrapper",
+    "item": "Michael"
+  },
+  "/interestReports/#4dab0763-fc4c-4459-a47c-770fc04d2afb/filer": {
+    "$type": "gov.irs.factgraph.persisters.CollectionItemWrapper",
+    "item": {
+      "id": "fe689e56-8317-4e63-9807-26c7042d9dae"
+    }
+  },
+  "/familyAndHouseholdIsDone": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": true
+  },
+  "/form1099Gs/#b0a6ba52-f5df-47df-a386-48c5d1ce22a5/hasSeenLastAvailableScreen": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": true
+  },
+  "/receivedDigitalAssets": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": false
+  },
+  "/hasSeenReviewScreen": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": true
+  },
+  "/filers/#fe689e56-8317-4e63-9807-26c7042d9dae/hasIpPin": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": false
+  },
+  "/hasSome1099rFormsBeforeSectionEnabled": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": false
+  },
+  "/filers/#fe689e56-8317-4e63-9807-26c7042d9dae/isStudent": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": false
+  },
+  "/form1099Gs": {
+    "$type": "gov.irs.factgraph.persisters.CollectionWrapper",
+    "item": {
+      "items": [
+        "2b514d0e-d87d-4762-8bf7-e8d26f74b309",
+        "b0a6ba52-f5df-47df-a386-48c5d1ce22a5"
+      ]
+    }
+  },
+  "/formW2s/#27b51972-33d4-4c94-96bc-b4514506fbcd/writableMedicareWithholding": {
+    "$type": "gov.irs.factgraph.persisters.DollarWrapper",
+    "item": "1500.00"
+  },
+  "/interestReportsIsDone": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": true
+  },
+  "/hsaDistributions": {
+    "$type": "gov.irs.factgraph.persisters.CollectionWrapper",
+    "item": {
+      "items": []
+    }
+  },
+  "/formW2s/#65104ace-78fb-4216-a0d3-312ecf968d31/writableMedicareWithholding": {
+    "$type": "gov.irs.factgraph.persisters.DollarWrapper",
+    "item": "3000.00"
+  },
+  "/interestReports/#14216d63-3884-4d0d-9ce4-e7a9e1c5abe8/factaFilingRequired": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": false
+  },
+  "/interestReports/#4dab0763-fc4c-4459-a47c-770fc04d2afb/writable1099Amount": {
+    "$type": "gov.irs.factgraph.persisters.DollarWrapper",
+    "item": "300.00"
+  },
+  "/form1099Gs/#2b514d0e-d87d-4762-8bf7-e8d26f74b309/payer": {
+    "$type": "gov.irs.factgraph.persisters.StringWrapper",
+    "item": "State of California"
+  },
+  "/formW2s/#27b51972-33d4-4c94-96bc-b4514506fbcd/writableMedicareWages": {
+    "$type": "gov.irs.factgraph.persisters.DollarWrapper",
+    "item": "60000.00"
+  },
+  "/spouseIncomeFormsInScopedState": {
+    "$type": "gov.irs.factgraph.persisters.EnumWrapper",
+    "item": {
+      "value": "onlySame",
+      "enumOptionsPath": "/primaryFilerW2And1099IntStateOptions"
+    }
+  },
+  "/formW2s/#65104ace-78fb-4216-a0d3-312ecf968d31/employerAddress": {
+    "$type": "gov.irs.factgraph.persisters.AddressWrapper",
+    "item": {
+      "streetAddress": "22 Main street",
+      "city": "Citrus Grove",
+      "postalCode": "90992",
+      "stateOrProvence": "CA",
+      "country": ""
+    }
+  },
+  "/form1099Gs/#b0a6ba52-f5df-47df-a386-48c5d1ce22a5/writableStateIdNumber": {
+    "$type": "gov.irs.factgraph.persisters.StringWrapper",
+    "item": "cdefghi"
+  },
+  "/form1099Gs/#2b514d0e-d87d-4762-8bf7-e8d26f74b309/writableFederalTaxWithheld": {
+    "$type": "gov.irs.factgraph.persisters.DollarWrapper",
+    "item": "500.00"
+  },
+  "/form1099Gs/#2b514d0e-d87d-4762-8bf7-e8d26f74b309/repaid": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": true
+  },
+  "/formW2s/#27b51972-33d4-4c94-96bc-b4514506fbcd/addressMatchesReturn": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": true
+  },
+  "/interestReports/#4dab0763-fc4c-4459-a47c-770fc04d2afb/writableTaxWithheld": {
+    "$type": "gov.irs.factgraph.persisters.DollarWrapper",
+    "item": "25.00"
+  },
+  "/interestReports/#14216d63-3884-4d0d-9ce4-e7a9e1c5abe8/writableTaxWithheld": {
+    "$type": "gov.irs.factgraph.persisters.DollarWrapper",
+    "item": "11.00"
+  },
+  "/interestReports/#d5246108-e050-437d-8978-6975181e2b1a/hasSeenLastAvailableScreen": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": true
+  },
+  "/form1099Gs/#b0a6ba52-f5df-47df-a386-48c5d1ce22a5/payer/tin": {
+    "$type": "gov.irs.factgraph.persisters.EinWrapper",
+    "item": {
+      "prefix": "00",
+      "serial": "2229988"
+    }
+  },
+  "/interestReports/#4dab0763-fc4c-4459-a47c-770fc04d2afb/hasSeenLastAvailableScreen": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": true
+  },
+  "/email": {
+    "$type": "gov.irs.factgraph.persisters.EmailAddressWrapper",
+    "item": {
+      "email": "beingwithholding@example.com"
+    }
+  },
+  "/interestReports/#4dab0763-fc4c-4459-a47c-770fc04d2afb/factaFilingRequired": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": false
+  },
+  "/interestReports/#d5246108-e050-437d-8978-6975181e2b1a/no1099Amount": {
+    "$type": "gov.irs.factgraph.persisters.DollarWrapper",
+    "item": "500.00"
+  },
+  "/socialSecurityReports/#2dfa8fa4-c727-4b7e-bafa-e04f1b669c6c/writableSsaFederalTaxWithheld": {
+    "$type": "gov.irs.factgraph.persisters.DollarWrapper",
+    "item": "300.00"
+  },
+  "/socialSecurityReports/#f63e2dbc-857a-4862-af4a-5d8f184a0b7b/writableSsaFederalTaxWithheld": {
+    "$type": "gov.irs.factgraph.persisters.DollarWrapper",
+    "item": "200.00"
+  },
+  "/formW2s/#65104ace-78fb-4216-a0d3-312ecf968d31/statutoryEmployee": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": false
+  },
+  "/formW2sIsDone": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": true
+  },
+  "/spouseLastYearAgi": {
+    "$type": "gov.irs.factgraph.persisters.DollarWrapper",
+    "item": "25000.00"
+  },
+  "/form1099Gs/#2b514d0e-d87d-4762-8bf7-e8d26f74b309/writableStateIdNumber": {
+    "$type": "gov.irs.factgraph.persisters.StringWrapper",
+    "item": "abcdefg"
+  },
+  "/signReturnIdentity": {
+    "$type": "gov.irs.factgraph.persisters.EnumWrapper",
+    "item": {
+      "value": "lastYearAgi",
+      "enumOptionsPath": "/signReturnIdentityOptions"
+    }
+  },
+  "/someFilerHadNonW2HsaActivity": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": false
+  },
+  "/formW2s/#27b51972-33d4-4c94-96bc-b4514506fbcd/writableFederalWithholding": {
+    "$type": "gov.irs.factgraph.persisters.DollarWrapper",
+    "item": "5500.00"
+  },
+  "/filedLastYear": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": true
+  },
+  "/spouseReceivedAlaskaPfd": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": false
+  },
+  "/filers/#6e683c7b-2694-4884-b269-87275170fa53/canBeClaimed": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": false
+  },
+  "/formW2s/#27b51972-33d4-4c94-96bc-b4514506fbcd/statutoryEmployee": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": false
+  },
+  "/flowHasAmountChanged": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": false
+  },
+  "/meta/migrationsApplied": {
+    "$type": "gov.irs.factgraph.persisters.IntWrapper",
+    "item": 2
+  },
+  "/filingStatusChoice": {
+    "$type": "gov.irs.factgraph.persisters.EnumWrapper",
+    "item": {
+      "value": "wantsMarriedFilingJointly",
+      "enumOptionsPath": "/filingStatusInitialOptions"
+    }
+  },
+  "/filers/#6e683c7b-2694-4884-b269-87275170fa53/isBlind": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": false
+  },
+  "/form1099Gs/#2b514d0e-d87d-4762-8bf7-e8d26f74b309/payer/tin": {
+    "$type": "gov.irs.factgraph.persisters.EinWrapper",
+    "item": {
+      "prefix": "00",
+      "serial": "2355666"
+    }
+  },
+  "/filers/#6e683c7b-2694-4884-b269-87275170fa53/isUsCitizenFullYear": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": true
+  },
+  "/filers/#6e683c7b-2694-4884-b269-87275170fa53/hasIpPin": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": false
+  },
+  "/address": {
+    "$type": "gov.irs.factgraph.persisters.AddressWrapper",
+    "item": {
+      "streetAddress": "2290 Stairway drive",
+      "city": "Santa Clarita",
+      "postalCode": "90210",
+      "stateOrProvence": "CA",
+      "country": ""
+    }
+  },
+  "/filingStatus": {
+    "$type": "gov.irs.factgraph.persisters.EnumWrapper",
+    "item": {
+      "value": "marriedFilingJointly",
+      "enumOptionsPath": "/filingStatusOptions"
+    }
+  },
+  "/filers": {
+    "$type": "gov.irs.factgraph.persisters.CollectionWrapper",
+    "item": {
+      "items": [
+        "6e683c7b-2694-4884-b269-87275170fa53",
+        "fe689e56-8317-4e63-9807-26c7042d9dae"
+      ]
+    }
+  },
+  "/filers/#fe689e56-8317-4e63-9807-26c7042d9dae/isPrimaryFiler": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": false
+  },
+  "/form1099GsIsDone": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": true
+  },
+  "/interestReports/#501aef19-f184-4bd8-8f52-8acb21853d38/payer": {
+    "$type": "gov.irs.factgraph.persisters.StringWrapper",
+    "item": "Bank of Banktown USA"
+  },
+  "/formW2s/#27b51972-33d4-4c94-96bc-b4514506fbcd/thirdPartySickPay": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": false
+  },
+  "/form1099Rs": {
+    "$type": "gov.irs.factgraph.persisters.CollectionWrapper",
+    "item": {
+      "items": []
+    }
+  },
+  "/wantsCommsFormat": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": false
+  },
+  "/livedTogetherAllYearWithSpouse": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": true
+  },
+  "/filers/#fe689e56-8317-4e63-9807-26c7042d9dae/occupation": {
+    "$type": "gov.irs.factgraph.persisters.StringWrapper",
+    "item": "Lawyer"
+  },
+  "/interestReports/#501aef19-f184-4bd8-8f52-8acb21853d38/writableTaxWithheld": {
+    "$type": "gov.irs.factgraph.persisters.DollarWrapper",
+    "item": "40.00"
+  },
+  "/hasForeignTrustsTransactions": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": false
+  },
+  "/interestReports/#d5246108-e050-437d-8978-6975181e2b1a/has1099": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": false
+  },
+  "/formW2s/#65104ace-78fb-4216-a0d3-312ecf968d31/writableMedicareWages": {
+    "$type": "gov.irs.factgraph.persisters.DollarWrapper",
+    "item": "100000.00"
+  },
+  "/interestReports/#14216d63-3884-4d0d-9ce4-e7a9e1c5abe8/payer/tin": {
+    "$type": "gov.irs.factgraph.persisters.EinWrapper",
+    "item": {
+      "prefix": "00",
+      "serial": "9999292"
+    }
+  },
+  "/filers/#6e683c7b-2694-4884-b269-87275170fa53/tin": {
+    "$type": "gov.irs.factgraph.persisters.TinWrapper",
+    "item": {
+      "area": "289",
+      "group": "00",
+      "serial": "2229"
+    }
+  },
+  "/hadStudentLoanInterestPayments": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": false
+  },
+  "/primaryFilerW2And1099IntInScopedState": {
+    "$type": "gov.irs.factgraph.persisters.EnumWrapper",
+    "item": {
+      "value": "onlySame",
+      "enumOptionsPath": "/primaryFilerW2And1099IntStateOptions"
+    }
+  },
+  "/form1099Gs/#2b514d0e-d87d-4762-8bf7-e8d26f74b309/writableStateTaxWithheld": {
+    "$type": "gov.irs.factgraph.persisters.DollarWrapper",
+    "item": "250.00"
+  },
+  "/formW2s/#65104ace-78fb-4216-a0d3-312ecf968d31/addressMatchesReturn": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": true
+  },
+  "/form1099Gs/#b0a6ba52-f5df-47df-a386-48c5d1ce22a5/writableState": {
+    "$type": "gov.irs.factgraph.persisters.EnumWrapper",
+    "item": {
+      "value": "sameState",
+      "enumOptionsPath": "/incomeFormStateOptions"
+    }
+  },
+  "/interestReports/#501aef19-f184-4bd8-8f52-8acb21853d38/payer/tin": {
+    "$type": "gov.irs.factgraph.persisters.EinWrapper",
+    "item": {
+      "prefix": "00",
+      "serial": "1235495"
+    }
+  },
+  "/socialSecurityReports/#f63e2dbc-857a-4862-af4a-5d8f184a0b7b/filer": {
+    "$type": "gov.irs.factgraph.persisters.CollectionItemWrapper",
+    "item": {
+      "id": "fe689e56-8317-4e63-9807-26c7042d9dae"
+    }
+  },
+  "/paidEstimatedTaxesOrFromLastYear": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": false
+  }
+}

@@ -1,0 +1,70 @@
+<!--/* Direct File's step indicator: one segment per flow module, and no labels on them.
+
+       WHY THIS OVERRIDES THE SCAFFOLD'S. The shipped fragment draws one labelled segment per page,
+       which reads well for a ten-page flow and not at all for this one. 138 pages gave 138 segments;
+       USWDS sizes a segment `flex: 1 1 0%` so the bars themselves always fit, but a label cannot
+       shrink below its longest word, so the row ran off the side of the viewport — and "1 of 138"
+       is not a number anyone is tracking.
+
+       Two changes, and they are independent.
+
+       SECTIONS, NOT PAGES. `sections` and `sectionIndex` come from the scaffold beside the
+       `pages`/`stepIndex` the default fragment uses: one entry per flow module, in flow order, which
+       is 25 here. That is the unit a taxpayer recognises — "Income sources", "Filing status" — and
+       it is the same grouping Browse All uses, so the label comes from the same
+       `all-screens.section.*` key rather than from a second list of the same 25 names.
+
+       NO LABELS. Even 25 labels do not fit; `usa-step-indicator--no-labels` is USWDS's own answer
+       for a process this long. What is lost is the per-segment link back to a completed section —
+       the label span carries it and the modifier hides that span. That is a real trade and it is
+       made deliberately: those links were already unreachable at 138 segments, the header below
+       still names the section you are in, and Browse All is this application's navigation surface.
+       Each segment keeps a `title`, so hovering one still says which section it is. */-->
+<div class="usa-step-indicator usa-step-indicator--no-labels margin-top-3" th:if="${exclude == false}"
+     th:with="currentSection=${sections[sectionIndex]}">
+    <ol class="usa-step-indicator__segments">
+        <!--/* Three variants rather than one with a computed class, which is the shape the
+               scaffold's own fragment uses: Thymeleaf will not nest `${}` inside a literal
+               concatenation, so a single `th:class` ternary does not parse. */-->
+        <li class="usa-step-indicator__segment usa-step-indicator__segment--complete"
+            th:each="section, iterStat : ${sections}" th:if="${iterStat.index < sectionIndex}"
+            th:title="#{${'all-screens.section.' + section.module}}">
+            <span class="usa-step-indicator__segment-label"
+                  th:text="#{${'all-screens.section.' + section.module}}"></span>
+        </li>
+        <li class="usa-step-indicator__segment usa-step-indicator__segment--current"
+            th:each="section, iterStat : ${sections}" th:if="${iterStat.index == sectionIndex}"
+            aria-current="step" th:title="#{${'all-screens.section.' + section.module}}">
+            <span class="usa-step-indicator__segment-label"
+                  th:text="#{${'all-screens.section.' + section.module}}"></span>
+        </li>
+        <li class="usa-step-indicator__segment"
+            th:each="section, iterStat : ${sections}" th:if="${iterStat.index > sectionIndex}"
+            th:title="#{${'all-screens.section.' + section.module}}">
+            <span class="usa-step-indicator__segment-label"
+                  th:text="#{${'all-screens.section.' + section.module}}"></span>
+        </li>
+    </ol>
+
+    <div class="usa-step-indicator__header">
+        <div class="usa-step-indicator__heading">
+            <!--/* The whole of the accessible information, since the segment labels are hidden. */-->
+            <span class="usa-sr-only">
+                <th:block th:text="#{step-indicator.step}"></th:block>
+                <th:block th:text="${sectionIndex + 1}"></th:block>
+                <th:block th:text="#{step-indicator.of}"></th:block>
+                <th:block th:text="${sectionTotal}"></th:block>:
+                <th:block th:text="#{${'all-screens.section.' + currentSection.module}}"></th:block>
+            </span>
+
+            <span class="usa-step-indicator__heading-counter" aria-hidden="true">
+                <span class="usa-step-indicator__current-step" th:text="${sectionIndex + 1}"></span>
+                <span class="usa-step-indicator__total-steps">
+                    <span th:text="#{step-indicator.of}"></span>
+                    <span th:text="${sectionTotal}"></span>
+                </span><span class="usa-step-indicator__heading-text"
+                             th:text="#{${'all-screens.section.' + currentSection.module}}"></span>
+            </span>
+        </div>
+    </div>
+</div>

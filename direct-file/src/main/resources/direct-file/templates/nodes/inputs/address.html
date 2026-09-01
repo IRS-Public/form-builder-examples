@@ -1,0 +1,48 @@
+<!--/* The six fields of a Fact Graph Address, as one fieldset.
+
+       The question is the legend and each box carries its own label, which is why Address registers
+       with suppliesOwnLabel=true — fg-set must not also put a <label for> in front of the group.
+
+       Country is disabled and carries no name: Direct File never asks (every address it accepts is
+       a US one, and AddressFactory defaults to it), but showing the field is what makes that
+       visible rather than mysterious. address.js sends the value from `data-country` regardless.
+
+       The state select's option list comes from the Address parser and its labels from this app's
+       locales, so the list is translated like everything else. AE appears four times because
+       upstream lists the four Armed Forces regions separately over one stored code. */-->
+<fieldset class="usa-fieldset" th:attr="aria-describedby=${hintId}, data-country=${country}">
+  <legend class="usa-legend twe-question">
+    <div th:utext="#{${contentKey} + .question}" th:remove="tag"></div>
+    <span th:if="${!optional}" aria-hidden="true" class="usa-hint" th:text="#{components.fg-set.required}"></span>
+  </legend>
+  <div th:replace="~{nodes/hint}"></div>
+  <div th:replace="~{nodes/modal-link}"></div>
+
+  <label class="usa-label" th:for="${controlId} + '-country'" th:text="#{inputs.address.country}"></label>
+  <input class="usa-input" th:id="${controlId} + '-country'" type="text" th:value="${country}" disabled>
+
+  <label class="usa-label" th:for="${controlId} + '-street'" th:text="#{inputs.address.street}"></label>
+  <input class="usa-input" th:id="${controlId} + '-street'" type="text" th:name="${controlId} + '-street'"
+         maxlength="35" autocomplete="address-line1" th:required="${not optional}" aria-invalid="false">
+
+  <label class="usa-label" th:for="${controlId} + '-street2'" th:text="#{inputs.address.street2}"></label>
+  <input class="usa-input" th:id="${controlId} + '-street2'" type="text" th:name="${controlId} + '-street2'"
+         maxlength="35" autocomplete="address-line2" aria-invalid="false">
+
+  <label class="usa-label" th:for="${controlId} + '-city'" th:text="#{inputs.address.city}"></label>
+  <input class="usa-input" th:id="${controlId} + '-city'" type="text" th:name="${controlId} + '-city'"
+         maxlength="22" autocomplete="address-level2" th:required="${not optional}" aria-invalid="false">
+
+  <label class="usa-label" th:for="${controlId} + '-state'" th:text="#{inputs.address.state}"></label>
+  <select class="usa-select" th:id="${controlId} + '-state'" th:name="${controlId} + '-state'"
+          th:required="${not optional}" aria-invalid="false">
+    <option value="" th:text="#{components.select.select}"></option>
+    <option th:each="state : ${states}" th:value="${state.value}" th:text="#{${state.labelKey}}"></option>
+  </select>
+
+  <label class="usa-label" th:for="${controlId} + '-zip'" th:text="#{inputs.address.zip}"></label>
+  <input class="usa-input usa-input--medium" th:id="${controlId} + '-zip'" type="text" th:name="${controlId} + '-zip'"
+         maxlength="10" inputmode="numeric" autocomplete="postal-code"
+         th:required="${not optional}" aria-invalid="false"
+         th:attr="data-invalid-message=#{inputs.address.invalid}">
+</fieldset>

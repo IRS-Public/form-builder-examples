@@ -47,6 +47,8 @@ jobs:
             uswds: true
           - app: benefits-enrollment
             resources: src/main/resources/benefits-enrollment
+          - app: direct-file
+            resources: src/main/resources/direct-file
     defaults:
       run:
         working-directory: ${{ matrix.app }}

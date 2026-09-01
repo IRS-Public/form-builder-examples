@@ -1,0 +1,70 @@
+{
+  "$comment": [
+    "This app, as Fact Explorer sees it.",
+    "",
+    "The descriptor lives here rather than inside Fact Explorer so the values sit beside the",
+    "Main.scala they mirror, and so this repo stays self-contained. Fact Explorer's",
+    "scripts/build-registry.mjs globs ../*/fact-explorer.app.json and merges every one it finds — so",
+    "this file IS the registration. Put this repo beside fact-explorer and it appears in the app",
+    "picker; there is no list to edit.",
+    "",
+    "Keep in step with src/main/scala/.../Main.scala and this repo's Makefile PORT."
+  ],
+
+  "id": "direct-file",
+  "label": "Direct File",
+  "appId": "direct-file",
+  "basePath": "/app/direct-file",
+
+  "storagePrefix": "direct-file",
+  "devPort": 3008,
+
+  "resourceRoot": "src/main/resources",
+
+  "engine": {
+    "bundle": "resources/vendor/fact-graph/factgraph-3.1.0.js",
+    "dictionary": "resources/fact-dictionary.xml"
+  },
+
+  "$comment_capabilities": [
+    "What this app was generated with. Fact Explorer prunes its menu from these: an app without",
+    "allScreens gets no Browse All or Path Mode entry, because those pages do not exist and the link",
+    "would 404."
+  ],
+  "capabilities": {
+    "allScreens": true,
+    "scenarioMode": true,
+    "authorMode": true
+  },
+
+  "$comment_scenarios": [
+    "null when this app has no scenario corpus — Fact Explorer then shows a scenario picker with no",
+    "filter dropdowns rather than a broken one. `vocabulary` names a filter set in",
+    "fact-explorer/src/model/scenarios/; 'none' is the floor and is always available."
+  ],
+  "scenarios": {
+    "dir": "scenarios",
+    "vocabulary": "direct-file"
+  },
+
+  "$comment_customFlowTags": [
+    "Mirror FormBuilderApp.nodeTypes here. A flow tag the scaffold has never heard of reaches the graph",
+    "as a real node only if it is declared — undeclared tags are rejected, which is what makes a typo",
+    "findable rather than silently invisible."
+  ],
+  "customFlowTags": [],
+
+  "$comment_pagePrefixes": [
+    "Short ids for the node generator, one per Direct File category route. Not optional in",
+    "practice here: this flow collapses to ~185 pages, and a graph whose node ids are minted from",
+    "whole `/you-and-your-family/about-you/...` routes is unreadable."
+  ],
+  "pagePrefixes": {
+    "/": "start",
+    "/you-and-your-family": "family",
+    "/income": "income",
+    "/credits-and-deductions": "credits",
+    "/your-taxes": "taxes",
+    "/complete": "complete"
+  }
+}

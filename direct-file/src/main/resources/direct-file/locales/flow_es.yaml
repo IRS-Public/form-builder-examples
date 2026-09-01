@@ -1,0 +1,15 @@
+# The Spanish half of the flow's authored text.
+#
+# Empty on purpose, for now. The key set is owned by flow_en.yaml, which the transpiler's output
+# regenerates on every build; until stage 4 inlines the real content, every key here would be a
+# translation of a placeholder ("about-you-basic-info", a list of component names) and would be
+# retired the moment that content arrives.
+#
+# Spanish is not being written by hand for this application. Direct File already ships its own
+# `es` locale beside the `en` one the content components name, so stage 4 reads both and emits this
+# file the same way it emits flow_en.yaml. Until then the resolver falls back to English, and the
+# `/es/` pages render the English placeholders.
+#
+# Markup inside a value is deliberate and must survive translation: <fg-show> prints a fact, and
+# <modal-link for="…"> has to keep its `for` pointing at the same modal id.
+{}

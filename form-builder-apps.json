@@ -1,4 +1,4 @@
 {
   "defaultAppId": "credit-assistant",
-  "order": ["credit-assistant", "twe", "benefits-enrollment"]
+  "order": ["credit-assistant", "twe", "benefits-enrollment", "direct-file"]
 }

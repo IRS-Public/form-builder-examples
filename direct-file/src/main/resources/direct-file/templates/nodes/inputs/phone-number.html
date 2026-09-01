@@ -1,0 +1,7 @@
+<!--/* A US phone number, written (555) 555-5555 and stored as E.164 (+15555555555).
+       autocomplete="tel" is wanted here, unlike on the TIN and the PINs. */-->
+<input th:id="${controlId}" class="usa-input" type="tel" th:name="${controlId}"
+       maxlength="14" inputmode="tel" autocomplete="tel"
+       th:required="${not optional}" aria-invalid="false"
+       th:attr="aria-describedby=${hintId}, data-invalid-message=#{inputs.phone-number.invalid}"
+>

@@ -1,0 +1,10 @@
+<!--/* A Social Security number or ITIN. 11 characters, because the browser writes 123-45-6789 and
+       masked-number.js strips the hyphens before handing the digits to TinFactory. inputmode
+       numeric rather than type=number: a leading zero is significant here and type=number eats it.
+       autocomplete off and no `name` a password manager recognises — this is the one field on the
+       page that must not be remembered by the browser. */-->
+<input th:id="${controlId}" class="usa-input" type="text" th:name="${controlId}"
+       maxlength="11" inputmode="numeric" autocomplete="off"
+       th:required="${not optional}" aria-invalid="false"
+       th:attr="aria-describedby=${hintId}, data-invalid-message=#{inputs.tin.invalid}"
+>

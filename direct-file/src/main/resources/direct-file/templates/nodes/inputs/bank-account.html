@@ -1,0 +1,37 @@
+<!--/* A Fact Graph BankAccount: the kind of account, its routing number and its account number.
+
+       Checking/Savings are radios rather than a select because there are two of them, and they are
+       fields of the BankAccount value rather than options on an enum fact — which is why this is one
+       input type instead of a built-in enum beside two texts. */-->
+<fieldset class="usa-fieldset" th:attr="aria-describedby=${hintId}">
+  <legend class="usa-legend twe-question">
+    <div th:utext="#{${contentKey} + .question}" th:remove="tag"></div>
+    <span th:if="${!optional}" aria-hidden="true" class="usa-hint" th:text="#{components.fg-set.required}"></span>
+  </legend>
+  <div th:replace="~{nodes/hint}"></div>
+  <div th:replace="~{nodes/modal-link}"></div>
+
+  <div class="usa-radio">
+    <input class="usa-radio__input" type="radio" value="Checking"
+           th:id="${controlId} + '-type-checking'" th:name="${controlId} + '-type'"
+           th:required="${not optional}" aria-invalid="false">
+    <label class="usa-radio__label" th:for="${controlId} + '-type-checking'" th:text="#{inputs.bank-account.checking}"></label>
+  </div>
+  <div class="usa-radio">
+    <input class="usa-radio__input" type="radio" value="Savings"
+           th:id="${controlId} + '-type-savings'" th:name="${controlId} + '-type'"
+           th:required="${not optional}" aria-invalid="false">
+    <label class="usa-radio__label" th:for="${controlId} + '-type-savings'" th:text="#{inputs.bank-account.savings}"></label>
+  </div>
+
+  <label class="usa-label" th:for="${controlId} + '-routing'" th:text="#{inputs.bank-account.routingNumber}"></label>
+  <input class="usa-input usa-input--medium" th:id="${controlId} + '-routing'" type="text" th:name="${controlId} + '-routing'"
+         maxlength="9" inputmode="numeric" autocomplete="off"
+         th:required="${not optional}" aria-invalid="false"
+         th:attr="data-invalid-message=#{inputs.bank-account.invalid}">
+
+  <label class="usa-label" th:for="${controlId} + '-account'" th:text="#{inputs.bank-account.accountNumber}"></label>
+  <input class="usa-input" th:id="${controlId} + '-account'" type="text" th:name="${controlId} + '-account'"
+         maxlength="17" inputmode="numeric" autocomplete="off"
+         th:required="${not optional}" aria-invalid="false">
+</fieldset>

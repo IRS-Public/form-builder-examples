@@ -1,0 +1,7 @@
+<!--/* An employer identification number, written 12-3456789. See tin.html for why this is a text
+       input with an inputmode rather than a number. */-->
+<input th:id="${controlId}" class="usa-input" type="text" th:name="${controlId}"
+       maxlength="10" inputmode="numeric" autocomplete="off"
+       th:required="${not optional}" aria-invalid="false"
+       th:attr="aria-describedby=${hintId}, data-invalid-message=#{inputs.ein.invalid}"
+>

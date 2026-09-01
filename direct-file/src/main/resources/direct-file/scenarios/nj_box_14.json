@@ -1,0 +1,643 @@
+{
+  "/1095AsIsDone": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": true
+  },
+  "/formW2s/#2ae39874-222a-5890-b737-70052c1751f3/importedStatutoryEmployee": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": false
+  },
+  "/formW2s/#2ae39874-222a-5890-b737-70052c1751f3/isImported": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": true
+  },
+  "/formW2s/#2ae39874-222a-5890-b737-70052c1751f3/retirementPlan": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": false
+  },
+  "/hasDistributionsInLastThreeYears": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": false
+  },
+  "/1095As/#91bd2351-b9bd-49da-bd23-d47fac641fef/hasChangeInCircumstance": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": false
+  },
+  "/importedPrimaryFilerLastName": {
+    "$type": "gov.irs.factgraph.persisters.StringWrapper",
+    "item": "Simpson"
+  },
+  "/hasForeignAccounts": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": false
+  },
+  "/1095As/#91bd2351-b9bd-49da-bd23-d47fac641fef/writableSpecialPolicyModificationInStartingMonth": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": false
+  },
+  "/filers/#c6a6da1f-6967-4828-89b6-0cd40dd34fe6/isDisabled": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": false
+  },
+  "/wantsCustomLanguage": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": false
+  },
+  "/importedPrimaryFilerMiddleInitial": {
+    "$type": "gov.irs.factgraph.persisters.StringWrapper",
+    "item": "J"
+  },
+  "/incomeSourcesSupported": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": true
+  },
+  "/formW2s/#2ae39874-222a-5890-b737-70052c1751f3/writableHasBox14Codes": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": true
+  },
+  "/filers/#c6a6da1f-6967-4828-89b6-0cd40dd34fe6/dateOfBirth": {
+    "$type": "gov.irs.factgraph.persisters.DayWrapper",
+    "item": {
+      "date": "1955-03-09"
+    }
+  },
+  "/formW2s/#2ae39874-222a-5890-b737-70052c1751f3/writableWages": {
+    "$type": "gov.irs.factgraph.persisters.DollarWrapper",
+    "item": "17000.00"
+  },
+  "/1095As/#91bd2351-b9bd-49da-bd23-d47fac641fef/coverageMonths": {
+    "$type": "gov.irs.factgraph.persisters.MultEnumWrapper",
+    "item": {
+      "values": [
+        "apr",
+        "oct",
+        "mar",
+        "jan",
+        "aug",
+        "dec",
+        "jul",
+        "nov",
+        "sep",
+        "jun",
+        "may",
+        "feb"
+      ],
+      "enumOptionsPath": "/1095As/*/monthOptions"
+    }
+  },
+  "/1095As/#91bd2351-b9bd-49da-bd23-d47fac641fef/writablePolicyStartDate": {
+    "$type": "gov.irs.factgraph.persisters.DayWrapper",
+    "item": {
+      "date": "2024-01-01"
+    }
+  },
+  "/formW2s/#2ae39874-222a-5890-b737-70052c1751f3/importedAddressMatchesReturn": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": false
+  },
+  "/wasK12Educators": {
+    "$type": "gov.irs.factgraph.persisters.EnumWrapper",
+    "item": {
+      "value": "neither",
+      "enumOptionsPath": "/k12EducatorOptions"
+    }
+  },
+  "/selfSelectPin": {
+    "$type": "gov.irs.factgraph.persisters.PinWrapper",
+    "item": {
+      "pin": "11111"
+    }
+  },
+  "/1095As": {
+    "$type": "gov.irs.factgraph.persisters.CollectionWrapper",
+    "item": {
+      "items": [
+        "91bd2351-b9bd-49da-bd23-d47fac641fef"
+      ]
+    }
+  },
+  "/maritalStatus": {
+    "$type": "gov.irs.factgraph.persisters.EnumWrapper",
+    "item": {
+      "value": "single",
+      "enumOptionsPath": "/maritalStatusOptions"
+    }
+  },
+  "/interestReports": {
+    "$type": "gov.irs.factgraph.persisters.CollectionWrapper",
+    "item": {
+      "items": []
+    }
+  },
+  "/writableHasPtcQualifyingPlan": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": true
+  },
+  "/1095As/#91bd2351-b9bd-49da-bd23-d47fac641fef/writableSlcspAnnualPremium": {
+    "$type": "gov.irs.factgraph.persisters.DollarWrapper",
+    "item": "10000.00"
+  },
+  "/filers/#c6a6da1f-6967-4828-89b6-0cd40dd34fe6/isPrimaryFiler": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": true
+  },
+  "/writableSelfReportedHasMultiple1095As": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": false
+  },
+  "/formW2s/#2ae39874-222a-5890-b737-70052c1751f3/importedRetirementPlan": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": false
+  },
+  "/filers/#c6a6da1f-6967-4828-89b6-0cd40dd34fe6/writableMiddleInitial": {
+    "$type": "gov.irs.factgraph.persisters.StringWrapper",
+    "item": "J"
+  },
+  "/isForeignTrustsGrantor": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": false
+  },
+  "/flowHasSeenAmount": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": true
+  },
+  "/wantsThirdPartyDesignee": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": false
+  },
+  "/formW2s/#2ae39874-222a-5890-b737-70052c1751f3/importedEmployerName": {
+    "$type": "gov.irs.factgraph.persisters.StringWrapper",
+    "item": "RIDGEWOOD ATOMIC POWER AND LIGHT"
+  },
+  "/hasSeenIncomeNotSupportedIntro": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": true
+  },
+  "/socialSecurityReports": {
+    "$type": "gov.irs.factgraph.persisters.CollectionWrapper",
+    "item": {
+      "items": []
+    }
+  },
+  "/formW2s/#2ae39874-222a-5890-b737-70052c1751f3/hasSeenLastAvailableScreen": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": true
+  },
+  "/receivedAlaskaPfd": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": false
+  },
+  "/formW2s/#2ae39874-222a-5890-b737-70052c1751f3/addressMatchesReturn": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": false
+  },
+  "/formW2s/#2ae39874-222a-5890-b737-70052c1751f3/hasRRTACodes": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": false
+  },
+  "/writableHasSelfReportedNonTaxablePayments": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": false
+  },
+  "/formW2s": {
+    "$type": "gov.irs.factgraph.persisters.CollectionWrapper",
+    "item": {
+      "items": [
+        "2ae39874-222a-5890-b737-70052c1751f3"
+      ]
+    }
+  },
+  "/inRegisteredDomesticPartnership": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": false
+  },
+  "/filerResidenceAndIncomeState": {
+    "$type": "gov.irs.factgraph.persisters.EnumWrapper",
+    "item": {
+      "value": "nj",
+      "enumOptionsPath": "/scopedStateOptions"
+    }
+  },
+  "/1095As/#91bd2351-b9bd-49da-bd23-d47fac641fef/hasCoverageMonths": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": true
+  },
+  "/writableHasEmployerSponsoredPlan": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": false
+  },
+  "/hasCdccCarryoverAmountFromPriorTaxYear": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": false
+  },
+  "/writableHasImmigrationStatusNotEligibleForMarketplace": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": false
+  },
+  "/formW2s/#2ae39874-222a-5890-b737-70052c1751f3/writableHasBox12Codes": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": true
+  },
+  "/flowHasSeenDeductions": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": true
+  },
+  "/socialSecurityReportsIsDone": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": true
+  },
+  "/importedPrimaryFilerDateOfBirth": {
+    "$type": "gov.irs.factgraph.persisters.DayWrapper",
+    "item": {
+      "date": "1955-03-09"
+    }
+  },
+  "/flowHasSeenTotalIncomeSummary": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": true
+  },
+  "/importedPrimaryFilerFirstName": {
+    "$type": "gov.irs.factgraph.persisters.StringWrapper",
+    "item": "Marjorie"
+  },
+  "/filers/#c6a6da1f-6967-4828-89b6-0cd40dd34fe6/lastName": {
+    "$type": "gov.irs.factgraph.persisters.StringWrapper",
+    "item": "Simpson"
+  },
+  "/formW2s/#2ae39874-222a-5890-b737-70052c1751f3/filer": {
+    "$type": "gov.irs.factgraph.persisters.CollectionItemWrapper",
+    "item": {
+      "id": "c6a6da1f-6967-4828-89b6-0cd40dd34fe6"
+    }
+  },
+  "/formW2s/#2ae39874-222a-5890-b737-70052c1751f3/ein": {
+    "$type": "gov.irs.factgraph.persisters.EinWrapper",
+    "item": {
+      "prefix": "00",
+      "serial": "3456789"
+    }
+  },
+  "/writableIsAdditionalPersonPartofDifferentTaxFamily": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": false
+  },
+  "/phone": {
+    "$type": "gov.irs.factgraph.persisters.E164Wrapper",
+    "item": {
+      "$type": "gov.irs.factgraph.types.UsPhoneNumber",
+      "areaCode": "222",
+      "officeCode": "333",
+      "lineNumber": "4444"
+    }
+  },
+  "/is1099RFeatureFlagEnabled": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": true
+  },
+  "/familyAndHousehold": {
+    "$type": "gov.irs.factgraph.persisters.CollectionWrapper",
+    "item": {
+      "items": []
+    }
+  },
+  "/formW2s/#2ae39874-222a-5890-b737-70052c1751f3/BOX14_NJ_UIHCWD": {
+    "$type": "gov.irs.factgraph.persisters.DollarWrapper",
+    "item": "160.02"
+  },
+  "/formW2s/#2ae39874-222a-5890-b737-70052c1751f3/importedThirdPartySickPay": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": false
+  },
+  "/disposedDigitalAssets": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": false
+  },
+  "/hasCurrentYearDistributions": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": false
+  },
+  "/filers/#c6a6da1f-6967-4828-89b6-0cd40dd34fe6/identityPin": {
+    "$type": "gov.irs.factgraph.persisters.IpPinWrapper",
+    "item": {
+      "pin": "123456"
+    }
+  },
+  "/formW2s/#2ae39874-222a-5890-b737-70052c1751f3/importedWritableWages": {
+    "$type": "gov.irs.factgraph.persisters.DollarWrapper",
+    "item": "3000.00"
+  },
+  "/filers/#c6a6da1f-6967-4828-89b6-0cd40dd34fe6/occupation": {
+    "$type": "gov.irs.factgraph.persisters.StringWrapper",
+    "item": "Tester"
+  },
+  "/madeIraContributions": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": false
+  },
+  "/flowKnockoutHouseholdEmployee": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": false
+  },
+  "/formW2s/#2ae39874-222a-5890-b737-70052c1751f3/BOX14_NJ_UIWFSWF": {
+    "$type": "gov.irs.factgraph.persisters.DollarWrapper",
+    "item": "151.41"
+  },
+  "/writableIsEnrolledWithOtherFamily": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": false
+  },
+  "/isEssarFeatureFlag": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": true
+  },
+  "/refundViaAch": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": false
+  },
+  "/formW2s/#2ae39874-222a-5890-b737-70052c1751f3/nonstandardOrCorrectedChoice": {
+    "$type": "gov.irs.factgraph.persisters.EnumWrapper",
+    "item": {
+      "value": "neither",
+      "enumOptionsPath": "/w2NonstandardCorrectedOptions"
+    }
+  },
+  "/1095As/#91bd2351-b9bd-49da-bd23-d47fac641fef/writablePremiumsOrSlcspChange": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": false
+  },
+  "/1095As/#91bd2351-b9bd-49da-bd23-d47fac641fef/writablePtcAnnualPremium": {
+    "$type": "gov.irs.factgraph.persisters.DollarWrapper",
+    "item": "10000.00"
+  },
+  "/familyAndHouseholdIsDone": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": true
+  },
+  "/importedPrimaryFilerAddress": {
+    "$type": "gov.irs.factgraph.persisters.AddressWrapper",
+    "item": {
+      "streetAddress": "742 Evergreen Terrace",
+      "city": "Ridgewood",
+      "postalCode": "07450",
+      "stateOrProvence": "NJ",
+      "country": "USA"
+    }
+  },
+  "/writableIsAdditionalPersonInEnrollmentFamily": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": true
+  },
+  "/filers/#c6a6da1f-6967-4828-89b6-0cd40dd34fe6/isBlind": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": false
+  },
+  "/receivedDigitalAssets": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": false
+  },
+  "/filers/#c6a6da1f-6967-4828-89b6-0cd40dd34fe6/canBeClaimed": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": false
+  },
+  "/hasSeenReviewScreen": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": false
+  },
+  "/form1099Gs": {
+    "$type": "gov.irs.factgraph.persisters.CollectionWrapper",
+    "item": {
+      "items": []
+    }
+  },
+  "/writableHasAdvancedPtc": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": false
+  },
+  "/hasSome1099rFormsBeforeSectionEnabled": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": false
+  },
+  "/filers/#c6a6da1f-6967-4828-89b6-0cd40dd34fe6/isUsCitizenFullYear": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": true
+  },
+  "/interestReportsIsDone": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": true
+  },
+  "/filers/#c6a6da1f-6967-4828-89b6-0cd40dd34fe6/hasIpPin": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": true
+  },
+  "/importedPrimaryFilerPhone": {
+    "$type": "gov.irs.factgraph.persisters.E164Wrapper",
+    "item": {
+      "$type": "gov.irs.factgraph.types.UsPhoneNumber",
+      "areaCode": "222",
+      "officeCode": "333",
+      "lineNumber": "4444"
+    }
+  },
+  "/filers/#c6a6da1f-6967-4828-89b6-0cd40dd34fe6/firstName": {
+    "$type": "gov.irs.factgraph.persisters.StringWrapper",
+    "item": "Marjorie"
+  },
+  "/filers/#c6a6da1f-6967-4828-89b6-0cd40dd34fe6/isStudent": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": false
+  },
+  "/formW2s/#2ae39874-222a-5890-b737-70052c1751f3/importedEmployerAddress": {
+    "$type": "gov.irs.factgraph.persisters.AddressWrapper",
+    "item": {
+      "streetAddress": "100 ATOMIC DR",
+      "city": "RIDGEWOOD",
+      "postalCode": "07450",
+      "stateOrProvence": "NJ",
+      "country": "USA"
+    }
+  },
+  "/aboutYouDataWasSaved": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": true
+  },
+  "/formW2s/#2ae39874-222a-5890-b737-70052c1751f3/importedNonstandardOrCorrectedChoice": {
+    "$type": "gov.irs.factgraph.persisters.EnumWrapper",
+    "item": {
+      "value": "neither",
+      "enumOptionsPath": "/w2NonstandardCorrectedOptions"
+    }
+  },
+  "/email": {
+    "$type": "gov.irs.factgraph.persisters.EmailAddressWrapper",
+    "item": {
+      "email": "marge.simpson@gmail.com"
+    }
+  },
+  "/formW2sIsDone": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": true
+  },
+  "/hasSelfReportedContributions": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": false
+  },
+  "/1095As/#91bd2351-b9bd-49da-bd23-d47fac641fef/marketplaceState": {
+    "$type": "gov.irs.factgraph.persisters.EnumWrapper",
+    "item": {
+      "value": "nj",
+      "enumOptionsPath": "/statesAndDistrictsOptions"
+    }
+  },
+  "/someFilerHadNonW2HsaActivity": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": false
+  },
+  "/1095As/#91bd2351-b9bd-49da-bd23-d47fac641fef/policyNumber": {
+    "$type": "gov.irs.factgraph.persisters.StringWrapper",
+    "item": "7890000"
+  },
+  "/flowHasAmountChanged": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": false
+  },
+  "/meta/migrationsApplied": {
+    "$type": "gov.irs.factgraph.persisters.IntWrapper",
+    "item": 2
+  },
+  "/1095As/#91bd2351-b9bd-49da-bd23-d47fac641fef/writableAptcAnnualAmount": {
+    "$type": "gov.irs.factgraph.persisters.DollarWrapper",
+    "item": "11000.00"
+  },
+  "/address": {
+    "$type": "gov.irs.factgraph.persisters.AddressWrapper",
+    "item": {
+      "streetAddress": "742 Evergreen Terrace",
+      "city": "Ridgewood",
+      "postalCode": "07450",
+      "stateOrProvence": "NJ",
+      "country": "USA"
+    }
+  },
+  "/filingStatus": {
+    "$type": "gov.irs.factgraph.persisters.EnumWrapper",
+    "item": {
+      "value": "single",
+      "enumOptionsPath": "/filingStatusOptions"
+    }
+  },
+  "/filers": {
+    "$type": "gov.irs.factgraph.persisters.CollectionWrapper",
+    "item": {
+      "items": [
+        "c6a6da1f-6967-4828-89b6-0cd40dd34fe6",
+        "d5e1490b-bf23-4218-a775-33261c797c4d"
+      ]
+    }
+  },
+  "/form1099GsIsDone": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": true
+  },
+  "/formW2s/#2ae39874-222a-5890-b737-70052c1751f3/statutoryEmployee": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": false
+  },
+  "/wantsCommsFormat": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": false
+  },
+  "/formW2s/#2ae39874-222a-5890-b737-70052c1751f3/thirdPartySickPay": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": false
+  },
+  "/hasForeignTrustsTransactions": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": false
+  },
+  "/formW2s/#2ae39874-222a-5890-b737-70052c1751f3/employerAddress": {
+    "$type": "gov.irs.factgraph.persisters.AddressWrapper",
+    "item": {
+      "streetAddress": "100 ATOMIC DR",
+      "city": "RIDGEWOOD",
+      "postalCode": "07450",
+      "stateOrProvence": "NJ",
+      "country": "USA"
+    }
+  },
+  "/formW2s/#2ae39874-222a-5890-b737-70052c1751f3/importedEmployeeAddress": {
+    "$type": "gov.irs.factgraph.persisters.AddressWrapper",
+    "item": {
+      "streetAddress": "742 EVERGREEN TER",
+      "city": "RIDGEWOOD",
+      "postalCode": "07450",
+      "stateOrProvence": "NJ",
+      "country": "USA"
+    }
+  },
+  "/hasFailedMaxElectronicSigningAttempts": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": false
+  },
+  "/formW2s/#2ae39874-222a-5890-b737-70052c1751f3/employerName": {
+    "$type": "gov.irs.factgraph.persisters.StringWrapper",
+    "item": "RIDGEWOOD ATOMIC POWER AND LIGHT"
+  },
+  "/filers/#c6a6da1f-6967-4828-89b6-0cd40dd34fe6/tin": {
+    "$type": "gov.irs.factgraph.persisters.TinWrapper",
+    "item": {
+      "area": "123",
+      "group": "00",
+      "serial": "1759"
+    }
+  },
+  "/formW2s/#2ae39874-222a-5890-b737-70052c1751f3/401kDeferrals": {
+    "$type": "gov.irs.factgraph.persisters.DollarWrapper",
+    "item": "2000.00"
+  },
+  "/formW2s/#2ae39874-222a-5890-b737-70052c1751f3/importedEin": {
+    "$type": "gov.irs.factgraph.persisters.EinWrapper",
+    "item": {
+      "prefix": "00",
+      "serial": "3456789"
+    }
+  },
+  "/hadStudentLoanInterestPayments": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": false
+  },
+  "/formW2s/#2ae39874-222a-5890-b737-70052c1751f3/addressOverride": {
+    "$type": "gov.irs.factgraph.persisters.AddressWrapper",
+    "item": {
+      "streetAddress": "742 EVERGREEN TER",
+      "city": "RIDGEWOOD",
+      "postalCode": "07450",
+      "stateOrProvence": "NJ",
+      "country": "USA"
+    }
+  },
+  "/primaryFilerW2And1099IntInScopedState": {
+    "$type": "gov.irs.factgraph.persisters.EnumWrapper",
+    "item": {
+      "value": "onlySame",
+      "enumOptionsPath": "/primaryFilerW2And1099IntStateOptions"
+    }
+  },
+  "/paidEstimatedTaxesOrFromLastYear": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": false
+  },
+  "/filers/#d5e1490b-bf23-4218-a775-33261c797c4d/isPrimaryFiler": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": false
+  },
+  "/1095As/#91bd2351-b9bd-49da-bd23-d47fac641fef/writablePolicyEndDate": {
+    "$type": "gov.irs.factgraph.persisters.DayWrapper",
+    "item": {
+      "date": "2024-12-31"
+    }
+  },
+  "/1095As/#91bd2351-b9bd-49da-bd23-d47fac641fef/hasSeenLastAvailableScreen": {
+    "$type": "gov.irs.factgraph.persisters.BooleanWrapper",
+    "item": true
+  }
+}
