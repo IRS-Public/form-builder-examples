@@ -75,7 +75,25 @@ services:
       # tree rather than one per bundle: a per-bundle list is a copy of that package's directory
       # listing that nothing keeps in step, and a bundle missing from it is invisible until someone
       # wonders why their edits do nothing.
-      - ../../taxpert/packages/ui/src:/build/credit-assistant/src/main/resources/credit-assistant/website-static/vendor/taxpert:ro
+      - ../../taxpert/packages/ui/src:/build/credit-assistant/src/main/resources/credit-assistant/website-static/vendor/taxpert
+
+      # TX-3: the workspace bundle, which the mount above does NOT bring with it — dist/ is a
+      # build artifact and is gitignored, so a bind mount of it would create an empty directory
+      # on a fresh clone and the workspace would 404 on the only script it loads. A named volume
+      # seeded from the image instead, exactly as the two below are and for the same reason: the
+      # image builds it (Dockerfile stage 1b) and `make up` needs no host toolchain.
+      #
+      # The trade-off, stated because it is a real one: an edit to taxpert's src/ shows up live
+      # in the mirror above but NOT in the bundle the page actually loads. Work on the package
+      # with `make dev` natively, where copy-shared-ui rebuilds it; on this stack it takes a
+      # `make rebuild`.
+      #
+      # The parent bind mount above is deliberately NOT :ro: this volume nests inside it, and
+      # mounting a volume at a path requires creating that mountpoint directory first. taxpert's
+      # src/ has no dist/ on the host, so with a read-only parent the create fails with "read-only
+      # file system" before the container ever starts. Nothing in this container writes into
+      # vendor/taxpert otherwise — the watcher only runs `sbt ~run`.
+      - taxpert-dist:/build/credit-assistant/src/main/resources/credit-assistant/website-static/vendor/taxpert/dist
 
     restart: unless-stopped
 
@@ -88,3 +106,4 @@ services:
 volumes:
   app-out:
   sbt-cache:
+  taxpert-dist:

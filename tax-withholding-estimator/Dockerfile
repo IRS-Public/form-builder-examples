@@ -63,6 +63,23 @@ RUN --mount=type=cache,target=/root/.cache/coursier \
     --mount=type=cache,target=/root/.sbt \
     cd form-builder && sbt publishLocal
 
+# ---- stage 1b: build the taxpert workspace bundle ----------------------------------
+#
+# TX-3. The workspace ships as one JS bundle plus flattened stylesheets, built from the very src/
+# tree stage 2 vendors beside it — 81 requests on a page become 5. `make copy-shared-ui` runs this
+# build natively; the image builds its own rather than accepting one from the context, so an image
+# can never ship a bundle and a source tree that disagree (taxpert's .dockerignore excludes dist/
+# for exactly that reason).
+#
+# Its own small Node stage: the sbt base has no npm, and stage 2 only installs one late, after the
+# vendored copy it would be needed for.
+FROM node:22-bookworm-slim AS taxpert-ui
+WORKDIR /ui
+COPY --from=taxpert . .
+# `npm install` rather than `npm ci`: this package is a workspace member, so its own lockfile is
+# not the one npm maintains, and `ci` would refuse it.
+RUN --mount=type=cache,target=/root/.npm npm install --no-audit --no-fund && npm run build
+
 # ---- stage 2: generate the static site --------------------------------------------
 FROM sbt-base AS build
 ARG APP_DIR
@@ -77,9 +94,10 @@ COPY . ./
 COPY --from=libs \
      /build/fact-graph/js/target/scala-3.3.6/factgraph-fastopt/main.mjs \
      ./src/main/resources/${RESOURCES_DIR}/website-static/vendor/fact-graph/factgraph-3.1.0.js
-COPY --from=libs \
-     /build/fact-graph/js/target/scala-3.3.6/factgraph-fastopt/main.mjs.map \
-     ./src/main/resources/${RESOURCES_DIR}/website-static/vendor/fact-graph/main.mjs.map
+# DF-8: the .map is deliberately NOT copied. It is 4.6 MB of image size and 4.6 MB of download for
+# anyone who opens DevTools to investigate a slow load — the one person it is meant to help. A
+# native `make copy-fg` still places it beside the bundle, so a host build keeps source-mapped
+# stack traces; the image does not.
 
 # `make copy-shared-ui`: vendor the workspace UI from the taxpert context, mirroring its bundle-dir
 # layout (global-nav/, audit-panel/, shared/, tool-panels/, each with js/styles/templates).
@@ -94,6 +112,7 @@ COPY --from=libs \
 # in the image as a stale vendored copy.
 RUN rm -rf ./src/main/resources/${RESOURCES_DIR}/website-static/vendor/taxpert
 COPY --from=taxpert src ./src/main/resources/${RESOURCES_DIR}/website-static/vendor/taxpert
+COPY --from=taxpert-ui /ui/dist ./src/main/resources/${RESOURCES_DIR}/website-static/vendor/taxpert/dist
 
 # `make copy-uswds`, for the applications that install the design system from npm rather than
 # committing it. npm is needed for nothing else in this image, so it is installed here rather than
