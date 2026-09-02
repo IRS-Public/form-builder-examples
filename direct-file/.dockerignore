@@ -14,3 +14,9 @@
 # local copy must not ride along and win.
 **/website-static/vendor/taxpert/
 **/website-static/vendor/uswds-3.13.0/
+
+# DF-8: the Scala.js source map is 4.6 MB and is not served from the image. Stage 1 builds it and
+# the Dockerfile deliberately does not COPY it in, but this line is the other half of that: the map
+# is gitignored, not context-ignored, so without it a developer's `make copy-fg` copy rides in on
+# `COPY . ./` and lands in the image anyway.
+**/website-static/vendor/fact-graph/*.map

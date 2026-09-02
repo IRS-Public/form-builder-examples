@@ -14,6 +14,16 @@ FG_SOURCE_DIR := ../../fact-graph/js/target/scala-3.3.6/factgraph-fastopt
 FG_TARGET_DIR := ./src/main/resources/credit-assistant/website-static/vendor/fact-graph
 
 SHARED_UI_SRC := node_modules/taxpert/src
+# TX-3: the bundled build of the same package — one JS file, three stylesheets, every template
+# inlined — for this app, which has no bundler. src/ is still vendored beside it and is still the
+# source of truth; see taxpert/packages/ui/scripts/build.mjs.
+SHARED_UI_PKG := node_modules/taxpert
+SHARED_UI_DIST := node_modules/taxpert/dist
+
+# The app-authored trees `validate-taxpert-seam` scans. Deliberately not the whole of
+# website-static/: vendor/ under it is the generated mirror, whose files legitimately
+# import one another by path.
+TAXPERT_SEAM_DIRS := $(RESOURCES_DIR)/templates $(RESOURCES_DIR)/website-static/js $(RESOURCES_DIR)/website-static/styles
 SHARED_UI_TARGET := $(RESOURCES_DIR)/website-static/vendor/taxpert
 
 .PHONY: bootstrap
@@ -152,7 +162,19 @@ copy-shared-ui: ## Copy shared UI components (taxpert) from node_modules
 	@# job, keeps the mount point the compose file needs, and works whether or not the stack is up.
 	mkdir -p $(SHARED_UI_TARGET)
 	find $(SHARED_UI_TARGET) -mindepth 1 -delete
+	@# TX-3. The bundle is a build artifact, so it has to be built before it can be vendored. A
+	@# `file:` install of taxpert is a symlink to a checkout and carries scripts/, so build it here;
+	@# a tarball install ships a prebuilt dist/ and has no scripts/ to run. Neither is a state this
+	@# app can fix on its own, so the third case fails loudly rather than vendoring a mirror whose
+	@# every page would 404 on one script tag.
+	@if [ -f $(SHARED_UI_PKG)/scripts/build.mjs ]; then \
+		npm --prefix $(SHARED_UI_PKG) run build; \
+	elif [ ! -d $(SHARED_UI_DIST) ]; then \
+		echo "==> $(SHARED_UI_DIST) is missing and this install cannot build it — reinstall taxpert"; \
+		exit 1; \
+	fi
 	cp -R $(SHARED_UI_SRC)/. $(SHARED_UI_TARGET)/
+	cp -R $(SHARED_UI_DIST) $(SHARED_UI_TARGET)/dist
 
 .PHONY: check-shared-ui
 check-shared-ui: ## Verify the vendored shared UI matches taxpert's source
@@ -162,8 +184,12 @@ check-shared-ui: ## Verify the vendored shared UI matches taxpert's source
 	@# Whole-tree diff rather than a per-bundle loop: the loop could only check bundles it
 	@# already knew about, so a bundle added to taxpert but not to its list passed here
 	@# while being absent from the browser. This also catches a stale bundle left behind.
-	@diff -r -x .DS_Store $(SHARED_UI_SRC) $(SHARED_UI_TARGET) \
+	@# Two trees now, because the mirror is two things: taxpert's src/, and the bundle built from
+	@# it. `-x dist` keeps the first diff from reporting the second as an extra directory.
+	@diff -r -x .DS_Store -x dist $(SHARED_UI_SRC) $(SHARED_UI_TARGET) \
 		|| { echo "==> vendored shared UI is out of date — run 'make copy-shared-ui'"; exit 1; }
+	@diff -r -x .DS_Store $(SHARED_UI_DIST) $(SHARED_UI_TARGET)/dist \
+		|| { echo "==> vendored taxpert bundle is out of date — run 'make copy-shared-ui'"; exit 1; }
 	@echo "==> vendored shared UI matches taxpert"
 
 .PHONY: test
@@ -208,6 +234,8 @@ ci: ## Run most of the CI checks locally
 	make validate-xml
 	make validate-html
 	make validate-templates
+	make validate-nav-templates
+	make validate-taxpert-seam
 	make validate-js
 	make validate-scala
 	# Skip semgrep (locally) for now
@@ -237,6 +265,63 @@ validate-templates: ## Reject HTML comments inside inline <script> blocks
 	if [ -n "$$bad" ]; then \
 		echo "==> HTML comment inside a <script> — use // instead:"; echo "$$bad"; exit 1; \
 	fi
+
+.PHONY: validate-nav-templates
+validate-nav-templates: ## Fail if the inlined nav templates have drifted from taxpert's
+	@# fragments/workspace-head.html carries a verbatim copy of the five <template> elements
+	@# <taxpert-global-nav> clones its markup from. The copy
+	@# is what removes the fetch, and it is the one thing in this repo that duplicates something the
+	@# package owns. Nothing about it fails on its own: a template the package renames, or a sixth one
+	@# it adds, becomes a bar that throws at render time, in a browser, on a page nobody was looking
+	@# at. So diff the two. check-shared-ui already ties $(SHARED_UI_SRC) to the vendored mirror; this
+	@# ties the fragment to $(SHARED_UI_SRC).
+	@#
+	@# Both sides are extracted the same way — every line from `<template id=` to `</template>` at
+	@# column 0 — which is why the copy in the fragment is not indented. Temp files rather than
+	@# process substitution: CI's /bin/sh is dash, which has none.
+	@a=$$(mktemp); b=$$(mktemp); \
+	awk '/^<template id=/,/^<\/template>/' $(SHARED_UI_SRC)/global-nav/templates/global-nav.html > $$a; \
+	awk '/^<template id=/,/^<\/template>/' $(RESOURCES_DIR)/templates/fragments/workspace-head.html > $$b; \
+	if diff -u $$a $$b; then rm -f $$a $$b; else \
+		echo "==> workspace-head.html has drifted from taxpert's global-nav.html — re-copy the five <template> blocks"; \
+		rm -f $$a $$b; exit 1; \
+	fi
+	@echo "==> inlined nav templates match taxpert"
+
+.PHONY: validate-taxpert-seam
+validate-taxpert-seam: ## Fail if this app imports a taxpert module the bundle already contains
+	@# TX-3. The workspace ships as one bundle (vendor/taxpert/dist/js/taxpert.js), and a file in
+	@# this app that ALSO names a vendored taxpert module by path gets a second copy of it. For a
+	@# module with state in scope — config.js holds the whole workspace configuration — that means
+	@# the page configures one instance while the elements read the other. Nothing throws and
+	@# nothing is logged; the nav simply comes up with no menu.
+	@#
+	@# The modules a direct import is legitimate for are the ones the bundle deliberately leaves
+	@# external, and taxpert writes that list into dist/seam.json rather than leaving it as a
+	@# comment two repositories away. Anything else is the bug above.
+	@#
+	@# Two filters, not one, and both are needed: these files are heavily commented and several of
+	@# the comments name a taxpert module in prose. A load site is a line that also carries an
+	@# `import`, `src=` or `href=`, AND has the path immediately behind a quote, a `|` or a `/` —
+	@# which is true of every real specifier here and of no sentence written about one.
+	@#
+	@# Temp files rather than process substitution: CI's /bin/sh is dash, which has none.
+	@ok=$$(mktemp); found=$$(mktemp); \
+	node -e "for (const m of require('./$(SHARED_UI_DIST)/seam.json').external) console.log(m)" > $$ok; \
+	echo "dist/js/taxpert.js" >> $$ok; \
+	grep -rhE "(th:)?(src|href)=|import" $(TAXPERT_SEAM_DIRS) 2>/dev/null \
+		| grep -ohE "[\"'|/]vendor/taxpert/[A-Za-z0-9._-]+(/[A-Za-z0-9._-]+)*\.js" \
+		| sed 's|.*vendor/taxpert/||' | sort -u > $$found; \
+	bad=$$(grep -vxF -f $$ok $$found || true); \
+	rm -f $$ok $$found; \
+	if [ -n "$$bad" ]; then \
+		echo "==> these taxpert modules are imported by path AND live inside the bundle:"; \
+		echo "$$bad" | sed 's/^/      /'; \
+		echo "    import them from vendor/taxpert/dist/js/taxpert.js instead, or add them to"; \
+		echo "    SHARED_SEAM in taxpert/packages/ui/scripts/build.mjs if a direct import is wanted."; \
+		exit 1; \
+	fi
+	@echo "==> no taxpert module is loaded both bundled and by path"
 
 .PHONY: validate-js
 validate-js: ## Run javascript linter

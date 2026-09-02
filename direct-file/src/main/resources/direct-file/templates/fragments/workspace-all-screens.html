@@ -6,14 +6,22 @@
   toolbar lives in taxpert — see fragments/workspace-head.html.
 */-->
 <th:block th:fragment="workspace-all-screens-head">
-    <link rel="stylesheet" th:href="|${basePath}/resources/vendor/taxpert/audit-panel/styles/all-screens-toolbar.css|" />
+    <link rel="stylesheet" th:href="|${basePath}/resources/vendor/taxpert/dist/styles/all-screens-toolbar.css|" />
 
-    <!-- The workspace's favicon, on a page that is workspace chrome all the way down whether or not
-         the build asked for --auditMode. Same module and same override as
-         fragments/workspace-head.html; installing it twice is a no-op. -->
-    <script type="module" th:src="|${basePath}/resources/vendor/taxpert/shared/js/favicon.js|"></script>
+    <!--/*
+      TX-3. The toolbar's module and the workspace favicon are the same file now — the one taxpert
+      bundle — so this is one tag where it was two, and it is the same tag fragments/workspace-head.html
+      loads on a product page. Two <script type="module"> for one URL is one evaluation, so an
+      --auditMode --allScreens build that renders both fragments is unaffected.
+
+      It sits in the head block rather than the body one, unlike the library's own comment for these
+      two fragments ("head = the stylesheet, body = the module"), because the bundle also installs the
+      favicon and that should not wait for the document to finish parsing. Module scripts are deferred
+      either way, so the toolbar still initialises after the DOM it decorates exists.
+    */-->
+    <script type="module" th:src="|${basePath}/resources/vendor/taxpert/dist/js/taxpert.js|"></script>
 </th:block>
 
 <th:block th:fragment="workspace-all-screens-body">
-    <script type="module" th:src="|${basePath}/resources/vendor/taxpert/audit-panel/js/all-screens-toolbar.js|"></script>
+    <!--/* Empty by design: the module this used to load moved into the head block above. */-->
 </th:block>

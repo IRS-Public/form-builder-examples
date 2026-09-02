@@ -9,29 +9,163 @@
   Every URL is built from ${basePath}, so nothing here repeats this app's route prefix.
 */-->
 <th:block th:fragment="workspace-head">
-    <!-- The workspace's favicon. The module makes the Taxpert mark the tab's only icon, replacing
-         the application icons the scaffold's fragments/head.html links on every generated page, so
-         a tab under the workspace is not the same tab as this app served plain. To keep this
-         application's own favicon instead, delete this one line. -->
-    <script type="module" th:src="|${basePath}/resources/vendor/taxpert/shared/js/favicon.js|"></script>
+    <!--/*
+      TX-3. The whole workspace in one module: the global nav, the audit panel, the tool dock, the
+      screens toolbar and the favicon override, with all fourteen of taxpert's template files
+      inlined into it so none of them is fetched either.
 
-    <link rel="stylesheet" th:href="|${basePath}/resources/vendor/taxpert/audit-panel/styles/audit-panel.css|"
+      This was five <script> tags, and behind them 52 modules down five levels of import waterfall
+      plus 9 template fetches — 81 requests on one page of this app, each level serial behind the
+      one above it, because this application has no bundler and the package ships raw ESM. It still
+      ships raw ESM: `vendor/taxpert/` beside this is the same mirror it always was, and Fact
+      Explorer still imports subpaths out of it. This is an artifact built from that source, for
+      hosts that cannot bundle it themselves.
+
+      Two modules are deliberately NOT in the bundle and are still loaded by their own path:
+      shared/js/config.js, which fragments/taxpert-config.html imports, and shared/js/graph-adapter.js,
+      which this app's own js/taxpert/ module imports. Both keep state in module scope, and a second
+      copy inside the bundle would mean the page configures one instance while the elements read the
+      other — with nothing thrown and no console line. See SHARED_SEAM in
+      taxpert/packages/ui/scripts/build.mjs before adding a third direct import.
+
+      The favicon is part of it: the module makes the Taxpert mark the tab's only icon, replacing the
+      application icons the scaffold's fragments/head.html links on every generated page, so a tab
+      under the workspace is not the same tab as this app served plain.
+    */-->
+    <script type="module" th:src="|${basePath}/resources/vendor/taxpert/dist/js/taxpert.js|"></script>
+
+    <link rel="stylesheet" th:href="|${basePath}/resources/vendor/taxpert/dist/styles/audit-panel.css|"
           id="audit-panel-styles" disabled />
 
-    <!-- The global nav clones its markup from this file, and it is the first thing on every page, so
-         start the fetch alongside the module rather than after it parses. (The audit panel's templates
-         need no preload: it is invisible until enable(), by which time they have landed.) -->
-    <link rel="preload" as="fetch" crossorigin
-          th:href="|${basePath}/resources/vendor/taxpert/global-nav/templates/global-nav.html|" />
+    <!--/*
+      TX-1. The five <template> elements <taxpert-global-nav> clones its markup from, in the page
+      rather than fetched on connect.
 
-    <script type="module" th:src="|${basePath}/resources/vendor/taxpert/audit-panel/js/taxpert-audit-panel.js|"></script>
-    <script type="module" th:src="|${basePath}/resources/vendor/taxpert/global-nav/js/taxpert-global-nav.js|"></script>
-    <!-- The workspace tool panels (the nav's Tools button). Unlike the audit panel's, this bundle's
-         stylesheet is not behind a toggled `disabled` link: every selector in it is scoped to the
-         bundle's own custom elements and .ttd-/.ttp-/.ttm- classes, so it restructures nothing in the
-         product page — the same reason global-nav.css loads unconditionally through main.css. The dock
-         hides itself unless a tool is switched on. -->
-    <script type="module" th:src="|${basePath}/resources/vendor/taxpert/tool-panels/js/taxpert-tool-dock.js|"></script>
+      getTemplate() resolves a hosted `<template id>` before it looks in the fetched registry — the
+      same host-override seam fragments/audit-panel.html uses — so with all five here the bar renders
+      synchronously on connect. There is no window in which the header is empty, which there always
+      was before: the render was queued behind a fetch that was itself queued behind the flow
+      runtime's 600 ms boot holding the main thread.
+
+      This replaces a `<link rel="preload" as="fetch">` for global-nav.html. The bundle now skips
+      that fetch outright when it finds all five ids (navTemplatesHosted(), in
+      vendor/taxpert/global-nav/js/templates.js), so a preload here would warm a file nothing reads
+      and the browser would say so in the console.
+
+      All five or none. The render throws on the first id it cannot resolve, and the tool strip
+      (tgn-tool) is the one usually left out, because it only renders when the config declares tools.
+
+      Copied verbatim from taxpert/packages/ui/src/global-nav/templates/global-nav.html — including
+      the lack of indentation, which is not an oversight: `make validate-nav-templates` diffs these
+      lines against that file byte for byte, and reindenting them is a diff. Change the package and
+      re-copy; do not edit here. What comes across is each block from `<template` to `</template>`,
+      inner comments and all; the package's prose *between* the blocks does not.
+    */-->
+<template id="tgn-sprite">
+  <svg class="tgn-sprite" aria-hidden="true" focusable="false" width="0" height="0">
+    <symbol id="tgn-icon-settings" viewBox="0 0 24 24">
+      <path fill="currentColor" d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58a.49.49 0 0 0 .12-.61l-1.92-3.32a.488.488 0 0 0-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54a.484.484 0 0 0-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58a.49.49 0 0 0-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z" />
+    </symbol>
+    <symbol id="tgn-icon-tune" viewBox="0 0 24 24">
+      <path fill="currentColor" d="M3 17v2h6v-2H3zM3 5v2h10V5H3zm10 16v-2h8v-2h-8v-2h-2v6h2zM7 9v2H3v2h4v2h2V9H7zm14 4v-2H11v2h10zm-6-4h2V7h4V5h-4V3h-2v6z" />
+    </symbol>
+    <symbol id="tgn-icon-visibility" viewBox="0 0 24 24">
+      <path fill="currentColor" d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z" />
+    </symbol>
+    <symbol id="tgn-icon-build" viewBox="0 0 24 24">
+      <path fill="currentColor" d="m22.7 19-9.1-9.1c.9-2.3.4-5-1.5-6.9-2-2-5-2.4-7.4-1.3L9 6 6 9 1.6 4.7C.4 7.1.9 10.1 2.9 12.1c1.9 1.9 4.6 2.4 6.9 1.5l9.1 9.1c.4.4 1 .4 1.4 0l2.3-2.3c.5-.4.5-1.1.1-1.4z" />
+    </symbol>
+    <symbol id="tgn-icon-expand_more" viewBox="0 0 24 24">
+      <path fill="currentColor" d="M16.59 8.59 12 13.17 7.41 8.59 6 10l6 6 6-6z" />
+    </symbol>
+  </svg>
+</template>
+<template id="tgn-bar">
+  <nav class="tgn-bar" aria-label="Taxpert workspace">
+    <button class="tgn-waffle" type="button" aria-haspopup="true" aria-expanded="false"
+            aria-label="Open Taxpert workspace menu">
+      <span class="tgn-waffle__grid" aria-hidden="true">
+        <span class="tgn-waffle__dot"></span>
+        <span class="tgn-waffle__dot"></span>
+        <span class="tgn-waffle__dot"></span>
+        <span class="tgn-waffle__dot"></span>
+        <span class="tgn-waffle__dot"></span>
+        <span class="tgn-waffle__dot"></span>
+        <span class="tgn-waffle__dot"></span>
+        <span class="tgn-waffle__dot"></span>
+        <span class="tgn-waffle__dot"></span>
+      </span>
+    </button>
+
+    <!-- Its accessible name is its own text: "Taxpert", then the context when there is one. (It
+         used to also carry an aria-label composing the two, which a <span> can't be named by —
+         a generic role takes no accessible name, so nothing ever read it.) -->
+    <span class="tgn-breadcrumb">
+      <span class="tgn-breadcrumb__root">Taxpert</span>
+      <!-- The workspace context (mode) only exists while the workspace is on; with it off the nav
+           reverts to its starting state — just the "Taxpert" root. -->
+      <span class="tgn-breadcrumb__sep" aria-hidden="true" hidden>|</span>
+      <span class="tgn-breadcrumb__ctx" hidden></span>
+    </span>
+
+    <!-- The tool strip is a workspace feature and each tool picks its own destinations; every tool
+         is rendered and `hidden` when it doesn't apply, and the strip hides itself when none do
+         (see global-nav.css). -->
+    <div class="tgn-tools" role="toolbar" aria-label="Workspace tools"></div>
+
+    <div class="tgn-menu" role="menu">
+      <div class="tgn-workspace">
+        <span class="tgn-workspace__label"></span>
+        <div class="tgn-workspace__controls">
+          <button class="tgn-toggle" type="button" role="switch" aria-checked="false">
+            <span class="tgn-toggle__knob"></span>
+          </button>
+          <!-- Workspace settings. Announces itself via nav-tool-select like the tool strip;
+               <taxpert-workspace-settings-modal> is the surface that listens and opens. -->
+          <button class="workplace-settings" type="button" aria-haspopup="dialog"
+                  aria-label="Workspace settings" title="Workspace settings">
+            <svg class="workplace-settings__icon" aria-hidden="true" focusable="false">
+              <use href="#tgn-icon-settings"></use>
+            </svg>
+          </button>
+        </div>
+      </div>
+      <!-- The mode/nav taxonomy is appended here as further children of .tgn-menu, so the
+           `.tgn-menu > * + *` divider rule keeps applying to it. -->
+    </div>
+  </nav>
+</template>
+<template id="tgn-tool">
+  <button class="tgn-tool" type="button" aria-haspopup="dialog">
+    <svg class="tgn-tool__icon" aria-hidden="true" focusable="false"><use></use></svg>
+    <span class="tgn-tool__label"></span>
+  </button>
+</template>
+<template id="tgn-group">
+  <div class="tgn-group">
+    <button class="tgn-group__header" type="button" aria-expanded="false">
+      <span class="tgn-group__label"></span>
+      <svg class="tgn-group__chevron" aria-hidden="true" focusable="false">
+        <use href="#tgn-icon-expand_more"></use>
+      </svg>
+    </button>
+    <div class="tgn-group__items"></div>
+  </div>
+</template>
+<template id="tgn-item">
+  <a class="tgn-item" role="menuitem">
+    <span class="tgn-item__label"></span>
+    <span class="tgn-item__check" aria-hidden="true">&#x2713;</span>
+  </a>
+</template>
+
+    <!-- The audit panel, the global nav and the workspace tool panels (the nav's Tools button) all
+         arrive in the bundle above; only the audit panel's stylesheet is still its own file, because
+         it is behind a toggled `disabled` link. The tool panels' is not: every selector in it is
+         scoped to the bundle's own custom elements and .ttd-/.ttp-/.ttm- classes, so it restructures
+         nothing in the product page — the same reason it loads unconditionally through main.css,
+         which now @imports one flattened dist/styles/taxpert.css in place of two @import chains. The
+         dock hides itself unless a tool is switched on. -->
 
     <!-- The workspace sub-nav on the product pages (page.html mounts
          <taxpert-screens-toolbar mode="product">): the bar under the global nav that names which
@@ -40,15 +174,14 @@
          chrome all the way down and exists without a workspace. So on an --auditMode --allScreens
          build the listing page links this stylesheet twice, from the two independent conditions.
          Same URL, same rules, one fetch: keeping the conditions separate is worth more than the
-         duplicate is worth avoiding. -->
-    <link rel="stylesheet" th:href="|${basePath}/resources/vendor/taxpert/audit-panel/styles/all-screens-toolbar.css|" />
-    <script type="module" th:src="|${basePath}/resources/vendor/taxpert/audit-panel/js/all-screens-toolbar.js|"></script>
+         duplicate is worth avoiding. Its script is in the bundle above. -->
+    <link rel="stylesheet" th:href="|${basePath}/resources/vendor/taxpert/dist/styles/all-screens-toolbar.css|" />
 
     <!-- The nav's workspace switch. Listened for on `document` rather than on the element, because
          this runs in <head> and the nav does not exist yet; the event is dispatched with
          bubbles+composed for exactly this. -->
     <script type="module" th:inline="javascript">
-        import { enable, disable } from /*[[|${basePath}/resources/vendor/taxpert/audit-panel/js/taxpert-audit-panel.js|]]*/ ''
+        import { enable, disable } from /*[[|${basePath}/resources/vendor/taxpert/dist/js/taxpert.js|]]*/ ''
         document.addEventListener('workspace-toggle', (event) => {
             if (event.detail.on) enable()
             else disable()

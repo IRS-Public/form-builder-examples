@@ -14,7 +14,6 @@ every directory, the extension seams, the requirements — and this file does no
 | Everything about this application | [README.md](README.md) |
 | The transpiler: its stages, where each runs, what is committed | [`codemod/README.md`](codemod/README.md) |
 | What was ported from Direct File, what was excluded, and why | [`docs/FLOW_TRANSPILATION.md`](docs/FLOW_TRANSPILATION.md) |
-| Build, page and runtime performance | [`docs/PERFORMANCE.md`](docs/PERFORMANCE.md) |
 
 ## The flow is generated, and that changes everything
 
