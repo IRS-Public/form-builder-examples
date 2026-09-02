@@ -89,7 +89,7 @@ make dev          # same address, without Author Mode
 
 | Target | What it does |
 |---|---|
-| `make dev` | Dev server with the workspace, Browse All and Scenario mode, watching for changes. |
+| `make dev` | Dev server with the workspace, Browse All, Scenario mode and both AI features, watching for changes. |
 | `make dev-topic-pages` | The same, showing the un-split flow: one page per Direct File SubSubcategory. |
 | `make dev-author` | The same as `dev`, plus Author Mode on port 3009. Deliberately un-split. |
 | `make debug` | The same as `dev`, with a JVM debug port on 5005. |
@@ -113,6 +113,19 @@ make dev          # same address, without Author Mode
 
 Ports are `PORT ?= 3008` for the site, `AUTHOR_PORT ?= 3009` for the Author Mode API, and
 `DEBUGGER_PORT ?= 5005`. Override any of them on the command line.
+
+### AI mode
+
+`make dev`, `make dev-topic-pages`, `make dev-author` and `make debug` pass
+`--aiScenarioGeneration --aiFactExplanation`, so the Explain & Analyze chat and the Scenario modal's
+Generate section are in the page from the first run. They are build-time defaults for two runtime
+feature flags, which Workspace settings can then switch off — but only a build that passed them has
+anything to switch. Credit Assistant keeps the same two behind its own `make dev-ai`; here they are
+on by default, because 727 transpiled screens is more flow than anyone holds in their head and
+"explain this node" is how you ask what one of them does. `make site` passes neither: they are
+developer surfaces, like the workspace itself.
+
+Both features need the assistant service running. It lives in the taxpert repository, not this one.
 
 ### One question per screen
 

@@ -33,9 +33,11 @@ a checkout is the only way either reaches an application here.
 
 Inside an application, `make dev` passes `--auditMode` and the flags that application needs. The
 extra dev targets are not uniform. Credit Assistant has `make dev-ai`, which additionally passes
-`--aiScenarioGeneration --aiFactExplanation` to reveal the two AI chat features, and neither of the
-others wires those up. Credit Assistant, Benefits Enrollment and Direct File have `make dev-author`, and TWE does
-not. Check the application's own Makefile rather than assuming a target exists in all four.
+`--aiScenarioGeneration --aiFactExplanation` to reveal the two AI chat features; Direct File passes
+the same two from every dev target instead of holding a target for them, and TWE and Benefits
+Enrollment wire them up nowhere. Credit Assistant, Benefits Enrollment and Direct File have
+`make dev-author`, and TWE does not. Check the application's own Makefile rather than assuming a
+target exists in all four.
 
 
 ## Where this fits

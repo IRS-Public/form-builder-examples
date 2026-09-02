@@ -116,9 +116,9 @@ Running it from there, in Docker or natively, is covered in the
 [QUICKSTART.md](https://github.com/IRS-Public/taxpert/blob/main/docs/QUICKSTART.md#how-fact-explorer-finds-an-application).
 
 The workspace UI in the applications themselves is switched on by a build flag. `make dev` already
-passes `--auditMode` in all four. In credit-assistant, `make dev-ai` also passes
-`--aiScenarioGeneration --aiFactExplanation`, which reveal the two AI chat features.
-None of the other three wires those features up in their default state.
+passes `--auditMode` in all four. The two AI chat features need
+`--aiScenarioGeneration --aiFactExplanation` as well: credit-assistant passes them from `make dev-ai`,
+direct-file passes them from every dev target, and the other two wire them up nowhere.
 
 ## Where this fits
 

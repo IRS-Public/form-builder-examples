@@ -62,7 +62,28 @@ bootstrap: ## One-time setup: publish the sibling libraries and vendor their ass
 # and the shape the snapshot CSVs in codemod/ describe. PageSplitter cuts the same pages the emitter
 # wrote, so nothing about the flow changes: the same gates decide the same visibility, and the step
 # indicator groups by flow module either way, so it reads "4 of 25" in both.
-FLAGS := --auditMode --allScreens --scenarioMode --singleQuestionPerScreen
+#
+# ── AI mode is on in this application's default build ─────────────────────────────────────────
+#
+# --aiScenarioGeneration and --aiFactExplanation are the build-time defaults for the two runtime
+# feature flags the workspace reads (form-builder's Flags.scala; the library's
+# fragments/audit-panel.html, which this application does not override, hands them to the panel).
+# Without them the Explain & Analyze chat and the Scenario modal's Generate section are built out
+# of the page entirely, and no Workspace setting can bring them back.
+#
+# Credit Assistant reveals them from a separate `dev-ai` target, because there they are the feature
+# being demonstrated. Here they are part of reading the port: 727 transpiled screens is more flow
+# than anyone holds in their head, and "explain this node" is how you ask what one of them is doing.
+# So they ride with the rest of the developer surfaces rather than behind a target someone has to
+# know to type.
+#
+# Their own variable, and named in every dev target rather than only in FLAGS, because the two
+# targets that spell their flags out — dev-topic-pages and dev-author, which differ over page
+# splitting and nothing else — would otherwise be the two where the chat quietly is not there.
+# `make site` passes neither: see below.
+AI_FLAGS := --aiScenarioGeneration --aiFactExplanation
+
+FLAGS := --auditMode --allScreens --scenarioMode --singleQuestionPerScreen $(AI_FLAGS)
 
 .PHONY: dev
 dev: copy-fg copy-shared-ui copy-uswds ## Build and run the development server, watching for changes
@@ -72,13 +93,13 @@ dev: copy-fg copy-shared-ui copy-uswds ## Build and run the development server, 
 dev-topic-pages: copy-fg copy-shared-ui copy-uswds ## Same as `dev`, one topic page per SubSubcategory
 	@# The un-split flow: 138 pages, each the whole of one Direct File SubSubcategory. What the
 	@# emitter writes, and the level to look at when a question appears on the wrong page.
-	sbt -Dsmol.port=$(PORT) '~run --serve --auditMode --allScreens --scenarioMode'
+	sbt -Dsmol.port=$(PORT) '~run --serve --auditMode --allScreens --scenarioMode $(AI_FLAGS)'
 
 .PHONY: dev-author
 dev-author: copy-fg copy-shared-ui copy-uswds ## Same as `dev`, with Author Mode editing enabled on $(AUTHOR_PORT)
 	@# Author Mode edits the Flow XML, which is the un-split flow — so this one deliberately does not
 	@# split: you would be editing a page the splitter invented rather than the one on disk.
-	sbt -Dsmol.port=$(PORT) -Dsmol.author.port=$(AUTHOR_PORT) '~run --serve --auditMode --allScreens --scenarioMode --authorMode'
+	sbt -Dsmol.port=$(PORT) -Dsmol.author.port=$(AUTHOR_PORT) '~run --serve --auditMode --allScreens --scenarioMode --authorMode $(AI_FLAGS)'
 
 .PHONY: debug
 debug: copy-fg copy-shared-ui copy-uswds ## Same as `dev`, but also opens a port to attach a debugger
@@ -86,9 +107,10 @@ debug: copy-fg copy-shared-ui copy-uswds ## Same as `dev`, but also opens a port
 
 .PHONY: site
 site: copy-fg copy-shared-ui copy-uswds ## Build the site for production, into ./out
-	@# The workspace, the all-screens page and scenario mode are developer surfaces, baked in at
-	@# build time, so a production build passes none of them. --singleQuestionPerScreen is not one
-	@# of those: it is how this application presents its flow, in every build. See FLAGS above.
+	@# The workspace, the all-screens page, scenario mode and the two AI features are developer
+	@# surfaces, baked in at build time, so a production build passes none of them.
+	@# --singleQuestionPerScreen is not one of those: it is how this application presents its flow,
+	@# in every build. See FLAGS above.
 	sbt 'run --singleQuestionPerScreen'
 
 # ── Docker ────────────────────────────────────────────────────────────────────

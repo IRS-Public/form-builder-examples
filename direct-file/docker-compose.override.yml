@@ -66,9 +66,13 @@ services:
         "sbt",
         "-Dsmol.author.host=0.0.0.0",
         "-Dsmol.author.port=3009",
-        "~run --auditMode --allScreens --scenarioMode --authorMode",
+        "~run --auditMode --allScreens --scenarioMode --authorMode --aiScenarioGeneration --aiFactExplanation",
         # No --singleQuestionPerScreen, and for the reason `make dev-author` gives: Author Mode edits
         # the Flow XML on disk, and the splitter's pages are not on disk.
+        #
+        # The two AI flags are AI_FLAGS in the Makefile, which this file cannot read. They are here
+        # so the Docker way in and `make dev-author` reveal the same features; a stack where the
+        # Explain chat exists natively and not in a container is the harder bug to explain.
       ]
     volumes:
       # This app's own source, live — sbt's watcher picks up an edit on the host immediately.
