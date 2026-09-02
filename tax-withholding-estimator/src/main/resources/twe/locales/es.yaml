@@ -71,6 +71,9 @@ all-screens:
     results: Resultado
     other: Otros
 workspace:
+  flags:
+    ai-scenario-generation: Generación de escenarios con IA
+    ai-fact-explanation: Explicaciones de hechos con IA
   tools:
     inspect: Inspeccionar
     inspect-description: Inspeccione hechos, flujos y texto.

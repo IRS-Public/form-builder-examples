@@ -42,12 +42,6 @@
         ])
         const t = (key) => strings.get(key) ?? key
 
-        // Whether this site was generated with --authorMode, and so whether /author/ exists to be
-        // linked. The scaffold puts the build flags in the Thymeleaf context (generators/Website,
-        // AllScreens and AuthorMode all set `flags`), and the null guard is for a build that passed
-        // no flags at all rather than for the flag being off.
-        const authorMode = /*[[${flags.authorMode != null and flags.authorMode}]]*/ false
-
         configure({
             // storagePrefix is what stops this app and any other Form Builder app served from the same
             // origin sharing a fact graph, a watchlist or a panel layout. Every storage key the
@@ -92,17 +86,19 @@
                     // which takes down this whole file, and with it configure(): the nav renders
                     // with no menu and no tool buttons appear.
                     { id: 'fact-explorer', label: 'Fact Explorer', href: 'http://localhost:5180/fact-explorer/benefits-enrollment' },
-                    // Offered only on a build that generated the page, which is what `authorMode`
-                    // above resolves. Not a `ff: 'author-mode'` runtime gate like credit-assistant's:
-                    // that spelling needs the flag declared in `featureFlags` and a
-                    // <taxpert-audit-panel> carrying its build-time default, and this app has
-                    // neither — an undeclared flag never gets its body class, so the entry would be
-                    // hidden for good. The build flag is the honest gate anyway: without
-                    // --authorMode the page does not exist, and this file's rule is to add a
-                    // destination only when the page behind it does.
-                    ...(authorMode
-                        ? [{ id: 'authoring-suite', label: 'Authoring Suite', href: /*[[|${basePath}/author/|]]*/ '' }]
-                        : []),
+                    // A `ff: 'author-mode'` runtime gate, credit-assistant's spelling. It needs the
+                    // flag declared in `featureFlags` and a <taxpert-audit-panel> carrying its
+                    // build-time default, and this app now has both: the declaration is below, and
+                    // the panel comes from the scaffold's fragments/audit-panel.html, which has been
+                    // setting `author-mode-default` from --authorMode all along.
+                    //
+                    // So the build flag still decides what this shows by default — without
+                    // --authorMode there is no /author/ page and the entry stays hidden — and
+                    // Workspace settings can now override that default, which is the whole point of
+                    // a flag. Turning it on against a build that generated no /author/ gets a 404;
+                    // that is the cost of "override the default build" rather than a reason to offer
+                    // no switch at all.
+                    { id: 'authoring-suite', label: 'Authoring Suite', href: /*[[|${basePath}/author/|]]*/ '', ff: 'author-mode' },
                 ],
 
                 // Where each tool button in the bar applies. One generated page backs both listings,
@@ -147,9 +143,11 @@
                             { id: 'path-mode', label: 'Path Mode', href: /*[[|${basePath}/all-screens/?mode=path|]]*/ '' },
                             { id: 'browse-all', label: 'Browse All', href: /*[[|${basePath}/all-screens/|]]*/ '' },
                             { id: 'fact-explorer', label: 'Fact Explorer', href: 'http://localhost:5180/fact-explorer/benefits-enrollment' },
-                            ...(authorMode
-                                ? [{ id: 'authoring-suite', label: 'Authoring Suite', href: /*[[|${basePath}/author/|]]*/ '' }]
-                                : []),
+                            // Unconditional, the way credit-assistant lists its own. `ff` is a
+                            // nav-leaf property (taxpert-global-nav's _renderLeaf reads it); an
+                            // `apps` destination has no such gate, and the app switcher falls back
+                            // to a sibling's first destination when a counterpart is missing anyway.
+                            { id: 'authoring-suite', label: 'Authoring Suite', href: /*[[|${basePath}/author/|]]*/ '' },
                         ],
                     },
                     {
@@ -192,6 +190,27 @@
                 scenariosBase: /*[[|${basePath}/resources/scenarios|]]*/ '',
                 factDictionaryUrl: /*[[|${basePath}/resources/fact-dictionary.xml|]]*/ '',
             },
+
+            // The two AI features are separately flagged because they ship on separate timelines:
+            // generation writes a whole Fact Graph from a prompt, explanation only reads facts back.
+            // Neither is passed by any target in this app's Makefile, so both default off and these
+            // rows are how you reach them at all. authorMode is a third, unrelated to either: it
+            // gates the "Authoring Suite" nav item (nav.menu's `ff: 'author-mode'` above) rather than
+            // anything inside the audit panel, and `make dev-author` is what turns its default on.
+            //
+            // Each one's build-time default is the matching `*-default` attribute on
+            // <taxpert-audit-panel>. This app does not override the scaffold's
+            // fragments/audit-panel.html, and does not need to: that fragment already sets all three
+            // from the build flags, so declaring them here is the whole of the wiring.
+            //
+            // `label` is the wording on that modal's row: it renders one row per entry here, so a
+            // flag is declared in exactly one place and a host with none gets an empty state rather
+            // than another application's features.
+            featureFlags: [
+                { name: 'aiScenarioGeneration', kebab: 'ai-scenario-generation', label: [[#{workspace.flags.ai-scenario-generation}]] },
+                { name: 'aiFactExplanation', kebab: 'ai-fact-explanation', label: [[#{workspace.flags.ai-fact-explanation}]] },
+                { name: 'authorMode', kebab: 'author-mode', label: [[#{workspace.flags.author-mode}]] },
+            ],
 
             tools: [
                 { id: 'inspect', label: [[#{workspace.tools.inspect}]], description: [[#{workspace.tools.inspect-description}]], templateId: 'ttp-body-inspect' },

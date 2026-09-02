@@ -191,25 +191,43 @@
                 factDictionaryUrl: '/app/tax-withholding-estimator/resources/fact-dictionary.xml',
             },
 
-            // No runtime flags. This app declared exactly one — `legacyAuditPanel`, which brought
-            // back the right-hand rail that predates the shared workspace — and it is gone, because
-            // everything it offered now has a better home in the workspace itself:
+            // The two AI features, separately flagged because they ship on separate timelines:
+            // generation writes a whole Fact Graph from a prompt, explanation only reads facts back.
+            // No target in this app's Makefile passes --aiScenarioGeneration or --aiFactExplanation,
+            // so both default off and these rows are how you reach them at all — which is what a
+            // flag is for. `apiBase` in `endpoints` above is the other half of that and is still
+            // unset; the surfaces appear when a flag is turned on, and reach nothing until it is.
             //
-            //   its fact tracker        → the Watchlist tool
-            //   its scenario copy/paste → the Scenario modal (the nav's Scenario button)
-            //   its "Override Date"     → the Overrides tool, `facts: ['/overrideDate']` below
+            // Each one's build-time default is the matching `*-default` attribute on
+            // <taxpert-audit-panel>. This app does not override the scaffold's
+            // fragments/audit-panel.html, and does not need to: that fragment already sets both from
+            // the build flags, so declaring them here is the whole of the wiring.
             //
-            // The last of those is the one that made this safe to remove: a hand-built control for
-            // one fact became a list entry, so the next fact worth overriding is a line of
-            // configuration rather than a reason to keep a whole second panel alive.
+            // `label` is the wording on that modal's row: the modal renders one row per entry here,
+            // so a flag is declared in exactly one place and a host with none gets an empty state
+            // rather than another application's features.
             //
-            // A flag that is not declared here is not offered anywhere — the Workspace settings
-            // modal renders one row per entry — so this reads as "this application has nothing in
-            // testing", which is true.
+            // NOT `author-mode`, which is the third flag credit-assistant, benefits-enrollment and
+            // direct-file all declare. This app has no authoring surface to gate: no `dev-author`
+            // target, no --authorMode anywhere in its Makefile, `authorMode: false` in
+            // fact-explorer.app.json, and no Authoring Suite entry in `nav.menu` or in its own
+            // `apps` destinations. A row here would be a switch wired to nothing. Giving this app an
+            // authoring surface is a real change — a Makefile target, that capability flipped, and
+            // an entry added to the three siblings' `apps` lists — and the flag follows it rather
+            // than standing in for it.
             //
-            // Nothing else here is runtime either: --auditMode and --allScreens decide what is
-            // generated, which is not something a person can switch on afterwards.
-            featureFlags: [],
+            // `legacyAuditPanel` used to be here, and is gone rather than flagged off: it brought
+            // back the right-hand rail that predates the shared workspace, and everything it offered
+            // now has a better home — its fact tracker in the Watchlist tool, its scenario
+            // copy/paste in the Scenario modal, its "Override Date" in the Overrides tool as
+            // `facts: ['/overrideDate']` below.
+            //
+            // --auditMode and --allScreens are not candidates either: they decide what is generated,
+            // which is not something a person can switch on afterwards.
+            featureFlags: [
+                { name: 'aiScenarioGeneration', kebab: 'ai-scenario-generation', label: [[#{workspace.flags.ai-scenario-generation}]] },
+                { name: 'aiFactExplanation', kebab: 'ai-fact-explanation', label: [[#{workspace.flags.ai-fact-explanation}]] },
+            ],
 
             // This app's flow markup is fg-set / fg-show / fg-alert with .twe-question labels —
             // the convention flow-dom.js already defaults to — so only one key differs. /taxYear

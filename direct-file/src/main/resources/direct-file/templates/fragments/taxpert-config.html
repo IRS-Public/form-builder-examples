@@ -103,14 +103,16 @@
                     // one. Absolute, because it is served by the taxpert stack rather than this app.
                     { id: 'fact-explorer', label: 'Fact Explorer', href: 'http://localhost:5180/fact-explorer/direct-file' },
 
-                    // Only when this site was built with --authorMode, which is what generates the
-                    // page: `make up` and `make dev-author` pass it, a plain `make dev` and the
-                    // production build do not. Gated on the build flag rather than offered always,
-                    // because this file's rule above is that a menu which offers a 404 is worse than
-                    // a short one. A `//` comment, never an HTML one — see the note in `apps` below.
-                    ...((/*[[${flags.authorMode}]]*/ false) ? [
-                        { id: 'authoring-suite', label: 'Authoring Suite', href: /*[[|${basePath}/author/|]]*/ '' },
-                    ] : []),
+                    // Gated at runtime by the `author-mode` feature flag, which is credit-assistant's
+                    // spelling and now this app's: `featureFlags` below declares it, the scaffold's
+                    // <taxpert-audit-panel> carries --authorMode as its build-time *default*, and
+                    // Workspace settings overrides that default in localStorage. A plain `make dev`
+                    // still hides this and `make dev-author` still shows it — the build flag did not
+                    // stop deciding, it stopped being the only thing that decides. Someone who turns
+                    // the flag on against a build that generated no /author/ gets a 404, which is
+                    // what "override the default build" costs and is the same bargain credit-assistant
+                    // has always made. A `//` comment, never an HTML one — see the note in `apps` below.
+                    { id: 'authoring-suite', label: 'Authoring Suite', href: /*[[|${basePath}/author/|]]*/ '', ff: 'author-mode' },
                 ],
 
                 // Where each tool button in the bar applies. One generated page backs both listings,
@@ -150,9 +152,11 @@
 
                             { id: 'fact-explorer', label: 'Fact Explorer', href: 'http://localhost:5180/fact-explorer/direct-file' },
 
-                            ...((/*[[${flags.authorMode}]]*/ false) ? [
-                                { id: 'authoring-suite', label: 'Authoring Suite', href: /*[[|${basePath}/author/|]]*/ '' },
-                            ] : []),
+                            // Unconditional, the way credit-assistant lists its own. `ff` is a
+                            // nav-leaf property (taxpert-global-nav's _renderLeaf reads it); an
+                            // `apps` destination has no such gate, and the app switcher falls back
+                            // to a sibling's first destination when a counterpart is missing anyway.
+                            { id: 'authoring-suite', label: 'Authoring Suite', href: /*[[|${basePath}/author/|]]*/ '' },
                         ],
                     },
 
@@ -201,6 +205,28 @@
                 scenariosBase: /*[[|${basePath}/resources/scenarios|]]*/ '',
                 factDictionaryUrl: /*[[|${basePath}/resources/fact-dictionary.xml|]]*/ '',
             },
+
+            // The two AI features are separately flagged because they ship on separate timelines:
+            // generation writes a whole Fact Graph from a prompt, explanation only reads facts back.
+            // Both are on by default here — every one of this app's dev targets passes
+            // --aiScenarioGeneration --aiFactExplanation (Makefile's AI_FLAGS) — so these two rows
+            // are how you turn them *off*. authorMode is a third, unrelated to either: it gates the
+            // "Authoring Suite" nav item (nav.menu's `ff: 'author-mode'` above) rather than anything
+            // inside the audit panel.
+            //
+            // Each one's build-time default is the matching `*-default` attribute on
+            // <taxpert-audit-panel>. This app does not override the scaffold's
+            // fragments/audit-panel.html, and does not need to: that fragment already sets all three
+            // from the build flags, so declaring them here is the whole of the wiring.
+            //
+            // `label` is the wording on that modal's row: it renders one row per entry here, so a
+            // flag is declared in exactly one place and a host with none gets an empty state rather
+            // than another application's features.
+            featureFlags: [
+                { name: 'aiScenarioGeneration', kebab: 'ai-scenario-generation', label: [[#{workspace.flags.ai-scenario-generation}]] },
+                { name: 'aiFactExplanation', kebab: 'ai-fact-explanation', label: [[#{workspace.flags.ai-fact-explanation}]] },
+                { name: 'authorMode', kebab: 'author-mode', label: [[#{workspace.flags.author-mode}]] },
+            ],
 
             tools: [
                 { id: 'inspect', label: [[#{workspace.tools.inspect}]], description: [[#{workspace.tools.inspect-description}]], templateId: 'ttp-body-inspect' },

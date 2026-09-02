@@ -30,6 +30,9 @@ all-screens:
     results: Results
     other: Other
 workspace:
+  flags:
+    ai-scenario-generation: AI scenario generation
+    ai-fact-explanation: AI fact explanations
   tools:
     inspect: Inspect
     inspect-description: Inspect facts, flows and text.

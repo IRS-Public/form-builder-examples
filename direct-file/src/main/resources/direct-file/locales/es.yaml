@@ -41,6 +41,10 @@ all-screens:
     other: Otros
 
 workspace:
+  flags:
+    ai-scenario-generation: Generación de escenarios con IA
+    ai-fact-explanation: Explicaciones de hechos con IA
+    author-mode: Modo de autor
   tools:
     inspect: Inspeccionar
     inspect-description: Inspeccione hechos, flujos y texto.

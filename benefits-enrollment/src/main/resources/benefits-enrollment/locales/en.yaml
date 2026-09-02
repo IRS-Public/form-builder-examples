@@ -31,6 +31,10 @@ all-screens:
 # built into an --auditMode site — but it is still per-locale, because a translator working in
 # Spanish should be able to read the tool they are working in.
 workspace:
+  flags:
+    ai-scenario-generation: AI scenario generation
+    ai-fact-explanation: AI fact explanations
+    author-mode: Author Mode
   tools:
     inspect: Inspect
     inspect-description: Inspect facts, flows and text.
